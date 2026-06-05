@@ -7,7 +7,9 @@ This guide details how the Conductor agent routes operations across the 22 OMP-s
 ## 1. Subagent Lifecycle Control
 
 ### Spawning (The `task` tool)
+
 When spawning subagents, define precise scopes:
+
 ```json
 {
   "agent": "explore",
@@ -26,7 +28,9 @@ When spawning subagents, define precise scopes:
 ```
 
 ### Job Monitoring (The `job` tool)
+
 If subagents are running in the background, check their status or wait for completion using:
+
 ```json
 {
   "op": "wait",
@@ -40,14 +44,15 @@ If subagents are running in the background, check their status or wait for compl
 
 The `irc` tool allows live agents in the same process to talk.
 
-*   `op: "list"`: Retrieves slot IDs and names.
-*   `op: "send"`: Delivers a message to a slot (e.g. `1-DatabaseSetup`).
+- `op: "list"`: Retrieves slot IDs and names.
+- `op: "send"`: Delivers a message to a slot (e.g. `1-DatabaseSetup`).
 
-### The Handshake Sequence:
-1.  `1-DatabaseSetup` finishes generating schemas, but does not exit (holds active turn).
-2.  `2-APIHandler` calls `irc` to request schema information from `1-DatabaseSetup`.
-3.  `1-DatabaseSetup` receives the request via its side-channel turn, replies with the JSON representation of the schema.
-4.  `2-APIHandler` continues coding, and `1-DatabaseSetup` exits cleanly.
+### The Handshake Sequence
+
+1. `1-DatabaseSetup` finishes generating schemas, but does not exit (holds active turn).
+2. `2-APIHandler` calls `irc` to request schema information from `1-DatabaseSetup`.
+3. `1-DatabaseSetup` receives the request via its side-channel turn, replies with the JSON representation of the schema.
+4. `2-APIHandler` continues coding, and `1-DatabaseSetup` exits cleanly.
 
 ---
 
@@ -56,22 +61,27 @@ The `irc` tool allows live agents in the same process to talk.
 After subagents merge their work, the Conductor must validate structural code integrity:
 
 ### LSP Diagnostics
+
 ```json
 {
   "action": "diagnostics",
   "file": "*"
 }
 ```
+
 Checks for workspace-wide TypeScript errors.
 
 ### AST Grep Verification
+
 To verify that all database calls use the correct transaction wrappers:
+
 ```json
 {
   "pat": "db.transaction($$$)",
   "paths": ["src/**/*.ts"]
 }
 ```
+
 If any database mutation bypasses transactions, the Conductor flags a failure.
 
 ---

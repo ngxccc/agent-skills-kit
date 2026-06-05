@@ -27,9 +27,223 @@ The Conductor has full access to the OMP tool surface, categorized into 6 primar
 | **Phân phối & Debug**| `task`, `irc`, `job`, `debug` | Spawn parallel subagents, send IRC DMs, manage background jobs, run DAP debugger. |
 | **Quản lý & QA** | `todo_write`, `github`, `report_tool_issue` | Live TUI task list tracking, GitHub API integration, report tool bugs. |
 
+
 ---
 
-## 2. Multi-Agent Orchestration Protocol
+## 2. Detailed Tool-by-Tool Usage Guide
+
+Here is the exhaustive parameter and syntax reference for all 22 OMP-specific tools:
+
+### Group 1: Đọc / Tìm kiếm (Read & Search)
+
+#### `read`
+*   **Purpose**: Opens and reads disk files, directories, archives, SQLite databases, PDFs, Jupyter notebooks, images, web URLs, and virtual schemes (`skill://`, `pr://`, `issue://`, `agent://`, `artifact://`, `memory://`, `mcp://`, `local://`, `conflict://`, `jobs://`).
+*   **Key Selectors**:
+    *   `:50-200` — Line range (inclusive).
+    *   `:50+150` — Count form (150 lines starting at line 50).
+    *   `:raw` — Verbatim text (no anchors, no signatures summarization).
+    *   `:conflicts` — Enumerates git merge conflicts.
+*   **Examples**:
+    ```bash
+    # Line range from app.ts inside a tarball
+    read "build/bundle.tar.gz:src/app.ts:120-180"
+    # Verbatim read of parser config
+    read "src/parser.ts:1-40:raw"
+    # Load PR details (automatically cached)
+    read pr://1234
+    ```
+
+#### `find`
+*   **Purpose**: Fast file-name lookup by glob. Sorted by modification time (mtime, newest first), relative to CWD. Honors `.gitignore` by default.
+*   **Examples**:
+    ```json
+    find paths=["src/routes/**/*.tsx"]
+    find paths=["apps/**/package.json", "packages/**/package.json"]
+    ```
+
+#### `search`
+*   **Purpose**: Rust regex lookup across files, directories, globs, or internal URLs. Context lines start with a space; matches start with `*LINE|`. Paginated via `skip`. Cross-line patterns auto-enable when the regex contains a literal `\n`.
+*   **Examples**:
+    ```json
+    search pattern="TODO\\(\\w+\\)" paths=["src/"] i=true
+    search pattern="function \\w+\\([^)]*\\)\\s*\\{\\n\\s*\\}" paths=["src/"]
+    ```
+
+---
+
+### Group 2: Chỉnh sửa (Editing & Resolution)
+
+#### `write`
+*   **Purpose**: Creates or overwrites a file, archive entry, or SQLite row. Runs format-on-save automatically.
+*   **Examples**:
+    ```json
+    write path="src/routes/health.ts" content="export const ok = () => 'ok';\n"
+    ```
+
+#### `edit`
+*   **Purpose**: Applies a line-anchored patch against the per-session read cache using two-character line hashes (`hashline` mode). Prevents conflicting updates.
+*   **Syntax**:
+    *   `+ ANCHOR` — Insert after anchored line.
+    *   `< ANCHOR` — Insert before anchored line.
+    *   `- A..B` — Delete inclusive range.
+    *   `= A..B` — Replace inclusive range.
+*   **Examples**:
+    ```json
+    edit input="@@ src/auth.ts\n= 87qa..87qa\n~  return await loadUser(id);\n"
+    ```
+
+#### `ast_edit`
+*   **Purpose**: Structural rewrite using ast-grep patterns. Ignores whitespace and comments. Captures nodes like `$A`, captures zero-or-more like `$$$ARGS`. Staged as a preview.
+*   **Examples**:
+    ```json
+    ast_edit ops=[{ "pat": "legacyFn($$$ARGS)", "out": "newFn($$$ARGS)" }] paths=["src/**/*.ts"]
+    ast_edit ops=[{ "pat": "console.log($$$)", "out": "" }] paths=["src/"]
+    ```
+
+#### `resolve`
+*   **Purpose**: Applies or discards a pending preview action staged by `ast_edit` or plan approvals.
+*   **Examples**:
+    ```json
+    resolve action="apply" reason="clean up debugging logs"
+    resolve action="discard" reason="keep logs until hotfix verification"
+    ```
+
+---
+
+### Group 3: Hệ thống & Code (System & Code Intelligence)
+
+#### `bash`
+*   **Purpose**: Executes shell commands in a persistent session. Supports `cwd`, `env` variables, and PTY mode.
+*   **Examples**:
+    ```json
+    bash command="git status"
+    ```
+
+#### `eval`
+*   **Purpose**: Runs Python (`py`) or JavaScript (`js`) cells in a persistent, stateful kernel environment.
+*   **Examples**:
+    ```json
+    eval language="py" code="import math\nprint(math.sqrt(64))"
+    eval language="js" code="const fs = require('fs'); display(fs.readdirSync('.'));"
+    ```
+
+#### `recipe`
+*   **Purpose**: Runs a target task from the project's task runner (e.g. Bun, Make, Cargo, Just).
+*   **Examples**:
+    ```json
+    recipe target="test"
+    ```
+
+#### `lsp`
+*   **Purpose**: Language server client wrapper for code navigation, outline, diagnostics, quick-fixes, and symbol renames.
+*   **Key Actions**: `definition`, `type_definition`, `implementation`, `references`, `hover`, `symbols`, `diagnostics`, `code_actions`, `rename`, `rename_file`, `status`, `capabilities`, `reload`, `request`.
+*   **Examples**:
+    ```json
+    lsp action="references" file="src/server/auth.ts" line=42 symbol="issueToken"
+    lsp action="rename" file="src/auth/jwt.ts" line=14 symbol="issueToken" new_name="mintToken"
+    lsp action="diagnostics" file="*"
+    ```
+
+---
+
+### Group 4: Web & Đồ họa (Web & Graphics)
+
+#### `web_search`
+*   **Purpose**: Submits queries through the Brave/Tavily/Kagi search engine chain.
+*   **Examples**:
+    ```json
+    web_search query="bun workspaces hoisting behaviour" recency="month"
+    ```
+
+#### `browser`
+*   **Purpose**: Real Chromium browser tab driven through Puppeteer. Actions include `open`, `run` (executes async JS with `tab` and `page` in scope), and `close`.
+*   **Examples**:
+    ```json
+    browser open name="main" url="https://example.com/login"
+    browser run name="main" code="const obs = await tab.observe(); const btn = obs.elements.find(e => e.role === 'button'); await (await tab.id(btn.id)).click();"
+    browser close name="main"
+    ```
+
+#### `generate_image`
+*   **Purpose**: Structured image generation.
+*   **Examples**:
+    ```json
+    generate_image subject="wireframe diagram" scene="web app dashboard" style="flat minimalist"
+    ```
+
+#### `inspect_image`
+*   **Purpose**: Vision model analysis of a local image.
+*   **Examples**:
+    ```json
+    inspect_image path="reports/ui-diff.png" prompt="Is the logo aligned correctly with the menu items?"
+    ```
+
+---
+
+### Group 5: Phân phối & Debug (Concurrency & Debugging)
+
+#### `task`
+*   **Purpose**: Spawns parallel subagent slots. Passing `isolated: true` configures git worktrees/overlays to isolate concurrent edits.
+*   **Examples**:
+    ```json
+    task agent="explore" tasks=[{ "id": "Audit", "assignment": "Check config files" }]
+    ```
+
+#### `irc`
+*   **Purpose**: Short synchronous prose messages between live slots (e.g. `0-Main` and `1-Subagent`).
+*   **Examples**:
+    ```json
+    irc op="list"
+    irc op="send" to="1-DatabaseSetup" message="What columns exist in the User table?"
+    ```
+
+#### `job`
+*   **Purpose**: Wait on or cancel background processes or subagents.
+*   **Examples**:
+    ```json
+    job op="wait" jobId="DatabaseSetup"
+    ```
+
+#### `debug`
+*   **Purpose**: DAP-driven debugger execution. Off by default. Supports conditional breakpoints, stepping, variables, frames, and expressions.
+*   **Examples**:
+    ```json
+    debug action="launch" adapter="debugpy" program="transform.py"
+    debug action="set_breakpoint" file="transform.py" line=58 condition="i == 3"
+    debug action="stack_trace" levels=5
+    debug action="evaluate" frame_id=0 expression="sum(totals)" context="repl"
+    ```
+
+---
+
+### Group 6: Quản lý & QA (Management & QA)
+
+#### `todo_write`
+*   **Purpose**: Updates the live phased todo registry shown in the session TUI.
+*   **Examples**:
+    ```json
+    todo_write phase="Verification" items=["Run cargo test", "Verify lsp"]
+    ```
+
+#### `github`
+*   **Purpose**: GitHub CLI wrapper. Actions: `repo_view`, `pr_create`, `pr_checkout`, `pr_push`, `search_issues`, `search_prs`, `search_code`, `search_commits`, `search_repos`, `run_watch`.
+*   **Examples**:
+    ```json
+    github op="pr_checkout" pr=1234
+    github op="pr_create" fill=true draft=true
+    github op="run_watch"
+    ```
+
+#### `report_tool_issue`
+*   **Purpose**: Flags unexpected tool behavior for automated QA tracking.
+*   **Examples**:
+    ```json
+    report_tool_issue tool="lsp" description="LSP crash during workspace diagnostics"
+    ```
+
+---
+
+## 3. Multi-Agent Orchestration Protocol
 
 When a large or multi-subsystem task is initiated, the Conductor must follow this sequence:
 
@@ -60,7 +274,7 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 
 ---
 
-## 3. Configuration & CLI Integration
+## 4. Configuration & CLI Integration
 
 This skill is local to `.omp/skills/` and is automatically loaded by the OMP session because it is registered in `ag-manifest.json` under `.omp/**`.
 
