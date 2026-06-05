@@ -108,6 +108,8 @@ Use this file when you need to:
 
 - Testing the sequential thinking skill scripts (`npm test` under `.claude/skills/ag-sequential-thinking/`)
 
+> 💡 **Tip:** All Node.js validation and test scripts are fully compatible with [Bun](https://bun.sh). If you have Bun installed, you can prefix commands with `bun` instead of `node` (e.g. `bun run validate`) for near-instantaneous execution.
+
 ## Default Verification Order
 
 Unless the task clearly needs a different path:
