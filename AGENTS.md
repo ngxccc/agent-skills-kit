@@ -556,14 +556,14 @@ Before routing to subagent, pass relevant `process/context/` files:
 
 ### 3. Route to Subagent
 
-Choose based on current phase:
+Choose based on current phase (when calling the `task` tool, pass the agent ID WITHOUT the `ag-` prefix, e.g. `research-agent`, `innovate-agent`, `plan-agent`, `execute-agent`, `fast-mode-agent`, `update-process-agent`):
 
-- Initial understanding -> `ag-research-agent`
-- Exploring options -> `ag-innovate-agent`
-- Creating spec -> `ag-plan-agent`
-- Implementing approved plan -> `ag-execute-agent`
-- Fast workflow -> `ag-fast-mode-agent`
-- Capturing learnings -> `ag-update-process-agent`
+- Initial understanding -> `research-agent` (profile: `ag-research-agent`)
+- Exploring options -> `innovate-agent` (profile: `ag-innovate-agent`)
+- Creating spec -> `plan-agent` (profile: `ag-plan-agent`)
+- Implementing approved plan -> `execute-agent` (profile: `ag-execute-agent`)
+- Fast workflow -> `fast-mode-agent` (profile: `ag-fast-mode-agent`)
+- Capturing learnings -> `update-process-agent` (profile: `ag-update-process-agent`)
 
 ### 4. Monitor Compliance
 

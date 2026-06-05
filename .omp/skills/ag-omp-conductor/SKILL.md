@@ -291,7 +291,7 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 
 ### Step 3: Fan out via Task Spawning
 
-- Call the `task` tool to spawn subagents. Ensure tasks with potential conflicts are isolated using `isolated: true` (worktrees).
+- Call the `task` tool to spawn subagents. Ensure tasks with potential conflicts are isolated using `isolated: true` (worktrees). *(Note: Always pass the agent name WITHOUT the `ag-` prefix to the `task` tool, e.g. use `plan-agent` instead of `ag-plan-agent`)*.
 - _OMP Tool used_: `task`
 
 ### Step 4: IRC Coordination & Monitoring
@@ -314,6 +314,8 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 This catalog defines all existing agents and skills in the development environment. Whenever orchestrating workflows, the Conductor references this list to select the optimal actor or specialist skill.
 
 ### Agents
+
+*(Note: When invoking any agent below via the `task` tool, you MUST pass its name WITHOUT the `ag-` prefix, e.g. use `plan-agent` instead of `ag-plan-agent`, `research-agent` instead of `ag-research-agent`)*.
 
 - **`ag-code-reviewer`**: Comprehensive code review with scout-based edge case detection. Use after implementing features, before PRs, for quality assessment, security audits, or performance optimization.
 - **`ag-code-simplifier`**: Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
