@@ -155,6 +155,22 @@ done <<<"$SYMLINKS_JSON"
 echo "$FILES" | sort >.ag-installed-files
 echo "$VERSION" >.ag-version
 
+# ══════════════════════════════════════════════════════
+# Add version files to .gitignore
+# ══════════════════════════════════════════════════════
+if [ ! -f ".gitignore" ]; then
+    touch .gitignore
+fi
+if [ -s ".gitignore" ] && [ "$(tail -c1 .gitignore; echo x)" != $'\nx' ]; then
+    echo "" >> ".gitignore"
+fi
+for f in ".ag-installed-files" ".ag-version" ".vc-installed-files" ".vc-version"; do
+    if ! grep -qFx "$f" ".gitignore"; then
+        echo "$f" >> ".gitignore"
+        echo "  Added $f to .gitignore"
+    fi
+done
+
 cleanup
 
 # ══════════════════════════════════════════════════════
