@@ -46,6 +46,12 @@
     "assets/**",
     ".github/**",
     "resolve-manifest.mjs",
-    "install.sh"
+    "install.sh",
+    ".claude/skills/ag-audit-ag/**",
+    ".claude/skills/ag-audit-context/**",
+    ".claude/skills/ag-audit-plans/**",
+    ".claude/skills/ag-publish/**",
+    ".claude/hooks/lib/__tests__/**",
+    ".codex/hooks/lib/__tests__/**"
   ]
 }
