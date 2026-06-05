@@ -471,6 +471,7 @@ Skill Registry:
 | `ag-publish`             | Push harness improvements to remote kit repo                                                                    | publish kit, push harness, release kit, update remote                                          |
 | `ag-audit-ag`            | Agent harness health audit (agents, skills, README.md, protocol wiring)                                         | harness, agent parity, skill audit, guide sync                                                 |
 | `ag-zod`                 | Rules and references for Zod schema validation, parsing and database mapping                                    | validate payload, zod schema, zod custom validation errors, zod validation                     |
+| `ag-demo-irc`           | Demo of parallel subagents and inter-agent IRC communication                                                    | parallel subagents, subagent messaging, irc messaging, multi-agent communication, irc demo     |
 
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.

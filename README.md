@@ -1081,10 +1081,10 @@ process/features/{feature}/
 
 <br>
 
-### 32 Skills (auto-discovered)
+### 33 Skills (auto-discovered)
 
 <details>
-<summary>Click to expand skill list (32 skills)</summary>
+<summary>Click to expand skill list (33 skills)</summary>
 
 <br>
 
@@ -1098,7 +1098,7 @@ process/features/{feature}/
 
 **🎨 Frontend** — `ag-frontend-design` · `ag-chrome-devtools` · `ag-agent-browser` · `ag-web-testing`
 
-**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod`
+**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc`
 
 </details>
 
