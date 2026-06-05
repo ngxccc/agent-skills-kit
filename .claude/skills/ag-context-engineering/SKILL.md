@@ -1,5 +1,5 @@
 ---
-name: ag:context-engineering
+name: ag-context-engineering
 description: >-
   Check context limits, optimize token usage, and debug context failures.
   Use when asking about rate limits, usage warnings, memory systems, or context-aware agent design.

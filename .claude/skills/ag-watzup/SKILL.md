@@ -1,5 +1,5 @@
 ---
-name: ag:watzup
+name: ag-watzup
 description: "Use when you need a read-only handoff summary of current branch state, local/remote refs, worktrees, active project plans, selected-plan hints, and suggested next checks."
 license: MIT
 argument-hint: "[--json] [--fetch] [--selected-plan <path>] [--cwd <path>]"

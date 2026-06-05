@@ -1,13 +1,31 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { parseFrontmatter, listSkillDirs, exists, abs } from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
+import {
+  parseFrontmatter,
+  listSkillDirs,
+  exists,
+  abs,
+} from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
 const warnings = [];
-const blockingKeys = new Set(["name", "description", "license", "allowed-tools", "metadata", "argument-hint", "languages"]);
-const advisoryKeys = new Set(["user-invocable", "when_to_use", "category", "keywords"]);
+const blockingKeys = new Set([
+  "name",
+  "description",
+  "license",
+  "allowed-tools",
+  "metadata",
+  "argument-hint",
+  "languages",
+]);
+const advisoryKeys = new Set([
+  "user-invocable",
+  "when_to_use",
+  "category",
+  "keywords",
+]);
 const intentionallyIgnored = new Set(["sync-from-riper5", "sync-to-riper5"]);
 const staleOwnershipPatterns = [
   "default workflow owner",
@@ -65,7 +83,8 @@ for (const skill of skillNames) {
   const parsed = parseFrontmatter(file);
   if (!parsed) {
     const message = `${file} missing YAML frontmatter`;
-    if (intentionallyIgnored.has(skill)) warn(`${message} but intentionally ignored`);
+    if (intentionallyIgnored.has(skill))
+      warn(`${message} but intentionally ignored`);
     else fail(message);
     continue;
   }
@@ -73,11 +92,14 @@ for (const skill of skillNames) {
   const { fields, keys } = parsed;
   if (!fields.name || !fields.description) {
     const message = `${file} missing name/description frontmatter`;
-    if (intentionallyIgnored.has(skill)) warn(`${message} but intentionally ignored`);
+    if (intentionallyIgnored.has(skill))
+      warn(`${message} but intentionally ignored`);
     else fail(message);
   }
-  if (fields.name && fields.name !== skill && !fields.name.startsWith("ag:")) {
-    warn(`${file} frontmatter name ${fields.name} differs from folder ${skill}`);
+  if (fields.name && fields.name !== skill) {
+    warn(
+      `${file} frontmatter name ${fields.name} differs from folder ${skill}`,
+    );
   }
   if (fields.name && !/^[a-z0-9:-]+$/.test(fields.name)) {
     fail(`${file} frontmatter name is not lowercase/hyphen/colon safe`);
@@ -86,26 +108,47 @@ for (const skill of skillNames) {
     fail(`${file} description is longer than 1024 characters`);
   }
   if (fields.description && fields.description.length < 24) {
-    warn(`${file} description is very short; expand the trigger/use-case wording`);
+    warn(
+      `${file} description is very short; expand the trigger/use-case wording`,
+    );
   }
   if (fields.description && fields.description.length > 220) {
-    warn(`${file} description is long for listing/routing surfaces; consider keeping it under 220 characters`);
+    warn(
+      `${file} description is long for listing/routing surfaces; consider keeping it under 220 characters`,
+    );
   }
   if (fields.description && !/\b(use|when|for)\b/i.test(fields.description)) {
-    warn(`${file} description may be low-signal; include trigger language such as "Use when..."`);
+    warn(
+      `${file} description may be low-signal; include trigger language such as "Use when..."`,
+    );
   }
-  if (fields.description && staleOwnershipPatterns.some((pattern) => fields.description.includes(pattern))) {
+  if (
+    fields.description &&
+    staleOwnershipPatterns.some((pattern) =>
+      fields.description.includes(pattern),
+    )
+  ) {
     fail(`${file} description contains stale workflow-owner language`);
   }
-  if (fields.description && /\b(maintainers?|internal only|for maintainers)\b/i.test(fields.description)) {
-    warn(`${file} description sounds maintainer-facing; prefer user/invocation trigger language`);
+  if (
+    fields.description &&
+    /\b(maintainers?|internal only|for maintainers)\b/i.test(fields.description)
+  ) {
+    warn(
+      `${file} description sounds maintainer-facing; prefer user/invocation trigger language`,
+    );
   }
 
-  const unexpected = keys.filter((key) => !blockingKeys.has(key) && !advisoryKeys.has(key));
-  if (unexpected.length > 0) warn(`${file} has non-system frontmatter keys: ${unexpected.join(", ")}`);
+  const unexpected = keys.filter(
+    (key) => !blockingKeys.has(key) && !advisoryKeys.has(key),
+  );
+  if (unexpected.length > 0)
+    warn(`${file} has non-system frontmatter keys: ${unexpected.join(", ")}`);
 
   for (const key of keys.filter((item) => advisoryKeys.has(item))) {
-    warn(`${file} uses richer advisory frontmatter key ${key}; keep Codex compatibility in mind if this expands`);
+    warn(
+      `${file} uses richer advisory frontmatter key ${key}; keep Codex compatibility in mind if this expands`,
+    );
   }
 }
 

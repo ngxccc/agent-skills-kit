@@ -1,5 +1,5 @@
 ---
-name: ag:preview
+name: ag-preview
 description: "Use when you need to inspect files or generate visual explanations, slides, diagrams, or HTML recaps."
 argument-hint: "[path] OR [--html] --explain|--slides|--diagram|--ascii [topic] OR --html --diff|--plan-review|--recap"
 metadata:
@@ -44,25 +44,25 @@ Present as options via `AskUserQuestion` with header "Preview Operation", questi
 
 ### View Mode
 
-- `/ag:preview <file.md>` - View markdown file in novel-reader UI
-- `/ag:preview <directory/>` - Browse directory contents
-- `/ag:preview --stop` - Stop running server
+- `/ag-preview <file.md>` - View markdown file in novel-reader UI
+- `/ag-preview <directory/>` - Browse directory contents
+- `/ag-preview --stop` - Stop running server
 
 ### Generation Mode (Markdown)
 
-- `/ag:preview --explain <topic>` - Generate visual explanation (ASCII + Mermaid + prose)
-- `/ag:preview --slides <topic>` - Generate presentation slides (one concept per slide)
-- `/ag:preview --diagram <topic>` - Generate focused diagram (ASCII + Mermaid)
-- `/ag:preview --ascii <topic>` - Generate ASCII-only diagram (terminal-friendly)
+- `/ag-preview --explain <topic>` - Generate visual explanation (ASCII + Mermaid + prose)
+- `/ag-preview --slides <topic>` - Generate presentation slides (one concept per slide)
+- `/ag-preview --diagram <topic>` - Generate focused diagram (ASCII + Mermaid)
+- `/ag-preview --ascii <topic>` - Generate ASCII-only diagram (terminal-friendly)
 
 ### Generation Mode (HTML)
 
-- `/ag:preview --html --explain <topic>` - Self-contained HTML explanation
-- `/ag:preview --html --slides <topic>` - Magazine-quality HTML slide deck
-- `/ag:preview --html --diagram <topic>` - HTML diagram with zoom controls
-- `/ag:preview --html --diff [ref]` - Visual diff review
-- `/ag:preview --html --plan-review [plan-file]` - Plan vs codebase comparison
-- `/ag:preview --html --recap [timeframe]` - Project context snapshot
+- `/ag-preview --html --explain <topic>` - Self-contained HTML explanation
+- `/ag-preview --html --slides <topic>` - Magazine-quality HTML slide deck
+- `/ag-preview --html --diagram <topic>` - HTML diagram with zoom controls
+- `/ag-preview --html --diff [ref]` - Visual diff review
+- `/ag-preview --html --plan-review [plan-file]` - Plan vs codebase comparison
+- `/ag-preview --html --recap [timeframe]` - Project context snapshot
 
 ## Argument Resolution
 
@@ -96,10 +96,10 @@ When processing arguments, follow this priority order:
 | Error                                            | Action                                                                                    |
 | ------------------------------------------------ | ----------------------------------------------------------------------------------------- |
 | Invalid topic (empty)                            | Ask user to provide a topic                                                               |
-| Flag without topic                               | Ask user: "Please provide a topic: `/ag:preview --explain <topic>`"                       |
+| Flag without topic                               | Ask user: "Please provide a topic: `/ag-preview --explain <topic>`"                       |
 | Topic becomes empty after sanitization           | Ask for topic with alphanumeric characters                                                |
 | File write failure                               | Report error, suggest checking disk space and permissions                                 |
-| Server startup failure                           | Check if port in use, try `/ag:preview --stop` first                                      |
+| Server startup failure                           | Check if port in use, try `/ag-preview --stop` first                                      |
 | No generation flag + unresolvable reference      | Ask user to clarify which file they meant                                                 |
 | Existing file at output path                     | Overwrite with new content (no prompt)                                                    |
 | Server already running                           | Reuse existing server instance, just open new URL                                         |

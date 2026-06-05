@@ -28,7 +28,7 @@ Before submitting any review, verify each item:
 - [ ] Data leaks: no PII, secrets, or internal stack traces leaking to external consumers
 - [ ] For high-risk work, `review-decision.json` is emitted and adversarial validation is checked or explicitly deferred
 
-**IMPORTANT**: Ensure token efficiency. Use `ag-scout` for edge-case discovery, `ag-docs-seeker` when contract verification needs current library or API docs, and `ag:scenario` when edge-case expansion is needed; keep those helpers bounded and do not turn them into alternate workflow owners.
+**IMPORTANT**: Ensure token efficiency. Use `ag-scout` for edge-case discovery, `ag-docs-seeker` when contract verification needs current library or API docs, and `ag-scenario` when edge-case expansion is needed; keep those helpers bounded and do not turn them into alternate workflow owners.
 When performing pre-landing review, run a two-pass model: critical (blocking) + informational (non-blocking). The checklist/adversarial workflow formerly taught by `ag:code-review` now belongs here directly.
 
 ## Core Responsibilities

@@ -107,7 +107,7 @@ candidate looks good →
 
 ### Environment Pinning (User Responsibility)
 
-ag:autoresearch cannot control the environment. User must ensure:
+ag-autoresearch cannot control the environment. User must ensure:
 
 - Fixed random seeds for ML workloads
 - Warmed caches (or cold caches) consistently

@@ -1,5 +1,5 @@
 ---
-name: ag:audit-context
+name: ag-audit-context
 description: Audit project context routing, shared-skill discoverability, and Claude/Codex wiring. Use when context docs or skill surfaces move, split, or drift.
 metadata:
   author: flowser

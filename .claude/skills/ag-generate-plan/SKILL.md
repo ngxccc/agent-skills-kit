@@ -1,5 +1,5 @@
 ---
-name: ag:generate-plan
+name: ag-generate-plan
 description: Create or update implementation plans in the repo's SIMPLE or COMPLEX format. Use when turning an idea, PRD, or approved direction into a saved plan artifact.
 metadata:
   author: flowser

@@ -320,7 +320,7 @@ The active system is intentionally split into four layers:
 
 Former workflow-owner skills such as `ag:plan`, `ag:research`, `ag:cook`, `ag:fix`, and `ag:code-review` are migration sources only. Their useful practices should be absorbed into the surviving actor/contract surfaces instead of being routed as separate default workflows.
 
-`ag:debug` remains a valid helper skill. It is not a default workflow owner, but its root-cause methodology is still available as a specialist helper alongside the `ag-debugger` agent.
+`ag-debug` remains a valid helper skill. It is not a default workflow owner, but its root-cause methodology is still available as a specialist helper alongside the `ag-debugger` agent.
 
 ### Core Skills
 
@@ -416,7 +416,7 @@ Cross-phase utilities (skills, not agents):
 - `ag-repomix` - Repository packing helper for references-only artifacts, audits, and feature-porting prep
 - `ag-chrome-devtools` / `ag-agent-browser` - Browser automation, primarily EXECUTE
 - `ag-context-engineering` - Token optimization guidance, any phase
-- `ag:debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
+- `ag-debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` - Autonomous iterative optimization loop after execute phase for measurable metrics
 
 ### Discovery Note

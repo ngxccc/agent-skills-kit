@@ -1,5 +1,5 @@
 ---
-name: ag:publish
+name: ag-publish
 description: Push agent harness improvements from the current development repo to the remote kit repository. Use when you want to publish local harness changes back to the shared kit. Diffs managed files, shows what changed, bumps version, and pushes.
 metadata:
   author: agent-skills

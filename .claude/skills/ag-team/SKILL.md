@@ -1,5 +1,5 @@
 ---
-name: ag:team
+name: ag-team
 description: "Orchestrate Agent Teams for parallel multi-session collaboration. Use for research, implementation, review, and debug workflows requiring independent teammates."
 argument-hint: "<template> <context> [--devs|--researchers|--reviewers N] [--delegate]"
 metadata:
@@ -18,7 +18,7 @@ Coordinate multiple independent Claude Code sessions. Each teammate has own cont
 ## Usage
 
 ```
-/ag:team <template> <context> [flags]
+/ag-team <template> <context> [flags]
 ```
 
 **Templates:** `research`, `execute`, `review`, `debug`
@@ -37,7 +37,7 @@ Coordinate multiple independent Claude Code sessions. Each teammate has own cont
 1. Step 2 of every template calls `TeamCreate(team_name: "...", ...)`. Do NOT check whether the tool exists first -- just call it.
 2. If the call SUCCEEDS: continue with the template.
 3. If the call returns an ERROR or is unrecognized: **STOP. Tell user:** "Agent Teams requires `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` in settings.json. Team mode is not available."
-4. Do NOT fall back to subagents. `/ag:team` MUST use Agent Teams or abort.
+4. Do NOT fall back to subagents. `/ag-team` MUST use Agent Teams or abort.
 5. Ensure `TeamCreate` was called before spawning teammates -- team association happens via session context.
 
 When activated, first confirm team creation if the user has not already explicitly approved using agent teams for this task.
@@ -116,7 +116,7 @@ CK Context:
 
 ---
 
-## ON `/ag:team research <topic>` [--researchers N]:
+## ON `/ag-team research <topic>` [--researchers N]:
 
 _Coordinates parallel `research-agent` teammates plus shared helper skills where useful._
 
@@ -159,7 +159,7 @@ IMMEDIATELY execute in order:
 
 ---
 
-## ON `/ag:team execute <plan-path>` [--devs N]:
+## ON `/ag-team execute <plan-path>` [--devs N]:
 
 _Coordinates approved-plan execution with parallel `execute-agent` teammates, testing, review, and final reporting without introducing a separate execution owner._
 
@@ -172,7 +172,7 @@ IMMEDIATELY execute in order:
 1. **PRE-FLIGHT APPROVAL CHECK**:
    - Require one explicit approved plan file path under `process/general-plans/active/` or `process/features/*/active/`
    - If the user supplied only a description or an unapproved draft, STOP and tell the user to create/select a plan first, then return with `ENTER EXECUTE MODE`
-   - Do not use `ag:team execute` to bypass the repo's explicit execute approval gate
+   - Do not use `ag-team execute` to bypass the repo's explicit execute approval gate
    - If the selected plan is an umbrella/orchestration plan for a large program, STOP and require
      one explicit current phase plan instead of executing the whole program at once
 
@@ -225,7 +225,7 @@ IMMEDIATELY execute in order:
 
 ---
 
-## ON `/ag:team review <scope>` [--reviewers N]:
+## ON `/ag-team review <scope>` [--reviewers N]:
 
 _Coordinates parallel `code-reviewer` teammates using the absorbed review methodology now owned by the agent path._
 
@@ -266,7 +266,7 @@ IMMEDIATELY execute in order:
 
 ---
 
-## ON `/ag:team debug <issue>` [--debuggers N]:
+## ON `/ag-team debug <issue>` [--debuggers N]:
 
 _Coordinates parallel `debugger` teammates using the absorbed root-cause-first debug workflow now owned by the debugger path._
 

@@ -50,9 +50,9 @@ gh run view <run-id> --log > /tmp/ci-logs.txt
 **For codebase understanding:**
 
 - Read `process/context/all-context.md` first, then the relevant `process/context/` file selected by the router
-- Otherwise use `ag:scout` to generate fresh codebase overview
-- Use `/ag:scout` or `/ag:scout ext` to find relevant files
-- Use `ag:docs-seeker` skill for package/plugin documentation
+- Otherwise use `ag-scout` to generate fresh codebase overview
+- Use `/ag-scout` or `/ag-scout ext` to find relevant files
+- Use `ag-docs-seeker` skill for package/plugin documentation
 
 ## Step 3: Analysis Process
 

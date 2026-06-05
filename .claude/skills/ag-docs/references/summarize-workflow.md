@@ -1,6 +1,6 @@
 # Summarize Workflow
 
-Activate `ag:scout` skill to analyze the codebase, read `process/context/all-context.md`,
+Activate `ag-scout` skill to analyze the codebase, read `process/context/all-context.md`,
 update the relevant `process/context/` summary document, and respond with a concise
 summary report.
 

@@ -1,5 +1,5 @@
 ---
-name: ag:audit-ag
+name: ag-audit-ag
 description: >-
   Audit agent harness health: Claude/Codex agent parity, skill registry
   consistency, README.md sync, and protocol file wiring. Use when agents,

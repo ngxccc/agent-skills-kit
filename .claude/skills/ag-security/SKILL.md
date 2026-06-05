@@ -1,6 +1,6 @@
 ---
-name: ag:security
-description: "STRIDE + OWASP-based security audit with optional auto-fix. Scans code for vulnerabilities, categorizes by severity, and can iteratively fix findings using ag:autoresearch pattern."
+name: ag-security
+description: "STRIDE + OWASP-based security audit with optional auto-fix. Scans code for vulnerabilities, categorizes by severity, and can iteratively fix findings using ag-autoresearch pattern."
 argument-hint: "<scope glob or 'full'> [--fix] [--iterations N]"
 metadata:
   author: claudekit
@@ -9,9 +9,9 @@ metadata:
   version: "1.0.0"
 ---
 
-# ag:security — Security Audit
+# ag-security — Security Audit
 
-Runs a structured STRIDE + OWASP security audit on a given scope. Produces a severity-ranked findings report. With `--fix`, applies fixes iteratively using the ag:autoresearch guard pattern.
+Runs a structured STRIDE + OWASP security audit on a given scope. Produces a severity-ranked findings report. With `--fix`, applies fixes iteratively using the ag-autoresearch guard pattern.
 
 ## When to Use
 
@@ -31,9 +31,9 @@ Runs a structured STRIDE + OWASP security audit on a given scope. Produces a sev
 
 | Mode        | Invocation                                  | Behavior                            |
 | ----------- | ------------------------------------------- | ----------------------------------- |
-| Audit only  | `/ag:security <scope>`                      | Scan → categorize → report          |
-| Audit + Fix | `/ag:security <scope> --fix`                | Scan → categorize → fix iteratively |
-| Bounded fix | `/ag:security <scope> --fix --iterations N` | Limit fix iterations to N           |
+| Audit only  | `/ag-security <scope>`                      | Scan → categorize → report          |
+| Audit + Fix | `/ag-security <scope> --fix`                | Scan → categorize → fix iteratively |
+| Bounded fix | `/ag-security <scope> --fix --iterations N` | Limit fix iterations to N           |
 
 ---
 
@@ -107,7 +107,7 @@ When `--fix` is provided, apply fixes iteratively after the audit:
    c. Commit: `security(fix-N): <short description>`
    d. Advance to next finding
 3. Stop early if guard fails — report the failure instead of proceeding
-4. Uses `ag:autoresearch` guard pattern for regression prevention
+4. Uses `ag-autoresearch` guard pattern for regression prevention
 
 > Tip: Use `--iterations N` to cap total fix iterations when scope is large.
 
@@ -127,9 +127,9 @@ When `--fix` is provided, apply fixes iteratively after the audit:
 
 ## Integration with Other Skills
 
-- Run after `ag:predict` when the security persona flags concerns
-- Feed Critical/High findings into `ag:autoresearch --fix` for automated remediation
-- Use `ag:scenario` with `--focus authorization` for deeper auth flow testing
+- Run after `ag-predict` when the security persona flags concerns
+- Feed Critical/High findings into `ag-autoresearch --fix` for automated remediation
+- Use `ag-scenario` with `--focus authorization` for deeper auth flow testing
 - Pair with `generate-plan` / `plan-agent` to schedule Medium/Low findings as sprint tasks
 
 ---
@@ -138,13 +138,13 @@ When `--fix` is provided, apply fixes iteratively after the audit:
 
 ```bash
 # Audit API layer only
-/ag:security src/api/**/*.ts
+/ag-security src/api/**/*.ts
 
 # Audit entire src/ and auto-fix, max 15 iterations
-/ag:security src/ --fix --iterations 15
+/ag-security src/ --fix --iterations 15
 
 # Full codebase audit (no fix)
-/ag:security full
+/ag-security full
 ```
 
 ---

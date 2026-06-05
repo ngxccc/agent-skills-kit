@@ -72,7 +72,10 @@ function getGroupEntrypoint(group) {
 const legacyEntrypoints = [
   "process/context/README.md",
   "process/context/tests.md",
-  ...walk("process/context", (rel) => /\/README\.md$/.test(rel) || /\/[^/]+-README\.md$/.test(rel)),
+  ...walk(
+    "process/context",
+    (rel) => /\/README\.md$/.test(rel) || /\/[^/]+-README\.md$/.test(rel),
+  ),
 ];
 
 function parseFrontmatter(file) {
@@ -89,7 +92,10 @@ function parseFrontmatter(file) {
 }
 
 function normalizeForParity(text) {
-  return text.replace(/\r\n/g, "\n").replace(/[ \t]+$/gm, "").trim();
+  return text
+    .replace(/\r\n/g, "\n")
+    .replace(/[ \t]+$/gm, "")
+    .trim();
 }
 
 const agentsSkills = path.join(root, ".agents/skills");
@@ -98,19 +104,27 @@ if (!fs.existsSync(agentsSkills)) {
 } else {
   const real = fs.realpathSync(agentsSkills);
   const expected = fs.realpathSync(path.join(root, ".claude/skills"));
-  if (real !== expected) fail(".agents/skills does not resolve to .claude/skills");
+  if (real !== expected)
+    fail(".agents/skills does not resolve to .claude/skills");
 }
 
-for (const skill of ["ag-audit-context", "ag-audit-plans", "ag-generate-context", "ag-generate-plan"]) {
+for (const skill of [
+  "ag-audit-context",
+  "ag-audit-plans",
+  "ag-generate-context",
+  "ag-generate-plan",
+]) {
   const file = `.claude/skills/${skill}/SKILL.md`;
   const codexPath = `.agents/skills/${skill}/SKILL.md`;
   if (!exists(file)) fail(`${file} missing`);
   if (!exists(codexPath)) fail(`${codexPath} missing`);
   if (exists(file)) {
     const fm = parseFrontmatter(file);
-    // YAML name uses colon (ag:audit-context), folder uses dash (ag-audit-context)
-    const expectedName = skill.replace("ag-", "ag:");
-    if (fm.name !== skill && fm.name !== expectedName) fail(`${file} frontmatter name is ${fm.name || "missing"}, expected ${expectedName}`);
+    // YAML name and folder name must match exactly (e.g. ag-audit-context)
+    if (fm.name !== skill)
+      fail(
+        `${file} frontmatter name is ${fm.name || "missing"}, expected ${skill}`,
+      );
     if (!fm.description) fail(`${file} frontmatter description missing`);
   }
 }
@@ -149,24 +163,32 @@ const router = "process/context/all-context.md";
 if (!exists(router)) fail(`${router} missing`);
 const routerText = exists(router) ? read(router) : "";
 
-const contextDocs = walk("process/context", (rel) => rel.endsWith(".md")).sort();
+const contextDocs = walk("process/context", (rel) =>
+  rel.endsWith(".md"),
+).sort();
 for (const doc of contextDocs) {
   if (doc === router) continue;
   const relFromContext = doc.replace(/^process\/context\//, "");
   const group = relFromContext.split("/")[0];
   const groupEntrypoint = getGroupEntrypoint(group);
-  const indexedByRouter = routerText.includes(relFromContext) || routerText.includes(doc);
-  const indexedByGroup = groupEntrypoint && read(groupEntrypoint).includes(path.basename(doc));
+  const indexedByRouter =
+    routerText.includes(relFromContext) || routerText.includes(doc);
+  const indexedByGroup =
+    groupEntrypoint && read(groupEntrypoint).includes(path.basename(doc));
 
   if (relFromContext.includes("/") && !groupEntrypoint) {
     fail(`context group ${group} is missing all-${group}.md`);
   }
   if (!indexedByRouter && !indexedByGroup) {
-    fail(`${doc} is not indexed by process/context/all-context.md or its group entrypoint`);
+    fail(
+      `${doc} is not indexed by process/context/all-context.md or its group entrypoint`,
+    );
   }
 }
 
-for (const dir of fs.readdirSync(path.join(root, "process/context"), { withFileTypes: true })) {
+for (const dir of fs.readdirSync(path.join(root, "process/context"), {
+  withFileTypes: true,
+})) {
   if (dir.isDirectory() && !getGroupEntrypoint(dir.name)) {
     fail(`process/context/${dir.name}/ is missing all-${dir.name}.md`);
   }
@@ -200,34 +222,84 @@ const criticalHookParityPairs = [
 
 for (const [claudeFile, codexFile] of criticalHookParityPairs) {
   if (!exists(claudeFile) || !exists(codexFile)) continue;
-  if (normalizeForParity(read(claudeFile)) !== normalizeForParity(read(codexFile))) {
+  if (
+    normalizeForParity(read(claudeFile)) !== normalizeForParity(read(codexFile))
+  ) {
     fail(`${codexFile} has drift from ${claudeFile}`);
   }
 }
 
 const staleWorkflowPatterns = [
-  { pattern: "docs-manager", reason: "use update-process-agent for project context/process docs" },
-  { pattern: "project-manager", reason: "use update-process-agent for plan/process sync" },
-  { pattern: "docs/codebase-summary", reason: "use process/context/all-context.md routing" },
-  { pattern: "docs/design-guidelines", reason: "use process/context/uxui/uiux.md or feature references" },
+  {
+    pattern: "docs-manager",
+    reason: "use update-process-agent for project context/process docs",
+  },
+  {
+    pattern: "project-manager",
+    reason: "use update-process-agent for plan/process sync",
+  },
+  {
+    pattern: "docs/codebase-summary",
+    reason: "use process/context/all-context.md routing",
+  },
+  {
+    pattern: "docs/design-guidelines",
+    reason: "use process/context/uxui/uiux.md or feature references",
+  },
   { pattern: "validate-docs", reason: "use audit-context validator" },
-  { pattern: "process/context/<group>", reason: "placeholder should not look like a concrete ref" },
-  { pattern: ".claude/commands/", reason: "Claude command aliases are retired from the active shared workflow surface" },
-  { pattern: "ag:plan", reason: "planning ownership was absorbed into ag-generate-plan + plan-agent" },
-  { pattern: "ag:research", reason: "research ownership was absorbed into research-agent" },
-  { pattern: "ag:cook", reason: "execution ownership was absorbed into execute-agent" },
-  { pattern: "ag:fix", reason: "bug-fix ownership was absorbed into debugger + execute-agent" },
-  { pattern: "ag:code-review", reason: "review ownership was absorbed into code-reviewer" },
-  { pattern: "/ag:journal", reason: "journal handoff is not part of the surviving default workflow surface" },
+  {
+    pattern: "process/context/<group>",
+    reason: "placeholder should not look like a concrete ref",
+  },
+  {
+    pattern: ".claude/commands/",
+    reason:
+      "Claude command aliases are retired from the active shared workflow surface",
+  },
+  {
+    pattern: "ag:plan",
+    reason:
+      "planning ownership was absorbed into ag-generate-plan + plan-agent",
+  },
+  {
+    pattern: "ag:research",
+    reason: "research ownership was absorbed into research-agent",
+  },
+  {
+    pattern: "ag:cook",
+    reason: "execution ownership was absorbed into execute-agent",
+  },
+  {
+    pattern: "ag:fix",
+    reason: "bug-fix ownership was absorbed into debugger + execute-agent",
+  },
+  {
+    pattern: "ag:code-review",
+    reason: "review ownership was absorbed into code-reviewer",
+  },
+  {
+    pattern: "/ag:journal",
+    reason:
+      "journal handoff is not part of the surviving default workflow surface",
+  },
 ];
 const staleWorkflowFiles = [
   "AGENTS.md",
   "CLAUDE.md",
   ...walk(".claude/agents", (rel) => rel.endsWith(".md")),
   ...walk(".codex/agents", (rel) => rel.endsWith(".toml")),
-  ...walk(".claude/skills", (rel) => rel.endsWith(".md") && !rel.includes("/scripts/")),
-  ...walk(".claude/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
-  ...walk(".codex/hooks", (rel) => rel.endsWith(".cjs") || rel.endsWith(".json")),
+  ...walk(
+    ".claude/skills",
+    (rel) => rel.endsWith(".md") && !rel.includes("/scripts/"),
+  ),
+  ...walk(
+    ".claude/hooks",
+    (rel) => rel.endsWith(".cjs") || rel.endsWith(".json"),
+  ),
+  ...walk(
+    ".codex/hooks",
+    (rel) => rel.endsWith(".cjs") || rel.endsWith(".json"),
+  ),
   ...walk("process/context", (rel) => rel.endsWith(".md")),
 ];
 
@@ -249,10 +321,14 @@ for (const file of staleWorkflowFiles) {
         continue;
       }
       if (pattern === "docs-manager" && line.includes("not `./docs`")) continue;
-      fail(`${file}:${index + 1} contains stale ${pattern} reference (${reason})`);
+      fail(
+        `${file}:${index + 1} contains stale ${pattern} reference (${reason})`,
+      );
     }
     if (line.includes("`./docs`") && !line.includes("not `./docs`")) {
-      fail(`${file}:${index + 1} references legacy ./docs path (use process/context/all-context.md)`);
+      fail(
+        `${file}:${index + 1} references legacy ./docs path (use process/context/all-context.md)`,
+      );
     }
   }
 }

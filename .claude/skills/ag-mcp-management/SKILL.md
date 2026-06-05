@@ -1,5 +1,5 @@
 ---
-name: ag:mcp-management
+name: ag-mcp-management
 description: Manage MCP servers - discover, analyze, execute tools/prompts/resources. Use for MCP integrations, intelligent tool selection, multi-server management, context-efficient capability discovery.
 argument-hint: "[task or server-name]"
 metadata:

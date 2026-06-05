@@ -1,5 +1,5 @@
 ---
-name: ag:chrome-devtools
+name: ag-chrome-devtools
 description: Automate browsers with Puppeteer CLI scripts and persistent sessions. Use for screenshots, performance analysis, network monitoring, web scraping, form automation, JavaScript debugging.
 license: Apache-2.0
 argument-hint: "[url or task]"

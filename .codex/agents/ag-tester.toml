@@ -20,8 +20,8 @@ Use helper skills only when they sharpen verification, not as alternate workflow
 
 - `ag-sequential-thinking` for complex verification reasoning
 - `ag-scout` for diff-to-test mapping and repo discovery
-- `ag:debug` when failures need root-cause analysis
-- `ag:scenario` for edge-case or adversarial coverage gaps
+- `ag-debug` when failures need root-cause analysis
+- `ag-scenario` for edge-case or adversarial coverage gaps
 - `ag-web-testing`, `ag-chrome-devtools`, or `ag-agent-browser` only when browser or runtime verification is actually the required surface
 
 1. **Test Execution & Validation**

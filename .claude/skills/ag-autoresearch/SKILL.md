@@ -1,5 +1,5 @@
 ---
-name: ag:autoresearch
+name: ag-autoresearch
 description: "Autonomous iterative optimization loop for measurable metrics like coverage, performance, or bundle size. Use when repeated experiments can be judged by a mechanical score."
 argument-hint: "[Goal/Metric description] or inline config block"
 metadata:
@@ -9,7 +9,7 @@ metadata:
   version: "1.0.0"
 ---
 
-# ag:autoresearch — Autonomous Optimization Loop
+# ag-autoresearch — Autonomous Optimization Loop
 
 > Constraint + Mechanical Metric + Fast Verification = Autonomous Improvement
 
@@ -103,7 +103,7 @@ See [`references/autonomous-loop-protocol.md`](references/autonomous-loop-protoc
 ### 1. Increase test coverage
 
 ```
-/ag:autoresearch
+/ag-autoresearch
 Goal: Increase test coverage in src/utils from ~60% to 80%
 Scope: src/utils/**/*.ts, tests/utils/**/*.test.ts
 Verify: npx jest tests/utils --coverage --coverageReporters=json-summary 2>/dev/null | node -e "const d=require('./coverage-summary.json');console.log(d.total.lines.pct)"
@@ -115,7 +115,7 @@ Direction: higher
 ### 2. Reduce bundle size
 
 ```
-/ag:autoresearch
+/ag-autoresearch
 Goal: Reduce main bundle size below 200KB
 Scope: src/**/*.ts, src/**/*.tsx
 Verify: npx vite build 2>/dev/null | grep "dist/index" | awk '{print $2}' | sed 's/kB//'
@@ -127,7 +127,7 @@ Min-Delta: 0.5
 ### 3. Eliminate ESLint errors
 
 ```
-/ag:autoresearch
+/ag-autoresearch
 Goal: Drive ESLint error count to zero in src/api
 Scope: src/api/**/*.ts
 Verify: npx eslint src/api --format=json 2>/dev/null | node -e "const r=require('/dev/stdin');console.log(r.reduce((a,f)=>a+f.errorCount,0))" || echo 999

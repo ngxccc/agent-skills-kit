@@ -1,5 +1,5 @@
 ---
-name: ag:generate-context
+name: ag-generate-context
 description: Generate or update the project's authoritative repository context at process/context/all-context.md. Use when repo context is missing, stale, or contradicted by code.
 metadata:
   author: flowser

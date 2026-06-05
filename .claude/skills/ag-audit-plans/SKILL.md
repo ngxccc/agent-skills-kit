@@ -1,5 +1,5 @@
 ---
-name: ag:audit-plans
+name: ag-audit-plans
 description: Audit active project plan files for staleness, completion, and routing truth. Use when cleaning up plans, reconciling active work, or archiving completed artifacts.
 metadata:
   author: flowser

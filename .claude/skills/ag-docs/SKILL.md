@@ -1,5 +1,5 @@
 ---
-name: ag:docs
+name: ag-docs
 description: "Use when you need to analyze a codebase and initialize, update, or summarize project documentation."
 argument-hint: "init|update|summarize"
 metadata:
@@ -27,9 +27,9 @@ Present as options via `AskUserQuestion` with header "Documentation Operation", 
 
 | Subcommand           | Reference                          | Purpose                                            |
 | -------------------- | ---------------------------------- | -------------------------------------------------- |
-| `/ag:docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation  |
-| `/ag:docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation |
-| `/ag:docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary      |
+| `/ag-docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation  |
+| `/ag-docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation |
+| `/ag-docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary      |
 
 ## Routing
 

@@ -155,8 +155,8 @@ executing phase 1.
 
 **Trigger:** complexity score >= MEDIUM OR implementation touched 5+ files.
 
-**Mutual exclusion:** if `/ag:team review` was already invoked for the same scope, skip this
-checkpoint. Conversely, if this checkpoint was already run, do not also invoke `/ag:team review`
+**Mutual exclusion:** if `/ag-team review` was already invoked for the same scope, skip this
+checkpoint. Conversely, if this checkpoint was already run, do not also invoke `/ag-team review`
 for the same scope.
 
 **Recommendation wording:**

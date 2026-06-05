@@ -1,5 +1,5 @@
 ---
-name: ag:tech-graph
+name: ag-tech-graph
 description: "Use when you need publish-grade SVG or PNG technical diagrams for architecture, flow, sequence, UML, state, or comparison visuals, with preview used afterward for review rather than generation."
 license: MIT
 argument-hint: "[diagram-type or system description] [--style <n>] [--output <path>] [--feature <name>]"

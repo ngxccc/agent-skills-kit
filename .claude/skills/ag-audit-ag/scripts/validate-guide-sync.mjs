@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import { parseFrontmatter, listSkillDirs, exists, abs } from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
+import {
+  parseFrontmatter,
+  listSkillDirs,
+  exists,
+  abs,
+} from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -48,7 +53,9 @@ if (!exists(guidePath)) {
 
   // Extract agents from README.md tables (Core + Specialists sections)
   // Extract agents from README.md tables (Core + Specialists sections)
-  const agentsSectionMatch = guideText.match(/#{2,3}\s+(?:\d+\s+)?Agents\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---)/i);
+  const agentsSectionMatch = guideText.match(
+    /#{2,3}\s+(?:\d+\s+)?Agents\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---)/i,
+  );
   const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : "";
   const guideAgents = extractTableAgents(agentsSection);
 
@@ -58,14 +65,18 @@ if (!exists(guidePath)) {
   // Check: every disk agent should be in README.md
   for (const agent of diskAgents) {
     if (!guideAgents.has(agent)) {
-      fail(`Agent ${agent} exists on disk but missing from README.md agent tables`);
+      fail(
+        `Agent ${agent} exists on disk but missing from README.md agent tables`,
+      );
     }
   }
 
   // Check: every GUIDE.md agent should exist on disk
   for (const agent of guideAgents) {
     if (!diskAgents.has(agent)) {
-      warn(`Agent ${agent} listed in README.md but not found on disk at .claude/agents/${agent}.md`);
+      warn(
+        `Agent ${agent} listed in README.md but not found on disk at .claude/agents/${agent}.md`,
+      );
     }
   }
 
@@ -73,7 +84,9 @@ if (!exists(guidePath)) {
 
   // Extract skills from all README.md skill catalog tables
   // Extract skills from all README.md skill catalog tables
-  const skillsSectionMatch = guideText.match(/#{2,3}\s+(?:\d+\s+)?Skills\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---\n\n#{2,3}\s+(?:\d+\s+)?)/i);
+  const skillsSectionMatch = guideText.match(
+    /#{2,3}\s+(?:\d+\s+)?Skills\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---\n\n#{2,3}\s+(?:\d+\s+)?)/i,
+  );
   const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : "";
   const guideSkills = extractTableAgents(skillsSection);
 
@@ -93,25 +106,37 @@ if (!exists(guidePath)) {
   }
 
   // Build a set of skill folder names for matching
-  const diskSkillFolders = new Set(diskSkillDirs.filter((skill) => exists(`.claude/skills/${skill}/SKILL.md`)));
+  const diskSkillFolders = new Set(
+    diskSkillDirs.filter((skill) => exists(`.claude/skills/${skill}/SKILL.md`)),
+  );
 
   // Check: every disk skill with a SKILL.md should be in README.md
   for (const folder of diskSkillFolders) {
     const skillFile = `.claude/skills/${folder}/SKILL.md`;
     const parsed = parseFrontmatter(skillFile);
     const name = parsed?.fields?.name || folder;
-    // Strip ag: prefix for matching (README.md uses folder names, not ag:-prefixed names)
-    const nameWithoutPrefix = name.startsWith("ag:") ? name.slice(3) : name;
+    // Strip ag- prefix for matching (README.md uses folder names, not ag-prefixed names)
+    const nameWithoutPrefix = name.startsWith("ag-") ? name.slice(3) : name;
     // Check if the skill folder name, frontmatter name, or stripped name appears in README.md
-    if (!guideSkills.has(folder) && !guideSkills.has(name) && !guideSkills.has(nameWithoutPrefix)) {
-      fail(`Skill ${folder} (name: ${name}) exists on disk but missing from README.md skill catalog`);
+    if (
+      !guideSkills.has(folder) &&
+      !guideSkills.has(name) &&
+      !guideSkills.has(nameWithoutPrefix)
+    ) {
+      fail(
+        `Skill ${folder} (name: ${name}) exists on disk but missing from README.md skill catalog`,
+      );
     }
   }
 
   // Check: every GUIDE.md skill should exist on disk
   for (const skill of guideSkills) {
-    // Also check ag:-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
-    if (!diskSkillFolders.has(skill) && !diskSkills.has(skill) && !diskSkills.has(`ag:${skill}`)) {
+    // Also check ag-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
+    if (
+      !diskSkillFolders.has(skill) &&
+      !diskSkills.has(skill) &&
+      !diskSkills.has(`ag-${skill}`)
+    ) {
     }
   }
 }

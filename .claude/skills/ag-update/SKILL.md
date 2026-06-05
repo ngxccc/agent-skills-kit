@@ -1,5 +1,5 @@
 ---
-name: ag:update
+name: ag-update
 description: Pull latest agent harness improvements from the remote kit repository. Shows a dry-run diff summary, waits for confirmation, then applies updates.
 metadata:
   author: agent-skills
