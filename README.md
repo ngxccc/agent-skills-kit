@@ -1081,10 +1081,10 @@ process/features/{feature}/
 
 <br>
 
-### 33 Skills (auto-discovered)
+### 50 Skills (auto-discovered)
 
 <details>
-<summary>Click to expand skill list (33 skills)</summary>
+<summary>Click to expand skill list (50 skills)</summary>
 
 <br>
 
@@ -1092,13 +1092,13 @@ process/features/{feature}/
 
 **🧠 Planning** — `ag-predict` (5-persona debate) · `ag-scenario` (12-dimension edge cases) · `ag-sequential-thinking` · `ag-problem-solving`
 
-**🐛 Debug & security** — `ag-debug` · `ag-security` (STRIDE + OWASP + auto-fix) · `ag-autoresearch` (autonomous optimization)
+**🐛 Debug & security** — `ag-debug` · `ag-security` (STRIDE + OWASP + auto-fix) · `ag-autoresearch` (autonomous optimization) · `ag-upstash-ratelimit`
 
 **📚 Research** — `ag-docs-seeker` · `ag-scout` · `ag-docs` · `ag-repomix` · `ag-xia` (repo comparison)
 
-**🎨 Frontend** — `ag-frontend-design` · `ag-chrome-devtools` · `ag-agent-browser` · `ag-web-testing`
+**🎨 Frontend** — `ag-frontend-design` · `ag-chrome-devtools` · `ag-agent-browser` · `ag-web-testing` · `ag-nextjs` · `ag-nextjs-bundle-optimizer` · `ag-nextjs-ppr-patterns` · `ag-react-hook-form` · `ag-react-hook-form-audit` · `ag-tailwind` · `ag-tailwind-refactor` · `ag-tailwind-responsive-ui` · `ag-tailwind-ui-refactor` · `ag-ui-design`
 
-**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc`
+**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc` · `ag-code-simplifier` · `ag-implementation-design-patterns` · `ag-implementation-functional-patterns` · `ag-typescript` · `ag-typescript-advanced-patterns` · `ag-typescript-refactor`
 
 </details>
 
