@@ -1,0 +1,48 @@
+---
+name: <your-skill-name>
+description: "Trigger keywords: <keywords>. Brief explanation of what this skill does and when the agent should activate it."
+license: MIT
+argument-hint: "[no-args]"
+metadata:
+  author: Team
+  version: "1.0.0"
+---
+
+# <Skill Title>
+
+## When to Apply
+
+This skill is designed for the agent to reference when:
+- The user is working on <technology/topic>.
+- The agent needs to perform <action/workflow>.
+- <Specific trigger keyword or condition>.
+
+---
+
+## How to Use
+
+### 1. Step-by-Step Instructions
+
+1. **Step 1:** Detailed action.
+2. **Step 2:** Detailed action.
+
+### 2. Examples
+
+#### Example 1: <Scenario Title>
+- **Context:** <Context description>
+- **User prompt:** <Prompt text>
+- **Action/Result:** <Expected behavior>
+
+---
+
+## Quick Reference
+
+- `<rule-slug-one>` - Description of the first rule.
+- `<rule-slug-two>` - Description of the second rule.
+
+---
+
+## References
+
+- [rule-slug-one](references/rule-slug-one.md) - Detail page for the first rule.
+- [rule-slug-two](references/rule-slug-two.md) - Detail page for the second rule.
