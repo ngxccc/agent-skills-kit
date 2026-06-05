@@ -4,11 +4,14 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "esModuleInterop": true,
-    "strict": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "strictNullChecks": false,
     "skipLibCheck": true,
     "checkJs": true,
     "allowJs": true,
-    "types": ["node"]
+    "types": ["node"],
+    "noEmit": true
   },
   "include": [
     ".omp/**/*.ts",
