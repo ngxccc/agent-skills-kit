@@ -21,32 +21,32 @@ export function analyzeToolsForTask(tools, taskDescription) {
     relevantTools: relevant.map((st) => st.tool),
     reasoning: relevant.map(
       (st) =>
-        `${st.tool.name} (${st.tool.serverName}): ${st.reasons.join('; ')}`,
+        `${st.tool.name} (${st.tool.serverName}): ${st.reasons.join("; ")}`,
     ),
     confidence: relevant.length > 0 ? relevant[0].score : 0,
   };
 }
 function extractKeywords(text) {
   const stopWords = new Set([
-    'the',
-    'a',
-    'an',
-    'and',
-    'or',
-    'but',
-    'in',
-    'on',
-    'at',
-    'to',
-    'for',
-    'of',
-    'with',
-    'by',
-    'from',
-    'as',
-    'is',
-    'was',
-    'are',
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "but",
+    "in",
+    "on",
+    "at",
+    "to",
+    "for",
+    "of",
+    "with",
+    "by",
+    "from",
+    "as",
+    "is",
+    "was",
+    "are",
   ]);
   return text
     .toLowerCase()
@@ -82,7 +82,7 @@ function explainScore(tool, keywords, taskDescription) {
   const toolText = `${tool.name} ${tool.description}`.toLowerCase();
   const matchedKeywords = keywords.filter((k) => toolText.includes(k));
   if (matchedKeywords.length > 0) {
-    reasons.push(`matches keywords: ${matchedKeywords.join(', ')}`);
+    reasons.push(`matches keywords: ${matchedKeywords.join(", ")}`);
   }
   if (tool.description) {
     reasons.push(`description: ${tool.description.slice(0, 100)}`);

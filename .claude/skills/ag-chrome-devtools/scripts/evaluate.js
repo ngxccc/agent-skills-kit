@@ -11,13 +11,13 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
+} from "./lib/browser.js";
 
 async function evaluate() {
   const args = parseArgs(process.argv.slice(2));
 
   if (!args.script) {
-    outputError(new Error('--script is required'));
+    outputError(new Error("--script is required"));
     return;
   }
 
@@ -31,7 +31,7 @@ async function evaluate() {
     // Navigate if URL provided
     if (args.url) {
       await page.goto(args.url, {
-        waitUntil: args['wait-until'] || 'networkidle2',
+        waitUntil: args["wait-until"] || "networkidle2",
       });
     }
 
@@ -49,7 +49,7 @@ async function evaluate() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

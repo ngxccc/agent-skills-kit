@@ -4,40 +4,40 @@
  * Safety: Zero deps, fail-open, atomic writes, 7-day auto-expire
  * @module session-state-manager
  */
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
-const crypto = require('crypto');
-const { execFileSync } = require('child_process');
-const { parseTranscript } = require('./transcript-parser.cjs');
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
+const crypto = require("crypto");
+const { execFileSync } = require("child_process");
+const { parseTranscript } = require("./transcript-parser.cjs");
 const {
   readSessionState,
   updateSessionState,
-} = require('./ag-config-utils.cjs');
+} = require("./ag-config-utils.cjs");
 const {
   createEmptyActivitySnapshot,
   sanitizeActivitySnapshot,
-} = require('./statusline-session-cache.cjs');
+} = require("./statusline-session-cache.cjs");
 
 const MAX_ARCHIVES = 5;
 const EXPIRY_DAYS = 7;
 const EXEC_TIMEOUT_MS = 3000;
-const STATE_FILENAME = 'latest.md';
-const ARCHIVE_DIR = 'archive';
+const STATE_FILENAME = "latest.md";
+const ARCHIVE_DIR = "archive";
 
 function execGit(args, cwd) {
   try {
-    return execFileSync('git', args, {
-      encoding: 'utf8',
+    return execFileSync("git", args, {
+      encoding: "utf8",
       timeout: EXEC_TIMEOUT_MS,
       cwd: cwd || undefined,
-      stdio: ['pipe', 'pipe', 'pipe'],
+      stdio: ["pipe", "pipe", "pipe"],
       windowsHide: true,
     }).trim();
   } catch {
-    return '';
+    return "";
   }
 }
 
@@ -45,14 +45,14 @@ function execGit(args, cwd) {
 function getStateDir(cwd) {
   try {
     const hash = crypto
-      .createHash('md5')
+      .createHash("md5")
       .update(cwd)
-      .digest('hex')
+      .digest("hex")
       .slice(0, 12);
     const globalDir = path.join(
       os.homedir(),
-      '.claude',
-      'session-states',
+      ".claude",
+      "session-states",
       hash,
     );
     if (!fs.existsSync(globalDir)) fs.mkdirSync(globalDir, { recursive: true });
@@ -69,7 +69,7 @@ function loadState(cwd) {
     if (!stateDir) return null;
     const statePath = path.join(stateDir, STATE_FILENAME);
     if (!fs.existsSync(statePath)) return null;
-    const content = fs.readFileSync(statePath, 'utf8');
+    const content = fs.readFileSync(statePath, "utf8");
     const tsMatch = content.match(/<!-- Generated: (.+?) -->/);
     if (tsMatch) {
       const parsed = new Date(tsMatch[1]).getTime();
@@ -90,11 +90,11 @@ function persistState(stdinData, options) {
     if (!stateDir) return { success: false, path: null };
     const statePath = path.join(stateDir, STATE_FILENAME);
 
-    if (options.eventType === 'SubagentStop') {
+    if (options.eventType === "SubagentStop") {
       const agentSection = buildAgentSection(stdinData);
       const existing = fs.existsSync(statePath)
-        ? fs.readFileSync(statePath, 'utf8')
-        : '';
+        ? fs.readFileSync(statePath, "utf8")
+        : "";
       let updated;
       if (existing) {
         updated = existing.replace(
@@ -103,22 +103,22 @@ function persistState(stdinData, options) {
         );
         // Fallback: if heading not found, append to end
         if (updated === existing)
-          updated = existing.trimEnd() + '\n' + agentSection;
+          updated = existing.trimEnd() + "\n" + agentSection;
       } else {
         updated =
           buildStateContent(extractSessionData(stdinData)) +
-          '\n' +
+          "\n" +
           agentSection;
       }
       writeAtomic(statePath, updated);
       return { success: true, path: statePath };
     }
 
-    if (options.eventType === 'Stop') {
+    if (options.eventType === "Stop") {
       const data = extractSessionData(stdinData);
       let content = buildStateContent(data);
       if (fs.existsSync(statePath)) {
-        const existing = fs.readFileSync(statePath, 'utf8');
+        const existing = fs.readFileSync(statePath, "utf8");
         const agentSections = extractAgentSections(existing);
         if (agentSections) {
           content = content.replace(
@@ -150,7 +150,7 @@ function archiveState(stateDir) {
     fs.copyFileSync(statePath, path.join(archiveDir, `${ts}.md`));
     const entries = fs
       .readdirSync(archiveDir)
-      .filter((f) => f.endsWith('.md'))
+      .filter((f) => f.endsWith(".md"))
       .sort();
     while (entries.length > MAX_ARCHIVES) {
       try {
@@ -167,8 +167,8 @@ function archiveState(stateDir) {
 /** Refresh cached statusline activity from transcript (off startup path) */
 async function refreshStatuslineSnapshot(stdinData) {
   try {
-    const sessionId = stdinData.session_id || process.env.CK_SESSION_ID || '';
-    if (!sessionId) return { success: false, reason: 'missing-session-id' };
+    const sessionId = stdinData.session_id || process.env.CK_SESSION_ID || "";
+    if (!sessionId) return { success: false, reason: "missing-session-id" };
 
     const now = new Date().toISOString();
     const existingState = readSessionState(sessionId) || {};
@@ -188,7 +188,7 @@ async function refreshStatuslineSnapshot(stdinData) {
 
       return success
         ? { success: true, warmed: Boolean(existingState.statusline?.warmed) }
-        : { success: false, reason: 'write-failed' };
+        : { success: false, reason: "write-failed" };
     }
 
     const transcript = await parseTranscript(transcriptPath);
@@ -216,9 +216,9 @@ async function refreshStatuslineSnapshot(stdinData) {
         ? applyStatuslineEvent(currentSnapshot, stdinData, now)
         : parsedSnapshot;
       const currentTranscriptPath =
-        typeof state.lastTranscriptPath === 'string'
+        typeof state.lastTranscriptPath === "string"
           ? state.lastTranscriptPath
-          : '';
+          : "";
 
       return {
         ...state,
@@ -231,29 +231,29 @@ async function refreshStatuslineSnapshot(stdinData) {
     });
 
     if (!success) {
-      return { success: false, reason: 'write-failed' };
+      return { success: false, reason: "write-failed" };
     }
 
     return { success: true, warmed: true };
   } catch {
-    return { success: false, reason: 'snapshot-refresh-failed' };
+    return { success: false, reason: "snapshot-refresh-failed" };
   }
 }
 
 function resolveTranscriptPath(stdinData, existingState) {
   const directPath =
-    typeof stdinData.transcript_path === 'string'
+    typeof stdinData.transcript_path === "string"
       ? stdinData.transcript_path
-      : '';
+      : "";
   if (directPath && fs.existsSync(directPath)) return directPath;
 
   const cachedPath =
-    typeof existingState.lastTranscriptPath === 'string'
+    typeof existingState.lastTranscriptPath === "string"
       ? existingState.lastTranscriptPath
-      : '';
+      : "";
   if (cachedPath && fs.existsSync(cachedPath)) return cachedPath;
 
-  return '';
+  return "";
 }
 
 function applyStatuslineEvent(snapshot, stdinData, now) {
@@ -263,14 +263,14 @@ function applyStatuslineEvent(snapshot, stdinData, now) {
     updatedAt: now,
   });
 
-  if (eventType !== 'SubagentStop') {
+  if (eventType !== "SubagentStop") {
     return normalized;
   }
 
   const agentId =
     stdinData.agent_id != null ? String(stdinData.agent_id) : null;
   const agentType =
-    typeof stdinData.agent_type === 'string' ? stdinData.agent_type : null;
+    typeof stdinData.agent_type === "string" ? stdinData.agent_type : null;
   if (!agentId && !agentType) {
     return normalized;
   }
@@ -289,7 +289,7 @@ function applyStatuslineEvent(snapshot, stdinData, now) {
   if (!matched && agentType) {
     matched = markMatchingAgentCompleted(
       agents,
-      (agent) => agent.status === 'running' && agent.type === agentType,
+      (agent) => agent.status === "running" && agent.type === agentType,
       now,
     );
   }
@@ -304,9 +304,9 @@ function shouldPreserveExistingSnapshot(
 ) {
   if (!hasSnapshotActivity(existingSnapshot)) return false;
   if (!existingSnapshot || existingSnapshot.warmed !== true) return false;
-  const existingUpdatedAt = Date.parse(existingSnapshot.updatedAt || '');
+  const existingUpdatedAt = Date.parse(existingSnapshot.updatedAt || "");
   const transcriptUpdatedAt = Date.parse(
-    transcript?.lastActivityAt || transcript?.lastValidEntryAt || '',
+    transcript?.lastActivityAt || transcript?.lastValidEntryAt || "",
   );
 
   if (
@@ -337,7 +337,7 @@ function shouldPreserveExistingSnapshot(
 }
 
 function hasSnapshotActivity(snapshot) {
-  if (!snapshot || typeof snapshot !== 'object') return false;
+  if (!snapshot || typeof snapshot !== "object") return false;
   return (
     (Array.isArray(snapshot.agents) && snapshot.agents.length > 0) ||
     (Array.isArray(snapshot.todos) && snapshot.todos.length > 0)
@@ -347,7 +347,7 @@ function hasSnapshotActivity(snapshot) {
 function markMatchingAgentCompleted(agents, predicate, now) {
   for (let index = agents.length - 1; index >= 0; index -= 1) {
     if (!predicate(agents[index])) continue;
-    agents[index].status = 'completed';
+    agents[index].status = "completed";
     agents[index].endTime = agents[index].endTime || now;
     return true;
   }
@@ -358,12 +358,12 @@ function markMatchingAgentCompleted(agents, predicate, now) {
 function extractSessionData(stdinData) {
   const data = {
     timestamp: new Date().toISOString(),
-    branch: process.env.CK_GIT_BRANCH || '',
-    plan: process.env.CK_ACTIVE_PLAN || '',
+    branch: process.env.CK_GIT_BRANCH || "",
+    plan: process.env.CK_ACTIVE_PLAN || "",
     todos: [],
     modifiedFiles: [],
   };
-  const sessionId = stdinData.session_id || process.env.CK_SESSION_ID || '';
+  const sessionId = stdinData.session_id || process.env.CK_SESSION_ID || "";
   const cachedSnapshot = sessionId
     ? readSessionState(sessionId)?.statusline
     : null;
@@ -378,8 +378,8 @@ function extractSessionData(stdinData) {
   if (data.todos.length === 0 && stdinData.transcript_path) {
     try {
       const lines = fs
-        .readFileSync(stdinData.transcript_path, 'utf8')
-        .split('\n')
+        .readFileSync(stdinData.transcript_path, "utf8")
+        .split("\n")
         .filter(Boolean);
       const latest = [];
       for (const line of lines) {
@@ -389,8 +389,8 @@ function extractSessionData(stdinData) {
           if (!Array.isArray(blocks)) continue;
           for (const block of blocks) {
             if (
-              block.type === 'tool_use' &&
-              block.name === 'TodoWrite' &&
+              block.type === "tool_use" &&
+              block.name === "TodoWrite" &&
               Array.isArray(block.input?.todos)
             ) {
               latest.length = 0;
@@ -409,10 +409,10 @@ function extractSessionData(stdinData) {
   // Modified files via git
   try {
     const diff = execGit(
-      ['diff', '--name-only', 'HEAD'],
+      ["diff", "--name-only", "HEAD"],
       stdinData.cwd || process.cwd(),
     );
-    if (diff) data.modifiedFiles = diff.split('\n').slice(0, 20);
+    if (diff) data.modifiedFiles = diff.split("\n").slice(0, 20);
   } catch {
     /* no git */
   }
@@ -421,39 +421,39 @@ function extractSessionData(stdinData) {
 
 /** Build structured markdown state from session data */
 function buildStateContent(data) {
-  const completed = data.todos.filter((t) => t.status === 'completed');
-  const pending = data.todos.filter((t) => t.status !== 'completed');
+  const completed = data.todos.filter((t) => t.status === "completed");
+  const pending = data.todos.filter((t) => t.status !== "completed");
   const lines = [
-    '# Session State',
+    "# Session State",
     `<!-- Generated: ${data.timestamp} -->`,
-    `<!-- Branch: ${data.branch || 'unknown'} -->`,
-    `<!-- Plan: ${data.plan || 'none'} -->`,
-    '',
-    '## What Worked (Verified)',
+    `<!-- Branch: ${data.branch || "unknown"} -->`,
+    `<!-- Plan: ${data.plan || "none"} -->`,
+    "",
+    "## What Worked (Verified)",
     ...(completed.length
       ? completed.map((t) => `- ${t.content}`)
-      : ['- (No completed tasks recorded)']),
-    '',
+      : ["- (No completed tasks recorded)"]),
+    "",
     "## What's Left",
     ...(pending.length
       ? pending.map((t) => `- [ ] ${t.content}`)
-      : ['- (All tasks completed)']),
-    '',
+      : ["- (All tasks completed)"]),
+    "",
   ];
-  if (data.plan) lines.push('## Active Plan', data.plan, '');
+  if (data.plan) lines.push("## Active Plan", data.plan, "");
   lines.push(
-    '## Key Files Modified',
+    "## Key Files Modified",
     ...(data.modifiedFiles.length
       ? data.modifiedFiles.map((f) => `- ${f}`)
-      : ['- (No file changes detected)']),
-    '',
+      : ["- (No file changes detected)"]),
+    "",
   );
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 /** Build markdown section for a completed subagent */
 function buildAgentSection(stdinData) {
-  const type = stdinData.agent_type || 'unknown';
+  const type = stdinData.agent_type || "unknown";
   const ts = new Date().toISOString().slice(11, 19);
   return `\n## Agent Result: ${type} (${ts})\n- Completed at ${ts}\n`;
 }
@@ -461,7 +461,7 @@ function buildAgentSection(stdinData) {
 /** Extract agent result sections from existing state content */
 function extractAgentSections(content) {
   const matches = content.match(/## Agent Result:.+?(?=\n## |$)/gs);
-  return matches ? matches.join('\n') : null;
+  return matches ? matches.join("\n") : null;
 }
 
 /** Atomic write: temp file + rename */
@@ -472,7 +472,7 @@ function writeAtomic(filePath, content) {
 }
 
 function p2(n) {
-  return String(n).padStart(2, '0');
+  return String(n).padStart(2, "0");
 }
 
 module.exports = {

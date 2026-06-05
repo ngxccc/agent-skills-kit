@@ -12,8 +12,8 @@
 
 // Crash wrapper
 try {
-  const fs = require('fs');
-  const path = require('path');
+  const fs = require("fs");
+  const path = require("path");
   const {
     loadConfig,
     resolveNamingPattern,
@@ -24,12 +24,12 @@ try {
     normalizePath,
     extractTaskListId,
     isHookEnabled,
-  } = require('./lib/ag-config-utils.cjs');
-  const { resolveSkillsVenv } = require('./lib/context-builder.cjs');
-  const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
+  } = require("./lib/ag-config-utils.cjs");
+  const { resolveSkillsVenv } = require("./lib/context-builder.cjs");
+  const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
 
   // Early exit if hook disabled in config
-  if (!isHookEnabled('subagent-init')) {
+  if (!isHookEnabled("subagent-init")) {
     process.exit(0);
   }
 
@@ -44,11 +44,11 @@ try {
 
   // Agent types that interact with plan status updates or save plan-scoped reports
   const PLAN_AWARE_AGENTS = new Set([
-    'plan-agent',
-    'code-simplifier',
-    'innovate-agent',
-    'code-reviewer',
-    'execute-agent',
+    "plan-agent",
+    "code-simplifier",
+    "innovate-agent",
+    "code-reviewer",
+    "execute-agent",
   ]);
 
   /**
@@ -81,18 +81,18 @@ try {
    * Main hook execution
    */
   async function main() {
-    const timer = createHookTimer('subagent-init', { event: 'SubagentStart' });
-    let agentType = 'unknown';
+    const timer = createHookTimer("subagent-init", { event: "SubagentStart" });
+    let agentType = "unknown";
     try {
-      const stdin = fs.readFileSync(0, 'utf-8').trim();
+      const stdin = fs.readFileSync(0, "utf-8").trim();
       if (!stdin) {
-        timer.end({ status: 'skip', exit: 0, note: 'empty-input' });
+        timer.end({ status: "skip", exit: 0, note: "empty-input" });
         process.exit(0);
       }
 
       const payload = JSON.parse(stdin);
-      agentType = payload.agent_type || 'unknown';
-      const agentId = payload.agent_id || 'unknown';
+      agentType = payload.agent_type || "unknown";
+      const agentId = payload.agent_id || "unknown";
 
       // Load config for trust verification, naming, and agent-specific context
       const config = loadConfig({
@@ -132,25 +132,25 @@ try {
         config.paths,
         baseDir,
       );
-      const activePlan = resolved.resolvedBy === 'session' ? resolved.path : '';
+      const activePlan = resolved.resolvedBy === "session" ? resolved.path : "";
       const suggestedPlan =
-        resolved.resolvedBy === 'branch' ? resolved.path : '';
+        resolved.resolvedBy === "branch" ? resolved.path : "";
 
       // Extract task list ID for Claude Code Tasks coordination (shared helper, DRY)
       const taskListId = extractTaskListId(resolved);
       const plansPath = path.join(
         baseDir,
-        normalizePath(config.paths?.plans) || 'plans',
+        normalizePath(config.paths?.plans) || "plans",
       );
       const docsPath = path.join(
         baseDir,
-        normalizePath(config.paths?.docs) || 'docs',
+        normalizePath(config.paths?.docs) || "docs",
       );
-      const thinkingLanguage = config.locale?.thinkingLanguage || '';
-      const responseLanguage = config.locale?.responseLanguage || '';
+      const thinkingLanguage = config.locale?.thinkingLanguage || "";
+      const responseLanguage = config.locale?.responseLanguage || "";
       // Auto-default thinkingLanguage to 'en' when only responseLanguage is set
       const effectiveThinking =
-        thinkingLanguage || (responseLanguage ? 'en' : '');
+        thinkingLanguage || (responseLanguage ? "en" : "");
 
       // Build compact context (~200 tokens)
       const lines = [];
@@ -235,23 +235,23 @@ try {
       // CRITICAL: SubagentStart requires hookSpecificOutput.additionalContext format
       const output = {
         hookSpecificOutput: {
-          hookEventName: 'SubagentStart',
-          additionalContext: lines.join('\n'),
+          hookEventName: "SubagentStart",
+          additionalContext: lines.join("\n"),
         },
       };
 
       console.log(JSON.stringify(output));
       timer.end({
-        status: 'ok',
+        status: "ok",
         exit: 0,
         target: agentType,
-        note: 'context-injected',
+        note: "context-injected",
       });
       process.exit(0);
     } catch (error) {
       console.error(`SubagentStart hook error: ${error.message}`);
-      logHookCrash('subagent-init', error, {
-        event: 'SubagentStart',
+      logHookCrash("subagent-init", error, {
+        event: "SubagentStart",
         target: agentType,
       });
       process.exit(0); // Fail-open
@@ -261,8 +261,8 @@ try {
   main();
 } catch (e) {
   try {
-    const { logHookCrash } = require('./lib/hook-logger.cjs');
-    logHookCrash('subagent-init', e, { event: 'SubagentStart' });
+    const { logHookCrash } = require("./lib/hook-logger.cjs");
+    logHookCrash("subagent-init", e, { event: "SubagentStart" });
   } catch (_) {}
   process.exit(0); // fail-open
 }

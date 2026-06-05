@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import path from 'node:path';
+import path from "node:path";
 import {
   loadSkillInventory,
   extractRelativeReferences,
   abs,
   exists,
-} from './shared-skill-utils.mjs';
+} from "./shared-skill-utils.mjs";
 
 const warnings = [];
 const failures = [];

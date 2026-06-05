@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 const root = process.cwd();
-const strict = process.argv.includes('--strict');
+const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
 
@@ -21,11 +21,11 @@ function exists(relPath) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), 'utf8');
+  return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
-const contextFile = 'process/context/all-context.md';
-const routerFile = 'process/context/all-context.md';
+const contextFile = "process/context/all-context.md";
+const routerFile = "process/context/all-context.md";
 
 if (!exists(contextFile)) fail(`${contextFile} missing`);
 if (!exists(routerFile)) fail(`${routerFile} missing`);
@@ -33,11 +33,11 @@ if (!exists(routerFile)) fail(`${routerFile} missing`);
 let lineCount = 0;
 if (exists(contextFile)) {
   const text = read(contextFile);
-  const lines = text.split('\n');
+  const lines = text.split("\n");
   lineCount = lines.length;
 
   if (!/^#\s+/.test(text)) fail(`${contextFile} missing top-level heading`);
-  for (const section of ['Repository Structure', 'Technology Stack']) {
+  for (const section of ["Repository Structure", "Technology Stack"]) {
     if (!text.includes(`## ${section}`))
       fail(`${contextFile} missing ${section} section`);
   }
@@ -63,10 +63,10 @@ if (exists(contextFile)) {
   if (!/Open Questions|Outstanding Work/i.test(text)) {
     warn(`${contextFile} does not include Open Questions or Outstanding Work`);
   }
-  if (!text.includes('process/context/all-context.md')) {
+  if (!text.includes("process/context/all-context.md")) {
     warn(`${contextFile} does not mention the context router`);
   }
-  if (text.includes('process/plans/')) {
+  if (text.includes("process/plans/")) {
     warn(`${contextFile} mentions legacy process/plans/ path`);
   }
   if (
@@ -81,7 +81,7 @@ if (exists(contextFile)) {
   for (const match of text.matchAll(
     /`((?:apps|packages|process|\.claude|\.codex|\.agents)\/[^`\s]+)`/g,
   )) {
-    const ref = match[1].replace(/[.,;:]$/, '');
+    const ref = match[1].replace(/[.,;:]$/, "");
     if (/[{}[*\]]/.test(ref)) continue;
     concreteRefs.push(ref);
   }

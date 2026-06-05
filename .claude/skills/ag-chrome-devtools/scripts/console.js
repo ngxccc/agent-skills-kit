@@ -11,13 +11,13 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
+} from "./lib/browser.js";
 
 async function monitorConsole() {
   const args = parseArgs(process.argv.slice(2));
 
   if (!args.url) {
-    outputError(new Error('--url is required'));
+    outputError(new Error("--url is required"));
     return;
   }
 
@@ -29,10 +29,10 @@ async function monitorConsole() {
     const page = await getPage(browser);
 
     const messages = [];
-    const filterTypes = args.types ? args.types.split(',') : null;
+    const filterTypes = args.types ? args.types.split(",") : null;
 
     // Listen for console messages
-    page.on('console', (msg) => {
+    page.on("console", (msg) => {
       const type = msg.type();
 
       if (!filterTypes || filterTypes.includes(type)) {
@@ -46,9 +46,9 @@ async function monitorConsole() {
     });
 
     // Listen for page errors
-    page.on('pageerror', (error) => {
+    page.on("pageerror", (error) => {
       messages.push({
-        type: 'pageerror',
+        type: "pageerror",
         text: error.message,
         stack: error.stack,
         timestamp: Date.now(),
@@ -57,7 +57,7 @@ async function monitorConsole() {
 
     // Navigate
     await page.goto(args.url, {
-      waitUntil: args['wait-until'] || 'networkidle2',
+      waitUntil: args["wait-until"] || "networkidle2",
     });
 
     // Wait for additional time if specified
@@ -76,7 +76,7 @@ async function monitorConsole() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

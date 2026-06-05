@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
 /**
  * Statusline Scenario Suite
@@ -16,13 +16,13 @@
  *   node .claude/hooks/lib/__tests__/statusline-scenarios.test.cjs
  */
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const { spawn, spawnSync } = require('child_process');
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const { spawn, spawnSync } = require("child_process");
 
-const TEST_ROOT = path.resolve(__dirname, '../../../..');
-const STATUSLINE_PATH = path.resolve(__dirname, '../../..', 'statusline.cjs');
+const TEST_ROOT = path.resolve(__dirname, "../../../..");
+const STATUSLINE_PATH = path.resolve(__dirname, "../../..", "statusline.cjs");
 const USAGE_CACHE_PATH = path.join(
   os.tmpdir(),
   `ag-usage-limits-cache-statusline-test-${process.pid}.json`,
@@ -47,14 +47,14 @@ async function test(name, fn) {
 
 function assertTrue(condition, message) {
   if (!condition) {
-    throw new Error(message || 'Assertion failed');
+    throw new Error(message || "Assertion failed");
   }
 }
 
 function assertContains(actual, expected, message) {
   if (!actual.includes(expected)) {
     throw new Error(
-      `${message || 'Missing expected string'}\nExpected: ${expected}\nActual: ${actual}`,
+      `${message || "Missing expected string"}\nExpected: ${expected}\nActual: ${actual}`,
     );
   }
 }
@@ -62,16 +62,16 @@ function assertContains(actual, expected, message) {
 function assertMatch(actual, pattern, message) {
   if (!pattern.test(actual)) {
     throw new Error(
-      `${message || 'Pattern did not match'}\nPattern: ${pattern}\nActual: ${actual}`,
+      `${message || "Pattern did not match"}\nPattern: ${pattern}\nActual: ${actual}`,
     );
   }
 }
 
 function assertLineCountBetween(output, min, max, message) {
-  const lineCount = output.replace(/\n+$/, '').split('\n').length;
+  const lineCount = output.replace(/\n+$/, "").split("\n").length;
   if (lineCount < min || lineCount > max) {
     throw new Error(
-      `${message || 'Line count mismatch'}\nExpected: ${min}-${max}\nActual: ${lineCount}\nOutput:\n${output}`,
+      `${message || "Line count mismatch"}\nExpected: ${min}-${max}\nActual: ${lineCount}\nOutput:\n${output}`,
     );
   }
 }
@@ -79,19 +79,19 @@ function assertLineCountBetween(output, min, max, message) {
 function assertSuccessfulRun(result, messagePrefix) {
   assertTrue(
     result.status === 0,
-    `${messagePrefix || 'Statusline run'} should exit with status 0`,
+    `${messagePrefix || "Statusline run"} should exit with status 0`,
   );
   assertTrue(
-    (result.stderr || '').trim() === '',
-    `${messagePrefix || 'Statusline run'} should not write stderr${result.stderr ? `\nStderr: ${result.stderr}` : ''}`,
+    (result.stderr || "").trim() === "",
+    `${messagePrefix || "Statusline run"} should not write stderr${result.stderr ? `\nStderr: ${result.stderr}` : ""}`,
   );
 }
 
 function scrubAnthropicRuntimeEnv(runtimeEnv, explicitEnv) {
   for (const key of [
-    'ANTHROPIC_BASE_URL',
-    'ANTHROPIC_AUTH_TOKEN',
-    'ANTHROPIC_API_KEY',
+    "ANTHROPIC_BASE_URL",
+    "ANTHROPIC_AUTH_TOKEN",
+    "ANTHROPIC_API_KEY",
   ]) {
     if (!Object.prototype.hasOwnProperty.call(explicitEnv, key)) {
       delete runtimeEnv[key];
@@ -119,19 +119,19 @@ function runStatuslineSync({
     CK_USAGE_ELIGIBILITY_CACHE_PATH: eligibilityCachePath,
     ...env,
   };
-  if (!Object.prototype.hasOwnProperty.call(env, 'NO_COLOR'))
+  if (!Object.prototype.hasOwnProperty.call(env, "NO_COLOR"))
     delete runtimeEnv.NO_COLOR;
   scrubAnthropicRuntimeEnv(runtimeEnv, env);
   if (
-    !Object.prototype.hasOwnProperty.call(env, 'HOME') &&
-    (fs.existsSync(path.join(cwd, '.claude', '.vc.json')) ||
-      fs.existsSync(path.join(cwd, '.claude', '.ck.json')))
+    !Object.prototype.hasOwnProperty.call(env, "HOME") &&
+    (fs.existsSync(path.join(cwd, ".claude", ".vc.json")) ||
+      fs.existsSync(path.join(cwd, ".claude", ".ck.json")))
   ) {
     runtimeEnv.HOME = cwd;
   }
-  const result = spawnSync('node', [STATUSLINE_PATH], {
+  const result = spawnSync("node", [STATUSLINE_PATH], {
     cwd,
-    encoding: 'utf8',
+    encoding: "utf8",
     input,
     timeout: timeoutMs,
     env: runtimeEnv,
@@ -141,8 +141,8 @@ function runStatuslineSync({
   }
   return {
     status: result.status,
-    stdout: result.stdout || '',
-    stderr: result.stderr || '',
+    stdout: result.stdout || "",
+    stderr: result.stderr || "",
   };
 }
 
@@ -166,40 +166,40 @@ function runStatuslineWithDelayedChunks({
       CK_USAGE_ELIGIBILITY_CACHE_PATH: eligibilityCachePath,
       ...env,
     };
-    if (!Object.prototype.hasOwnProperty.call(env, 'NO_COLOR'))
+    if (!Object.prototype.hasOwnProperty.call(env, "NO_COLOR"))
       delete runtimeEnv.NO_COLOR;
     scrubAnthropicRuntimeEnv(runtimeEnv, env);
     if (
-      !Object.prototype.hasOwnProperty.call(env, 'HOME') &&
-      (fs.existsSync(path.join(cwd, '.claude', '.vc.json')) ||
-        fs.existsSync(path.join(cwd, '.claude', '.ck.json')))
+      !Object.prototype.hasOwnProperty.call(env, "HOME") &&
+      (fs.existsSync(path.join(cwd, ".claude", ".vc.json")) ||
+        fs.existsSync(path.join(cwd, ".claude", ".ck.json")))
     ) {
       runtimeEnv.HOME = cwd;
     }
-    const child = spawn('node', [STATUSLINE_PATH], {
+    const child = spawn("node", [STATUSLINE_PATH], {
       cwd,
       env: runtimeEnv,
-      stdio: ['pipe', 'pipe', 'pipe'],
+      stdio: ["pipe", "pipe", "pipe"],
     });
 
-    let stdout = '';
-    let stderr = '';
+    let stdout = "";
+    let stderr = "";
     const killTimer = setTimeout(() => {
-      child.kill('SIGKILL');
+      child.kill("SIGKILL");
       reject(new Error(`Timed out after ${timeoutMs}ms`));
     }, timeoutMs);
 
-    child.stdout.on('data', (chunk) => {
-      stdout += chunk.toString('utf8');
+    child.stdout.on("data", (chunk) => {
+      stdout += chunk.toString("utf8");
     });
-    child.stderr.on('data', (chunk) => {
-      stderr += chunk.toString('utf8');
+    child.stderr.on("data", (chunk) => {
+      stderr += chunk.toString("utf8");
     });
-    child.on('error', (err) => {
+    child.on("error", (err) => {
       clearTimeout(killTimer);
       reject(err);
     });
-    child.on('close', (code) => {
+    child.on("close", (code) => {
       clearTimeout(killTimer);
       resolve({ status: code, stdout, stderr });
     });
@@ -222,12 +222,12 @@ function runStatuslineWithDelayedChunks({
 function createTempConfigProject(
   mode,
   extraConfig = {},
-  { configFileName = '.vc.json' } = {},
+  { configFileName = ".vc.json" } = {},
 ) {
   const tmpDir = fs.mkdtempSync(
     path.join(os.tmpdir(), `statusline-mode-${mode}-`),
   );
-  const ckDir = path.join(tmpDir, '.claude');
+  const ckDir = path.join(tmpDir, ".claude");
   fs.mkdirSync(ckDir, { recursive: true });
   fs.writeFileSync(
     path.join(ckDir, configFileName),
@@ -251,7 +251,7 @@ function withTempConfigProject(mode, extraConfig, fn) {
 
 function withUsageCache(payload, fn) {
   const backup = fs.existsSync(USAGE_CACHE_PATH)
-    ? fs.readFileSync(USAGE_CACHE_PATH, 'utf8')
+    ? fs.readFileSync(USAGE_CACHE_PATH, "utf8")
     : null;
 
   try {
@@ -289,7 +289,7 @@ function mkTranscript(lines) {
     os.tmpdir(),
     `statusline-scenario-transcript-${Date.now()}-${Math.random().toString(16).slice(2)}.jsonl`,
   );
-  fs.writeFileSync(p, lines.map((line) => JSON.stringify(line)).join('\n'));
+  fs.writeFileSync(p, lines.map((line) => JSON.stringify(line)).join("\n"));
   return p;
 }
 
@@ -300,184 +300,184 @@ function writeSessionStateFile(sessionId, state) {
 }
 
 async function main() {
-  console.log('\n==============================================');
-  console.log('STATUSLINE SCENARIO SUITE');
-  console.log('==============================================\n');
+  console.log("\n==============================================");
+  console.log("STATUSLINE SCENARIO SUITE");
+  console.log("==============================================\n");
 
-  await test('Linux/macOS path output works', async () => {
+  await test("Linux/macOS path output works", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: '/home/user/project' },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: "/home/user/project" },
       context_window: { context_window_size: 200000 },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'Linux/macOS path scenario');
+    assertSuccessfulRun(result, "Linux/macOS path scenario");
     const { stdout } = result;
     assertContains(
       stdout,
-      '/home/user/project',
-      'Should display Unix-style path',
+      "/home/user/project",
+      "Should display Unix-style path",
     );
   });
 
-  await test('Windows drive-letter path output works', async () => {
+  await test("Windows drive-letter path output works", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: 'D:\\statusline-test\\project' },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: "D:\\statusline-test\\project" },
       context_window: { context_window_size: 200000 },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'Windows drive path scenario');
+    assertSuccessfulRun(result, "Windows drive path scenario");
     const { stdout } = result;
     assertContains(
       stdout,
-      'D:\\statusline-test\\project',
-      'Should preserve Windows path',
+      "D:\\statusline-test\\project",
+      "Should preserve Windows path",
     );
   });
 
-  await test('Windows UNC path output works', async () => {
+  await test("Windows UNC path output works", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: '\\\\server\\share\\repo' },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: "\\\\server\\share\\repo" },
       context_window: { context_window_size: 200000 },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'Windows UNC path scenario');
+    assertSuccessfulRun(result, "Windows UNC path scenario");
     const { stdout } = result;
     assertContains(
       stdout,
-      '\\\\server\\share\\repo',
-      'Should preserve UNC path',
+      "\\\\server\\share\\repo",
+      "Should preserve UNC path",
     );
   });
 
-  await test('WSL-style path output works', async () => {
+  await test("WSL-style path output works", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: '/mnt/c/Users/kai/project' },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: "/mnt/c/Users/kai/project" },
       context_window: { context_window_size: 200000 },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'WSL path scenario');
+    assertSuccessfulRun(result, "WSL path scenario");
     const { stdout } = result;
     assertContains(
       stdout,
-      '/mnt/c/Users/kai/project',
-      'Should preserve WSL path',
+      "/mnt/c/Users/kai/project",
+      "Should preserve WSL path",
     );
   });
 
-  await test('Home path is expanded to ~ for current OS homedir', async () => {
+  await test("Home path is expanded to ~ for current OS homedir", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: path.join(os.homedir(), 'projects', 'test') },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: path.join(os.homedir(), "projects", "test") },
       context_window: { context_window_size: 200000 },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'Home path expansion scenario');
-    const stripped = result.stdout.replace(/\x1b\[[0-9;]*m/g, '');
+    assertSuccessfulRun(result, "Home path expansion scenario");
+    const stripped = result.stdout.replace(/\x1b\[[0-9;]*m/g, "");
     assertTrue(
-      stripped.includes('~/projects/test') ||
-        stripped.includes(path.join(os.homedir(), 'projects', 'test')),
+      stripped.includes("~/projects/test") ||
+        stripped.includes(path.join(os.homedir(), "projects", "test")),
       `Should preserve or compress the homedir path\nActual: ${stripped}`,
     );
   });
 
-  await test('Mode none produces empty output', async () => {
-    const tmpDir = createTempConfigProject('none');
+  await test("Mode none produces empty output", async () => {
+    const tmpDir = createTempConfigProject("none");
     try {
       const payload = {
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp" },
         context_window: { context_window_size: 200000 },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Mode none scenario');
+      assertSuccessfulRun(result, "Mode none scenario");
       const { stdout } = result;
-      assertTrue(stdout.trim() === '', 'Mode none should produce empty output');
+      assertTrue(stdout.trim() === "", "Mode none should produce empty output");
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
-  await test('Legacy .ck.json-only config still loads via fallback', async () => {
+  await test("Legacy .ck.json-only config still loads via fallback", async () => {
     // Project has ONLY the legacy .ck.json (no .vc.json) — central loader fallback
     // must still resolve it so existing installs keep working.
     const tmpDir = createTempConfigProject(
-      'none',
+      "none",
       {},
-      { configFileName: '.ck.json' },
+      { configFileName: ".ck.json" },
     );
     try {
       const payload = {
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp" },
         context_window: { context_window_size: 200000 },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Legacy .ck.json fallback scenario');
+      assertSuccessfulRun(result, "Legacy .ck.json fallback scenario");
       const { stdout } = result;
       assertTrue(
-        stdout.trim() === '',
-        'Legacy .ck.json with mode none should still produce empty output via fallback',
+        stdout.trim() === "",
+        "Legacy .ck.json with mode none should still produce empty output via fallback",
       );
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
-  await test('Mode minimal keeps output to one line', async () => {
-    const tmpDir = createTempConfigProject('minimal');
+  await test("Mode minimal keeps output to one line", async () => {
+    const tmpDir = createTempConfigProject("minimal");
     try {
       const payload = {
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp" },
         context_window: {
           context_window_size: 200000,
           current_usage: { input_tokens: 1000 },
         },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Mode minimal scenario');
+      assertSuccessfulRun(result, "Mode minimal scenario");
       const { stdout } = result;
       assertLineCountBetween(
         stdout,
         1,
         1,
-        'Minimal mode should be single-line',
+        "Minimal mode should be single-line",
       );
       assertContains(
         stdout,
-        '/tmp',
-        'Minimal mode should still include workspace info',
+        "/tmp",
+        "Minimal mode should still include workspace info",
       );
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
-  await test('Minimal mode honors explicit context and quota theme overrides', async () => {
-    const tmpDir = createTempConfigProject('minimal', {
+  await test("Minimal mode honors explicit context and quota theme overrides", async () => {
+    const tmpDir = createTempConfigProject("minimal", {
       statuslineLayout: {
         theme: {
-          contextLow: 'brightGreen',
-          contextMid: 'brightYellow',
-          contextHigh: 'brightMagenta',
-          quotaLow: 'yellow',
-          quotaHigh: 'brightRed',
+          contextLow: "brightGreen",
+          contextMid: "brightYellow",
+          contextHigh: "brightMagenta",
+          quotaLow: "yellow",
+          quotaHigh: "brightRed",
         },
       },
     });
 
     try {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -501,7 +501,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -509,16 +509,16 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Minimal theme override scenario');
+              assertSuccessfulRun(result, "Minimal theme override scenario");
               assertContains(
                 result.stdout,
-                '\x1b[95m🔋',
-                'Minimal context indicator should honor the explicit high-usage theme color',
+                "\x1b[95m🔋",
+                "Minimal context indicator should honor the explicit high-usage theme color",
               );
               assertContains(
                 result.stdout,
-                '\x1b[91m5h 91%',
-                'Minimal quota text should honor the explicit high-usage theme color',
+                "\x1b[91m5h 91%",
+                "Minimal quota text should honor the explicit high-usage theme color",
               );
             },
           );
@@ -529,72 +529,72 @@ async function main() {
     }
   });
 
-  await test('Mode compact keeps output to two lines', async () => {
-    const tmpDir = createTempConfigProject('compact');
+  await test("Mode compact keeps output to two lines", async () => {
+    const tmpDir = createTempConfigProject("compact");
     try {
       const payload = {
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp" },
         context_window: {
           context_window_size: 200000,
           current_usage: { input_tokens: 1000 },
         },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Mode compact scenario');
+      assertSuccessfulRun(result, "Mode compact scenario");
       const { stdout } = result;
       assertLineCountBetween(
         stdout,
         2,
         2,
-        'Compact mode should be exactly two lines',
+        "Compact mode should be exactly two lines",
       );
-      assertContains(stdout, 'Claude', 'Compact mode should include model');
+      assertContains(stdout, "Claude", "Compact mode should include model");
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
   });
 
-  await test('Default/full mode includes model and path', async () => {
+  await test("Default/full mode includes model and path", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
-      workspace: { current_dir: '/tmp/full-mode' },
+      model: { display_name: "Claude" },
+      workspace: { current_dir: "/tmp/full-mode" },
       context_window: {
         context_window_size: 200000,
         current_usage: { input_tokens: 50000 },
       },
     };
     const result = runStatuslineSync({ payload });
-    assertSuccessfulRun(result, 'Default/full mode scenario');
+    assertSuccessfulRun(result, "Default/full mode scenario");
     const { stdout } = result;
-    assertContains(stdout, 'Claude', 'Full mode should include model');
+    assertContains(stdout, "Claude", "Full mode should include model");
     assertContains(
       stdout,
-      '/tmp/full-mode',
-      'Full mode should include directory',
+      "/tmp/full-mode",
+      "Full mode should include directory",
     );
   });
 
-  await test('Custom context and quota theme colors are emitted in ANSI output', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Custom context and quota theme colors are emitted in ANSI output", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineLayout: {
-        lines: [['context', 'quota']],
+        lines: [["context", "quota"]],
         theme: {
-          contextLow: 'brightGreen',
-          quotaLow: 'yellow',
-          quotaHigh: 'red',
+          contextLow: "brightGreen",
+          quotaLow: "yellow",
+          quotaHigh: "red",
         },
       },
     });
 
     try {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -618,7 +618,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -626,16 +626,16 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Theme color override scenario');
+              assertSuccessfulRun(result, "Theme color override scenario");
               assertContains(
                 result.stdout,
-                '\x1b[92m',
-                'Context low color should use brightGreen',
+                "\x1b[92m",
+                "Context low color should use brightGreen",
               );
               assertContains(
                 result.stdout,
-                '\x1b[31m5h 91%',
-                'Quota high color should use the configured red tint',
+                "\x1b[31m5h 91%",
+                "Quota high color should use the configured red tint",
               );
             },
           );
@@ -646,21 +646,21 @@ async function main() {
     }
   });
 
-  await test('Quota stays dim when no explicit quota palette is configured', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Quota stays dim when no explicit quota palette is configured", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineLayout: {
-        lines: [['quota']],
+        lines: [["quota"]],
       },
     });
 
     try {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -684,7 +684,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -692,11 +692,11 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Default quota tint scenario');
+              assertSuccessfulRun(result, "Default quota tint scenario");
               assertContains(
                 result.stdout,
-                '\x1b[2m5h 91%',
-                'Quota should stay muted unless the user explicitly overrides its palette',
+                "\x1b[2m5h 91%",
+                "Quota should stay muted unless the user explicitly overrides its palette",
               );
             },
           );
@@ -707,14 +707,14 @@ async function main() {
     }
   });
 
-  await test('Configured todo icon and color are applied to activity lines', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Configured todo icon and color are applied to activity lines", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineLayout: {
-        lines: [['todos']],
+        lines: [["todos"]],
         sectionConfig: {
           todos: {
-            icon: '✅',
-            color: 'brightGreen',
+            icon: "✅",
+            color: "brightGreen",
           },
         },
       },
@@ -728,19 +728,19 @@ async function main() {
         agents: [],
         todos: [
           {
-            content: 'First task',
-            status: 'completed',
-            activeForm: 'First task done',
+            content: "First task",
+            status: "completed",
+            activeForm: "First task done",
           },
           {
-            content: 'Second task',
-            status: 'in_progress',
-            activeForm: 'Working on second task',
+            content: "Second task",
+            status: "in_progress",
+            activeForm: "Working on second task",
           },
           {
-            content: 'Third task',
-            status: 'pending',
-            activeForm: 'Starting third task',
+            content: "Third task",
+            status: "pending",
+            activeForm: "Starting third task",
           },
         ],
       },
@@ -749,26 +749,26 @@ async function main() {
     try {
       const payload = {
         session_id: sessionId,
-        model: { display_name: 'Claude' },
+        model: { display_name: "Claude" },
         workspace: { current_dir: tmpDir },
         context_window: { context_window_size: 200000 },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Todo section override scenario');
+      assertSuccessfulRun(result, "Todo section override scenario");
       assertContains(
         result.stdout,
-        '✅',
-        'Todo line should use the configured icon',
+        "✅",
+        "Todo line should use the configured icon",
       );
       assertContains(
         result.stdout,
-        '\x1b[92m',
-        'Todo line should use the configured brightGreen color',
+        "\x1b[92m",
+        "Todo line should use the configured brightGreen color",
       );
       assertContains(
         result.stdout,
-        'Working on second task',
-        'Todo line should show the in-progress task',
+        "Working on second task",
+        "Todo line should show the in-progress task",
       );
     } finally {
       try {
@@ -778,14 +778,14 @@ async function main() {
     }
   });
 
-  await test('Legacy sections[] still picks up top-level todo sectionConfig overrides', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Legacy sections[] still picks up top-level todo sectionConfig overrides", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineLayout: {
-        sections: [{ id: 'todos', enabled: true, order: 0 }],
+        sections: [{ id: "todos", enabled: true, order: 0 }],
         sectionConfig: {
           todos: {
-            icon: '✅',
-            color: 'brightGreen',
+            icon: "✅",
+            color: "brightGreen",
           },
         },
       },
@@ -799,14 +799,14 @@ async function main() {
         agents: [],
         todos: [
           {
-            content: 'First task',
-            status: 'completed',
-            activeForm: 'First task done',
+            content: "First task",
+            status: "completed",
+            activeForm: "First task done",
           },
           {
-            content: 'Second task',
-            status: 'in_progress',
-            activeForm: 'Working on second task',
+            content: "Second task",
+            status: "in_progress",
+            activeForm: "Working on second task",
           },
         ],
       },
@@ -815,26 +815,26 @@ async function main() {
     try {
       const payload = {
         session_id: sessionId,
-        model: { display_name: 'Claude' },
+        model: { display_name: "Claude" },
         workspace: { current_dir: tmpDir },
         context_window: { context_window_size: 200000 },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Legacy todo override scenario');
+      assertSuccessfulRun(result, "Legacy todo override scenario");
       assertContains(
         result.stdout,
-        '✅',
-        'Legacy sections[] config should still honor the configured todo icon',
+        "✅",
+        "Legacy sections[] config should still honor the configured todo icon",
       );
       assertContains(
         result.stdout,
-        '\x1b[92m',
-        'Legacy sections[] config should still honor the configured todo color',
+        "\x1b[92m",
+        "Legacy sections[] config should still honor the configured todo color",
       );
       assertContains(
         result.stdout,
-        'Working on second task',
-        'Legacy sections[] config should still render the active todo',
+        "Working on second task",
+        "Legacy sections[] config should still render the active todo",
       );
     } finally {
       try {
@@ -844,13 +844,13 @@ async function main() {
     }
   });
 
-  await test('Configured agent color is applied when agent flow is rendered', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Configured agent color is applied when agent flow is rendered", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineLayout: {
-        lines: [['agents']],
+        lines: [["agents"]],
         sectionConfig: {
           agents: {
-            color: 'brightYellow',
+            color: "brightYellow",
           },
         },
       },
@@ -863,11 +863,11 @@ async function main() {
         warmed: true,
         agents: [
           {
-            id: 'agent-1',
-            type: 'plan-agent',
-            model: 'haiku',
-            description: 'Planning the statusline fix',
-            status: 'completed',
+            id: "agent-1",
+            type: "plan-agent",
+            model: "haiku",
+            description: "Planning the statusline fix",
+            status: "completed",
             startTime: new Date(Date.now() - 180000).toISOString(),
             endTime: new Date(Date.now() - 120000).toISOString(),
           },
@@ -879,21 +879,21 @@ async function main() {
     try {
       const payload = {
         session_id: sessionId,
-        model: { display_name: 'Claude' },
+        model: { display_name: "Claude" },
         workspace: { current_dir: tmpDir },
         context_window: { context_window_size: 200000 },
       };
       const result = runStatuslineSync({ payload, cwd: tmpDir });
-      assertSuccessfulRun(result, 'Agent section override scenario');
+      assertSuccessfulRun(result, "Agent section override scenario");
       assertContains(
         result.stdout,
-        '\x1b[93m',
-        'Agent line should use the configured brightYellow color',
+        "\x1b[93m",
+        "Agent line should use the configured brightYellow color",
       );
       assertContains(
         result.stdout,
-        'plan-agent',
-        'Agent flow should include the agent type',
+        "plan-agent",
+        "Agent flow should include the agent type",
       );
     } finally {
       try {
@@ -903,7 +903,7 @@ async function main() {
     }
   });
 
-  await test('Default stdin handling supports slow chunked input (>5s)', async () => {
+  await test("Default stdin handling supports slow chunked input (>5s)", async () => {
     const result = await runStatuslineWithDelayedChunks({
       chunks: [
         '{"model":{"display_name":"Claude"}',
@@ -913,83 +913,83 @@ async function main() {
     });
     assertTrue(
       result.status === 0,
-      'Slow chunk input should still exit successfully',
+      "Slow chunk input should still exit successfully",
     );
     assertTrue(
-      result.stderr.trim() === '',
-      'Slow chunk input should not emit stderr',
+      result.stderr.trim() === "",
+      "Slow chunk input should not emit stderr",
     );
     assertContains(
       result.stdout,
-      '/tmp/slow-input-ok',
-      'Slow input should still parse without forced fallback',
+      "/tmp/slow-input-ok",
+      "Slow input should still parse without forced fallback",
     );
   });
 
-  await test('Optional stdin timeout forces fallback when enabled', async () => {
+  await test("Optional stdin timeout forces fallback when enabled", async () => {
     const result = await runStatuslineWithDelayedChunks({
       chunks: [
         '{"model":{"display_name":"Claude"}',
         ',"workspace":{"current_dir":"/tmp/slow-input-timeout"},"context_window":{"context_window_size":200000}}',
       ],
       delaysMs: [400, 0],
-      env: { CK_STATUSLINE_STDIN_TIMEOUT_MS: '100' },
+      env: { CK_STATUSLINE_STDIN_TIMEOUT_MS: "100" },
     });
     assertTrue(
       result.status === 0,
-      'Timeout fallback path should still exit successfully',
+      "Timeout fallback path should still exit successfully",
     );
     assertTrue(
-      result.stderr.trim() === '',
-      'Timeout fallback path should not emit stderr',
+      result.stderr.trim() === "",
+      "Timeout fallback path should not emit stderr",
     );
     assertContains(
       result.stdout,
       TEST_ROOT,
-      'Timeout path should fall back to cwd',
+      "Timeout path should fall back to cwd",
     );
   });
 
-  await test('Usage cache unavailable suppresses reset string gracefully', async () => {
+  await test("Usage cache unavailable suppresses reset string gracefully", async () => {
     withUsageCache(
       {
         timestamp: Date.now(),
-        status: 'unavailable',
+        status: "unavailable",
         data: null,
       },
       () => {
         const payload = {
-          model: { display_name: 'Claude' },
-          workspace: { current_dir: '/tmp' },
+          model: { display_name: "Claude" },
+          workspace: { current_dir: "/tmp" },
           context_window: {
             context_window_size: 200000,
             current_usage: { input_tokens: 1000 },
           },
         };
         const result = runStatuslineSync({ payload });
-        assertSuccessfulRun(result, 'Usage unavailable scenario');
+        assertSuccessfulRun(result, "Usage unavailable scenario");
         const { stdout } = result;
         assertTrue(
           stdout.length > 0,
-          'Unavailable usage cache should still render statusline',
+          "Unavailable usage cache should still render statusline",
         );
         assertTrue(
-          !stdout.includes('until reset') && !stdout.includes(' left'),
-          'Unavailable usage should not render reset countdown text',
+          !stdout.includes("until reset") && !stdout.includes(" left"),
+          "Unavailable usage should not render reset countdown text",
         );
       },
     );
   });
 
-  await test('Usage cache available shows 5h and wk cosmetic chips', async () => {
-    withTempConfigProject('full', {}, (tmpDir) => {
+  await test("Usage cache available shows 5h and wk cosmetic chips", async () => {
+    withTempConfigProject("full", {}, (tmpDir) => {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -1013,7 +1013,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1021,22 +1021,22 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Usage available scenario');
+              assertSuccessfulRun(result, "Usage available scenario");
               const { stdout } = result;
               assertContains(
                 stdout,
-                '5h 38%',
-                'Available usage should show the 5h utilization',
+                "5h 38%",
+                "Available usage should show the 5h utilization",
               );
               assertContains(
                 stdout,
-                'wk 19%',
-                'Available usage should show the weekly utilization',
+                "wk 19%",
+                "Available usage should show the weekly utilization",
               );
               assertMatch(
                 stdout,
                 /\(\d+[mhd]/,
-                'Available usage should show the countdown text when reset data is present',
+                "Available usage should show the countdown text when reset data is present",
               );
             },
           );
@@ -1045,15 +1045,15 @@ async function main() {
     });
   });
 
-  await test('Usage cache falls back to legacy raw payload when snapshot is absent', async () => {
-    withTempConfigProject('full', {}, (tmpDir) => {
+  await test("Usage cache falls back to legacy raw payload when snapshot is absent", async () => {
+    withTempConfigProject("full", {}, (tmpDir) => {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               data: {
                 five_hour: {
                   utilization: 36,
@@ -1071,7 +1071,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1079,16 +1079,16 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Legacy usage fallback scenario');
+              assertSuccessfulRun(result, "Legacy usage fallback scenario");
               assertContains(
                 result.stdout,
-                '5h 36%',
-                'Legacy raw cache should still render the 5h chip',
+                "5h 36%",
+                "Legacy raw cache should still render the 5h chip",
               );
               assertContains(
                 result.stdout,
-                'wk 18%',
-                'Legacy raw cache should still render the weekly chip',
+                "wk 18%",
+                "Legacy raw cache should still render the weekly chip",
               );
             },
           );
@@ -1097,15 +1097,15 @@ async function main() {
     });
   });
 
-  await test('Stale usage cache hides cosmetic chips instead of rendering old percentages forever', async () => {
-    withTempConfigProject('full', {}, (tmpDir) => {
+  await test("Stale usage cache hides cosmetic chips instead of rendering old percentages forever", async () => {
+    withTempConfigProject("full", {}, (tmpDir) => {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now() - 10 * 60 * 1000,
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date(Date.now() - 10 * 60 * 1000).toISOString(),
@@ -1129,7 +1129,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1137,14 +1137,14 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Stale usage cache scenario');
+              assertSuccessfulRun(result, "Stale usage cache scenario");
               assertTrue(
-                !result.stdout.includes('5h 41%'),
-                'Stale cache should suppress the 5h chip',
+                !result.stdout.includes("5h 41%"),
+                "Stale cache should suppress the 5h chip",
               );
               assertTrue(
-                !result.stdout.includes('wk 22%'),
-                'Stale cache should suppress the weekly chip',
+                !result.stdout.includes("wk 22%"),
+                "Stale cache should suppress the weekly chip",
               );
             },
           );
@@ -1153,21 +1153,21 @@ async function main() {
     });
   });
 
-  await test('Usage display is decoupled from usage-context-awareness config gating', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("Usage display is decoupled from usage-context-awareness config gating", async () => {
+    const tmpDir = createTempConfigProject("full", {
       hooks: {
-        'usage-context-awareness': false,
+        "usage-context-awareness": false,
       },
     });
 
     try {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -1191,7 +1191,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1199,16 +1199,16 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'Usage decoupling scenario');
+              assertSuccessfulRun(result, "Usage decoupling scenario");
               assertContains(
                 result.stdout,
-                '5h 37%',
-                'Statusline should keep cosmetic 5h display even when the hook is disabled',
+                "5h 37%",
+                "Statusline should keep cosmetic 5h display even when the hook is disabled",
               );
               assertContains(
                 result.stdout,
-                'wk 19%',
-                'Statusline should keep cosmetic weekly display even when the hook is disabled',
+                "wk 19%",
+                "Statusline should keep cosmetic weekly display even when the hook is disabled",
               );
             },
           );
@@ -1219,19 +1219,19 @@ async function main() {
     }
   });
 
-  await test('statuslineQuota=false hides cosmetic usage chips without changing the rest of the statusline', async () => {
-    const tmpDir = createTempConfigProject('full', {
+  await test("statuslineQuota=false hides cosmetic usage chips without changing the rest of the statusline", async () => {
+    const tmpDir = createTempConfigProject("full", {
       statuslineQuota: false,
     });
 
     try {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -1255,7 +1255,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1263,19 +1263,19 @@ async function main() {
                 },
               };
               const result = runStatuslineSync({ payload, cwd: tmpDir, env });
-              assertSuccessfulRun(result, 'statuslineQuota=false scenario');
+              assertSuccessfulRun(result, "statuslineQuota=false scenario");
               assertTrue(
-                !result.stdout.includes('5h 37%'),
-                'Quota toggle should hide the 5h chip',
+                !result.stdout.includes("5h 37%"),
+                "Quota toggle should hide the 5h chip",
               );
               assertTrue(
-                !result.stdout.includes('wk 19%'),
-                'Quota toggle should hide the weekly chip',
+                !result.stdout.includes("wk 19%"),
+                "Quota toggle should hide the weekly chip",
               );
               assertContains(
                 result.stdout,
-                '🤖',
-                'Other statusline content should still render',
+                "🤖",
+                "Other statusline content should still render",
               );
             },
           );
@@ -1286,15 +1286,15 @@ async function main() {
     }
   });
 
-  await test('third-party Anthropic runtime override hides quota chips even with a fresh native cache', async () => {
-    withTempConfigProject('full', {}, (tmpDir) => {
+  await test("third-party Anthropic runtime override hides quota chips even with a fresh native cache", async () => {
+    withTempConfigProject("full", {}, (tmpDir) => {
       withQuotaEligibilityCache(
-        { timestamp: Date.now(), eligible: true, note: 'eligible' },
+        { timestamp: Date.now(), eligible: true, note: "eligible" },
         (env) => {
           withUsageCache(
             {
               timestamp: Date.now(),
-              status: 'available',
+              status: "available",
               snapshot: {
                 sourceVersion: 1,
                 fetchedAt: new Date().toISOString(),
@@ -1318,7 +1318,7 @@ async function main() {
             },
             () => {
               const payload = {
-                model: { display_name: 'Claude' },
+                model: { display_name: "Claude" },
                 workspace: { current_dir: tmpDir },
                 context_window: {
                   context_window_size: 200000,
@@ -1331,26 +1331,26 @@ async function main() {
                 env: {
                   ...env,
                   ANTHROPIC_BASE_URL:
-                    'http://127.0.0.1:8317/api/provider/gemini',
-                  ANTHROPIC_AUTH_TOKEN: 'ccs-managed',
+                    "http://127.0.0.1:8317/api/provider/gemini",
+                  ANTHROPIC_AUTH_TOKEN: "ccs-managed",
                 },
               });
               assertSuccessfulRun(
                 result,
-                'Third-party runtime override scenario',
+                "Third-party runtime override scenario",
               );
               assertTrue(
-                !result.stdout.includes('5h 52%'),
-                'Third-party runtime should auto-hide the 5h chip',
+                !result.stdout.includes("5h 52%"),
+                "Third-party runtime should auto-hide the 5h chip",
               );
               assertTrue(
-                !result.stdout.includes('wk 18%'),
-                'Third-party runtime should auto-hide the weekly chip',
+                !result.stdout.includes("wk 18%"),
+                "Third-party runtime should auto-hide the weekly chip",
               );
               assertContains(
                 result.stdout,
-                '🤖',
-                'Other statusline content should still render',
+                "🤖",
+                "Other statusline content should still render",
               );
             },
           );
@@ -1359,7 +1359,7 @@ async function main() {
     });
   });
 
-  await test('Native TaskCreate/TaskUpdate flow is rendered', async () => {
+  await test("Native TaskCreate/TaskUpdate flow is rendered", async () => {
     const sessionId = `native-task-${Date.now()}`;
     const sessionPath = writeSessionStateFile(sessionId, {
       statusline: {
@@ -1369,10 +1369,10 @@ async function main() {
         agents: [],
         todos: [
           {
-            id: 'task-001',
-            content: 'Implement auth flow',
-            status: 'in_progress',
-            activeForm: 'Implementing auth flow',
+            id: "task-001",
+            content: "Implement auth flow",
+            status: "in_progress",
+            activeForm: "Implementing auth flow",
           },
         ],
       },
@@ -1381,20 +1381,20 @@ async function main() {
     try {
       const payload = {
         session_id: sessionId,
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp/project' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp/project" },
         context_window: {
           context_window_size: 200000,
           current_usage: { input_tokens: 1000 },
         },
       };
       const result = runStatuslineSync({ payload });
-      assertSuccessfulRun(result, 'Native TaskCreate/TaskUpdate scenario');
+      assertSuccessfulRun(result, "Native TaskCreate/TaskUpdate scenario");
       const { stdout } = result;
       assertContains(
         stdout,
-        'Implementing auth flow',
-        'Native task activeForm should be shown',
+        "Implementing auth flow",
+        "Native task activeForm should be shown",
       );
     } finally {
       try {
@@ -1403,7 +1403,7 @@ async function main() {
     }
   });
 
-  await test('Mixed TodoWrite + Native TaskUpdate keeps legacy todo unchanged', async () => {
+  await test("Mixed TodoWrite + Native TaskUpdate keeps legacy todo unchanged", async () => {
     const sessionId = `mixed-task-${Date.now()}`;
     const sessionPath = writeSessionStateFile(sessionId, {
       statusline: {
@@ -1412,13 +1412,13 @@ async function main() {
         warmed: true,
         agents: [],
         todos: [
-          { content: 'Legacy first', status: 'pending' },
-          { content: 'Legacy second', status: 'pending' },
+          { content: "Legacy first", status: "pending" },
+          { content: "Legacy second", status: "pending" },
           {
-            id: 'task-001',
-            content: 'Native first',
-            status: 'in_progress',
-            activeForm: 'Working native first',
+            id: "task-001",
+            content: "Native first",
+            status: "in_progress",
+            activeForm: "Working native first",
           },
         ],
       },
@@ -1427,28 +1427,28 @@ async function main() {
     try {
       const payload = {
         session_id: sessionId,
-        model: { display_name: 'Claude' },
-        workspace: { current_dir: '/tmp/project' },
+        model: { display_name: "Claude" },
+        workspace: { current_dir: "/tmp/project" },
         context_window: {
           context_window_size: 200000,
           current_usage: { input_tokens: 1000 },
         },
       };
       const result = runStatuslineSync({ payload });
-      assertSuccessfulRun(result, 'Mixed native/legacy transcript scenario');
+      assertSuccessfulRun(result, "Mixed native/legacy transcript scenario");
       const { stdout } = result;
       assertContains(
         stdout,
-        'Working native first',
-        'Native fallback should map to native tasks, not legacy TodoWrite',
+        "Working native first",
+        "Native fallback should map to native tasks, not legacy TodoWrite",
       );
       assertTrue(
-        !stdout.includes('Legacy first'),
-        'Legacy TodoWrite item should not be promoted to active task',
+        !stdout.includes("Legacy first"),
+        "Legacy TodoWrite item should not be promoted to active task",
       );
       assertTrue(
-        !stdout.includes('Legacy second'),
-        'Legacy TodoWrite list should not leak into native active line',
+        !stdout.includes("Legacy second"),
+        "Legacy TodoWrite list should not leak into native active line",
       );
     } finally {
       try {
@@ -1457,69 +1457,69 @@ async function main() {
     }
   });
 
-  await test('Wide terminal keeps layout compact', async () => {
+  await test("Wide terminal keeps layout compact", async () => {
     const payload = {
-      model: { display_name: 'Opus 4.5' },
-      workspace: { current_dir: '/tmp/short' },
+      model: { display_name: "Opus 4.5" },
+      workspace: { current_dir: "/tmp/short" },
       context_window: {
         context_window_size: 200000,
         current_usage: { input_tokens: 50000 },
       },
       cost: { total_lines_added: 10, total_lines_removed: 5 },
     };
-    const result = runStatuslineSync({ payload, env: { COLUMNS: '180' } });
-    assertSuccessfulRun(result, 'Wide terminal scenario');
+    const result = runStatuslineSync({ payload, env: { COLUMNS: "180" } });
+    assertSuccessfulRun(result, "Wide terminal scenario");
     const { stdout } = result;
     assertLineCountBetween(
       stdout,
       1,
       3,
-      'Wide layout should avoid excessive wrapping',
+      "Wide layout should avoid excessive wrapping",
     );
     assertContains(
       stdout,
-      '/tmp/short',
-      'Wide layout should still include directory',
+      "/tmp/short",
+      "Wide layout should still include directory",
     );
   });
 
-  await test('Narrow terminal wraps long unicode path without crashing', async () => {
+  await test("Narrow terminal wraps long unicode path without crashing", async () => {
     const payload = {
-      model: { display_name: 'Claude' },
+      model: { display_name: "Claude" },
       workspace: {
-        current_dir: '/tmp/工程工程工程/e\u0301/🤖/very/long/path/segment',
+        current_dir: "/tmp/工程工程工程/e\u0301/🤖/very/long/path/segment",
       },
       context_window: {
         context_window_size: 200000,
         current_usage: { input_tokens: 50000 },
       },
     };
-    const result = runStatuslineSync({ payload, env: { COLUMNS: '50' } });
-    assertSuccessfulRun(result, 'Narrow terminal scenario');
+    const result = runStatuslineSync({ payload, env: { COLUMNS: "50" } });
+    assertSuccessfulRun(result, "Narrow terminal scenario");
     const { stdout } = result;
-    assertTrue(stdout.length > 0, 'Should render output in narrow mode');
+    assertTrue(stdout.length > 0, "Should render output in narrow mode");
     assertTrue(
-      stdout.split('\n').length >= 2,
-      'Narrow width should wrap to multiple lines',
+      stdout.split("\n").length >= 2,
+      "Narrow width should wrap to multiple lines",
     );
   });
 
-  console.log('\n==============================================');
-  console.log('SCENARIO TEST SUMMARY');
-  console.log('==============================================');
+  console.log("\n==============================================");
+  console.log("SCENARIO TEST SUMMARY");
+  console.log("==============================================");
   console.log(`Total: ${passed + failed}`);
   console.log(`Passed: ${passed}`);
   console.log(`Failed: ${failed}`);
 
   if (failed > 0) {
-    console.log('\nFailures:');
+    console.log("\nFailures:");
     for (const f of failures) {
-      console.log(`- ${f.name}: ${f.error.split('\n')[0]}`);
+      console.log(`- ${f.name}: ${f.error.split("\n")[0]}`);
     }
     process.exit(1);
   }
 
-  console.log('\n✓ All scenario tests passed!');
+  console.log("\n✓ All scenario tests passed!");
 }
 
 main().catch((err) => {

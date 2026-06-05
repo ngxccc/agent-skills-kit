@@ -2,17 +2,17 @@
 /**
  * MCP Client - Core client for interacting with MCP servers
  */
-import { Client } from '@modelcontextprotocol/sdk/client/index.js';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
-import { readFile } from 'fs/promises';
-import { resolve } from 'path';
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+import { readFile } from "fs/promises";
+import { resolve } from "path";
 export class MCPClientManager {
   config = null;
   clients = new Map();
   transports = new Map();
-  async loadConfig(configPath = '.claude/.mcp.json') {
+  async loadConfig(configPath = ".claude/.mcp.json") {
     const fullPath = resolve(process.cwd(), configPath);
-    const content = await readFile(fullPath, 'utf-8');
+    const content = await readFile(fullPath, "utf-8");
     const config = JSON.parse(content);
     this.config = config;
     return config;
@@ -30,7 +30,7 @@ export class MCPClientManager {
     const client = new Client(
       {
         name: `mcp-manager-${serverName}`,
-        version: '1.0.0',
+        version: "1.0.0",
       },
       { capabilities: {} },
     );
@@ -41,7 +41,7 @@ export class MCPClientManager {
   }
   async connectAll() {
     if (!this.config) {
-      throw new Error('Config not loaded. Call loadConfig() first.');
+      throw new Error("Config not loaded. Call loadConfig() first.");
     }
     const serverNames = Object.keys(this.config.mcpServers);
     console.log(`Connecting to ${serverNames.length} servers sequentially...`);
@@ -64,7 +64,7 @@ export class MCPClientManager {
           allTools.push({
             serverName,
             name: tool.name,
-            description: tool.description || '',
+            description: tool.description || "",
             inputSchema: tool.inputSchema,
             outputSchema: tool.outputSchema,
           });
@@ -89,7 +89,7 @@ export class MCPClientManager {
           allPrompts.push({
             serverName,
             name: prompt.name,
-            description: prompt.description || '',
+            description: prompt.description || "",
             arguments: prompt.arguments,
           });
         }

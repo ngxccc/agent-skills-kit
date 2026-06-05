@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 /**
  * Terminal string utilities for statusline rendering.
@@ -10,8 +10,8 @@
 
 // Intl.Segmenter for accurate grapheme cluster splitting (emoji, CJK, combining marks)
 const GRAPHEME_SEGMENTER =
-  typeof Intl !== 'undefined' && typeof Intl.Segmenter === 'function'
-    ? new Intl.Segmenter(undefined, { granularity: 'grapheme' })
+  typeof Intl !== "undefined" && typeof Intl.Segmenter === "function"
+    ? new Intl.Segmenter(undefined, { granularity: "grapheme" })
     : null;
 
 /**
@@ -22,8 +22,8 @@ const GRAPHEME_SEGMENTER =
  * @returns {number}
  */
 function visibleLength(str) {
-  if (!str || typeof str !== 'string') return 0;
-  const noAnsi = str.replace(/\x1b\[[0-9;]*m/g, '');
+  if (!str || typeof str !== "string") return 0;
+  const noAnsi = str.replace(/\x1b\[[0-9;]*m/g, "");
   const clusters = GRAPHEME_SEGMENTER
     ? Array.from(GRAPHEME_SEGMENTER.segment(noAnsi), (s) => s.segment)
     : Array.from(noAnsi);
@@ -39,7 +39,7 @@ function visibleLength(str) {
 
     // Emoji grapheme clusters = 2 columns
     if (
-      (cluster.includes('\u200d') &&
+      (cluster.includes("\u200d") &&
         /\p{Extended_Pictographic}/u.test(cluster)) ||
       /\p{Extended_Pictographic}/u.test(cluster)
     ) {
@@ -79,20 +79,20 @@ function visibleLength(str) {
  * @returns {string} e.g. "2m 5s", "45s", "<1s"
  */
 function formatElapsed(startTime, endTime) {
-  if (!startTime) return '0s';
+  if (!startTime) return "0s";
   const start =
     startTime instanceof Date
       ? startTime.getTime()
       : new Date(startTime).getTime();
-  if (isNaN(start)) return '0s';
+  if (isNaN(start)) return "0s";
   const end = endTime
     ? endTime instanceof Date
       ? endTime.getTime()
       : new Date(endTime).getTime()
     : Date.now();
-  if (isNaN(end)) return '0s';
+  if (isNaN(end)) return "0s";
   const ms = end - start;
-  if (ms < 0 || ms < 1000) return '<1s';
+  if (ms < 0 || ms < 1000) return "<1s";
   if (ms < 60000) return `${Math.round(ms / 1000)}s`;
   const mins = Math.floor(ms / 60000);
   const secs = Math.round((ms % 60000) / 1000);
@@ -132,7 +132,7 @@ function safeGetTime(dateValue) {
  * @returns {string}
  */
 function formatCountdown(msLeft) {
-  if (msLeft <= 0) return '';
+  if (msLeft <= 0) return "";
   const mins = Math.floor(msLeft / 60000);
   if (mins < 60) return `${mins}m`;
   if (mins < 1440) {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const MAX_AGENTS = 10;
 
@@ -9,25 +9,25 @@ function toIsoOrNull(value) {
 }
 
 function normalizeTodo(todo) {
-  if (!todo || typeof todo !== 'object') return null;
+  if (!todo || typeof todo !== "object") return null;
   const normalized = {
-    content: typeof todo.content === 'string' ? todo.content : '',
-    status: typeof todo.status === 'string' ? todo.status : 'pending',
-    activeForm: typeof todo.activeForm === 'string' ? todo.activeForm : null,
+    content: typeof todo.content === "string" ? todo.content : "",
+    status: typeof todo.status === "string" ? todo.status : "pending",
+    activeForm: typeof todo.activeForm === "string" ? todo.activeForm : null,
   };
   if (todo.id != null) normalized.id = String(todo.id);
   return normalized;
 }
 
 function normalizeAgent(agent) {
-  if (!agent || typeof agent !== 'object') return null;
+  if (!agent || typeof agent !== "object") return null;
   return {
     id: agent.id != null ? String(agent.id) : null,
-    type: typeof agent.type === 'string' ? agent.type : 'unknown',
-    model: typeof agent.model === 'string' ? agent.model : null,
+    type: typeof agent.type === "string" ? agent.type : "unknown",
+    model: typeof agent.model === "string" ? agent.model : null,
     description:
-      typeof agent.description === 'string' ? agent.description : null,
-    status: agent.status === 'completed' ? 'completed' : 'running',
+      typeof agent.description === "string" ? agent.description : null,
+    status: agent.status === "completed" ? "completed" : "running",
     startTime: toIsoOrNull(agent.startTime),
     endTime: toIsoOrNull(agent.endTime),
   };
@@ -45,7 +45,7 @@ function createEmptyActivitySnapshot(now = new Date().toISOString()) {
 
 function sanitizeActivitySnapshot(snapshot) {
   const now = new Date().toISOString();
-  if (!snapshot || typeof snapshot !== 'object') {
+  if (!snapshot || typeof snapshot !== "object") {
     return createEmptyActivitySnapshot(now);
   }
 

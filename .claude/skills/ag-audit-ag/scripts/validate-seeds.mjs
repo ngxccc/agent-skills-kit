@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 const root = process.cwd();
-const strict = process.argv.includes('--strict');
+const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
 
@@ -16,21 +16,21 @@ function warn(message) {
   else warnings.push(message);
 }
 
-const seedsDir = path.join(root, 'process/_seeds');
+const seedsDir = path.join(root, "process/_seeds");
 
 // 1. Check seeds directory exists
 if (!fs.existsSync(seedsDir)) {
-  fail('process/_seeds/ directory does not exist');
+  fail("process/_seeds/ directory does not exist");
 } else {
   // 2. Check expected subdirectory structure
   const expectedDirs = [
-    'context',
-    'general-plans/active',
-    'general-plans/completed',
-    'general-plans/backlog',
-    'general-plans/reports',
-    'general-plans/references',
-    'features/_feature-template',
+    "context",
+    "general-plans/active",
+    "general-plans/completed",
+    "general-plans/backlog",
+    "general-plans/reports",
+    "general-plans/references",
+    "features/_feature-template",
   ];
 
   for (const dir of expectedDirs) {
@@ -63,16 +63,16 @@ if (!fs.existsSync(seedsDir)) {
   const stalePatterns = [
     {
       pattern: /\.claude\/CLAUDE\.md/g,
-      label: '.claude/CLAUDE.md (moved to root)',
+      label: ".claude/CLAUDE.md (moved to root)",
     },
     {
       pattern: /\.claude\/skills\/(?!ag-)/g,
-      label: 'old skill path without ag- prefix',
+      label: "old skill path without ag- prefix",
     },
   ];
 
   for (const file of textFiles) {
-    const content = fs.readFileSync(file, 'utf8');
+    const content = fs.readFileSync(file, "utf8");
     const rel = path.relative(root, file);
 
     for (const { pattern, label } of stalePatterns) {
@@ -84,29 +84,29 @@ if (!fs.existsSync(seedsDir)) {
   }
 
   // 5. Check .seed files have {{project_name}} placeholder
-  const seedFiles = allFiles.filter((f) => f.endsWith('.seed'));
+  const seedFiles = allFiles.filter((f) => f.endsWith(".seed"));
   for (const file of seedFiles) {
-    const content = fs.readFileSync(file, 'utf8');
+    const content = fs.readFileSync(file, "utf8");
     const rel = path.relative(root, file);
-    if (!content.includes('{{project_name}}')) {
+    if (!content.includes("{{project_name}}")) {
       warn(`${rel}: missing {{project_name}} placeholder`);
     }
   }
 
   // 6. Check seed _GUIDE.md files exist for key directories
   const guideDirs = [
-    '',
-    'general-plans/active',
-    'general-plans/completed',
-    'features',
+    "",
+    "general-plans/active",
+    "general-plans/completed",
+    "features",
   ];
   for (const dir of guideDirs) {
-    const guidePath = path.join(seedsDir, dir, '_GUIDE.md');
+    const guidePath = path.join(seedsDir, dir, "_GUIDE.md");
     if (!fs.existsSync(guidePath)) {
-      const seedGuidePath = path.join(seedsDir, dir, '_GUIDE.md.seed');
+      const seedGuidePath = path.join(seedsDir, dir, "_GUIDE.md.seed");
       if (!fs.existsSync(seedGuidePath)) {
         warn(
-          `Missing _GUIDE.md or _GUIDE.md.seed in process/_seeds/${dir || '(root)'}`,
+          `Missing _GUIDE.md or _GUIDE.md.seed in process/_seeds/${dir || "(root)"}`,
         );
       }
     }

@@ -3,7 +3,7 @@ import {
   loadSkillInventory,
   normalizeSkillName,
   levenshtein,
-} from './shared-skill-utils.mjs';
+} from "./shared-skill-utils.mjs";
 
 const warnings = [];
 const failures = [];

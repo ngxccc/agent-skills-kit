@@ -7,113 +7,113 @@ const {
   extractFromToolInput,
   extractFromCommand,
   looksLikePath,
-} = require('../path-extractor.cjs');
+} = require("../path-extractor.cjs");
 
 const toolInputTests = [
   {
-    input: { file_path: 'packages/web/src/index.js' },
-    expected: ['packages/web/src/index.js'],
-    desc: 'file_path extraction',
+    input: { file_path: "packages/web/src/index.js" },
+    expected: ["packages/web/src/index.js"],
+    desc: "file_path extraction",
   },
   {
-    input: { path: 'node_modules' },
-    expected: ['node_modules'],
-    desc: 'path extraction',
+    input: { path: "node_modules" },
+    expected: ["node_modules"],
+    desc: "path extraction",
   },
   {
-    input: { pattern: '**/node_modules/**' },
-    expected: ['**/node_modules/**'],
-    desc: 'pattern extraction',
+    input: { pattern: "**/node_modules/**" },
+    expected: ["**/node_modules/**"],
+    desc: "pattern extraction",
   },
   {
-    input: { command: 'ls packages/web/node_modules' },
-    hasPath: 'packages/web/node_modules',
-    desc: 'command path extraction',
+    input: { command: "ls packages/web/node_modules" },
+    hasPath: "packages/web/node_modules",
+    desc: "command path extraction",
   },
   {
-    input: { file_path: '/home/user/project/node_modules/pkg/index.js' },
-    expected: ['/home/user/project/node_modules/pkg/index.js'],
-    desc: 'absolute path extraction',
+    input: { file_path: "/home/user/project/node_modules/pkg/index.js" },
+    expected: ["/home/user/project/node_modules/pkg/index.js"],
+    desc: "absolute path extraction",
   },
   {
     input: {
-      file_path: 'packages/web/node_modules/react/package.json',
-      path: 'src',
+      file_path: "packages/web/node_modules/react/package.json",
+      path: "src",
     },
-    hasPath: 'packages/web/node_modules',
-    desc: 'multiple params extraction',
+    hasPath: "packages/web/node_modules",
+    desc: "multiple params extraction",
   },
 ];
 
 const commandTests = [
   {
-    cmd: 'ls packages/web/node_modules',
-    hasPath: 'packages/web/node_modules',
-    desc: 'ls with subfolder',
+    cmd: "ls packages/web/node_modules",
+    hasPath: "packages/web/node_modules",
+    desc: "ls with subfolder",
   },
   {
     cmd: 'cat "path with spaces/file.js"',
-    hasPath: 'path with spaces/file.js',
-    desc: 'quoted path',
+    hasPath: "path with spaces/file.js",
+    desc: "quoted path",
   },
   {
     cmd: "cat 'single/quoted/path.js'",
-    hasPath: 'single/quoted/path.js',
-    desc: 'single quoted path',
+    hasPath: "single/quoted/path.js",
+    desc: "single quoted path",
   },
   {
-    cmd: 'cd apps/api/node_modules && ls',
-    hasPath: 'apps/api/node_modules',
-    desc: 'cd with chained command',
+    cmd: "cd apps/api/node_modules && ls",
+    hasPath: "apps/api/node_modules",
+    desc: "cd with chained command",
   },
   {
-    cmd: 'rm -rf node_modules',
-    hasPath: 'node_modules',
-    desc: 'rm with flags',
+    cmd: "rm -rf node_modules",
+    hasPath: "node_modules",
+    desc: "rm with flags",
   },
-  { cmd: 'cp -r dist/ backup/', hasPath: 'dist', desc: 'cp with flags' },
+  { cmd: "cp -r dist/ backup/", hasPath: "dist", desc: "cp with flags" },
 
   // Package-manager build commands are allowlisted by the dispatcher before path checking.
   // The extractor should not treat their subcommands as filesystem paths.
   {
-    cmd: 'npm run build',
+    cmd: "npm run build",
     hasPath: null,
-    desc: 'npm run build (no blocked paths)',
+    desc: "npm run build (no blocked paths)",
   },
-  { cmd: 'pnpm build', hasPath: null, desc: 'pnpm build (no blocked paths)' },
-  { cmd: 'cd build', hasPath: 'build', desc: 'cd build (extracts build)' },
-  { cmd: 'yarn test', hasPath: null, desc: 'yarn test (no blocked paths)' },
-  { cmd: 'npm install', hasPath: null, desc: 'npm install (no blocked paths)' },
+  { cmd: "pnpm build", hasPath: null, desc: "pnpm build (no blocked paths)" },
+  { cmd: "cd build", hasPath: "build", desc: "cd build (extracts build)" },
+  { cmd: "yarn test", hasPath: null, desc: "yarn test (no blocked paths)" },
+  { cmd: "npm install", hasPath: null, desc: "npm install (no blocked paths)" },
 ];
 
 const looksLikePathTests = [
   {
-    str: 'packages/web/src',
+    str: "packages/web/src",
     expected: true,
-    desc: 'relative path with slashes',
+    desc: "relative path with slashes",
   },
-  { str: '/home/user/project', expected: true, desc: 'absolute path' },
-  { str: './src/index.js', expected: true, desc: 'dot-relative path' },
-  { str: '../parent/file.js', expected: true, desc: 'parent-relative path' },
-  { str: 'file.txt', expected: true, desc: 'file with extension' },
+  { str: "/home/user/project", expected: true, desc: "absolute path" },
+  { str: "./src/index.js", expected: true, desc: "dot-relative path" },
+  { str: "../parent/file.js", expected: true, desc: "parent-relative path" },
+  { str: "file.txt", expected: true, desc: "file with extension" },
   {
-    str: 'node_modules',
+    str: "node_modules",
     expected: false,
-    desc: 'bare blocked dir name is context-dependent',
+    desc: "bare blocked dir name is context-dependent",
   },
-  { str: 'ls', expected: false, desc: 'command word' },
-  { str: 'npm', expected: false, desc: 'package manager' },
-  { str: '-rf', expected: false, desc: 'flag' },
-  { str: '123', expected: false, desc: 'number' },
+  { str: "ls", expected: false, desc: "command word" },
+  { str: "npm", expected: false, desc: "package manager" },
+  { str: "-rf", expected: false, desc: "flag" },
+  { str: "123", expected: false, desc: "number" },
 ];
 
-console.log('Testing path-extractor module...\n');
+console.log("Testing path-extractor module...\n");
 
 let passed = 0;
 let failed = 0;
 
 // Tool input tests
-console.log('--- Tool Input Tests ---');
+console.log("--- Tool Input Tests ---");
 for (const test of toolInputTests) {
   const result = extractFromToolInput(test.input);
   let success;
@@ -134,7 +134,7 @@ for (const test of toolInputTests) {
 }
 
 // Command tests
-console.log('\n--- Command Tests ---');
+console.log("\n--- Command Tests ---");
 for (const test of commandTests) {
   const result = extractFromCommand(test.cmd);
   let success;
@@ -145,9 +145,9 @@ for (const test of commandTests) {
       result.length === 0 ||
       !result.some(
         (p) =>
-          p.includes('node_modules') ||
-          p.includes('dist') ||
-          p.includes('build'),
+          p.includes("node_modules") ||
+          p.includes("dist") ||
+          p.includes("build"),
       );
   } else {
     success = result.some((p) => p.includes(test.hasPath));
@@ -165,7 +165,7 @@ for (const test of commandTests) {
 }
 
 // looksLikePath tests
-console.log('\n--- looksLikePath Tests ---');
+console.log("\n--- looksLikePath Tests ---");
 for (const test of looksLikePathTests) {
   const result = looksLikePath(test.str);
   const success = result === test.expected;

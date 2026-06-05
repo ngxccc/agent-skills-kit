@@ -18,15 +18,15 @@
 //
 // Output: JSON array of findings on stdout.
 
-import { resolve, dirname, relative } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { readFileSync, existsSync } from 'node:fs';
-import { createRequire } from 'node:module';
+import { resolve, dirname, relative } from "node:path";
+import { fileURLToPath } from "node:url";
+import { readFileSync, existsSync } from "node:fs";
+import { createRequire } from "node:module";
 
 // Load ts-morph from this script's local node_modules (installed by audit.sh).
 const here = dirname(fileURLToPath(import.meta.url));
 const require_ = createRequire(import.meta.url);
-const tsMorphPath = resolve(here, 'node_modules', 'ts-morph');
+const tsMorphPath = resolve(here, "node_modules", "ts-morph");
 if (!existsSync(tsMorphPath)) {
   process.stderr.write(
     `ts-morph not found at ${tsMorphPath}. Run: cd "${here}" && npm install\n`,
@@ -39,19 +39,19 @@ const { Project, Node, SyntaxKind } = require_(tsMorphPath);
 const args = parseArgs(process.argv.slice(2));
 if (!args.project || !args.files) {
   process.stderr.write(
-    'Usage: detect-ast.mjs --project <root> --files <files.json>\n',
+    "Usage: detect-ast.mjs --project <root> --files <files.json>\n",
   );
   process.exit(2);
 }
 const projectRoot = resolve(args.project);
-const filePaths = JSON.parse(readFileSync(args.files, 'utf8'));
+const filePaths = JSON.parse(readFileSync(args.files, "utf8"));
 
 function parseArgs(argv) {
   const out = {};
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
-    if (a === '--project') out.project = argv[++i];
-    else if (a === '--files') out.files = argv[++i];
+    if (a === "--project") out.project = argv[++i];
+    else if (a === "--files") out.files = argv[++i];
   }
   return out;
 }
@@ -75,7 +75,7 @@ const findings = [];
 function addFinding({ rule, severity, message, file, node, snippetOverride }) {
   const sf = node.getSourceFile();
   const { line, column } = sf.getLineAndColumnAtPos(node.getStart());
-  const lineText = sf.getFullText().split(/\r?\n/)[line - 1] ?? '';
+  const lineText = sf.getFullText().split(/\r?\n/)[line - 1] ?? "";
   findings.push({
     rule,
     severity,
@@ -130,7 +130,7 @@ function functionHasTryCatch(fn) {
 
 function functionCallsSetErrorRoot(fn) {
   if (!fn) return false;
-  const calls = findCallsByName(fn, 'setError');
+  const calls = findCallsByName(fn, "setError");
   return calls.some((call) => {
     const arg0 = call.getArguments()[0];
     if (!arg0) return false;
@@ -138,7 +138,7 @@ function functionCallsSetErrorRoot(fn) {
       Node.isStringLiteral(arg0) ||
       Node.isNoSubstitutionTemplateLiteral(arg0)
     ) {
-      return arg0.getLiteralText().startsWith('root');
+      return arg0.getLiteralText().startsWith("root");
     }
     return false;
   });
@@ -148,7 +148,7 @@ function functionCallsNetworkApi(fn) {
   if (!fn) return false;
   for (const call of fn.getDescendantsOfKind(SyntaxKind.CallExpression)) {
     const name = getCallCalleeName(call);
-    if (name === 'fetch') return true;
+    if (name === "fetch") return true;
     if (
       call
         .getExpression()
@@ -162,7 +162,7 @@ function functionCallsNetworkApi(fn) {
 
 // --- Detectors per source file ---
 for (const sf of project.getSourceFiles()) {
-  const useFormCalls = findCallsByName(sf, 'useForm');
+  const useFormCalls = findCallsByName(sf, "useForm");
   if (useFormCalls.length === 0) continue;
 
   for (const useFormCall of useFormCalls) {
@@ -178,17 +178,17 @@ for (const sf of project.getSourceFiles()) {
           Node.isPropertyAssignment(p) ||
           Node.isShorthandPropertyAssignment(p)
         ) {
-          return p.getName() === 'defaultValues';
+          return p.getName() === "defaultValues";
         }
         return false;
       });
     }
     if (!hasDefaultValues) {
       addFinding({
-        rule: 'rhf-audit-03-missing-default-values',
-        severity: 'CRITICAL',
+        rule: "rhf-audit-03-missing-default-values",
+        severity: "CRITICAL",
         message:
-          'useForm() called without `defaultValues`. Uncontrolled fields become undefined, and reset() has nothing to reset to.',
+          "useForm() called without `defaultValues`. Uncontrolled fields become undefined, and reset() has nothing to reset to.",
         node: useFormCall,
       });
     }
@@ -208,23 +208,23 @@ for (const sf of project.getSourceFiles()) {
     }
 
     // --- Rule 1 / 2: watch() in same component as useForm() ---
-    const watchCalls = findCallsByName(componentFn, 'watch');
+    const watchCalls = findCallsByName(componentFn, "watch");
     for (const watchCall of watchCalls) {
       const watchArgs = watchCall.getArguments();
       if (watchArgs.length === 0) {
         addFinding({
-          rule: 'rhf-audit-02-watch-all-fields',
-          severity: 'CRITICAL',
+          rule: "rhf-audit-02-watch-all-fields",
+          severity: "CRITICAL",
           message:
-            'watch() called with no arguments — subscribes to every field. Re-renders the component on every keystroke anywhere in the form.',
+            "watch() called with no arguments — subscribes to every field. Re-renders the component on every keystroke anywhere in the form.",
           node: watchCall,
         });
       } else {
         addFinding({
-          rule: 'rhf-audit-01-watch-at-form-root',
-          severity: 'CRITICAL',
+          rule: "rhf-audit-01-watch-at-form-root",
+          severity: "CRITICAL",
           message:
-            'watch() called in the same component as useForm() — re-renders the entire form on every change. Use useWatch() in a child component instead.',
+            "watch() called in the same component as useForm() — re-renders the entire form on every change. Use useWatch() in a child component instead.",
           node: watchCall,
         });
       }
@@ -238,25 +238,25 @@ for (const sf of project.getSourceFiles()) {
       );
     for (const el of controllerEls) {
       const tag = el.getTagNameNode();
-      if (tag && tag.getText() === 'Controller') {
+      if (tag && tag.getText() === "Controller") {
         addFinding({
-          rule: 'rhf-audit-06-controller-inlined',
-          severity: 'HIGH',
+          rule: "rhf-audit-06-controller-inlined",
+          severity: "HIGH",
           message:
-            '<Controller> rendered directly inside the component that calls useForm(). Move it into a child component so parent re-renders do not propagate to every controlled input.',
+            "<Controller> rendered directly inside the component that calls useForm(). Move it into a child component so parent re-renders do not propagate to every controlled input.",
           node: el,
         });
       }
     }
 
     // --- Rule 10: RHF + useActionState in the same component ---
-    const useActionStateCalls = findCallsByName(componentFn, 'useActionState');
+    const useActionStateCalls = findCallsByName(componentFn, "useActionState");
     for (const call of useActionStateCalls) {
       addFinding({
-        rule: 'rhf-audit-10-rhf-with-useactionstate',
-        severity: 'HIGH',
+        rule: "rhf-audit-10-rhf-with-useactionstate",
+        severity: "HIGH",
         message:
-          'useActionState() and useForm() in the same component. Pick one: react-hook-form for client-side validation OR useActionState for Server Action submission. Mixing leads to duplicated state and race conditions.',
+          "useActionState() and useForm() in the same component. Pick one: react-hook-form for client-side validation OR useActionState for Server Action submission. Mixing leads to duplicated state and race conditions.",
         node: call,
       });
     }
@@ -275,10 +275,10 @@ for (const sf of project.getSourceFiles()) {
         // Also skip if the call is a direct property of useForm's options.
         if (call.getFirstAncestor((a) => a === componentFn)) {
           addFinding({
-            rule: 'rhf-audit-08-schema-inside-component',
-            severity: 'HIGH',
+            rule: "rhf-audit-08-schema-inside-component",
+            severity: "HIGH",
             message:
-              'Validation schema defined inside the component body — recreated on every render. Hoist it to module scope so the resolver caches it.',
+              "Validation schema defined inside the component body — recreated on every render. Hoist it to module scope so the resolver caches it.",
             node: call,
           });
         }
@@ -286,7 +286,7 @@ for (const sf of project.getSourceFiles()) {
     }
 
     // --- Rule 4: useEffect depending on useForm return ---
-    const useEffectCalls = findCallsByName(componentFn, 'useEffect');
+    const useEffectCalls = findCallsByName(componentFn, "useEffect");
     for (const eff of useEffectCalls) {
       const depsArg = eff.getArguments()[1];
       if (!depsArg || !Node.isArrayLiteralExpression(depsArg)) continue;
@@ -295,15 +295,15 @@ for (const sf of project.getSourceFiles()) {
           // Whitelisted: these are stable refs and meant to be deps.
           if (
             [
-              'register',
-              'control',
-              'setValue',
-              'setError',
-              'clearErrors',
-              'reset',
-              'subscribe',
-              'trigger',
-              'unregister',
+              "register",
+              "control",
+              "setValue",
+              "setError",
+              "clearErrors",
+              "reset",
+              "subscribe",
+              "trigger",
+              "unregister",
             ].includes(dep.getText())
           ) {
             continue;
@@ -323,8 +323,8 @@ for (const sf of project.getSourceFiles()) {
                 nameNode.getText() === dep.getText()
               ) {
                 addFinding({
-                  rule: 'rhf-audit-04-useeffect-depends-useform',
-                  severity: 'CRITICAL',
+                  rule: "rhf-audit-04-useeffect-depends-useform",
+                  severity: "CRITICAL",
                   message: `useEffect lists '${dep.getText()}' (the useForm return) as a dependency. The form object is a new reference every render — this causes infinite re-runs. Destructure stable callbacks instead.`,
                   node: eff,
                 });
@@ -337,7 +337,7 @@ for (const sf of project.getSourceFiles()) {
 
     // --- Rule 7 / 9: async submit handler analysis ---
     // Find handleSubmit(fn) calls — the inner fn is the user's submit handler.
-    const handleSubmitCalls = findCallsByName(componentFn, 'handleSubmit');
+    const handleSubmitCalls = findCallsByName(componentFn, "handleSubmit");
     for (const hs of handleSubmitCalls) {
       const submitFn = hs.getArguments()[0];
       if (!submitFn) continue;
@@ -382,17 +382,17 @@ for (const sf of project.getSourceFiles()) {
 
       if (isAsync && !hasTryCatch) {
         addFinding({
-          rule: 'rhf-audit-07-async-submit-no-trycatch',
-          severity: 'HIGH',
+          rule: "rhf-audit-07-async-submit-no-trycatch",
+          severity: "HIGH",
           message:
-            'Async submit handler has no try/catch. If it throws, isSubmitting stays true and the form becomes unrecoverable. Wrap in try/catch and surface errors via setError().',
+            "Async submit handler has no try/catch. If it throws, isSubmitting stays true and the form becomes unrecoverable. Wrap in try/catch and surface errors via setError().",
           node: fnToInspect,
         });
       }
       if (callsNetwork && !callsSetErrorRoot) {
         addFinding({
-          rule: 'rhf-audit-09-no-server-error-setError',
-          severity: 'HIGH',
+          rule: "rhf-audit-09-no-server-error-setError",
+          severity: "HIGH",
           message:
             "Submit handler calls fetch/axios but never setError('root.serverError', ...). Server failures will be silently dropped. Route API errors through setError so they render.",
           node: fnToInspect,
@@ -401,7 +401,7 @@ for (const sf of project.getSourceFiles()) {
     }
 
     // --- Rule 12: register('name', { disabled: <state> }) — likely visual disable ---
-    const registerCalls = findCallsByName(componentFn, 'register');
+    const registerCalls = findCallsByName(componentFn, "register");
     for (const reg of registerCalls) {
       const opts = reg.getArguments()[1];
       if (!opts || !Node.isObjectLiteralExpression(opts)) continue;
@@ -413,7 +413,7 @@ for (const sf of project.getSourceFiles()) {
           )
         )
           return false;
-        return p.getName() === 'disabled';
+        return p.getName() === "disabled";
       });
       if (!disabledProp) continue;
       if (Node.isPropertyAssignment(disabledProp)) {
@@ -428,8 +428,8 @@ for (const sf of project.getSourceFiles()) {
           kind === SyntaxKind.BinaryExpression
         ) {
           addFinding({
-            rule: 'rhf-audit-12-disabled-visual',
-            severity: 'MEDIUM',
+            rule: "rhf-audit-12-disabled-visual",
+            severity: "MEDIUM",
             message:
               "register({ disabled: <state> }) clears the field's value and skips validation. If you only want it greyed out, use the HTML `disabled` attribute on the input instead.",
             node: disabledProp,
@@ -439,7 +439,7 @@ for (const sf of project.getSourceFiles()) {
     }
 
     // --- Rule 13: useFieldArray map missing field.id key ---
-    const useFieldArrayCalls = findCallsByName(componentFn, 'useFieldArray');
+    const useFieldArrayCalls = findCallsByName(componentFn, "useFieldArray");
     for (const ufa of useFieldArrayCalls) {
       // Find the `fields` identifier destructured from this call.
       const vd = ufa.getFirstAncestorByKind(SyntaxKind.VariableDeclaration);
@@ -450,8 +450,8 @@ for (const sf of project.getSourceFiles()) {
         .getElements()
         .find(
           (el) =>
-            el.getName() === 'fields' ||
-            el.getPropertyNameNode()?.getText() === 'fields',
+            el.getName() === "fields" ||
+            el.getPropertyNameNode()?.getText() === "fields",
         );
       if (!fieldsBinding) continue;
       const fieldsVar = fieldsBinding.getName();
@@ -462,7 +462,7 @@ for (const sf of project.getSourceFiles()) {
       )) {
         const expr = callExpr.getExpression();
         if (!Node.isPropertyAccessExpression(expr)) continue;
-        if (expr.getName() !== 'map') continue;
+        if (expr.getName() !== "map") continue;
         if (expr.getExpression().getText() !== fieldsVar) continue;
 
         const mapCallback = callExpr.getArguments()[0];
@@ -486,12 +486,12 @@ for (const sf of project.getSourceFiles()) {
         const keyAttr = first.getAttributes().find((a) => {
           if (a.getKind() !== SyntaxKind.JsxAttribute) return false;
           const nameNode = a.getNameNode();
-          return nameNode && nameNode.getText() === 'key';
+          return nameNode && nameNode.getText() === "key";
         });
         if (!keyAttr) {
           addFinding({
-            rule: 'rhf-audit-13-fieldarray-no-field-id',
-            severity: 'MEDIUM',
+            rule: "rhf-audit-13-fieldarray-no-field-id",
+            severity: "MEDIUM",
             message: `${fieldsVar}.map() renders JSX without a 'key' attribute. Use field.id as key — array index causes state corruption when items are added or reordered.`,
             node: first,
           });
@@ -499,11 +499,11 @@ for (const sf of project.getSourceFiles()) {
           const keyExpr = keyAttr.getInitializer();
           if (keyExpr && Node.isJsxExpression(keyExpr)) {
             const inner = keyExpr.getExpression();
-            const text = inner?.getText() ?? '';
+            const text = inner?.getText() ?? "";
             if (!/\.id\b/.test(text)) {
               addFinding({
-                rule: 'rhf-audit-13-fieldarray-no-field-id',
-                severity: 'MEDIUM',
+                rule: "rhf-audit-13-fieldarray-no-field-id",
+                severity: "MEDIUM",
                 message: `${fieldsVar}.map() uses key={${text}} instead of field.id. Array index keys cause state corruption when items are added or reordered.`,
                 node: keyAttr,
               });
@@ -515,12 +515,12 @@ for (const sf of project.getSourceFiles()) {
   }
 
   // --- Rule 15: useFormContext() usage flag (LOW — informational) ---
-  for (const call of findCallsByName(sf, 'useFormContext')) {
+  for (const call of findCallsByName(sf, "useFormContext")) {
     addFinding({
-      rule: 'rhf-audit-15-useformcontext',
-      severity: 'LOW',
+      rule: "rhf-audit-15-useformcontext",
+      severity: "LOW",
       message:
-        'useFormContext() found. Verify the consuming component is genuinely deep enough that prop drilling would be worse. Shallow uses add implicit coupling without payoff.',
+        "useFormContext() found. Verify the consuming component is genuinely deep enough that prop drilling would be worse. Shallow uses add implicit coupling without payoff.",
       node: call,
     });
   }

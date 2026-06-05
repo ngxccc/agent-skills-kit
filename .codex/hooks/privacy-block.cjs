@@ -16,8 +16,8 @@
 
 (async () => {
   try {
-    const path = require('path');
-    const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
+    const path = require("path");
+    const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
 
     // Import shared privacy checking logic
     const {
@@ -29,11 +29,11 @@
       stripApprovalPrefix,
       extractPaths,
       isSuspiciousPath,
-    } = require('./lib/privacy-checker.cjs');
-    const { isHookEnabled } = require('./lib/ag-config-utils.cjs');
+    } = require("./lib/privacy-checker.cjs");
+    const { isHookEnabled } = require("./lib/ag-config-utils.cjs");
 
     // Early exit if hook disabled in config
-    if (!isHookEnabled('privacy-block')) {
+    if (!isHookEnabled("privacy-block")) {
       process.exit(0);
     }
 
@@ -47,20 +47,20 @@
 
       // JSON marker for the assistant to parse and surface in its approval UX
       const promptData = {
-        type: 'PRIVACY_PROMPT',
+        type: "PRIVACY_PROMPT",
         file: filePath,
         basename: basename,
         question: {
-          header: 'File Access',
+          header: "File Access",
           text: `I need to read "${basename}" which may contain sensitive data (API keys, passwords, tokens). Do you approve?`,
           options: [
             {
-              label: 'Yes, approve access',
+              label: "Yes, approve access",
               description: `Allow reading ${basename} this time`,
             },
             {
-              label: 'No, skip this file',
-              description: 'Continue without accessing this file',
+              label: "No, skip this file",
+              description: "Continue without accessing this file",
             },
           ],
         },
@@ -96,8 +96,8 @@ ${JSON.stringify(promptData, null, 2)}
 
     // Main
     async function main() {
-      const timer = createHookTimer('privacy-block', { event: 'PreToolUse' });
-      let input = '';
+      const timer = createHookTimer("privacy-block", { event: "PreToolUse" });
+      let input = "";
       for await (const chunk of process.stdin) {
         input += chunk;
       }
@@ -107,9 +107,9 @@ ${JSON.stringify(promptData, null, 2)}
         hookData = JSON.parse(input);
       } catch (e) {
         timer.end({
-          status: 'warn',
+          status: "warn",
           exit: 0,
-          note: 'json-parse-failed',
+          note: "json-parse-failed",
           error: e.message,
         });
         process.exit(0); // Invalid JSON, allow
@@ -129,17 +129,17 @@ ${JSON.stringify(promptData, null, 2)}
         // User approved - allow with notice
         if (result.suspicious) {
           console.error(
-            '\x1b[33mWARN:\x1b[0m Approved path is outside project:',
+            "\x1b[33mWARN:\x1b[0m Approved path is outside project:",
             result.filePath,
           );
         }
         console.error(formatApprovalNotice(result.filePath));
         timer.end({
           tool: toolName,
-          status: 'ok',
+          status: "ok",
           exit: 0,
-          target: path.basename(result.filePath || ''),
-          note: result.suspicious ? 'approved-suspicious-path' : 'approved',
+          target: path.basename(result.filePath || ""),
+          note: result.suspicious ? "approved-suspicious-path" : "approved",
         });
         process.exit(0);
       }
@@ -149,28 +149,28 @@ ${JSON.stringify(promptData, null, 2)}
         console.error(formatBlockMessage(result.filePath));
         timer.end({
           tool: toolName,
-          status: 'block',
+          status: "block",
           exit: 2,
-          target: path.basename(result.filePath || ''),
-          note: 'approval-required',
+          target: path.basename(result.filePath || ""),
+          note: "approval-required",
         });
         process.exit(2);
       }
 
-      timer.end({ tool: toolName, status: 'ok', exit: 0 });
+      timer.end({ tool: toolName, status: "ok", exit: 0 });
       process.exit(0); // Allow
     }
 
     // Run main only when executed directly (not when required for testing)
     if (require.main === module) {
       main().catch((error) => {
-        logHookCrash('privacy-block', error, { event: 'PreToolUse' });
+        logHookCrash("privacy-block", error, { event: "PreToolUse" });
         process.exit(0);
       });
     }
 
     // Export functions for unit testing
-    if (typeof module !== 'undefined') {
+    if (typeof module !== "undefined") {
       module.exports = {
         isSafeFile,
         isPrivacyBlockDisabled,
@@ -182,8 +182,8 @@ ${JSON.stringify(promptData, null, 2)}
     }
   } catch (e) {
     try {
-      const { logHookCrash } = require('./lib/hook-logger.cjs');
-      logHookCrash('privacy-block', e, { event: 'PreToolUse' });
+      const { logHookCrash } = require("./lib/hook-logger.cjs");
+      logHookCrash("privacy-block", e, { event: "PreToolUse" });
     } catch (_) {}
     process.exit(0); // fail-open
   }

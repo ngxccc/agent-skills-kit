@@ -8,13 +8,13 @@
  * @module context-builder
  */
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const { execSync } = require("child_process");
 
 // Usage cache file path (written by usage-context-awareness.cjs hook)
-const USAGE_CACHE_FILE = path.join(os.tmpdir(), 'ag-usage-limits-cache.json');
+const USAGE_CACHE_FILE = path.join(os.tmpdir(), "ag-usage-limits-cache.json");
 const RECENT_INJECTION_TTL_MS = 5 * 60 * 1000;
 const PENDING_INJECTION_TTL_MS = 30 * 1000;
 const WARN_THRESHOLD = 70;
@@ -28,18 +28,18 @@ const {
   getGitBranch,
   readSessionState,
   updateSessionState,
-} = require('./ag-config-utils.cjs');
+} = require("./ag-config-utils.cjs");
 
 const PROTOCOL_FILENAME_MAP = {
-  'development-rules.md': 'implementation-standards.md',
-  'orchestration-protocol.md': 'orchestration.md',
+  "development-rules.md": "implementation-standards.md",
+  "orchestration-protocol.md": "orchestration.md",
 };
 
 function execSafe(cmd) {
   try {
     return execSync(cmd, {
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', 'pipe'],
+      encoding: "utf8",
+      stdio: ["pipe", "pipe", "pipe"],
     }).trim();
   } catch {
     return null;
@@ -52,7 +52,7 @@ function execSafe(cmd) {
  * @param {string} [configDirName='.claude'] - Config directory name
  * @returns {string|null} Resolved path or null
  */
-function resolveRulesPath(filename, configDirName = '.claude') {
+function resolveRulesPath(filename, configDirName = ".claude") {
   const canonicalFilename = PROTOCOL_FILENAME_MAP[filename] || filename;
   const legacyFilenames = Object.entries(PROTOCOL_FILENAME_MAP)
     .filter(([, mappedCanonical]) => mappedCanonical === filename)
@@ -62,8 +62,8 @@ function resolveRulesPath(filename, configDirName = '.claude') {
   // Canonical shared protocol location
   const localProtocolPath = path.join(
     process.cwd(),
-    'process',
-    'development-protocols',
+    "process",
+    "development-protocols",
     canonicalFilename,
   );
 
@@ -73,13 +73,13 @@ function resolveRulesPath(filename, configDirName = '.claude') {
     const localRulesPath = path.join(
       process.cwd(),
       configDirName,
-      'rules',
+      "rules",
       fallbackFilename,
     );
     const globalRulesPath = path.join(
       os.homedir(),
-      '.claude',
-      'rules',
+      ".claude",
+      "rules",
       fallbackFilename,
     );
     if (fs.existsSync(localRulesPath))
@@ -93,13 +93,13 @@ function resolveRulesPath(filename, configDirName = '.claude') {
     const localWorkflowsPath = path.join(
       process.cwd(),
       configDirName,
-      'workflows',
+      "workflows",
       fallbackFilename,
     );
     const globalWorkflowsPath = path.join(
       os.homedir(),
-      '.claude',
-      'workflows',
+      ".claude",
+      "workflows",
       fallbackFilename,
     );
     if (fs.existsSync(localWorkflowsPath))
@@ -117,14 +117,14 @@ function resolveRulesPath(filename, configDirName = '.claude') {
  * @param {string} [configDirName='.claude'] - Config directory name
  * @returns {string|null} Resolved path or null
  */
-function resolveScriptPath(filename, configDirName = '.claude') {
+function resolveScriptPath(filename, configDirName = ".claude") {
   const localPath = path.join(
     process.cwd(),
     configDirName,
-    'scripts',
+    "scripts",
     filename,
   );
-  const globalPath = path.join(os.homedir(), '.claude', 'scripts', filename);
+  const globalPath = path.join(os.homedir(), ".claude", "scripts", filename);
   if (fs.existsSync(localPath)) return `${configDirName}/scripts/${filename}`;
   if (fs.existsSync(globalPath)) return `~/.claude/scripts/${filename}`;
   return null;
@@ -135,24 +135,24 @@ function resolveScriptPath(filename, configDirName = '.claude') {
  * @param {string} [configDirName='.claude'] - Config directory name
  * @returns {string|null} Resolved venv Python path or null
  */
-function resolveSkillsVenv(configDirName = '.claude') {
-  const isWindows = process.platform === 'win32';
-  const venvBin = isWindows ? 'Scripts' : 'bin';
-  const pythonExe = isWindows ? 'python.exe' : 'python3';
+function resolveSkillsVenv(configDirName = ".claude") {
+  const isWindows = process.platform === "win32";
+  const venvBin = isWindows ? "Scripts" : "bin";
+  const pythonExe = isWindows ? "python.exe" : "python3";
 
   const localVenv = path.join(
     process.cwd(),
     configDirName,
-    'skills',
-    '.venv',
+    "skills",
+    ".venv",
     venvBin,
     pythonExe,
   );
   const globalVenv = path.join(
     os.homedir(),
-    '.claude',
-    'skills',
-    '.venv',
+    ".claude",
+    "skills",
+    ".venv",
     venvBin,
     pythonExe,
   );
@@ -164,8 +164,8 @@ function resolveSkillsVenv(configDirName = '.claude') {
   }
   if (fs.existsSync(globalVenv)) {
     return isWindows
-      ? '~\\.claude\\skills\\.venv\\Scripts\\python.exe'
-      : '~/.claude/skills/.venv/bin/python3';
+      ? "~\\.claude\\skills\\.venv\\Scripts\\python.exe"
+      : "~/.claude/skills/.venv/bin/python3";
   }
   return null;
 }
@@ -191,15 +191,15 @@ function buildPlanContext(sessionId, config) {
   const namePattern = resolveNamingPattern(plan, gitBranch);
 
   const planLine =
-    resolved.resolvedBy === 'session'
+    resolved.resolvedBy === "session"
       ? `- Plan: ${resolved.path}`
-      : resolved.resolvedBy === 'branch'
+      : resolved.resolvedBy === "branch"
         ? `- Plan: none | Suggested: ${resolved.path}`
         : `- Plan: none`;
 
   // Validation config (injected so LLM can reference it)
   const validation = plan.validation || {};
-  const validationMode = validation.mode || 'prompt';
+  const validationMode = validation.mode || "prompt";
   const validationMin = validation.minQuestions || 3;
   const validationMax = validation.maxQuestions || 8;
 
@@ -227,16 +227,16 @@ function buildInjectionScopeKey({ baseDir } = {}) {
 }
 
 function parseTimestamp(value) {
-  if (typeof value === 'number') return value;
-  if (typeof value === 'string') return Date.parse(value);
+  if (typeof value === "number") return value;
+  if (typeof value === "string") return Date.parse(value);
   return NaN;
 }
 
 function getReminderScopeState(reminderState, scopeKey) {
   const scopes = reminderState?.scopes;
-  if (!scopes || typeof scopes !== 'object') return null;
+  if (!scopes || typeof scopes !== "object") return null;
   const scopeState = scopes[scopeKey];
-  return scopeState && typeof scopeState === 'object' ? scopeState : null;
+  return scopeState && typeof scopeState === "object" ? scopeState : null;
 }
 
 function hasRecentInjection(scopeState, now = Date.now()) {
@@ -256,7 +256,7 @@ function hasPendingInjection(scopeState, now = Date.now()) {
 function pruneReminderScopes(scopes, now = Date.now()) {
   const nextScopes = {};
   for (const [scopeKey, scopeState] of Object.entries(scopes || {})) {
-    if (!scopeState || typeof scopeState !== 'object') continue;
+    if (!scopeState || typeof scopeState !== "object") continue;
     if (
       hasRecentInjection(scopeState, now) ||
       hasPendingInjection(scopeState, now)
@@ -271,11 +271,11 @@ function wasTranscriptRecentlyInjected(transcriptPath, scopeKey = null) {
   try {
     if (!transcriptPath || !fs.existsSync(transcriptPath)) return false;
     const tail = fs
-      .readFileSync(transcriptPath, 'utf-8')
-      .split('\n')
+      .readFileSync(transcriptPath, "utf-8")
+      .split("\n")
       .slice(-150);
     const hasReminderMarker = tail.some((line) =>
-      line.includes('[IMPORTANT] Consider Modularization'),
+      line.includes("[IMPORTANT] Consider Modularization"),
     );
     if (!hasReminderMarker) return false;
     if (!scopeKey) return true;
@@ -303,7 +303,7 @@ function wasTranscriptRecentlyInjected(transcriptPath, scopeKey = null) {
 function wasRecentlyInjected(
   transcriptPath,
   sessionId = null,
-  scopeKey = 'session',
+  scopeKey = "session",
 ) {
   try {
     if (sessionId) {
@@ -328,7 +328,7 @@ function wasRecentlyInjected(
  */
 function reserveInjectionScope(
   sessionId,
-  scopeKey = 'session',
+  scopeKey = "session",
   transcriptPath = null,
 ) {
   const transcriptAlreadyInjected = wasTranscriptRecentlyInjected(
@@ -348,7 +348,7 @@ function reserveInjectionScope(
     const now = Date.now();
     const updated = updateSessionState(sessionId, (state) => {
       const reminderState =
-        state.devRulesReminder && typeof state.devRulesReminder === 'object'
+        state.devRulesReminder && typeof state.devRulesReminder === "object"
           ? state.devRulesReminder
           : {};
       const scopes = pruneReminderScopes(reminderState.scopes, now);
@@ -413,13 +413,13 @@ function reserveInjectionScope(
  * @param {string|null} [scopeKey='session'] - Scope key for cwd/transcript-aware dedup
  * @returns {boolean} true when the marker is written
  */
-function markRecentlyInjected(sessionId, scopeKey = 'session') {
+function markRecentlyInjected(sessionId, scopeKey = "session") {
   if (!sessionId) return false;
 
   try {
     return updateSessionState(sessionId, (state) => {
       const reminderState =
-        state.devRulesReminder && typeof state.devRulesReminder === 'object'
+        state.devRulesReminder && typeof state.devRulesReminder === "object"
           ? state.devRulesReminder
           : {};
       const scopes = pruneReminderScopes(reminderState.scopes);
@@ -450,13 +450,13 @@ function markRecentlyInjected(sessionId, scopeKey = 'session') {
  * @param {string|null} [scopeKey='session'] - Scope key for cwd/transcript-aware dedup
  * @returns {boolean} true when cleanup succeeds
  */
-function clearPendingInjection(sessionId, scopeKey = 'session') {
+function clearPendingInjection(sessionId, scopeKey = "session") {
   if (!sessionId) return false;
 
   try {
     return updateSessionState(sessionId, (state) => {
       const reminderState =
-        state.devRulesReminder && typeof state.devRulesReminder === 'object'
+        state.devRulesReminder && typeof state.devRulesReminder === "object"
           ? state.devRulesReminder
           : {};
       const scopes = pruneReminderScopes(reminderState.scopes);
@@ -502,7 +502,7 @@ function clearPendingInjection(sessionId, scopeKey = 'session') {
 function buildLanguageSection({ thinkingLanguage, responseLanguage }) {
   // Auto-default thinkingLanguage to 'en' when only responseLanguage is set
   const effectiveThinking =
-    thinkingLanguage || (responseLanguage ? 'en' : null);
+    thinkingLanguage || (responseLanguage ? "en" : null);
   const hasThinking =
     effectiveThinking && effectiveThinking !== responseLanguage;
   const hasResponse = responseLanguage;
@@ -546,7 +546,7 @@ function buildSessionSection(staticEnv = {}) {
     `- Working directory: ${staticEnv.cwd || process.cwd()}`,
     `- OS: ${staticEnv.osPlatform || process.platform}`,
     `- User: ${staticEnv.user || process.env.USERNAME || process.env.USER}`,
-    `- Locale: ${staticEnv.locale || process.env.LANG || ''}`,
+    `- Locale: ${staticEnv.locale || process.env.LANG || ""}`,
     `- Memory usage: ${memUsed}MB/${memTotal}MB (${memPercent}%)`,
     `- CPU usage: ${cpuUsage}% user / ${cpuSystem}% system`,
     `- Spawning multiple subagents can cause performance issues, spawn and delegate tasks intelligently based on the available system resources.`,
@@ -563,7 +563,7 @@ function buildSessionSection(staticEnv = {}) {
 function readUsageCache() {
   try {
     if (fs.existsSync(USAGE_CACHE_FILE)) {
-      const cache = JSON.parse(fs.readFileSync(USAGE_CACHE_FILE, 'utf-8'));
+      const cache = JSON.parse(fs.readFileSync(USAGE_CACHE_FILE, "utf-8"));
       // Cache is valid for 5 minutes for injection purposes
       if (Date.now() - cache.timestamp < 300000 && cache.data) {
         return cache.data;
@@ -617,7 +617,7 @@ function buildContextSection(sessionId) {
     const contextPath = path.join(os.tmpdir(), `ag-context-${sessionId}.json`);
     if (!fs.existsSync(contextPath)) return [];
 
-    const data = JSON.parse(fs.readFileSync(contextPath, 'utf-8'));
+    const data = JSON.parse(fs.readFileSync(contextPath, "utf-8"));
     // Only use fresh data (< 5 min old - statusline updates every 300ms when active)
     if (Date.now() - data.timestamp > 300000) return [];
 
@@ -670,8 +670,8 @@ function buildUsageSection() {
   // 5-hour limit
   if (usage.five_hour) {
     const util = usage.five_hour.utilization;
-    if (typeof util === 'number') {
-      parts.push(formatUsagePercent(util, '5h'));
+    if (typeof util === "number") {
+      parts.push(formatUsagePercent(util, "5h"));
     }
     const timeLeft = formatTimeUntilReset(usage.five_hour.resets_at);
     if (timeLeft) {
@@ -681,12 +681,12 @@ function buildUsageSection() {
 
   // 7-day limit
   if (usage.seven_day?.utilization != null) {
-    parts.push(formatUsagePercent(usage.seven_day.utilization, '7d'));
+    parts.push(formatUsagePercent(usage.seven_day.utilization, "7d"));
   }
 
   if (parts.length > 0) {
     lines.push(`## Usage Limits`);
-    lines.push(`- ${parts.join(' | ')}`);
+    lines.push(`- ${parts.join(" | ")}`);
     lines.push(``);
   }
 
@@ -710,8 +710,8 @@ function buildRulesSection({ devRulesPath, skillsVenv, plansPath, docsPath }) {
   }
 
   // Issue #476: Use absolute paths to prevent LLM confusion in multi-CLAUDE.md projects
-  const plansRef = plansPath || 'plans';
-  const docsRef = docsPath || 'docs';
+  const plansRef = plansPath || "plans";
+  const docsRef = docsPath || "docs";
   lines.push(
     `- Markdown files are organized in: Plans → "${plansRef}" directory, Docs → "${docsRef}" directory`,
   );
@@ -863,8 +863,8 @@ function buildReminder(params) {
 
   // Respect hooks config — skip sections when their corresponding hook is disabled
   const hooksConfig = hooks || {};
-  const contextEnabled = hooksConfig['context-tracking'] !== false;
-  const usageEnabled = hooksConfig['usage-context-awareness'] !== false;
+  const contextEnabled = hooksConfig["context-tracking"] !== false;
+  const usageEnabled = hooksConfig["usage-context-awareness"] !== false;
 
   return [
     ...buildLanguageSection({ thinkingLanguage, responseLanguage }),
@@ -905,7 +905,7 @@ function buildReminderContext({
   sessionId,
   config,
   staticEnv,
-  configDirName = '.claude',
+  configDirName = ".claude",
   baseDir,
 } = {}) {
   // Load config if not provided
@@ -914,7 +914,7 @@ function buildReminderContext({
 
   // Resolve paths
   const devRulesPath = resolveRulesPath(
-    'implementation-standards.md',
+    "implementation-standards.md",
     configDirName,
   );
   const skillsVenv = resolveSkillsVenv(configDirName);
@@ -925,8 +925,8 @@ function buildReminderContext({
   // Issue #327: Use baseDir for absolute path resolution (subdirectory workflow support)
   // If baseDir provided, resolve paths as absolute; otherwise use relative paths
   const effectiveBaseDir = baseDir || null;
-  const plansPathRel = normalizePath(cfg.paths?.plans) || 'plans';
-  const docsPathRel = normalizePath(cfg.paths?.docs) || 'docs';
+  const plansPathRel = normalizePath(cfg.paths?.plans) || "plans";
+  const docsPathRel = normalizePath(cfg.paths?.docs) || "docs";
 
   // Build all parameters with absolute paths if baseDir provided
   const params = {
@@ -959,11 +959,11 @@ function buildReminderContext({
 
   // Respect hooks config for sections object too
   const hooksConfig = cfg.hooks || {};
-  const contextEnabled = hooksConfig['context-tracking'] !== false;
-  const usageEnabled = hooksConfig['usage-context-awareness'] !== false;
+  const contextEnabled = hooksConfig["context-tracking"] !== false;
+  const usageEnabled = hooksConfig["usage-context-awareness"] !== false;
 
   return {
-    content: lines.join('\n'),
+    content: lines.join("\n"),
     lines,
     sections: {
       language: buildLanguageSection({

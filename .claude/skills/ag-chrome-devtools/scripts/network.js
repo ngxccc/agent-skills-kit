@@ -11,14 +11,14 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
-import fs from 'fs/promises';
+} from "./lib/browser.js";
+import fs from "fs/promises";
 
 async function monitorNetwork() {
   const args = parseArgs(process.argv.slice(2));
 
   if (!args.url) {
-    outputError(new Error('--url is required'));
+    outputError(new Error("--url is required"));
     return;
   }
 
@@ -31,11 +31,11 @@ async function monitorNetwork() {
 
     const requests = [];
     const filterTypes = args.types
-      ? args.types.split(',').map((t) => t.toLowerCase())
+      ? args.types.split(",").map((t) => t.toLowerCase())
       : null;
 
     // Monitor requests
-    page.on('request', (request) => {
+    page.on("request", (request) => {
       const resourceType = request.resourceType().toLowerCase();
 
       if (!filterTypes || filterTypes.includes(resourceType)) {
@@ -53,7 +53,7 @@ async function monitorNetwork() {
 
     // Monitor responses
     const responses = new Map();
-    page.on('response', async (response) => {
+    page.on("response", async (response) => {
       const request = response.request();
       const resourceType = request.resourceType().toLowerCase();
 
@@ -74,7 +74,7 @@ async function monitorNetwork() {
 
     // Navigate
     await page.goto(args.url, {
-      waitUntil: args['wait-until'] || 'networkidle2',
+      waitUntil: args["wait-until"] || "networkidle2",
     });
 
     // Merge requests with responses
@@ -103,7 +103,7 @@ async function monitorNetwork() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

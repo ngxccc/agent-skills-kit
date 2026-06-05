@@ -54,7 +54,7 @@ function listSkills() {
     ".claude/skills",
     ".omp/skills",
     "skills/.curated",
-    "skills/.experimental"
+    "skills/.experimental",
   ];
   for (const dir of directories) {
     const dirPath = join(ROOT, dir);
@@ -82,7 +82,8 @@ function readVersion(skill) {
     if (!match) return null;
     const parsed = yaml.load(match[1]);
     if (parsed && typeof parsed === "object") {
-      const version = parsed.version || (parsed.metadata && parsed.metadata.version);
+      const version =
+        parsed.version || (parsed.metadata && parsed.metadata.version);
       return typeof version === "string" ? version : null;
     }
     return null;
@@ -140,12 +141,7 @@ function lastBump(skill) {
 // Any uncommitted change inside the skill dir.
 function isDirty(skill) {
   try {
-    const out = git([
-      "status",
-      "--porcelain",
-      "--",
-      skill.relDir,
-    ]);
+    const out = git(["status", "--porcelain", "--", skill.relDir]);
     return out.trim().length > 0;
   } catch {
     return false;
@@ -219,14 +215,7 @@ function main() {
     process.stdout.write(JSON.stringify(rows, null, 2) + "\n");
     process.exit(0);
   } else {
-    const header = [
-      "STATUS",
-      "TIER",
-      "SKILL",
-      "VERSION",
-      "BUMP",
-      "TOUCH",
-    ];
+    const header = ["STATUS", "TIER", "SKILL", "VERSION", "BUMP", "TOUCH"];
     const widths = header.map((h) => h.length);
     const data = rows.map((r) => [
       r.status,
@@ -241,8 +230,7 @@ function main() {
         if (cell.length > widths[i]) widths[i] = cell.length;
       });
     }
-    const fmt = (cells) =>
-      cells.map((c, i) => c.padEnd(widths[i])).join("  ");
+    const fmt = (cells) => cells.map((c, i) => c.padEnd(widths[i])).join("  ");
     process.stdout.write(fmt(header) + "\n");
     process.stdout.write(widths.map((w) => "-".repeat(w)).join("  ") + "\n");
     for (const row of data) process.stdout.write(fmt(row) + "\n");
@@ -256,7 +244,7 @@ function main() {
         Object.entries(counts)
           .map(([k, v]) => `${k}: ${v}`)
           .join(", ") +
-        "\n"
+        "\n",
     );
   }
 

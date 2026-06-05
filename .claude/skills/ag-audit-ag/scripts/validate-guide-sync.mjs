@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 import {
   parseFrontmatter,
   listSkillDirs,
   exists,
   abs,
-} from '../../ag-audit-context/scripts/shared-skill-utils.mjs';
+} from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -21,7 +21,7 @@ function warn(message) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), 'utf8');
+  return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
 // --- Agent sync ---
@@ -45,9 +45,9 @@ function extractTableAgents(text) {
   return agents;
 }
 
-const guidePath = 'README.md';
+const guidePath = "README.md";
 if (!exists(guidePath)) {
-  fail('README.md does not exist');
+  fail("README.md does not exist");
 } else {
   const guideText = read(guidePath);
 
@@ -56,11 +56,11 @@ if (!exists(guidePath)) {
   const agentsSectionMatch = guideText.match(
     /#{2,3}\s+(?:\d+\s+)?Agents\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---)/i,
   );
-  const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : '';
+  const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : "";
   const guideAgents = extractTableAgents(agentsSection);
 
   // Get disk agents
-  const diskAgents = new Set(listAgentNames('.claude/agents', '.md'));
+  const diskAgents = new Set(listAgentNames(".claude/agents", ".md"));
 
   // Check: every disk agent should be in README.md
   for (const agent of diskAgents) {
@@ -87,7 +87,7 @@ if (!exists(guidePath)) {
   const skillsSectionMatch = guideText.match(
     /#{2,3}\s+(?:\d+\s+)?Skills\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---\n\n#{2,3}\s+(?:\d+\s+)?)/i,
   );
-  const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : '';
+  const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : "";
   const guideSkills = extractTableAgents(skillsSection);
 
   // Get disk skills that have a SKILL.md
@@ -116,7 +116,7 @@ if (!exists(guidePath)) {
     const parsed = parseFrontmatter(skillFile);
     const name = parsed?.fields?.name || folder;
     // Strip ag- prefix for matching (README.md uses folder names, not ag-prefixed names)
-    const nameWithoutPrefix = name.startsWith('ag-') ? name.slice(3) : name;
+    const nameWithoutPrefix = name.startsWith("ag-") ? name.slice(3) : name;
     // Check if the skill folder name, frontmatter name, or stripped name appears in README.md
     if (
       !guideSkills.has(folder) &&

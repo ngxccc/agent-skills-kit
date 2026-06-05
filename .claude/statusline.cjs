@@ -1,36 +1,36 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
-const fs = require('fs');
-const path = require('path');
-const os = require('os');
+const fs = require("fs");
+const path = require("path");
+const os = require("os");
 
 const {
   loadConfig,
   readSessionState,
-} = require('./hooks/lib/ag-config-utils.cjs');
-const { getGitInfo } = require('./hooks/lib/git-info-cache.cjs');
-const { parseTranscript } = require('./hooks/lib/transcript-parser.cjs');
-const { setColorEnabled } = require('./hooks/lib/colors.cjs');
+} = require("./hooks/lib/ag-config-utils.cjs");
+const { getGitInfo } = require("./hooks/lib/git-info-cache.cjs");
+const { parseTranscript } = require("./hooks/lib/transcript-parser.cjs");
+const { setColorEnabled } = require("./hooks/lib/colors.cjs");
 const {
   resolveQuotaDisplayEligibility,
   readUsageCache,
   getUsageCachePath,
   normalizeUtilization,
-} = require('./hooks/lib/usage-limits-cache.cjs');
+} = require("./hooks/lib/usage-limits-cache.cjs");
 const {
   resolveLayout,
-} = require('./hooks/lib/statusline-section-registry.cjs');
+} = require("./hooks/lib/statusline-section-registry.cjs");
 const {
   render,
   renderCompact,
   renderMinimal,
-} = require('./hooks/lib/statusline-render-modes.cjs');
+} = require("./hooks/lib/statusline-render-modes.cjs");
 
 function formatResetTime(resetsAt, now = Date.now()) {
-  if (!resetsAt) return '';
+  if (!resetsAt) return "";
   const diffMs = new Date(resetsAt).getTime() - now;
-  if (diffMs <= 0) return '';
+  if (diffMs <= 0) return "";
 
   const diffSec = Math.floor(diffMs / 1000);
   const diffMin = Math.floor(diffSec / 60);
@@ -53,22 +53,22 @@ async function main() {
     : 0;
 
   const inputPromise = new Promise((resolve) => {
-    let data = '';
+    let data = "";
     let timeout = null;
     if (timeoutMs > 0) {
       timeout = setTimeout(() => {
         resolve(data);
       }, timeoutMs);
     }
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (chunk) => {
+    process.stdin.setEncoding("utf8");
+    process.stdin.on("data", (chunk) => {
       data += chunk;
     });
-    process.stdin.on('end', () => {
+    process.stdin.on("end", () => {
       if (timeout) clearTimeout(timeout);
       resolve(data);
     });
-    process.stdin.on('error', () => {
+    process.stdin.on("error", () => {
       if (timeout) clearTimeout(timeout);
       resolve(data);
     });
@@ -79,7 +79,7 @@ async function main() {
   let payload;
   if (!input.trim()) {
     payload = {
-      model: { display_name: 'Claude' },
+      model: { display_name: "Claude" },
       workspace: { current_dir: process.cwd() },
     };
   } else {
@@ -87,7 +87,7 @@ async function main() {
       payload = JSON.parse(input);
     } catch (err) {
       payload = {
-        model: { display_name: 'Claude' },
+        model: { display_name: "Claude" },
         workspace: { current_dir: process.cwd() },
       };
     }
@@ -101,8 +101,8 @@ async function main() {
   const layout = resolveLayout(statuslineLayout);
 
   const ctx = {
-    modelName: payload.model?.display_name || '',
-    currentDir: payload.workspace?.current_dir || '',
+    modelName: payload.model?.display_name || "",
+    currentDir: payload.workspace?.current_dir || "",
     contextPercent: 0,
     usageWindows: [],
     gitBranch: null,
@@ -110,7 +110,7 @@ async function main() {
     gitStaged: 0,
     gitAhead: 0,
     gitBehind: 0,
-    costText: '',
+    costText: "",
     linesAdded: 0,
     linesRemoved: 0,
     transcript: [],
@@ -137,7 +137,7 @@ async function main() {
     const cache = readUsageCache(cachePath);
     if (
       cache &&
-      cache.status === 'available' &&
+      cache.status === "available" &&
       Date.now() - cache.timestamp < 300000
     ) {
       const data = cache.data || {};
@@ -146,7 +146,7 @@ async function main() {
         weekPercent: normalizeUtilization(data.seven_day?.utilization),
       };
 
-      if (typeof snapshot.fiveHourPercent === 'number') {
+      if (typeof snapshot.fiveHourPercent === "number") {
         let chip = `5h ${snapshot.fiveHourPercent}%`;
         const resetsAt = data.five_hour?.resets_at;
         if (resetsAt) {
@@ -158,7 +158,7 @@ async function main() {
         ctx.usageWindows.push(chip);
       }
 
-      if (typeof snapshot.weekPercent === 'number') {
+      if (typeof snapshot.weekPercent === "number") {
         let chip = `wk ${snapshot.weekPercent}%`;
         const resetsAt = data.seven_day?.resets_at;
         if (resetsAt) {
@@ -211,11 +211,11 @@ async function main() {
   }
 
   // Render based on mode
-  if (config.statusline === 'none') {
+  if (config.statusline === "none") {
     // Exit silently
-  } else if (config.statusline === 'minimal') {
+  } else if (config.statusline === "minimal") {
     renderMinimal(ctx, layout);
-  } else if (config.statusline === 'compact') {
+  } else if (config.statusline === "compact") {
     renderCompact(ctx, layout);
   } else {
     render(ctx, layout, false);

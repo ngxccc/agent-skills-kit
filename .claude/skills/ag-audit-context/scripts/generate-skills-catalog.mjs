@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
+import fs from "node:fs";
 import {
   loadSkillInventory,
   normalizeSkillName,
@@ -8,12 +8,12 @@ import {
   loadRoutingPolicy,
   writeJsonFile,
   abs,
-} from './shared-skill-utils.mjs';
+} from "./shared-skill-utils.mjs";
 
-const outputPath = 'process/context/generated-skills-catalog.json';
+const outputPath = "process/context/generated-skills-catalog.json";
 const args = new Set(process.argv.slice(2));
-const shouldWrite = args.has('--write');
-const shouldCheck = args.has('--check');
+const shouldWrite = args.has("--write");
+const shouldCheck = args.has("--check");
 
 const inventory = loadSkillInventory();
 const aliasesBySkill = new Map(
@@ -22,9 +22,9 @@ const aliasesBySkill = new Map(
 const policy = loadRoutingPolicy();
 
 const catalog = {
-  owner: 'audit-context',
+  owner: "audit-context",
   generatedFrom: {
-    skillsRoot: '.claude/skills',
+    skillsRoot: ".claude/skills",
     routingPolicy: policy.path,
     canonicalRoutingSurfaces: policy.canonicalRoutingSurfaces,
   },
@@ -32,7 +32,7 @@ const catalog = {
   skills: inventory.map((skill) => ({
     folder: skill.folder,
     name: skill.frontmatter.name || skill.folder,
-    description: skill.frontmatter.description || '',
+    description: skill.frontmatter.description || "",
     aliases: skill.aliases,
     normalizedName: normalizeSkillName(skill.frontmatter.name || skill.folder),
     routedFrom: skill.routedFrom,
@@ -57,7 +57,7 @@ if (shouldCheck) {
     );
     process.exit(1);
   }
-  const existing = fs.readFileSync(target, 'utf8');
+  const existing = fs.readFileSync(target, "utf8");
   const next = `${JSON.stringify(catalog, null, 2)}\n`;
   if (existing !== next) {
     console.error(

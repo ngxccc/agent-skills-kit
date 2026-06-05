@@ -13,9 +13,9 @@
 
 // Crash wrapper
 try {
-  const fs = require('fs');
-  const path = require('path');
-  const os = require('os');
+  const fs = require("fs");
+  const path = require("path");
+  const os = require("os");
   const {
     loadConfig,
     readSessionState,
@@ -26,18 +26,18 @@ try {
     resolveNamingPattern,
     extractTaskListId,
     isHookEnabled,
-  } = require('./lib/ag-config-utils.cjs');
-  const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
+  } = require("./lib/ag-config-utils.cjs");
+  const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
   const {
     loadState,
     refreshStatuslineSnapshot,
-  } = require('./lib/session-state-manager.cjs');
+  } = require("./lib/session-state-manager.cjs");
   const {
     createEmptyActivitySnapshot,
-  } = require('./lib/statusline-session-cache.cjs');
+  } = require("./lib/statusline-session-cache.cjs");
 
   // Early exit if hook disabled in config
-  if (!isHookEnabled('session-init')) {
+  if (!isHookEnabled("session-init")) {
     process.exit(0);
   }
 
@@ -51,7 +51,7 @@ try {
     getCodingLevelStyleName,
     getCodingLevelGuidelines,
     buildContextOutput,
-  } = require('./lib/project-detector.cjs');
+  } = require("./lib/project-detector.cjs");
 
   /**
    * One-time cleanup for orphaned .shadowed/ directories from skill-dedup hook (Issue #422)
@@ -60,14 +60,14 @@ try {
   function cleanupOrphanedShadowedSkills() {
     const shadowedDir = path.join(
       process.cwd(),
-      '.claude',
-      'skills',
-      '.shadowed',
+      ".claude",
+      "skills",
+      ".shadowed",
     );
     if (!fs.existsSync(shadowedDir))
       return { restored: [], skipped: [], kept: [] };
 
-    const skillsDir = path.join(process.cwd(), '.claude', 'skills');
+    const skillsDir = path.join(process.cwd(), ".claude", "skills");
     const restored = [];
     const skipped = [];
     const kept = [];
@@ -86,11 +86,11 @@ try {
             continue;
           }
 
-          const orphanedSkill = path.join(src, 'SKILL.md');
-          const localSkill = path.join(dest, 'SKILL.md');
+          const orphanedSkill = path.join(src, "SKILL.md");
+          const localSkill = path.join(dest, "SKILL.md");
           if (fs.existsSync(orphanedSkill) && fs.existsSync(localSkill)) {
-            const orphanedContent = fs.readFileSync(orphanedSkill, 'utf8');
-            const localContent = fs.readFileSync(localSkill, 'utf8');
+            const orphanedContent = fs.readFileSync(orphanedSkill, "utf8");
+            const localContent = fs.readFileSync(localSkill, "utf8");
             if (orphanedContent === localContent) {
               fs.rmSync(src, { recursive: true, force: true });
               skipped.push(entry.name);
@@ -108,7 +108,7 @@ try {
         }
       }
 
-      const manifestFile = path.join(shadowedDir, '.dedup-manifest.json');
+      const manifestFile = path.join(shadowedDir, ".dedup-manifest.json");
       if (fs.existsSync(manifestFile)) fs.unlinkSync(manifestFile);
       if (
         fs.existsSync(shadowedDir) &&
@@ -135,16 +135,16 @@ try {
    */
   function detectAgentTeam() {
     try {
-      const teamsDir = path.join(os.homedir(), '.claude', 'teams');
+      const teamsDir = path.join(os.homedir(), ".claude", "teams");
       if (!fs.existsSync(teamsDir)) return null;
 
       const teams = fs.readdirSync(teamsDir, { withFileTypes: true });
       for (const entry of teams) {
         if (!entry.isDirectory()) continue;
-        const configPath = path.join(teamsDir, entry.name, 'config.json');
+        const configPath = path.join(teamsDir, entry.name, "config.json");
         if (!fs.existsSync(configPath)) continue;
         try {
-          const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+          const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
           if (config.members && config.members.length > 0) {
             return { teamName: entry.name, memberCount: config.members.length };
           }
@@ -159,7 +159,7 @@ try {
   }
 
   function shouldWarmStatuslineCache(source, snapshot) {
-    if (!['startup', 'resume', 'compact'].includes(source)) return false;
+    if (!["startup", "resume", "compact"].includes(source)) return false;
     return !snapshot || snapshot.warmed !== true;
   }
 
@@ -167,18 +167,18 @@ try {
    * Main hook execution
    */
   async function main() {
-    const timer = createHookTimer('session-init', { event: 'SessionStart' });
+    const timer = createHookTimer("session-init", { event: "SessionStart" });
     try {
       const shadowedCleanup = cleanupOrphanedShadowedSkills();
-      const stdin = fs.readFileSync(0, 'utf-8').trim();
+      const stdin = fs.readFileSync(0, "utf-8").trim();
       const data = stdin ? JSON.parse(stdin) : {};
       const envFile = process.env.CLAUDE_ENV_FILE;
-      const source = data.source || 'unknown';
+      const source = data.source || "unknown";
       const sessionId = data.session_id || null;
       const existingSession = sessionId ? readSessionState(sessionId) : null;
 
       const config = loadConfig();
-      const sessionStateEnabled = config.hooks?.['session-state'] !== false;
+      const sessionStateEnabled = config.hooks?.["session-state"] !== false;
 
       const detections = {
         type: detectProjectType(config.project?.type),
@@ -193,9 +193,9 @@ try {
         updateSessionState(sessionId, (prev) => ({
           ...prev,
           sessionOrigin: process.cwd(),
-          activePlan: resolved.resolvedBy === 'session' ? resolved.path : null,
+          activePlan: resolved.resolvedBy === "session" ? resolved.path : null,
           suggestedPlan:
-            resolved.resolvedBy === 'branch' ? resolved.path : null,
+            resolved.resolvedBy === "branch" ? resolved.path : null,
           timestamp: Date.now(),
           source,
           statusline: prev.statusline || createEmptyActivitySnapshot(),
@@ -232,9 +232,9 @@ try {
           process.env.USER ||
           process.env.LOGNAME ||
           os.userInfo().username,
-        locale: process.env.LANG || '',
+        locale: process.env.LANG || "",
         timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-        claudeSettingsDir: path.resolve(__dirname, '..'),
+        claudeSettingsDir: path.resolve(__dirname, ".."),
       };
 
       // Compute base directory for absolute paths (Issue #327: use CWD for subdirectory support)
@@ -249,69 +249,69 @@ try {
 
       if (envFile) {
         // Session & plan config
-        writeEnv(envFile, 'CK_SESSION_ID', sessionId || '');
-        writeEnv(envFile, 'CK_PLAN_NAMING_FORMAT', config.plan.namingFormat);
-        writeEnv(envFile, 'CK_PLAN_DATE_FORMAT', config.plan.dateFormat);
+        writeEnv(envFile, "CK_SESSION_ID", sessionId || "");
+        writeEnv(envFile, "CK_PLAN_NAMING_FORMAT", config.plan.namingFormat);
+        writeEnv(envFile, "CK_PLAN_DATE_FORMAT", config.plan.dateFormat);
         writeEnv(
           envFile,
-          'CK_PLAN_ISSUE_PREFIX',
-          config.plan.issuePrefix || '',
+          "CK_PLAN_ISSUE_PREFIX",
+          config.plan.issuePrefix || "",
         );
-        writeEnv(envFile, 'CK_PLAN_REPORTS_DIR', config.plan.reportsDir);
+        writeEnv(envFile, "CK_PLAN_REPORTS_DIR", config.plan.reportsDir);
 
         // NEW: Resolved naming pattern for DRY file naming in agents
         // Example: "251212-1830-GH-88-{slug}" or "251212-1830-{slug}"
         // Agents use: `{agent-type}-$CK_NAME_PATTERN.md` and substitute {slug}
-        writeEnv(envFile, 'CK_NAME_PATTERN', namePattern);
+        writeEnv(envFile, "CK_NAME_PATTERN", namePattern);
 
         // Plan resolution
         writeEnv(
           envFile,
-          'CK_ACTIVE_PLAN',
-          resolved.resolvedBy === 'session' ? resolved.path : '',
+          "CK_ACTIVE_PLAN",
+          resolved.resolvedBy === "session" ? resolved.path : "",
         );
         writeEnv(
           envFile,
-          'CK_SUGGESTED_PLAN',
-          resolved.resolvedBy === 'branch' ? resolved.path : '',
+          "CK_SUGGESTED_PLAN",
+          resolved.resolvedBy === "branch" ? resolved.path : "",
         );
 
         // Claude Code Tasks integration - enables multi-session/subagent coordination
         // Task list ID = plan directory name (shared across all sessions working on same plan)
         if (taskListId) {
-          writeEnv(envFile, 'CLAUDE_CODE_TASK_LIST_ID', taskListId);
+          writeEnv(envFile, "CLAUDE_CODE_TASK_LIST_ID", taskListId);
         }
 
         // Paths - use absolute paths based on CWD for subdirectory workflow support (Issue #327)
-        writeEnv(envFile, 'CK_GIT_ROOT', staticEnv.gitRoot || '');
-        writeEnv(envFile, 'CK_REPORTS_PATH', path.join(baseDir, reportsPath));
+        writeEnv(envFile, "CK_GIT_ROOT", staticEnv.gitRoot || "");
+        writeEnv(envFile, "CK_REPORTS_PATH", path.join(baseDir, reportsPath));
         writeEnv(
           envFile,
-          'CK_DOCS_PATH',
+          "CK_DOCS_PATH",
           path.join(baseDir, config.paths.docs),
         );
         writeEnv(
           envFile,
-          'CK_PLANS_PATH',
+          "CK_PLANS_PATH",
           path.join(baseDir, config.paths.plans),
         );
-        writeEnv(envFile, 'CK_PROJECT_ROOT', process.cwd());
+        writeEnv(envFile, "CK_PROJECT_ROOT", process.cwd());
 
         // Project detection
-        writeEnv(envFile, 'CK_PROJECT_TYPE', detections.type || '');
-        writeEnv(envFile, 'CK_PACKAGE_MANAGER', detections.pm || '');
-        writeEnv(envFile, 'CK_FRAMEWORK', detections.framework || '');
+        writeEnv(envFile, "CK_PROJECT_TYPE", detections.type || "");
+        writeEnv(envFile, "CK_PACKAGE_MANAGER", detections.pm || "");
+        writeEnv(envFile, "CK_FRAMEWORK", detections.framework || "");
 
         // NEW: Static environment info (so other hooks don't need to recompute)
-        writeEnv(envFile, 'CK_NODE_VERSION', staticEnv.nodeVersion);
-        writeEnv(envFile, 'CK_OS_PLATFORM', staticEnv.osPlatform);
-        writeEnv(envFile, 'CK_GIT_BRANCH', staticEnv.gitBranch || '');
-        writeEnv(envFile, 'CK_USER', staticEnv.user);
-        writeEnv(envFile, 'CK_LOCALE', staticEnv.locale);
-        writeEnv(envFile, 'CK_TIMEZONE', staticEnv.timezone);
+        writeEnv(envFile, "CK_NODE_VERSION", staticEnv.nodeVersion);
+        writeEnv(envFile, "CK_OS_PLATFORM", staticEnv.osPlatform);
+        writeEnv(envFile, "CK_GIT_BRANCH", staticEnv.gitBranch || "");
+        writeEnv(envFile, "CK_USER", staticEnv.user);
+        writeEnv(envFile, "CK_LOCALE", staticEnv.locale);
+        writeEnv(envFile, "CK_TIMEZONE", staticEnv.timezone);
         writeEnv(
           envFile,
-          'CK_CLAUDE_SETTINGS_DIR',
+          "CK_CLAUDE_SETTINGS_DIR",
           staticEnv.claudeSettingsDir,
         );
 
@@ -319,50 +319,50 @@ try {
         if (config.locale?.thinkingLanguage) {
           writeEnv(
             envFile,
-            'CK_THINKING_LANGUAGE',
+            "CK_THINKING_LANGUAGE",
             config.locale.thinkingLanguage,
           );
         }
         if (config.locale?.responseLanguage) {
           writeEnv(
             envFile,
-            'CK_RESPONSE_LANGUAGE',
+            "CK_RESPONSE_LANGUAGE",
             config.locale.responseLanguage,
           );
         }
 
         // Plan validation config for Flowser plan generation and validation workflows
         const validation = config.plan?.validation || {};
-        writeEnv(envFile, 'CK_VALIDATION_MODE', validation.mode || 'prompt');
+        writeEnv(envFile, "CK_VALIDATION_MODE", validation.mode || "prompt");
         writeEnv(
           envFile,
-          'CK_VALIDATION_MIN_QUESTIONS',
+          "CK_VALIDATION_MIN_QUESTIONS",
           validation.minQuestions || 3,
         );
         writeEnv(
           envFile,
-          'CK_VALIDATION_MAX_QUESTIONS',
+          "CK_VALIDATION_MAX_QUESTIONS",
           validation.maxQuestions || 8,
         );
         writeEnv(
           envFile,
-          'CK_VALIDATION_FOCUS_AREAS',
+          "CK_VALIDATION_FOCUS_AREAS",
           (
             validation.focusAreas || [
-              'assumptions',
-              'risks',
-              'tradeoffs',
-              'architecture',
+              "assumptions",
+              "risks",
+              "tradeoffs",
+              "architecture",
             ]
-          ).join(','),
+          ).join(","),
         );
 
         // Coding level config (for output style selection)
         const codingLevel = config.codingLevel ?? 5;
-        writeEnv(envFile, 'CK_CODING_LEVEL', codingLevel);
+        writeEnv(envFile, "CK_CODING_LEVEL", codingLevel);
         writeEnv(
           envFile,
-          'CK_CODING_LEVEL_STYLE',
+          "CK_CODING_LEVEL_STYLE",
           getCodingLevelStyleName(codingLevel),
         );
       }
@@ -370,8 +370,8 @@ try {
       // Agent Teams detection — detect once, used for env vars and console output
       const teamInfo = detectAgentTeam();
       if (envFile && teamInfo) {
-        writeEnv(envFile, 'CK_AGENT_TEAM', teamInfo.teamName);
-        writeEnv(envFile, 'CK_AGENT_TEAM_MEMBERS', teamInfo.memberCount);
+        writeEnv(envFile, "CK_AGENT_TEAM", teamInfo.teamName);
+        writeEnv(envFile, "CK_AGENT_TEAM_MEMBERS", teamInfo.memberCount);
       }
 
       console.log(
@@ -389,17 +389,17 @@ try {
         );
         if (shadowedCleanup.restored.length > 0) {
           console.log(
-            `Restored ${shadowedCleanup.restored.length} skill(s): ${shadowedCleanup.restored.join(', ')}`,
+            `Restored ${shadowedCleanup.restored.length} skill(s): ${shadowedCleanup.restored.join(", ")}`,
           );
         }
         if (shadowedCleanup.skipped.length > 0) {
           console.log(
-            `Removed ${shadowedCleanup.skipped.length} duplicate(s): ${shadowedCleanup.skipped.join(', ')}`,
+            `Removed ${shadowedCleanup.skipped.length} duplicate(s): ${shadowedCleanup.skipped.join(", ")}`,
           );
         }
         if (shadowedCleanup.kept.length > 0) {
           console.log(
-            `[!] Kept ${shadowedCleanup.kept.length} skill(s) for manual review (content differs): ${shadowedCleanup.kept.join(', ')}`,
+            `[!] Kept ${shadowedCleanup.kept.length} skill(s) for manual review (content differs): ${shadowedCleanup.kept.join(", ")}`,
           );
           console.log(
             `    Review .claude/skills/.shadowed/ and merge changes manually.`,
@@ -409,26 +409,26 @@ try {
 
       if (
         sessionStateEnabled &&
-        (source === 'startup' || source === 'compact')
+        (source === "startup" || source === "compact")
       ) {
         const previousState = loadState(process.cwd());
         if (previousState) {
-          if (source === 'compact') {
-            console.log('\n--- Session State (Post-Compaction Recovery) ---');
+          if (source === "compact") {
+            console.log("\n--- Session State (Post-Compaction Recovery) ---");
             console.log(previousState);
-            console.log('--- End Session State ---\n');
+            console.log("--- End Session State ---\n");
             console.log(
-              'Context was compacted. Above is your last saved progress. Resume from where you left off.',
+              "Context was compacted. Above is your last saved progress. Resume from where you left off.",
             );
             console.log(
-              'IMPORTANT: Re-read active plan files and todo list. Do NOT re-do completed work.',
+              "IMPORTANT: Re-read active plan files and todo list. Do NOT re-do completed work.",
             );
           } else {
-            console.log('\n--- Previous Session State ---');
+            console.log("\n--- Previous Session State ---");
             console.log(previousState);
-            console.log('--- End Session State ---\n');
+            console.log("--- End Session State ---\n");
             console.log(
-              'Review above state from your last session. Continue where you left off or start fresh.',
+              "Review above state from your last session. Continue where you left off or start fresh.",
             );
           }
         }
@@ -459,7 +459,7 @@ try {
       // When context is compacted mid-workflow, the summarization may lose "pending approval" state.
       // This warning reminds the assistant to verify if user approval was pending before proceeding.
       // Upstream bug: the runtime should preserve pending interactive state during compaction.
-      if (source === 'compact') {
+      if (source === "compact") {
         console.log(`\n⚠️ CONTEXT COMPACTED - APPROVAL STATE CHECK:`);
         console.log(
           `If you were waiting for user approval at any gate (for example a plan review or execute pause),`,
@@ -484,11 +484,11 @@ try {
         });
       }
 
-      timer.end({ status: 'ok', exit: 0, note: source || 'session-start' });
+      timer.end({ status: "ok", exit: 0, note: source || "session-start" });
       process.exit(0);
     } catch (error) {
       console.error(`SessionStart hook error: ${error.message}`);
-      logHookCrash('session-init', error, { event: 'SessionStart' });
+      logHookCrash("session-init", error, { event: "SessionStart" });
       process.exit(0);
     }
   }
@@ -496,8 +496,8 @@ try {
   main();
 } catch (e) {
   try {
-    const { logHookCrash } = require('./lib/hook-logger.cjs');
-    logHookCrash('session-init', e, { event: 'SessionStart' });
+    const { logHookCrash } = require("./lib/hook-logger.cjs");
+    logHookCrash("session-init", e, { event: "SessionStart" });
   } catch (_) {}
   process.exit(0); // fail-open
 }

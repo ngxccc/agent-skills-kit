@@ -11,14 +11,14 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
-import fs from 'fs/promises';
+} from "./lib/browser.js";
+import fs from "fs/promises";
 
 async function measurePerformance() {
   const args = parseArgs(process.argv.slice(2));
 
   if (!args.url) {
-    outputError(new Error('--url is required'));
+    outputError(new Error("--url is required"));
     return;
   }
 
@@ -34,16 +34,16 @@ async function measurePerformance() {
       await page.tracing.start({
         path: args.trace,
         categories: [
-          'devtools.timeline',
-          'disabled-by-default-devtools.timeline',
-          'disabled-by-default-devtools.timeline.frame',
+          "devtools.timeline",
+          "disabled-by-default-devtools.timeline",
+          "disabled-by-default-devtools.timeline.frame",
         ],
       });
     }
 
     // Navigate
     await page.goto(args.url, {
-      waitUntil: 'networkidle2',
+      waitUntil: "networkidle2",
     });
 
     // Stop tracing
@@ -74,7 +74,7 @@ async function measurePerformance() {
               vitals.LCP = lastEntry.renderTime || lastEntry.loadTime;
             }
           }).observe({
-            entryTypes: ['largest-contentful-paint'],
+            entryTypes: ["largest-contentful-paint"],
             buffered: true,
           });
         } catch (e) {}
@@ -87,14 +87,14 @@ async function measurePerformance() {
                 vitals.CLS += entry.value;
               }
             });
-          }).observe({ entryTypes: ['layout-shift'], buffered: true });
+          }).observe({ entryTypes: ["layout-shift"], buffered: true });
         } catch (e) {}
 
         // FCP
         try {
-          const paintEntries = performance.getEntriesByType('paint');
+          const paintEntries = performance.getEntriesByType("paint");
           const fcpEntry = paintEntries.find(
-            (e) => e.name === 'first-contentful-paint',
+            (e) => e.name === "first-contentful-paint",
           );
           if (fcpEntry) {
             vitals.FCP = fcpEntry.startTime;
@@ -103,7 +103,7 @@ async function measurePerformance() {
 
         // TTFB
         try {
-          const [navigationEntry] = performance.getEntriesByType('navigation');
+          const [navigationEntry] = performance.getEntriesByType("navigation");
           if (navigationEntry) {
             vitals.TTFB =
               navigationEntry.responseStart - navigationEntry.requestStart;
@@ -117,7 +117,7 @@ async function measurePerformance() {
 
     // Get resource timing
     const resources = await page.evaluate(() => {
-      return performance.getEntriesByType('resource').map((r) => ({
+      return performance.getEntriesByType("resource").map((r) => ({
         name: r.name,
         type: r.initiatorType,
         duration: r.duration,
@@ -138,7 +138,7 @@ async function measurePerformance() {
       resources: {
         count: resources.length,
         totalDuration: resources.reduce((sum, r) => sum + r.duration, 0),
-        items: args.resources === 'true' ? resources : undefined,
+        items: args.resources === "true" ? resources : undefined,
       },
     };
 
@@ -150,7 +150,7 @@ async function measurePerformance() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

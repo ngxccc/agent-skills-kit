@@ -11,8 +11,8 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
-import fs from 'fs/promises';
+} from "./lib/browser.js";
+import fs from "fs/promises";
 
 async function snapshot() {
   const args = parseArgs(process.argv.slice(2));
@@ -27,37 +27,37 @@ async function snapshot() {
     // Navigate if URL provided
     if (args.url) {
       await page.goto(args.url, {
-        waitUntil: args['wait-until'] || 'networkidle2',
+        waitUntil: args["wait-until"] || "networkidle2",
       });
     }
 
     // Get interactive elements with metadata
     const elements = await page.evaluate(() => {
       const interactiveSelectors = [
-        'a[href]',
-        'button',
-        'input',
-        'textarea',
-        'select',
-        '[onclick]',
+        "a[href]",
+        "button",
+        "input",
+        "textarea",
+        "select",
+        "[onclick]",
         '[role="button"]',
         '[role="link"]',
-        '[contenteditable]',
+        "[contenteditable]",
       ];
 
       const elements = [];
-      const selector = interactiveSelectors.join(', ');
+      const selector = interactiveSelectors.join(", ");
       const nodes = document.querySelectorAll(selector);
 
       nodes.forEach((el, index) => {
         const rect = el.getBoundingClientRect();
 
         // Generate unique selector
-        let uniqueSelector = '';
+        let uniqueSelector = "";
         if (el.id) {
           uniqueSelector = `#${el.id}`;
         } else if (el.className) {
-          const classes = Array.from(el.classList).join('.');
+          const classes = Array.from(el.classList).join(".");
           uniqueSelector = `${el.tagName.toLowerCase()}.${classes}`;
         } else {
           uniqueSelector = el.tagName.toLowerCase();
@@ -90,7 +90,7 @@ async function snapshot() {
           return `//*[@id="${element.id}"]`;
         }
         if (element === document.body) {
-          return '/html/body';
+          return "/html/body";
         }
         let ix = 0;
         const siblings = element.parentNode?.childNodes || [];
@@ -99,18 +99,18 @@ async function snapshot() {
           if (sibling === element) {
             return (
               getXPath(element.parentNode) +
-              '/' +
+              "/" +
               element.tagName.toLowerCase() +
-              '[' +
+              "[" +
               (ix + 1) +
-              ']'
+              "]"
             );
           }
           if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
             ix++;
           }
         }
-        return '';
+        return "";
       }
 
       return elements;
@@ -137,7 +137,7 @@ async function snapshot() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

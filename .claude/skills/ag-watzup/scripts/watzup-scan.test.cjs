@@ -1,27 +1,27 @@
-'use strict';
+"use strict";
 
-const assert = require('node:assert/strict');
-const { spawnSync } = require('node:child_process');
-const fs = require('node:fs');
-const os = require('node:os');
-const path = require('node:path');
-const test = require('node:test');
+const assert = require("node:assert/strict");
+const { spawnSync } = require("node:child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const test = require("node:test");
 
 const {
   buildPayload,
   parseArgs,
   readPlan,
   renderText,
-} = require('./watzup-scan.cjs');
+} = require("./watzup-scan.cjs");
 
 function git(cwd, args) {
-  const result = spawnSync('git', args, { cwd, encoding: 'utf8' });
+  const result = spawnSync("git", args, { cwd, encoding: "utf8" });
   assert.equal(
     result.status,
     0,
-    `git ${args.join(' ')} failed\n${result.stderr}`,
+    `git ${args.join(" ")} failed\n${result.stderr}`,
   );
-  return (result.stdout || '').trim();
+  return (result.stdout || "").trim();
 }
 
 function writeFile(filePath, content) {
@@ -30,99 +30,99 @@ function writeFile(filePath, content) {
 }
 
 function commitAll(repo, message) {
-  git(repo, ['add', '.']);
-  git(repo, ['commit', '-m', message]);
+  git(repo, ["add", "."]);
+  git(repo, ["commit", "-m", message]);
 }
 
 function createFixtureRepo() {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'watzup-scan-'));
-  const repo = path.join(root, 'repo');
-  const remote = path.join(root, 'remote.git');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), "watzup-scan-"));
+  const repo = path.join(root, "repo");
+  const remote = path.join(root, "remote.git");
   fs.mkdirSync(repo);
-  git(repo, ['init']);
-  git(repo, ['config', 'user.email', 'test@example.com']);
-  git(repo, ['config', 'user.name', 'Test User']);
-  git(repo, ['checkout', '-b', 'main']);
-  writeFile(path.join(repo, 'README.md'), '# fixture\n');
-  commitAll(repo, 'initial commit');
+  git(repo, ["init"]);
+  git(repo, ["config", "user.email", "test@example.com"]);
+  git(repo, ["config", "user.name", "Test User"]);
+  git(repo, ["checkout", "-b", "main"]);
+  writeFile(path.join(repo, "README.md"), "# fixture\n");
+  commitAll(repo, "initial commit");
 
-  git(root, ['init', '--bare', remote]);
-  git(repo, ['remote', 'add', 'origin', remote]);
-  git(repo, ['push', '-u', 'origin', 'main']);
+  git(root, ["init", "--bare", remote]);
+  git(repo, ["remote", "add", "origin", remote]);
+  git(repo, ["push", "-u", "origin", "main"]);
 
-  git(repo, ['checkout', '-b', 'feature/local']);
+  git(repo, ["checkout", "-b", "feature/local"]);
   writeFile(
     path.join(
       repo,
-      'process',
-      'general-plans',
-      'active',
-      'fixture_PLAN_27-05-26.md',
+      "process",
+      "general-plans",
+      "active",
+      "fixture_PLAN_27-05-26.md",
     ),
     [
-      '# Fixture Feature',
-      '',
-      '**Status**: PLANNED',
-      '',
-      'SECRET_BODY_SHOULD_NOT_APPEAR',
-      '',
-      '| Phase | Name | Status |',
-      '|-------|------|--------|',
-      '| 1 | Build | Pending |',
-    ].join('\n'),
+      "# Fixture Feature",
+      "",
+      "**Status**: PLANNED",
+      "",
+      "SECRET_BODY_SHOULD_NOT_APPEAR",
+      "",
+      "| Phase | Name | Status |",
+      "|-------|------|--------|",
+      "| 1 | Build | Pending |",
+    ].join("\n"),
   );
   writeFile(
-    path.join(repo, 'process', 'general-plans', 'active', 'phase-01-build.md'),
-    ['# Build Phase', '', '**Status**: ACTIVE'].join('\n'),
+    path.join(repo, "process", "general-plans", "active", "phase-01-build.md"),
+    ["# Build Phase", "", "**Status**: ACTIVE"].join("\n"),
   );
-  commitAll(repo, 'feat: add unfinished project plan');
+  commitAll(repo, "feat: add unfinished project plan");
 
-  git(repo, ['checkout', '-b', 'remote-work', 'main']);
+  git(repo, ["checkout", "-b", "remote-work", "main"]);
   writeFile(
-    path.join(repo, 'process', 'features', 'demo', 'active', 'PLAN.md'),
+    path.join(repo, "process", "features", "demo", "active", "PLAN.md"),
     [
-      '---',
+      "---",
       'title: "Remote Demo"',
-      'status: in progress',
-      '---',
-      '',
-      '# Remote Demo',
-    ].join('\n'),
+      "status: in progress",
+      "---",
+      "",
+      "# Remote Demo",
+    ].join("\n"),
   );
-  commitAll(repo, 'feat: remote branch work');
-  git(repo, ['push', 'origin', 'remote-work']);
-  git(repo, ['checkout', 'feature/local']);
-  git(repo, ['fetch', 'origin', 'remote-work']);
+  commitAll(repo, "feat: remote branch work");
+  git(repo, ["push", "origin", "remote-work"]);
+  git(repo, ["checkout", "feature/local"]);
+  git(repo, ["fetch", "origin", "remote-work"]);
 
-  const worktreePath = path.join(root, 'worktree');
-  git(repo, ['worktree', 'add', '-b', 'worktree-branch', worktreePath, 'main']);
+  const worktreePath = path.join(root, "worktree");
+  git(repo, ["worktree", "add", "-b", "worktree-branch", worktreePath, "main"]);
   writeFile(
     path.join(
       worktreePath,
-      'process',
-      'features',
-      'demo',
-      'active',
-      'phase-02-followup.md',
+      "process",
+      "features",
+      "demo",
+      "active",
+      "phase-02-followup.md",
     ),
-    ['# Follow-up', '', '**Status**: BLOCKED'].join('\n'),
+    ["# Follow-up", "", "**Status**: BLOCKED"].join("\n"),
   );
-  commitAll(worktreePath, 'feat: worktree branch plan');
+  commitAll(worktreePath, "feat: worktree branch plan");
 
   return { root, repo, worktreePath };
 }
 
-test('parseArgs keeps fetch opt-in and supports parity flags', () => {
+test("parseArgs keeps fetch opt-in and supports parity flags", () => {
   const parsed = parseArgs([
-    '--json',
-    '--max-branches',
-    '5',
-    '--commits-per-branch',
-    '2',
-    '--plan-limit',
-    '4',
-    '--max-plan-refs',
-    '6',
+    "--json",
+    "--max-branches",
+    "5",
+    "--commits-per-branch",
+    "2",
+    "--plan-limit",
+    "4",
+    "--max-plan-refs",
+    "6",
   ]);
 
   assert.equal(parsed.fetch, false);
@@ -132,38 +132,38 @@ test('parseArgs keeps fetch opt-in and supports parity flags', () => {
   assert.equal(parsed.maxPlanRefs, 6);
 });
 
-test('parseArgs rejects missing and invalid values', () => {
-  assert.throws(() => parseArgs(['--since']), /--since requires a value/);
+test("parseArgs rejects missing and invalid values", () => {
+  assert.throws(() => parseArgs(["--since"]), /--since requires a value/);
   assert.throws(
-    () => parseArgs(['--selected-plan']),
+    () => parseArgs(["--selected-plan"]),
     /--selected-plan requires a value/,
   );
   assert.throws(
-    () => parseArgs(['--max-branches', 'nope']),
+    () => parseArgs(["--max-branches", "nope"]),
     /positive integer/,
   );
 });
 
-test('readPlan marks pending phase tables as unfinished for project plans', () => {
+test("readPlan marks pending phase tables as unfinished for project plans", () => {
   const plan = readPlan(
     [
-      '# Pending Plan',
-      '',
-      '**Status**: COMPLETED',
-      '',
-      '| Phase | Name | Status |',
-      '|-------|------|--------|',
-      '| 1 | Build | Pending |',
-    ].join('\n'),
-    'process/general-plans/active/test_PLAN_27-05-26.md',
-    { type: 'test' },
+      "# Pending Plan",
+      "",
+      "**Status**: COMPLETED",
+      "",
+      "| Phase | Name | Status |",
+      "|-------|------|--------|",
+      "| 1 | Build | Pending |",
+    ].join("\n"),
+    "process/general-plans/active/test_PLAN_27-05-26.md",
+    { type: "test" },
   );
 
-  assert.equal(plan.kind, 'primary');
+  assert.equal(plan.kind, "primary");
   assert.equal(plan.unfinished, true);
 });
 
-test('buildPayload scans remote refs, worktrees, and project process plans without fetch by default', () => {
+test("buildPayload scans remote refs, worktrees, and project process plans without fetch by default", () => {
   const fixture = createFixtureRepo();
   try {
     const payload = buildPayload(
@@ -179,9 +179,9 @@ test('buildPayload scans remote refs, worktrees, and project process plans witho
 
     assert.equal(payload.options.fetchRequested, false);
     assert.equal(payload.options.fetched, false);
-    assert.ok(payload.refs.remote >= 2, 'remote refs should be included');
+    assert.ok(payload.refs.remote >= 2, "remote refs should be included");
     assert.ok(
-      payload.branches.some((branch) => branch.name === 'origin/remote-work'),
+      payload.branches.some((branch) => branch.name === "origin/remote-work"),
     );
     const expectedWorktree = fs.realpathSync.native(fixture.worktreePath);
     assert.ok(
@@ -193,21 +193,21 @@ test('buildPayload scans remote refs, worktrees, and project process plans witho
     assert.ok(
       payload.plans.unfinished.some(
         (plan) =>
-          plan.path === 'process/general-plans/active/fixture_PLAN_27-05-26.md',
+          plan.path === "process/general-plans/active/fixture_PLAN_27-05-26.md",
       ),
     );
     assert.ok(
       payload.plans.unfinished.some(
-        (plan) => plan.path === 'process/features/demo/active/PLAN.md',
+        (plan) => plan.path === "process/features/demo/active/PLAN.md",
       ),
     );
     assert.ok(
       payload.warnings.some((warning) =>
-        warning.includes('Remote branches reflect local refs only'),
+        warning.includes("Remote branches reflect local refs only"),
       ),
     );
     assert.equal(
-      JSON.stringify(payload).includes('SECRET_BODY_SHOULD_NOT_APPEAR'),
+      JSON.stringify(payload).includes("SECRET_BODY_SHOULD_NOT_APPEAR"),
       false,
     );
   } finally {
@@ -215,13 +215,13 @@ test('buildPayload scans remote refs, worktrees, and project process plans witho
   }
 });
 
-test('selected-plan hint is advisory for single primary and explicit for CLI override', () => {
+test("selected-plan hint is advisory for single primary and explicit for CLI override", () => {
   const fixture = createFixtureRepo();
   try {
     const implicit = buildPayload({ fetch: false }, fixture.repo);
     assert.equal(
       implicit.selectedPlanHint.path,
-      'process/general-plans/active/fixture_PLAN_27-05-26.md',
+      "process/general-plans/active/fixture_PLAN_27-05-26.md",
     );
     assert.equal(implicit.selectedPlanHint.advisory, true);
 
@@ -230,42 +230,42 @@ test('selected-plan hint is advisory for single primary and explicit for CLI ove
         fetch: false,
         selectedPlan: path.join(
           fixture.repo,
-          'process',
-          'general-plans',
-          'active',
-          'fixture_PLAN_27-05-26.md',
+          "process",
+          "general-plans",
+          "active",
+          "fixture_PLAN_27-05-26.md",
         ),
       },
       fixture.repo,
     );
-    assert.equal(explicit.selectedPlanHint.source, 'explicit');
+    assert.equal(explicit.selectedPlanHint.source, "explicit");
     assert.equal(explicit.selectedPlanHint.advisory, false);
   } finally {
     fs.rmSync(fixture.root, { recursive: true, force: true });
   }
 });
 
-test('multiple primary local plans suppress inferred selected-plan hints', () => {
+test("multiple primary local plans suppress inferred selected-plan hints", () => {
   const fixture = createFixtureRepo();
   try {
     writeFile(
       path.join(
         fixture.repo,
-        'process',
-        'features',
-        'demo',
-        'active',
-        'demo_PLAN_27-05-26.md',
+        "process",
+        "features",
+        "demo",
+        "active",
+        "demo_PLAN_27-05-26.md",
       ),
-      ['# Demo Primary', '', '**Status**: ACTIVE'].join('\n'),
+      ["# Demo Primary", "", "**Status**: ACTIVE"].join("\n"),
     );
-    commitAll(fixture.repo, 'feat: add second primary plan');
+    commitAll(fixture.repo, "feat: add second primary plan");
 
     const payload = buildPayload({ fetch: false }, fixture.repo);
     assert.equal(payload.selectedPlanHint, null);
     assert.ok(
       payload.warnings.some((warning) =>
-        warning.includes('Multiple primary active plans exist locally'),
+        warning.includes("Multiple primary active plans exist locally"),
       ),
     );
   } finally {
@@ -273,7 +273,7 @@ test('multiple primary local plans suppress inferred selected-plan hints', () =>
   }
 });
 
-test('tracked plan scan is bounded separately from branch discovery', () => {
+test("tracked plan scan is bounded separately from branch discovery", () => {
   const fixture = createFixtureRepo();
   try {
     const payload = buildPayload(
@@ -290,7 +290,7 @@ test('tracked plan scan is bounded separately from branch discovery', () => {
     assert.ok(payload.refs.total > 1);
     assert.ok(
       payload.warnings.some((warning) =>
-        warning.includes('Tracked plan scan limited to 1 ranked refs'),
+        warning.includes("Tracked plan scan limited to 1 ranked refs"),
       ),
     );
   } finally {
@@ -298,14 +298,14 @@ test('tracked plan scan is bounded separately from branch discovery', () => {
   }
 });
 
-test('failed fetch reports the failure and keeps output usable', () => {
+test("failed fetch reports the failure and keeps output usable", () => {
   const fixture = createFixtureRepo();
   try {
     git(fixture.repo, [
-      'remote',
-      'set-url',
-      'origin',
-      path.join(fixture.root, 'missing.git'),
+      "remote",
+      "set-url",
+      "origin",
+      path.join(fixture.root, "missing.git"),
     ]);
     const payload = buildPayload(
       { fetch: true, maxPlanRefs: 20 },
@@ -315,11 +315,11 @@ test('failed fetch reports the failure and keeps output usable', () => {
     assert.equal(payload.options.fetchRequested, true);
     assert.equal(payload.options.fetched, false);
     assert.ok(
-      payload.warnings.some((warning) => warning.includes('fetch failed')),
+      payload.warnings.some((warning) => warning.includes("fetch failed")),
     );
     assert.ok(
       payload.warnings.some((warning) =>
-        warning.includes('Fetch failed; remote-branch evidence may be stale'),
+        warning.includes("Fetch failed; remote-branch evidence may be stale"),
       ),
     );
   } finally {
@@ -327,10 +327,10 @@ test('failed fetch reports the failure and keeps output usable', () => {
   }
 });
 
-test('detached HEAD still produces a useful text report', () => {
+test("detached HEAD still produces a useful text report", () => {
   const fixture = createFixtureRepo();
   try {
-    git(fixture.repo, ['checkout', '--detach', 'HEAD']);
+    git(fixture.repo, ["checkout", "--detach", "HEAD"]);
     const payload = buildPayload({ fetch: false }, fixture.repo);
     const text = renderText(payload);
 

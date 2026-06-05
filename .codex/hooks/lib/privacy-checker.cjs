@@ -8,14 +8,14 @@
  * @module privacy-checker
  */
 
-const path = require('path');
-const fs = require('fs');
+const path = require("path");
+const fs = require("fs");
 
 // ═══════════════════════════════════════════════════════════════════════════
 // CONSTANTS
 // ═══════════════════════════════════════════════════════════════════════════
 
-const APPROVED_PREFIX = 'APPROVED:';
+const APPROVED_PREFIX = "APPROVED:";
 
 // Safe file patterns - exempt from privacy checks (documentation/template files)
 const SAFE_PATTERNS = [
@@ -80,7 +80,7 @@ function stripApprovalPrefix(testPath) {
  * @returns {boolean} true if path looks suspicious
  */
 function isSuspiciousPath(strippedPath) {
-  return strippedPath.includes('..') || path.isAbsolute(strippedPath);
+  return strippedPath.includes("..") || path.isAbsolute(strippedPath);
 }
 
 /**
@@ -93,7 +93,7 @@ function isPrivacySensitive(testPath) {
 
   // Strip prefix for pattern matching
   const cleanPath = stripApprovalPrefix(testPath);
-  let normalized = cleanPath.replace(/\\/g, '/');
+  let normalized = cleanPath.replace(/\\/g, "/");
 
   // Decode URI components to catch obfuscated paths (%2e = '.')
   try {
@@ -127,28 +127,28 @@ function extractPaths(toolInput) {
   if (!toolInput) return paths;
 
   if (toolInput.file_path)
-    paths.push({ value: toolInput.file_path, field: 'file_path' });
-  if (toolInput.path) paths.push({ value: toolInput.path, field: 'path' });
+    paths.push({ value: toolInput.file_path, field: "file_path" });
+  if (toolInput.path) paths.push({ value: toolInput.path, field: "path" });
   if (toolInput.pattern)
-    paths.push({ value: toolInput.pattern, field: 'pattern' });
+    paths.push({ value: toolInput.pattern, field: "pattern" });
 
   // Check bash commands for file paths
   if (toolInput.command) {
     // Look for APPROVED:.env or .env patterns
     const approvedMatch = toolInput.command.match(/APPROVED:[^\s]+/g) || [];
-    approvedMatch.forEach((p) => paths.push({ value: p, field: 'command' }));
+    approvedMatch.forEach((p) => paths.push({ value: p, field: "command" }));
 
     // Only look for .env if no APPROVED: version found
     if (approvedMatch.length === 0) {
       const envMatch = toolInput.command.match(/\.env[^\s]*/g) || [];
-      envMatch.forEach((p) => paths.push({ value: p, field: 'command' }));
+      envMatch.forEach((p) => paths.push({ value: p, field: "command" }));
 
       // Also check bash variable assignments (FILE=.env, ENV_FILE=.env.local)
       const varAssignments =
         toolInput.command.match(/\w+=[^\s]*\.env[^\s]*/g) || [];
       varAssignments.forEach((a) => {
-        const value = a.split('=')[1];
-        if (value) paths.push({ value, field: 'command' });
+        const value = a.split("=")[1];
+        if (value) paths.push({ value, field: "command" });
       });
 
       // Check command substitution containing sensitive patterns - extract .env from inside
@@ -156,7 +156,7 @@ function extractPaths(toolInput) {
         toolInput.command.match(/\$\([^)]*?(\.env[^\s)]*)[^)]*\)/g) || [];
       for (const subst of cmdSubst) {
         const inner = subst.match(/\.env[^\s)]*/);
-        if (inner) paths.push({ value: inner[0], field: 'command' });
+        if (inner) paths.push({ value: inner[0], field: "command" });
       }
     }
   }
@@ -171,12 +171,12 @@ function extractPaths(toolInput) {
  */
 function isPrivacyBlockDisabled(configDir) {
   try {
-    const baseDir = configDir || path.join(process.cwd(), '.claude');
+    const baseDir = configDir || path.join(process.cwd(), ".claude");
     // New-first, legacy (.ck.json) fallback for backward compatibility.
-    const newPath = path.join(baseDir, '.vc.json');
-    const legacyPath = path.join(baseDir, '.ck.json');
+    const newPath = path.join(baseDir, ".vc.json");
+    const legacyPath = path.join(baseDir, ".ck.json");
     const configPath = fs.existsSync(newPath) ? newPath : legacyPath;
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+    const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
     return config.privacyBlock === false;
   } catch {
     return false; // Default to enabled on error (file not found or invalid JSON)
@@ -191,20 +191,20 @@ function isPrivacyBlockDisabled(configDir) {
 function buildPromptData(filePath) {
   const basename = path.basename(filePath);
   return {
-    type: 'PRIVACY_PROMPT',
+    type: "PRIVACY_PROMPT",
     file: filePath,
     basename: basename,
     question: {
-      header: 'File Access',
+      header: "File Access",
       text: `I need to read "${basename}" which may contain sensitive data (API keys, passwords, tokens). Do you approve?`,
       options: [
         {
-          label: 'Yes, approve access',
+          label: "Yes, approve access",
           description: `Allow reading ${basename} this time`,
         },
         {
-          label: 'No, skip this file',
-          description: 'Continue without accessing this file',
+          label: "No, skip this file",
+          description: "Continue without accessing this file",
         },
       ],
     },
@@ -243,7 +243,7 @@ function checkPrivacy({ toolName, toolInput, options = {} }) {
     return { blocked: false };
   }
 
-  const isBashTool = toolName === 'Bash';
+  const isBashTool = toolName === "Bash";
   const paths = extractPaths(toolInput);
 
   // Check each path

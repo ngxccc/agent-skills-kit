@@ -2,18 +2,18 @@
  * Shared browser utilities for Chrome DevTools scripts
  * Supports persistent browser sessions via WebSocket endpoint file
  */
-import puppeteer from 'puppeteer';
-import debug from 'debug';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import puppeteer from "puppeteer";
+import debug from "debug";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const log = debug('chrome-devtools:browser');
+const log = debug("chrome-devtools:browser");
 
 // Session file stores WebSocket endpoint for browser reuse across processes
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const SESSION_FILE = path.join(__dirname, '..', '.browser-session.json');
-const AUTH_SESSION_FILE = path.join(__dirname, '..', '.auth-session.json');
+const SESSION_FILE = path.join(__dirname, "..", ".browser-session.json");
+const AUTH_SESSION_FILE = path.join(__dirname, "..", ".auth-session.json");
 
 let browserInstance = null;
 let pageInstance = null;
@@ -28,8 +28,8 @@ let pageInstance = null;
  * @returns {boolean} - true for headless, false for headed
  */
 export function resolveHeadless(value) {
-  if (value === false || value === 'false') return false;
-  if (value === true || value === 'true') return true;
+  if (value === false || value === "false") return false;
+  if (value === true || value === "true") return true;
 
   // Auto-detect: CI → headless
   if (
@@ -38,13 +38,13 @@ export function resolveHeadless(value) {
     process.env.GITLAB_CI ||
     process.env.JENKINS_URL
   ) {
-    log('Auto-detected CI environment → headless');
+    log("Auto-detected CI environment → headless");
     return true;
   }
 
   // Linux → headless (includes WSL, remote servers)
-  if (process.platform === 'linux') {
-    log('Auto-detected Linux → headless');
+  if (process.platform === "linux") {
+    log("Auto-detected Linux → headless");
     return true;
   }
 
@@ -59,9 +59,9 @@ export function resolveHeadless(value) {
  */
 function getDefaultChromeProfilePath() {
   switch (process.platform) {
-    case 'darwin':
+    case "darwin":
       return `${process.env.HOME}/Library/Application Support/Google/Chrome`;
-    case 'win32':
+    case "win32":
       return `${process.env.LOCALAPPDATA}/Google/Chrome/User Data`;
     default: // Linux and others
       return `${process.env.HOME}/.config/google-chrome`;
@@ -74,14 +74,14 @@ function getDefaultChromeProfilePath() {
 function readSession() {
   try {
     if (fs.existsSync(SESSION_FILE)) {
-      const data = JSON.parse(fs.readFileSync(SESSION_FILE, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(SESSION_FILE, "utf8"));
       // Check if session is not too old (max 1 hour)
       if (Date.now() - data.timestamp < 3600000) {
         return data;
       }
     }
   } catch (e) {
-    log('Failed to read session:', e.message);
+    log("Failed to read session:", e.message);
   }
   return null;
 }
@@ -99,7 +99,7 @@ function writeSession(wsEndpoint) {
       }),
     );
   } catch (e) {
-    log('Failed to write session:', e.message);
+    log("Failed to write session:", e.message);
   }
 }
 
@@ -112,7 +112,7 @@ function clearSession() {
       fs.unlinkSync(SESSION_FILE);
     }
   } catch (e) {
-    log('Failed to clear session:', e.message);
+    log("Failed to clear session:", e.message);
   }
 }
 
@@ -125,9 +125,9 @@ export function saveAuthSession(authData) {
     const existing = readAuthSession() || {};
     const merged = { ...existing, ...authData, timestamp: Date.now() };
     fs.writeFileSync(AUTH_SESSION_FILE, JSON.stringify(merged, null, 2));
-    log('Auth session saved');
+    log("Auth session saved");
   } catch (e) {
-    log('Failed to save auth session:', e.message);
+    log("Failed to save auth session:", e.message);
   }
 }
 
@@ -138,14 +138,14 @@ export function saveAuthSession(authData) {
 export function readAuthSession() {
   try {
     if (fs.existsSync(AUTH_SESSION_FILE)) {
-      const data = JSON.parse(fs.readFileSync(AUTH_SESSION_FILE, 'utf8'));
+      const data = JSON.parse(fs.readFileSync(AUTH_SESSION_FILE, "utf8"));
       // Auth sessions valid for 24 hours
       if (Date.now() - data.timestamp < 86400000) {
         return data;
       }
     }
   } catch (e) {
-    log('Failed to read auth session:', e.message);
+    log("Failed to read auth session:", e.message);
   }
   return null;
 }
@@ -157,10 +157,10 @@ export function clearAuthSession() {
   try {
     if (fs.existsSync(AUTH_SESSION_FILE)) {
       fs.unlinkSync(AUTH_SESSION_FILE);
-      log('Auth session cleared');
+      log("Auth session cleared");
     }
   } catch (e) {
-    log('Failed to clear auth session:', e.message);
+    log("Failed to clear auth session:", e.message);
   }
 }
 
@@ -172,7 +172,7 @@ export function clearAuthSession() {
 export async function applyAuthSession(page, url) {
   const authData = readAuthSession();
   if (!authData) {
-    log('No auth session found');
+    log("No auth session found");
     return false;
   }
 
@@ -192,11 +192,11 @@ export async function applyAuthSession(page, url) {
         Object.entries(data).forEach(([key, value]) => {
           localStorage.setItem(
             key,
-            typeof value === 'string' ? value : JSON.stringify(value),
+            typeof value === "string" ? value : JSON.stringify(value),
           );
         });
       }, authData.localStorage);
-      log('Applied localStorage data');
+      log("Applied localStorage data");
     }
 
     // Apply sessionStorage
@@ -208,22 +208,22 @@ export async function applyAuthSession(page, url) {
         Object.entries(data).forEach(([key, value]) => {
           sessionStorage.setItem(
             key,
-            typeof value === 'string' ? value : JSON.stringify(value),
+            typeof value === "string" ? value : JSON.stringify(value),
           );
         });
       }, authData.sessionStorage);
-      log('Applied sessionStorage data');
+      log("Applied sessionStorage data");
     }
 
     // Apply extra headers
     if (authData.headers) {
       await page.setExtraHTTPHeaders(authData.headers);
-      log('Applied HTTP headers');
+      log("Applied HTTP headers");
     }
 
     return true;
   } catch (e) {
-    log('Failed to apply auth session:', e.message);
+    log("Failed to apply auth session:", e.message);
     return false;
   }
 }
@@ -236,7 +236,7 @@ export async function applyAuthSession(page, url) {
 export async function getBrowser(options = {}) {
   // If we already have a connected browser in this process, reuse it
   if (browserInstance && browserInstance.isConnected()) {
-    log('Reusing existing browser instance from process');
+    log("Reusing existing browser instance from process");
     return browserInstance;
   }
 
@@ -244,22 +244,22 @@ export async function getBrowser(options = {}) {
   const session = readSession();
   if (session && session.wsEndpoint) {
     try {
-      log('Attempting to connect to existing browser session');
+      log("Attempting to connect to existing browser session");
       browserInstance = await puppeteer.connect({
         browserWSEndpoint: session.wsEndpoint,
         defaultViewport: null,
       });
-      log('Connected to existing browser');
+      log("Connected to existing browser");
       return browserInstance;
     } catch (e) {
-      log('Failed to connect to existing browser:', e.message);
+      log("Failed to connect to existing browser:", e.message);
       clearSession();
     }
   }
 
   // Connect via provided wsEndpoint or browserUrl
   if (options.wsEndpoint || options.browserUrl) {
-    log('Connecting to browser via provided endpoint');
+    log("Connecting to browser via provided endpoint");
     browserInstance = await puppeteer.connect({
       browserWSEndpoint: options.wsEndpoint,
       browserURL: options.browserUrl,
@@ -272,17 +272,17 @@ export async function getBrowser(options = {}) {
   // This reuses the logged-in session from `chrome-debug` shell function.
   if (!options.skipChromeDebug) {
     try {
-      log('Trying chrome-debug at localhost:9222');
+      log("Trying chrome-debug at localhost:9222");
       browserInstance = await puppeteer.connect({
-        browserURL: 'http://localhost:9222',
+        browserURL: "http://localhost:9222",
         defaultViewport: null,
       });
       // Save endpoint for future reconnects
       writeSession(browserInstance.wsEndpoint());
-      log('Connected to chrome-debug at localhost:9222');
+      log("Connected to chrome-debug at localhost:9222");
       return browserInstance;
     } catch (e) {
-      log('chrome-debug not running, will launch new browser:', e.message);
+      log("chrome-debug not running, will launch new browser:", e.message);
     }
   }
 
@@ -310,9 +310,9 @@ export async function getBrowser(options = {}) {
   const launchOptions = {
     headless: resolveHeadless(headless),
     args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-      '--disable-dev-shm-usage',
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
       ...(extraArgs || []),
     ],
     defaultViewport: viewport || {
@@ -323,13 +323,13 @@ export async function getBrowser(options = {}) {
     ...restOptions,
   };
 
-  log('Launching new browser');
+  log("Launching new browser");
   browserInstance = await puppeteer.launch(launchOptions);
 
   // Save wsEndpoint for future connections
   const wsEndpoint = browserInstance.wsEndpoint();
   writeSession(wsEndpoint);
-  log('Browser launched, session saved');
+  log("Browser launched, session saved");
 
   return browserInstance;
 }
@@ -339,7 +339,7 @@ export async function getBrowser(options = {}) {
  */
 export async function getPage(browser) {
   if (pageInstance && !pageInstance.isClosed()) {
-    log('Reusing existing page');
+    log("Reusing existing page");
     return pageInstance;
   }
 
@@ -362,7 +362,7 @@ export async function closeBrowser() {
     browserInstance = null;
     pageInstance = null;
     clearSession();
-    log('Browser closed, session cleared');
+    log("Browser closed, session cleared");
   }
 }
 
@@ -375,7 +375,7 @@ export async function disconnectBrowser() {
     browserInstance.disconnect();
     browserInstance = null;
     pageInstance = null;
-    log('Disconnected from browser (browser still running)');
+    log("Disconnected from browser (browser still running)");
   }
 }
 
@@ -388,11 +388,11 @@ export function parseArgs(argv, options = {}) {
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
 
-    if (arg.startsWith('--')) {
+    if (arg.startsWith("--")) {
       const key = arg.slice(2);
       const nextArg = argv[i + 1];
 
-      if (nextArg && !nextArg.startsWith('--')) {
+      if (nextArg && !nextArg.startsWith("--")) {
         args[key] = nextArg;
         i++;
       } else {

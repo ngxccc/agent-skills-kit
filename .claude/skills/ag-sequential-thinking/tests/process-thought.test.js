@@ -4,17 +4,17 @@
  * Run with: npm test
  */
 
-const { ThoughtProcessor } = require('../scripts/process-thought');
-const fs = require('fs');
-const path = require('path');
+const { ThoughtProcessor } = require("../scripts/process-thought");
+const fs = require("fs");
+const path = require("path");
 
 // Mock history file for testing
 const TEST_HISTORY_FILE = path.join(
   __dirname,
-  '../scripts/.thought-history.json',
+  "../scripts/.thought-history.json",
 );
 
-describe('ThoughtProcessor', () => {
+describe("ThoughtProcessor", () => {
   let processor;
 
   beforeEach(() => {
@@ -32,8 +32,8 @@ describe('ThoughtProcessor', () => {
     }
   });
 
-  describe('Validation', () => {
-    test('rejects missing thought', () => {
+  describe("Validation", () => {
+    test("rejects missing thought", () => {
       const result = processor.processThought({
         thoughtNumber: 1,
         totalThoughts: 5,
@@ -42,13 +42,13 @@ describe('ThoughtProcessor', () => {
 
       expect(result.success).toBe(false);
       expect(result.errors).toContain(
-        'Invalid thought: must be a non-empty string',
+        "Invalid thought: must be a non-empty string",
       );
     });
 
-    test('rejects empty thought string', () => {
+    test("rejects empty thought string", () => {
       const result = processor.processThought({
-        thought: '   ',
+        thought: "   ",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -56,13 +56,13 @@ describe('ThoughtProcessor', () => {
 
       expect(result.success).toBe(false);
       expect(result.errors).toContain(
-        'Invalid thought: must be a non-empty string',
+        "Invalid thought: must be a non-empty string",
       );
     });
 
-    test('rejects invalid thoughtNumber', () => {
+    test("rejects invalid thoughtNumber", () => {
       const result = processor.processThought({
-        thought: 'Test',
+        thought: "Test",
         thoughtNumber: 0,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -70,26 +70,26 @@ describe('ThoughtProcessor', () => {
 
       expect(result.success).toBe(false);
       expect(result.errors).toContain(
-        'Invalid thoughtNumber: must be a positive number',
+        "Invalid thoughtNumber: must be a positive number",
       );
     });
 
-    test('rejects missing nextThoughtNeeded', () => {
+    test("rejects missing nextThoughtNeeded", () => {
       const result = processor.processThought({
-        thought: 'Test',
+        thought: "Test",
         thoughtNumber: 1,
         totalThoughts: 5,
       });
 
       expect(result.success).toBe(false);
       expect(result.errors).toContain(
-        'Invalid nextThoughtNeeded: must be a boolean',
+        "Invalid nextThoughtNeeded: must be a boolean",
       );
     });
 
-    test('accepts valid thought', () => {
+    test("accepts valid thought", () => {
       const result = processor.processThought({
-        thought: 'Valid thought',
+        thought: "Valid thought",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -101,24 +101,24 @@ describe('ThoughtProcessor', () => {
     });
   });
 
-  describe('Thought Processing', () => {
-    test('tracks thought history', () => {
+  describe("Thought Processing", () => {
+    test("tracks thought history", () => {
       processor.processThought({
-        thought: 'First thought',
+        thought: "First thought",
         thoughtNumber: 1,
         totalThoughts: 3,
         nextThoughtNeeded: true,
       });
 
       processor.processThought({
-        thought: 'Second thought',
+        thought: "Second thought",
         thoughtNumber: 2,
         totalThoughts: 3,
         nextThoughtNeeded: true,
       });
 
       const result = processor.processThought({
-        thought: 'Third thought',
+        thought: "Third thought",
         thoughtNumber: 3,
         totalThoughts: 3,
         nextThoughtNeeded: false,
@@ -127,9 +127,9 @@ describe('ThoughtProcessor', () => {
       expect(result.thoughtHistoryLength).toBe(3);
     });
 
-    test('auto-adjusts totalThoughts when exceeded', () => {
+    test("auto-adjusts totalThoughts when exceeded", () => {
       const result = processor.processThought({
-        thought: 'Thought 5',
+        thought: "Thought 5",
         thoughtNumber: 5,
         totalThoughts: 3,
         nextThoughtNeeded: true,
@@ -138,16 +138,16 @@ describe('ThoughtProcessor', () => {
       expect(result.totalThoughts).toBe(5);
     });
 
-    test('tracks revisions', () => {
+    test("tracks revisions", () => {
       processor.processThought({
-        thought: 'Original thought',
+        thought: "Original thought",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
       });
 
       const result = processor.processThought({
-        thought: 'Revised thought',
+        thought: "Revised thought",
         thoughtNumber: 2,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -159,42 +159,42 @@ describe('ThoughtProcessor', () => {
       expect(result.thoughtHistoryLength).toBe(2);
     });
 
-    test('tracks branches', () => {
+    test("tracks branches", () => {
       processor.processThought({
-        thought: 'Main thought',
+        thought: "Main thought",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
       });
 
       processor.processThought({
-        thought: 'Branch A',
+        thought: "Branch A",
         thoughtNumber: 2,
         totalThoughts: 5,
         nextThoughtNeeded: true,
         branchFromThought: 1,
-        branchId: 'branch-a',
+        branchId: "branch-a",
       });
 
       const result = processor.processThought({
-        thought: 'Branch B',
+        thought: "Branch B",
         thoughtNumber: 2,
         totalThoughts: 5,
         nextThoughtNeeded: false,
         branchFromThought: 1,
-        branchId: 'branch-b',
+        branchId: "branch-b",
       });
 
-      expect(result.branches).toContain('branch-a');
-      expect(result.branches).toContain('branch-b');
+      expect(result.branches).toContain("branch-a");
+      expect(result.branches).toContain("branch-b");
       expect(result.branches.length).toBe(2);
     });
   });
 
-  describe('History Management', () => {
-    test('resets history', () => {
+  describe("History Management", () => {
+    test("resets history", () => {
       processor.processThought({
-        thought: 'First thought',
+        thought: "First thought",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -207,9 +207,9 @@ describe('ThoughtProcessor', () => {
       expect(history.thoughts.length).toBe(0);
     });
 
-    test('persists and loads history', () => {
+    test("persists and loads history", () => {
       processor.processThought({
-        thought: 'Persisted thought',
+        thought: "Persisted thought",
         thoughtNumber: 1,
         totalThoughts: 5,
         nextThoughtNeeded: true,
@@ -220,7 +220,7 @@ describe('ThoughtProcessor', () => {
       const history = newProcessor.getHistory();
 
       expect(history.totalThoughts).toBe(1);
-      expect(history.thoughts[0].thought).toBe('Persisted thought');
+      expect(history.thoughts[0].thought).toBe("Persisted thought");
     });
   });
 });

@@ -21,10 +21,10 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
-import fs from 'fs/promises';
-import path from 'path';
-import { fileURLToPath } from 'url';
+} from "./lib/browser.js";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -318,7 +318,7 @@ async function ariaSnapshot() {
     // Navigate if URL provided
     if (args.url) {
       await page.goto(args.url, {
-        waitUntil: args['wait-until'] || 'networkidle2',
+        waitUntil: args["wait-until"] || "networkidle2",
       });
     }
 
@@ -330,7 +330,7 @@ async function ariaSnapshot() {
       success: true,
       url: page.url(),
       title: await page.title(),
-      format: 'yaml',
+      format: "yaml",
       snapshot: snapshot,
     };
 
@@ -343,7 +343,7 @@ async function ariaSnapshot() {
       await fs.mkdir(outputDir, { recursive: true });
 
       // Write YAML snapshot
-      await fs.writeFile(outputPath, snapshot, 'utf8');
+      await fs.writeFile(outputPath, snapshot, "utf8");
 
       outputJSON({
         success: true,
@@ -357,7 +357,7 @@ async function ariaSnapshot() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

@@ -18,17 +18,17 @@ import {
   parseArgs,
   outputJSON,
   outputError,
-} from './lib/browser.js';
-import { parseSelector, getElement, enhanceError } from './lib/selector.js';
-import fs from 'fs/promises';
-import path from 'path';
+} from "./lib/browser.js";
+import { parseSelector, getElement, enhanceError } from "./lib/selector.js";
+import fs from "fs/promises";
+import path from "path";
 
 /**
  * Check if Sharp is available
  */
 let sharp = null;
 try {
-  sharp = (await import('sharp')).default;
+  sharp = (await import("sharp")).default;
 } catch {
   // Sharp not installed, compression disabled
 }
@@ -52,7 +52,7 @@ async function compressImageIfNeeded(filePath, maxSizeMB = 5) {
 
   if (!sharp) {
     console.error(
-      'Warning: Sharp not installed. Run npm install to enable automatic compression.',
+      "Warning: Sharp not installed. Run npm install to enable automatic compression.",
     );
     return { compressed: false, originalSize, finalSize: originalSize };
   }
@@ -64,19 +64,19 @@ async function compressImageIfNeeded(filePath, maxSizeMB = 5) {
 
     // First pass: moderate compression
     let outputBuffer;
-    if (ext === '.png') {
+    if (ext === ".png") {
       // PNG: resize to 90% and compress
       const newWidth = Math.round(metadata.width * 0.9);
       outputBuffer = await sharp(imageBuffer)
         .resize(newWidth)
         .png({ quality: 85, compressionLevel: 9 })
         .toBuffer();
-    } else if (ext === '.jpg' || ext === '.jpeg') {
+    } else if (ext === ".jpg" || ext === ".jpeg") {
       // JPEG: quality 80 with progressive encoding
       outputBuffer = await sharp(imageBuffer)
         .jpeg({ quality: 80, progressive: true, mozjpeg: true })
         .toBuffer();
-    } else if (ext === '.webp') {
+    } else if (ext === ".webp") {
       // WebP: quality 80
       outputBuffer = await sharp(imageBuffer).webp({ quality: 80 }).toBuffer();
     } else {
@@ -88,7 +88,7 @@ async function compressImageIfNeeded(filePath, maxSizeMB = 5) {
 
     // Second pass: aggressive compression if still too large
     if (outputBuffer.length > maxSizeBytes) {
-      if (ext === '.png') {
+      if (ext === ".png") {
         const newWidth = Math.round(metadata.width * 0.75);
         outputBuffer = await sharp(outputBuffer)
           .resize(newWidth)
@@ -106,7 +106,7 @@ async function compressImageIfNeeded(filePath, maxSizeMB = 5) {
 
     return { compressed: true, originalSize, finalSize: outputBuffer.length };
   } catch (error) {
-    console.error('Compression error:', error.message);
+    console.error("Compression error:", error.message);
     return { compressed: false, originalSize, finalSize: originalSize };
   }
 }
@@ -115,7 +115,7 @@ async function screenshot() {
   const args = parseArgs(process.argv.slice(2));
 
   if (!args.output) {
-    outputError(new Error('--output is required'));
+    outputError(new Error("--output is required"));
     return;
   }
 
@@ -129,7 +129,7 @@ async function screenshot() {
     // Navigate if URL provided
     if (args.url) {
       await page.goto(args.url, {
-        waitUntil: args['wait-until'] || 'networkidle2',
+        waitUntil: args["wait-until"] || "networkidle2",
       });
     }
 
@@ -139,8 +139,8 @@ async function screenshot() {
 
     const screenshotOptions = {
       path: args.output,
-      type: args.format || 'png',
-      fullPage: args['full-page'] === 'true',
+      type: args.format || "png",
+      fullPage: args["full-page"] === "true",
     };
 
     if (args.quality) {
@@ -170,8 +170,8 @@ async function screenshot() {
     };
 
     // Compress image if needed (unless --no-compress flag is set)
-    if (args['no-compress'] !== 'true') {
-      const maxSize = args['max-size'] ? parseFloat(args['max-size']) : 5;
+    if (args["no-compress"] !== "true") {
+      const maxSize = args["max-size"] ? parseFloat(args["max-size"]) : 5;
       const compressionResult = await compressImageIfNeeded(
         args.output,
         maxSize,
@@ -185,7 +185,7 @@ async function screenshot() {
           (
             (1 - compressionResult.finalSize / compressionResult.originalSize) *
             100
-          ).toFixed(2) + '%';
+          ).toFixed(2) + "%";
       }
     }
 
@@ -193,7 +193,7 @@ async function screenshot() {
 
     // Default: disconnect to keep browser running for session persistence
     // Use --close true to fully close browser
-    if (args.close === 'true') {
+    if (args.close === "true") {
       await closeBrowser();
     } else {
       await disconnectBrowser();

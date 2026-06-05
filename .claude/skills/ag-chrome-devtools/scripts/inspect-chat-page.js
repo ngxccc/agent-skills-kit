@@ -2,16 +2,16 @@
 /**
  * Inspect the chat page DOM to find the prompt input and send button selectors.
  */
-import puppeteer from 'puppeteer';
+import puppeteer from "puppeteer";
 
 async function main() {
   const browser = await puppeteer.connect({
-    browserURL: 'http://localhost:9222',
+    browserURL: "http://localhost:9222",
     defaultViewport: null,
   });
 
   const pages = await browser.pages();
-  const page = pages.find((p) => p.url().includes('chat')) ?? pages[0];
+  const page = pages.find((p) => p.url().includes("chat")) ?? pages[0];
 
   if (!page) {
     console.log(JSON.stringify({ ok: false }));
@@ -26,22 +26,22 @@ async function main() {
       ),
     ).map((el) => ({
       tag: el.tagName.toLowerCase(),
-      type: el.getAttribute('type'),
-      placeholder: el.getAttribute('placeholder'),
-      contenteditable: el.getAttribute('contenteditable'),
-      ariaLabel: el.getAttribute('aria-label'),
+      type: el.getAttribute("type"),
+      placeholder: el.getAttribute("placeholder"),
+      contenteditable: el.getAttribute("contenteditable"),
+      ariaLabel: el.getAttribute("aria-label"),
       id: el.id || null,
-      className: (el.className || '').slice(0, 120),
+      className: (el.className || "").slice(0, 120),
       rect: el.getBoundingClientRect().toJSON(),
     }));
-    const buttons = Array.from(document.querySelectorAll('button'))
+    const buttons = Array.from(document.querySelectorAll("button"))
       .map((b) => ({
-        text: (b.innerText || '').slice(0, 60),
-        ariaLabel: b.getAttribute('aria-label'),
-        title: b.getAttribute('title'),
+        text: (b.innerText || "").slice(0, 60),
+        ariaLabel: b.getAttribute("aria-label"),
+        title: b.getAttribute("title"),
         disabled: b.disabled,
-        type: b.getAttribute('type'),
-        className: (b.className || '').slice(0, 100),
+        type: b.getAttribute("type"),
+        className: (b.className || "").slice(0, 100),
         rect: b.getBoundingClientRect().toJSON(),
       }))
       .filter((b) => {

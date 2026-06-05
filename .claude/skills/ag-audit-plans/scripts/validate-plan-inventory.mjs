@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 const root = process.cwd();
-const strict = process.argv.includes('--strict');
+const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
 
@@ -28,7 +28,7 @@ function walk(dir, predicate, out = []) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), 'utf8');
+  return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
 function hasDateStamp(name) {
@@ -36,20 +36,20 @@ function hasDateStamp(name) {
 }
 
 for (const dir of [
-  'process/general-plans/active',
-  'process/general-plans/completed',
-  'process/features',
+  "process/general-plans/active",
+  "process/general-plans/completed",
+  "process/features",
 ]) {
   if (!fs.existsSync(path.join(root, dir))) fail(`${dir} missing`);
 }
 
 const allPlans = [
-  ...walk('process/general-plans', (rel) => rel.endsWith('.md')),
-  ...walk('process/features', (rel) => rel.endsWith('.md')),
+  ...walk("process/general-plans", (rel) => rel.endsWith(".md")),
+  ...walk("process/features", (rel) => rel.endsWith(".md")),
 ].sort();
 
-const activePlans = allPlans.filter((file) => file.includes('/active/'));
-const completedPlans = allPlans.filter((file) => file.includes('/completed/'));
+const activePlans = allPlans.filter((file) => file.includes("/active/"));
+const completedPlans = allPlans.filter((file) => file.includes("/completed/"));
 const duplicateNames = new Map();
 
 const samples = {

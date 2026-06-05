@@ -12,9 +12,9 @@ function makeArray(subject) {
   return Array.isArray(subject) ? subject : [subject];
 }
 
-const EMPTY = '';
-const SPACE = ' ';
-const ESCAPE = '\\';
+const EMPTY = "";
+const SPACE = " ";
+const ESCAPE = "\\";
 const REGEX_TEST_BLANK_LINE = /^\s+$/;
 const REGEX_INVALID_TRAILING_BACKSLASH = /(?:[^\\]|^)\\$/;
 const REGEX_REPLACE_LEADING_EXCAPED_EXCLAMATION = /^\\!/;
@@ -27,13 +27,13 @@ const REGEX_SPLITALL_CRLF = /\r?\n/g;
 // ..
 const REGEX_TEST_INVALID_PATH = /^\.*\/|^\.+$/;
 
-const SLASH = '/';
+const SLASH = "/";
 
 // Do not use ternary expression here, since "istanbul ignore next" is buggy
-let TMP_KEY_IGNORE = 'node-ignore';
+let TMP_KEY_IGNORE = "node-ignore";
 /* istanbul ignore else */
-if (typeof Symbol !== 'undefined') {
-  TMP_KEY_IGNORE = Symbol.for('node-ignore');
+if (typeof Symbol !== "undefined") {
+  TMP_KEY_IGNORE = Symbol.for("node-ignore");
 }
 const KEY_IGNORE = TMP_KEY_IGNORE;
 
@@ -79,7 +79,7 @@ const REPLACERS = [
     // (a  ) -> (a)
     // (a \ ) -> (a  )
     /\\?\s+$/,
-    (match) => (match.indexOf('\\') === 0 ? SPACE : EMPTY),
+    (match) => (match.indexOf("\\") === 0 ? SPACE : EMPTY),
   ],
 
   // replace (\ ) with ' '
@@ -107,7 +107,7 @@ const REPLACERS = [
   [
     // > a question mark (?) matches a single character
     /(?!\\)\?/g,
-    () => '[^/]',
+    () => "[^/]",
   ],
 
   // leading slash
@@ -116,11 +116,11 @@ const REPLACERS = [
     // > For example, "/*.c" matches "cat-file.c" but not "mozilla-sha1/sha1.c".
     // A leading slash matches the beginning of the pathname
     /^\//,
-    () => '^',
+    () => "^",
   ],
 
   // replace special metacharacter slash after the leading slash
-  [/\//g, () => '\\/'],
+  [/\//g, () => "\\/"],
 
   [
     // > A leading "**" followed by a slash means match in all directories.
@@ -132,7 +132,7 @@ const REPLACERS = [
     /^\^*\\\*\\\*\\\//,
 
     // '**/foo' <-> 'foo'
-    () => '^(?:.*\\/)?',
+    () => "^(?:.*\\/)?",
   ],
 
   // starting
@@ -156,10 +156,10 @@ const REPLACERS = [
           // > level of the particular .gitignore file itself.
           // > Otherwise the pattern may also match at any level below
           // > the .gitignore level.
-          '(?:^|\\/)'
+          "(?:^|\\/)"
         : // > Otherwise, Git treats the pattern as a shell glob suitable for
           // >   consumption by fnmatch(3)
-          '^';
+          "^";
     },
   ],
 
@@ -179,12 +179,12 @@ const REPLACERS = [
           // >   zero or more directories.
           // > For example, "a/**/b" matches "a/b", "a/x/b", "a/x/y/b" and so on.
           // '/**/'
-          '(?:\\/[^\\/]+)*'
+          "(?:\\/[^\\/]+)*"
         : // case: /**
           // > A trailing `"/**"` matches everything inside.
 
           // #21: everything inside but it should not include the current folder
-          '\\/.+',
+          "\\/.+",
   ],
 
   // normal intermediate wildcards
@@ -205,7 +205,7 @@ const REPLACERS = [
       // 2.
       // > Other consecutive asterisks are considered regular asterisks
       // > and will match according to the previous rules.
-      const unescaped = p2.replace(/\\\*/g, '[^\\/]*');
+      const unescaped = p2.replace(/\\\*/g, "[^\\/]*");
       return p1 + unescaped;
     },
   ],
@@ -234,7 +234,7 @@ const REPLACERS = [
       leadEscape === ESCAPE
         ? // '\\[bar]' -> '\\\\[bar\\]'
           `\\[${range}${cleanRangeBackSlash(endEscape)}${close}`
-        : close === ']'
+        : close === "]"
           ? endEscape.length % 2 === 0
             ? // A normal case, and it is a range notation
               // '[bar]'
@@ -242,8 +242,8 @@ const REPLACERS = [
               `[${sanitizeRange(range)}${endEscape}]`
             : // Invalid range notaton
               // '[bar\\]' -> '[bar\\\\]'
-              '[]'
-          : '[]',
+              "[]"
+          : "[]",
   ],
 
   // ending
@@ -286,7 +286,7 @@ const REPLACERS = [
           `${p1}[^/]+`
         : // 'a*' matches 'a'
           // 'a*' matches 'aa'
-          '[^/]*';
+          "[^/]*";
 
       return `${prefix}(?=$|\\/$)`;
     },
@@ -308,10 +308,10 @@ const makeRegex = (pattern, ignoreCase) => {
     regexCache[pattern] = source;
   }
 
-  return ignoreCase ? new RegExp(source, 'i') : new RegExp(source);
+  return ignoreCase ? new RegExp(source, "i") : new RegExp(source);
 };
 
-const isString = (subject) => typeof subject === 'string';
+const isString = (subject) => typeof subject === "string";
 
 // > A blank line matches no files, so it can serve as a separator for readability.
 const checkPattern = (pattern) =>
@@ -320,7 +320,7 @@ const checkPattern = (pattern) =>
   !REGEX_TEST_BLANK_LINE.test(pattern) &&
   !REGEX_INVALID_TRAILING_BACKSLASH.test(pattern) &&
   // > A line starting with # serves as a comment.
-  pattern.indexOf('#') !== 0;
+  pattern.indexOf("#") !== 0;
 
 const splitPattern = (pattern) => pattern.split(REGEX_SPLITALL_CRLF);
 
@@ -338,7 +338,7 @@ const createRule = (pattern, ignoreCase) => {
   let negative = false;
 
   // > An optional prefix "!" which negates the pattern;
-  if (pattern.indexOf('!') === 0) {
+  if (pattern.indexOf("!") === 0) {
     negative = true;
     pattern = pattern.substr(1);
   }
@@ -346,10 +346,10 @@ const createRule = (pattern, ignoreCase) => {
   pattern = pattern
     // > Put a backslash ("\") in front of the first "!" for patterns that
     // >   begin with a literal "!", for example, `"\!important!.txt"`.
-    .replace(REGEX_REPLACE_LEADING_EXCAPED_EXCLAMATION, '!')
+    .replace(REGEX_REPLACE_LEADING_EXCAPED_EXCLAMATION, "!")
     // > Put a backslash ("\") in front of the first hash for patterns that
     // >   begin with a hash.
-    .replace(REGEX_REPLACE_LEADING_EXCAPED_HASH, '#');
+    .replace(REGEX_REPLACE_LEADING_EXCAPED_HASH, "#");
 
   const regex = makeRegex(pattern, ignoreCase);
 
@@ -375,7 +375,7 @@ const checkPath = (path, originalPath, doThrow) => {
 
   // Check if it is a relative path
   if (checkPath.isNotRelative(path)) {
-    const r = '`path.relative()`d';
+    const r = "`path.relative()`d";
     return doThrow(
       `path should be a ${r} string, but got "${originalPath}"`,
       RangeError,
@@ -574,15 +574,15 @@ module.exports = factory;
 /* istanbul ignore if */
 if (
   // Detect `process` so that it can run in browsers.
-  typeof process !== 'undefined' &&
+  typeof process !== "undefined" &&
   ((process.env && process.env.IGNORE_TEST_WIN32) ||
-    process.platform === 'win32')
+    process.platform === "win32")
 ) {
   /* eslint no-control-regex: "off" */
   const makePosix = (str) =>
     /^\\\\\?\\/.test(str) || /["<>|\u0000-\u001F]+/u.test(str)
       ? str
-      : str.replace(/\\/g, '/');
+      : str.replace(/\\/g, "/");
 
   checkPath.convert = makePosix;
 

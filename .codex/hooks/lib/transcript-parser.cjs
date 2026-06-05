@@ -1,23 +1,23 @@
 #!/usr/bin/env node
-'use strict';
+"use strict";
 
 /**
  * Transcript Parser - Extract tool/agent/todo state from session JSONL
  * @module transcript-parser
  */
 
-const fs = require('fs');
-const readline = require('readline');
+const fs = require("fs");
+const readline = require("readline");
 
 function isNativeTaskTodo(todo) {
-  return Boolean(todo && todo._source === 'native_task');
+  return Boolean(todo && todo._source === "native_task");
 }
 
 function normalizeTodo(todo) {
-  if (!todo || typeof todo !== 'object') return null;
+  if (!todo || typeof todo !== "object") return null;
   const normalized = {
-    content: todo.content ?? '',
-    status: todo.status ?? 'pending',
+    content: todo.content ?? "",
+    status: todo.status ?? "pending",
     activeForm: todo.activeForm ?? null,
   };
   if (todo.id != null) normalized.id = todo.id;
@@ -25,7 +25,7 @@ function normalizeTodo(todo) {
 }
 
 function extractTaskIdFromString(text) {
-  if (!text || typeof text !== 'string') return null;
+  if (!text || typeof text !== "string") return null;
   const trimmed = text.trim();
   if (!trimmed) return null;
 
@@ -46,16 +46,16 @@ function extractTaskIdFromString(text) {
 function extractTaskIdFromValue(value) {
   if (value == null) return null;
 
-  if (typeof value === 'string') {
+  if (typeof value === "string") {
     return extractTaskIdFromString(value);
   }
 
-  if (typeof value !== 'object') return null;
+  if (typeof value !== "object") return null;
 
-  if (typeof value.taskId === 'string' || typeof value.taskId === 'number') {
+  if (typeof value.taskId === "string" || typeof value.taskId === "number") {
     return String(value.taskId);
   }
-  if (typeof value.task_id === 'string' || typeof value.task_id === 'number') {
+  if (typeof value.task_id === "string" || typeof value.task_id === "number") {
     return String(value.task_id);
   }
 
@@ -157,21 +157,21 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
 
   for (const block of content) {
     // Handle tool_use blocks
-    if (block.type === 'tool_use' && block.id && block.name) {
-      if (block.name === 'Task') {
+    if (block.type === "tool_use" && block.id && block.name) {
+      if (block.name === "Task") {
         result.statuslineActivityCount += 1;
         hadActivity = true;
         // Agent spawn
         agentMap.set(block.id, {
           id: block.id,
-          type: block.input?.subagent_type ?? 'unknown',
+          type: block.input?.subagent_type ?? "unknown",
           model: block.input?.model ?? null,
           description: block.input?.description ?? null,
-          status: 'running',
+          status: "running",
           startTime: timestamp,
           endTime: null,
         });
-      } else if (block.name === 'TodoWrite') {
+      } else if (block.name === "TodoWrite") {
         result.statuslineActivityCount += 1;
         hadActivity = true;
         // Legacy: Replace todo array (deprecated, kept for backwards compatibility)
@@ -180,11 +180,11 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
           latestTodos.push(
             ...block.input.todos.map((todo) => ({
               ...todo,
-              _source: 'legacy_todowrite',
+              _source: "legacy_todowrite",
             })),
           );
         }
-      } else if (block.name === 'TaskCreate') {
+      } else if (block.name === "TaskCreate") {
         result.statuslineActivityCount += 1;
         hadActivity = true;
         // Native Task API: add new task.
@@ -193,13 +193,13 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
           latestTodos.push({
             id: block.id,
             content: block.input.subject,
-            status: 'pending',
+            status: "pending",
             activeForm: block.input.activeForm || null,
-            _source: 'native_task',
+            _source: "native_task",
             _toolUseId: block.id,
           });
         }
-      } else if (block.name === 'TaskUpdate') {
+      } else if (block.name === "TaskUpdate") {
         result.statuslineActivityCount += 1;
         hadActivity = true;
         // Native Task API: Update existing task status
@@ -217,7 +217,7 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
           if (task) {
             task.status = block.input.status;
             if (
-              Object.prototype.hasOwnProperty.call(block.input, 'activeForm')
+              Object.prototype.hasOwnProperty.call(block.input, "activeForm")
             ) {
               task.activeForm = block.input.activeForm || null;
             }
@@ -229,7 +229,7 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
           id: block.id,
           name: block.name,
           target: extractTarget(block.name, block.input),
-          status: 'running',
+          status: "running",
           startTime: timestamp,
           endTime: null,
         });
@@ -237,10 +237,10 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
     }
 
     // Handle tool_result blocks
-    if (block.type === 'tool_result' && block.tool_use_id) {
+    if (block.type === "tool_result" && block.tool_use_id) {
       const tool = toolMap.get(block.tool_use_id);
       if (tool) {
-        tool.status = block.is_error ? 'error' : 'completed';
+        tool.status = block.is_error ? "error" : "completed";
         tool.endTime = timestamp;
       }
 
@@ -248,7 +248,7 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
       if (agent) {
         result.statuslineActivityCount += 1;
         hadActivity = true;
-        agent.status = 'completed';
+        agent.status = "completed";
         agent.endTime = timestamp;
       }
 
@@ -280,19 +280,19 @@ function extractTarget(toolName, input) {
   if (!input) return null;
 
   switch (toolName) {
-    case 'Read':
-    case 'Write':
-    case 'Edit':
+    case "Read":
+    case "Write":
+    case "Edit":
       return input.file_path ?? input.path ?? null;
 
-    case 'Glob':
-    case 'Grep':
+    case "Glob":
+    case "Grep":
       return input.pattern ?? null;
 
-    case 'Bash':
+    case "Bash":
       const cmd = input.command;
       if (!cmd) return null;
-      return cmd.length > 30 ? cmd.slice(0, 30) + '...' : cmd;
+      return cmd.length > 30 ? cmd.slice(0, 30) + "..." : cmd;
 
     default:
       return null;

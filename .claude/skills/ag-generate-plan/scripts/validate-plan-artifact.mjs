@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 const root = process.cwd();
 const args = process.argv.slice(2);
-const strict = args.includes('--strict');
-const planPaths = args.filter((arg) => !arg.startsWith('--'));
+const strict = args.includes("--strict");
+const planPaths = args.filter((arg) => !arg.startsWith("--"));
 const failures = [];
 const warnings = [];
 
@@ -23,12 +23,12 @@ function exists(relPath) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), 'utf8');
+  return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
 function isActivePlanPath(relPath) {
   return (
-    relPath.startsWith('process/general-plans/active/') ||
+    relPath.startsWith("process/general-plans/active/") ||
     /^process\/features\/[^/]+\/active\//.test(relPath)
   );
 }
@@ -43,12 +43,12 @@ function isDirectPlanArtifact(name) {
 
 function isLegacyPlanShape(name) {
   return (
-    name === 'PLAN.md' || name === 'plan.md' || /^phase-.*\.md$/.test(name)
+    name === "PLAN.md" || name === "plan.md" || /^phase-.*\.md$/.test(name)
   );
 }
 
 function hasSection(text, name) {
-  return new RegExp(`^##\\s+${name}\\b`, 'im').test(text);
+  return new RegExp(`^##\\s+${name}\\b`, "im").test(text);
 }
 
 function validatePlan(relPath) {
@@ -56,7 +56,7 @@ function validatePlan(relPath) {
     fail(`${relPath} missing`);
     return null;
   }
-  if (!relPath.endsWith('.md')) fail(`${relPath} is not a markdown plan`);
+  if (!relPath.endsWith(".md")) fail(`${relPath} is not a markdown plan`);
   if (!isActivePlanPath(relPath)) {
     fail(
       `${relPath} is not under process/general-plans/active/ or process/features/*/active/`,
@@ -123,13 +123,13 @@ function validatePlan(relPath) {
   const directPlan = isDirectPlanArtifact(name);
   const legacyPlan = isLegacyPlanShape(name);
   if (directPlan) {
-    if (!hasSection(text, 'Touchpoints'))
+    if (!hasSection(text, "Touchpoints"))
       warn(`${relPath} is missing Touchpoints section`);
-    if (!hasSection(text, 'Public Contracts'))
+    if (!hasSection(text, "Public Contracts"))
       warn(`${relPath} is missing Public Contracts section`);
-    if (!hasSection(text, 'Blast Radius'))
+    if (!hasSection(text, "Blast Radius"))
       warn(`${relPath} is missing Blast Radius section`);
-    if (!hasSection(text, 'Verification Evidence'))
+    if (!hasSection(text, "Verification Evidence"))
       warn(`${relPath} is missing Verification Evidence section`);
     if (!/Resume and Execution Handoff/i.test(text))
       warn(`${relPath} is missing Resume and Execution Handoff section`);
@@ -151,13 +151,13 @@ function validatePlan(relPath) {
     path: relPath,
     failures: failures.length - localFailuresBefore,
     warnings: warnings.length - localWarningsBefore,
-    lines: text.split('\n').length,
+    lines: text.split("\n").length,
   };
 }
 
 if (planPaths.length === 0) {
   fail(
-    'Usage: node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>',
+    "Usage: node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>",
   );
 }
 

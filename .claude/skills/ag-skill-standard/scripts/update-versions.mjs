@@ -16,7 +16,10 @@ import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
 import { join, basename, dirname } from "node:path";
 import yaml from "js-yaml";
 
-const ROOT = new URL("../../../..", import.meta.url).pathname.replace(/\/$/, "");
+const ROOT = new URL("../../../..", import.meta.url).pathname.replace(
+  /\/$/,
+  "",
+);
 const DRY_RUN = process.argv.includes("--dry-run");
 
 function getSkillDirs() {
@@ -25,7 +28,7 @@ function getSkillDirs() {
     ".claude/skills",
     ".omp/skills",
     "skills/.curated",
-    "skills/.experimental"
+    "skills/.experimental",
   ];
   for (const dir of directories) {
     const dirPath = join(ROOT, dir);
@@ -45,7 +48,7 @@ function getGitLog(skillDir) {
     const out = execFileSync(
       "git",
       ["log", "--oneline", "--reverse", "--format=%s", "--", rel],
-      { cwd: ROOT, encoding: "utf-8" }
+      { cwd: ROOT, encoding: "utf-8" },
     );
     return out
       .trim()
@@ -86,7 +89,9 @@ function readVersion(skillMd) {
     if (!match) return null;
     const parsed = yaml.load(match[1]);
     if (parsed && typeof parsed === "object") {
-      return parsed.version || (parsed.metadata && parsed.metadata.version) || null;
+      return (
+        parsed.version || (parsed.metadata && parsed.metadata.version) || null
+      );
     }
     return null;
   } catch {
@@ -101,7 +106,7 @@ function updateSkillVersion(skillMd, newVersion) {
     const frontmatter = yaml.dump({
       name: basename(dirname(skillMd)),
       description: "Trigger/Use case description here",
-      metadata: { version: newVersion }
+      metadata: { version: newVersion },
     });
     writeFileSync(skillMd, `---\n${frontmatter}---\n\n${content}`);
     return;
@@ -109,7 +114,7 @@ function updateSkillVersion(skillMd, newVersion) {
 
   const frontmatterStr = match[1];
   const parsed = yaml.load(frontmatterStr);
-  
+
   if (parsed && typeof parsed === "object") {
     if (parsed.version) {
       parsed.version = newVersion;
@@ -122,7 +127,10 @@ function updateSkillVersion(skillMd, newVersion) {
   }
 
   const newFrontmatterStr = yaml.dump(parsed, { lineWidth: -1 }).trim();
-  const newContent = content.replace(/^---\n([\s\S]*?)\n---/, `---\n${newFrontmatterStr}\n---`);
+  const newContent = content.replace(
+    /^---\n([\s\S]*?)\n---/,
+    `---\n${newFrontmatterStr}\n---`,
+  );
   writeFileSync(skillMd, newContent, "utf-8");
 }
 

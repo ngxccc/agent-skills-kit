@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
 const root = process.cwd();
-const strict = process.argv.includes('--strict');
+const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
 
@@ -21,7 +21,7 @@ function exists(relPath) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), 'utf8');
+  return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 
 function listAgentNames(dir, extension) {
@@ -39,14 +39,14 @@ function parseClaudeAgent(file) {
   const frontmatter = {};
   const match = text.match(/^---\n([\s\S]*?)\n---\n?/);
   if (match) {
-    for (const line of match[1].split('\n')) {
+    for (const line of match[1].split("\n")) {
       const item = line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
-      if (item) frontmatter[item[1]] = item[2].replace(/^["']|["']$/g, '');
+      if (item) frontmatter[item[1]] = item[2].replace(/^["']|["']$/g, "");
     }
   }
   return {
-    description: frontmatter.description || '',
-    body: text.replace(/^---\n[\s\S]*?\n---\n?/, '').trim(),
+    description: frontmatter.description || "",
+    body: text.replace(/^---\n[\s\S]*?\n---\n?/, "").trim(),
   };
 }
 
@@ -57,43 +57,43 @@ function parseCodexAgent(file) {
     text.match(/^description\s*=\s*"""([\s\S]*?)"""/m)?.[1] ||
     text.match(/^description\s*=\s*"([^"]*)"/m)?.[1] ||
     text.match(/^description\s*=\s*'([^']*)'/m)?.[1] ||
-    '';
+    "";
   const body =
     text.match(/developer_instructions\s*=\s*'''([\s\S]*?)'''/m)?.[1] ||
     text.match(/developer_instructions\s*=\s*"""([\s\S]*?)"""/m)?.[1] ||
-    '';
+    "";
   return { description, body: body.trim() };
 }
 
 function modeOf(text) {
-  return text.match(/\[MODE:\s*([A-Z -]+)\]/)?.[1] || '';
+  return text.match(/\[MODE:\s*([A-Z -]+)\]/)?.[1] || "";
 }
 
 function normalizeDescription(text) {
-  return text.replace(/''/g, "'").replace(/\s+/g, ' ').trim();
+  return text.replace(/''/g, "'").replace(/\s+/g, " ").trim();
 }
 
 function normalize(text) {
   return text
-    .replace(/\r\n/g, '\n')
+    .replace(/\r\n/g, "\n")
     .replace(
       /\.claude\/CLAUDE\.md|CLAUDE\.md|AGENTS\.md/g,
-      '{TOP_LEVEL_INSTRUCTIONS}',
+      "{TOP_LEVEL_INSTRUCTIONS}",
     )
-    .replace(/\.claude\/skills\/|\.agents\/skills\//g, '{SKILLS}/')
-    .replace(/\.claude\/agents\/|\.codex\/agents\//g, '{AGENTS}/')
+    .replace(/\.claude\/skills\/|\.agents\/skills\//g, "{SKILLS}/")
+    .replace(/\.claude\/agents\/|\.codex\/agents\//g, "{AGENTS}/")
     .replace(
       /`\{SKILLS\}\/`, `\{AGENTS\}\/`, and `\{AGENTS\}\/`/g,
-      '`{SKILLS}/` and `{AGENTS}/`',
+      "`{SKILLS}/` and `{AGENTS}/`",
     )
-    .replace(/`\{AGENTS\}\/` and `\{AGENTS\}\/`/g, '`{AGENTS}/`')
-    .replace(/\{AGENTS\}\/ and \{AGENTS\}\//g, '{AGENTS}/')
-    .replace(/[ \t]+$/gm, '')
+    .replace(/`\{AGENTS\}\/` and `\{AGENTS\}\/`/g, "`{AGENTS}/`")
+    .replace(/\{AGENTS\}\/ and \{AGENTS\}\//g, "{AGENTS}/")
+    .replace(/[ \t]+$/gm, "")
     .trim();
 }
 
-const claudeAgents = listAgentNames('.claude/agents', '.md');
-const codexAgents = listAgentNames('.codex/agents', '.toml');
+const claudeAgents = listAgentNames(".claude/agents", ".md");
+const codexAgents = listAgentNames(".codex/agents", ".toml");
 
 for (const agent of claudeAgents) {
   if (!codexAgents.includes(agent)) fail(`.codex/agents/${agent}.toml missing`);
@@ -123,18 +123,18 @@ for (const agent of claudeAgents.filter((name) => codexAgents.includes(name))) {
   }
   if (claudeMode !== codexMode) {
     fail(
-      `${agent} mode mismatch: Claude=${claudeMode || 'missing'} Codex=${codexMode || 'missing'}`,
+      `${agent} mode mismatch: Claude=${claudeMode || "missing"} Codex=${codexMode || "missing"}`,
     );
   }
   if (
-    !claude.body.includes('process/context/all-context.md') &&
-    !['git-manager', 'innovate-agent'].includes(agent)
+    !claude.body.includes("process/context/all-context.md") &&
+    !["git-manager", "innovate-agent"].includes(agent)
   ) {
     warn(`${claudeFile} does not mention process/context/all-context.md`);
   }
   if (
-    !codex.body.includes('process/context/all-context.md') &&
-    !['git-manager', 'innovate-agent'].includes(agent)
+    !codex.body.includes("process/context/all-context.md") &&
+    !["git-manager", "innovate-agent"].includes(agent)
   ) {
     warn(`${codexFile} does not mention process/context/all-context.md`);
   }
