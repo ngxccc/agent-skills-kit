@@ -20,12 +20,12 @@ The Conductor has full access to the OMP tool surface, categorized into 6 primar
 
 | Category | Tool | Function / Application inside Conductor |
 | :--- | :--- | :--- |
-| **Đọc / Tìm kiếm** | `read`, `find`, `search` | Read files/DB/URLs, locate files by glob, grep regex across workspace. |
-| **Chỉnh sửa** | `write`, `edit`, `ast_edit`, `resolve` | Write files, patch lines, perform structural refactors, resolve preview state. |
-| **Hệ thống & Code**| `bash`, `eval`, `recipe`, `lsp` | Run shell commands, execute JS/Python cells, invoke compiler/Make, query LSP. |
-| **Web & Đồ họa** | `browser`, `web_search`, `generate_image`, `inspect_image` | Automate Chromium via Puppeteer, query search engines, generate/inspect visual specs. |
-| **Phân phối & Debug**| `task`, `irc`, `job`, `debug` | Spawn parallel subagents, send IRC DMs, manage background jobs, run DAP debugger. |
-| **Quản lý & QA** | `todo_write`, `github`, `report_tool_issue` | Live TUI task list tracking, GitHub API integration, report tool bugs. |
+| **Read & Search** | `read`, `find`, `search` | Read files/DB/URLs, locate files by glob, grep regex across workspace. |
+| **Editing & Resolution** | `write`, `edit`, `ast_edit`, `resolve` | Write files, patch lines, perform structural refactors, resolve preview state. |
+| **System & Code**| `bash`, `eval`, `recipe`, `lsp` | Run shell commands, execute JS/Python cells, invoke compiler/Make, query LSP. |
+| **Web & Graphics** | `browser`, `web_search`, `generate_image`, `inspect_image` | Automate Chromium via Puppeteer, query search engines, generate/inspect visual specs. |
+| **Concurrency & Debugging**| `task`, `irc`, `job`, `debug` | Spawn parallel subagents, send IRC DMs, manage background jobs, run DAP debugger. |
+| **Management & QA** | `todo_write`, `github`, `report_tool_issue` | Live TUI task list tracking, GitHub API integration, report tool bugs. |
 
 
 ---
@@ -34,7 +34,7 @@ The Conductor has full access to the OMP tool surface, categorized into 6 primar
 
 Here is the exhaustive parameter and syntax reference for all 22 OMP-specific tools:
 
-### Group 1: Đọc / Tìm kiếm (Read & Search)
+### Group 1: Read & Search
 
 #### `read`
 *   **Purpose**: Opens and reads disk files, directories, archives, SQLite databases, PDFs, Jupyter notebooks, images, web URLs, and virtual schemes (`skill://`, `pr://`, `issue://`, `agent://`, `artifact://`, `memory://`, `mcp://`, `local://`, `conflict://`, `jobs://`).
@@ -71,7 +71,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ---
 
-### Group 2: Chỉnh sửa (Editing & Resolution)
+### Group 2: Editing & Resolution
 
 #### `write`
 *   **Purpose**: Creates or overwrites a file, archive entry, or SQLite row. Runs format-on-save automatically.
@@ -110,7 +110,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ---
 
-### Group 3: Hệ thống & Code (System & Code Intelligence)
+### Group 3: System & Code Intelligence
 
 #### `bash`
 *   **Purpose**: Executes shell commands in a persistent session. Supports `cwd`, `env` variables, and PTY mode.
@@ -146,7 +146,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ---
 
-### Group 4: Web & Đồ họa (Web & Graphics)
+### Group 4: Web & Graphics
 
 #### `web_search`
 *   **Purpose**: Submits queries through the Brave/Tavily/Kagi search engine chain.
@@ -180,7 +180,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ---
 
-### Group 5: Phân phối & Debug (Concurrency & Debugging)
+### Group 5: Concurrency & Debugging
 
 #### `task`
 *   **Purpose**: Spawns parallel subagent slots. Passing `isolated: true` configures git worktrees/overlays to isolate concurrent edits.
@@ -216,7 +216,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ---
 
-### Group 6: Quản lý & QA (Management & QA)
+### Group 6: Management & QA
 
 #### `todo_write`
 *   **Purpose**: Updates the live phased todo registry shown in the session TUI.
