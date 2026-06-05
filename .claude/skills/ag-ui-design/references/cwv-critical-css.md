@@ -14,9 +14,12 @@ External stylesheets block rendering until fully downloaded. Inlining critical C
 ```html
 <head>
   <!-- All styles block rendering -->
-  <link rel="stylesheet" href="framework.css">     <!-- 150KB -->
-  <link rel="stylesheet" href="components.css">    <!-- 80KB -->
-  <link rel="stylesheet" href="utilities.css">     <!-- 40KB -->
+  <link rel="stylesheet" href="framework.css" />
+  <!-- 150KB -->
+  <link rel="stylesheet" href="components.css" />
+  <!-- 80KB -->
+  <link rel="stylesheet" href="utilities.css" />
+  <!-- 40KB -->
 </head>
 <!-- Nothing renders until 270KB of CSS downloads and parses -->
 ```
@@ -28,9 +31,18 @@ External stylesheets block rendering until fully downloaded. Inlining critical C
   <!-- Critical above-fold styles inlined -->
   <style>
     /* Header, hero, navigation - ~15KB */
-    .header { display: flex; justify-content: space-between; }
-    .hero { min-height: 60vh; background: #1a1a2e; }
-    .nav-link { color: white; padding: 1rem; }
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
+    .hero {
+      min-height: 60vh;
+      background: #1a1a2e;
+    }
+    .nav-link {
+      color: white;
+      padding: 1rem;
+    }
   </style>
 
   <!-- Non-critical CSS loaded asynchronously -->
@@ -39,14 +51,15 @@ External stylesheets block rendering until fully downloaded. Inlining critical C
     href="styles.css"
     as="style"
     onload="this.onload=null;this.rel='stylesheet'"
-  >
-  <noscript><link rel="stylesheet" href="styles.css"></noscript>
+  />
+  <noscript><link rel="stylesheet" href="styles.css" /></noscript>
 </head>
 <!-- Page renders immediately with critical styles -->
 <!-- Full stylesheet loads without blocking -->
 ```
 
 **Critical CSS extraction:**
+
 - Include only above-fold styles (header, hero, nav)
 - Target 14KB or less (fits in first TCP roundtrip)
 - Use tools: Critical, Critters, PurgeCSS

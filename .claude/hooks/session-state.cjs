@@ -5,7 +5,10 @@ try {
   const fs = require('fs');
   const { isHookEnabled } = require('./lib/ag-config-utils.cjs');
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
-  const { persistState, refreshStatuslineSnapshot } = require('./lib/session-state-manager.cjs');
+  const {
+    persistState,
+    refreshStatuslineSnapshot,
+  } = require('./lib/session-state-manager.cjs');
 
   const PERSIST_EVENTS = new Set(['Stop', 'SubagentStop']);
   const REFRESH_EVENTS = new Set(['PostToolUse', 'Stop', 'SubagentStop']);
@@ -14,7 +17,7 @@ try {
     const {
       enabled = isHookEnabled('session-state'),
       refresh = refreshStatuslineSnapshot,
-      persist = persistState
+      persist = persistState,
     } = deps;
 
     if (!enabled) {
@@ -45,7 +48,7 @@ try {
       action: persisted || refreshed ? 'handled' : 'noop',
       eventType,
       persisted,
-      refreshed
+      refreshed,
     };
   }
 
@@ -59,7 +62,7 @@ try {
         status: 'ok',
         exit: 0,
         note: result.action,
-        event: result.eventType || 'unknown'
+        event: result.eventType || 'unknown',
       });
       process.exit(0);
     } catch (error) {

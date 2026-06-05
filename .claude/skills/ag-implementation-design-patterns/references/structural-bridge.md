@@ -22,18 +22,42 @@ When a class hierarchy extends along two or more independent dimensions, subclas
 
 ### Solution
 
-Extract one dimension into a separate hierarchy (the *implementation*). The original hierarchy (the *abstraction*) references an implementation object and delegates the variable behavior to it. Each axis can grow independently.
+Extract one dimension into a separate hierarchy (the _implementation_). The original hierarchy (the _abstraction_) references an implementation object and delegates the variable behavior to it. Each axis can grow independently.
 
 **Incorrect (subclass explosion across two axes):**
 
 ```typescript
 // Two axes: shape × renderer. Each combination is a class.
-class RedCircle    { draw() { /* red + circle */ } }
-class BlueCircle   { draw() { /* blue + circle */ } }
-class GreenCircle  { draw() { /* green + circle */ } }
-class RedSquare    { draw() { /* red + square */ } }
-class BlueSquare   { draw() { /* blue + square */ } }
-class GreenSquare  { draw() { /* green + square */ } }
+class RedCircle {
+  draw() {
+    /* red + circle */
+  }
+}
+class BlueCircle {
+  draw() {
+    /* blue + circle */
+  }
+}
+class GreenCircle {
+  draw() {
+    /* green + circle */
+  }
+}
+class RedSquare {
+  draw() {
+    /* red + square */
+  }
+}
+class BlueSquare {
+  draw() {
+    /* blue + square */
+  }
+}
+class GreenSquare {
+  draw() {
+    /* green + square */
+  }
+}
 // Adding a Triangle adds 3 classes; adding "Yellow" adds 2 more; explosion is multiplicative.
 ```
 
@@ -46,26 +70,26 @@ class GreenSquare  { draw() { /* green + square */ } }
  * hierarchy and delegates all of the real work to this object.
  */
 class Abstraction {
-    protected implementation: Implementation;
+  protected implementation: Implementation;
 
-    constructor(implementation: Implementation) {
-        this.implementation = implementation;
-    }
+  constructor(implementation: Implementation) {
+    this.implementation = implementation;
+  }
 
-    public operation(): string {
-        const result = this.implementation.operationImplementation();
-        return `Abstraction: Base operation with:\n${result}`;
-    }
+  public operation(): string {
+    const result = this.implementation.operationImplementation();
+    return `Abstraction: Base operation with:\n${result}`;
+  }
 }
 
 /**
  * You can extend the Abstraction without changing the Implementation classes.
  */
 class ExtendedAbstraction extends Abstraction {
-    public operation(): string {
-        const result = this.implementation.operationImplementation();
-        return `ExtendedAbstraction: Extended operation with:\n${result}`;
-    }
+  public operation(): string {
+    const result = this.implementation.operationImplementation();
+    return `ExtendedAbstraction: Extended operation with:\n${result}`;
+  }
 }
 
 /**
@@ -76,7 +100,7 @@ class ExtendedAbstraction extends Abstraction {
  * level operations based on those primitives.
  */
 interface Implementation {
-    operationImplementation(): string;
+  operationImplementation(): string;
 }
 
 /**
@@ -84,15 +108,15 @@ interface Implementation {
  * implements the Implementation interface using that platform's API.
  */
 class ConcreteImplementationA implements Implementation {
-    public operationImplementation(): string {
-        return 'ConcreteImplementationA: Here\'s the result on the platform A.';
-    }
+  public operationImplementation(): string {
+    return "ConcreteImplementationA: Here's the result on the platform A.";
+  }
 }
 
 class ConcreteImplementationB implements Implementation {
-    public operationImplementation(): string {
-        return 'ConcreteImplementationB: Here\'s the result on the platform B.';
-    }
+  public operationImplementation(): string {
+    return "ConcreteImplementationB: Here's the result on the platform B.";
+  }
 }
 
 /**
@@ -102,14 +126,14 @@ class ConcreteImplementationB implements Implementation {
  * implementation combination.
  */
 function clientCode(abstraction: Abstraction) {
-    console.log(abstraction.operation());
+  console.log(abstraction.operation());
 }
 
 let implementation = new ConcreteImplementationA();
 let abstraction = new Abstraction(implementation);
 clientCode(abstraction);
 
-console.log('');
+console.log("");
 
 implementation = new ConcreteImplementationB();
 abstraction = new ExtendedAbstraction(implementation);
@@ -134,7 +158,7 @@ ConcreteImplementationB: Here's the result on the platform B.
 
 ### When NOT to use
 
-- The two axes are *not* truly independent — Bridge adds indirection that buys nothing
+- The two axes are _not_ truly independent — Bridge adds indirection that buys nothing
 - The class has only a handful of variants and the matrix is small
 - A highly cohesive class would lose clarity if forcibly split
 

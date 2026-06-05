@@ -5,6 +5,7 @@
     ".claude/skills/**",
     ".claude/skills/**/.??*",
     ".claude/hooks/**",
+    ".claude/statusline.cjs",
     ".claude/settings.json",
     ".codex/**",
     ".omp/**",
@@ -27,12 +28,8 @@
     ".claude/skills/ag-chrome-devtools/scripts/node_modules/**"
   ],
   "strip": [],
-  "merge": [
-    ".claude/settings.json"
-  ],
-  "copyIfMissing": [
-    "process/context/planning/example-*.md"
-  ],
+  "merge": [".claude/settings.json"],
+  "copyIfMissing": ["process/context/planning/example-*.md"],
   "symlinks": {
     ".agents/skills": "../.claude/skills"
   },

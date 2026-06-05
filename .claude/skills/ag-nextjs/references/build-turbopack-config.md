@@ -12,7 +12,7 @@ tags: build, turbopack, persistent-cache, config-regression
 ### Shapes to recognize
 
 - `experimental.turbo.persistentCaching: false` in `next.config.{js,ts,mjs}` — kills the persistent cache.
-- A `.gitignore` rule excluding `.next/cache/turbopack` *plus* CI clearing `.next` between builds — guarantees a cold start every dev session locally, every build remotely.
+- A `.gitignore` rule excluding `.next/cache/turbopack` _plus_ CI clearing `.next` between builds — guarantees a cold start every dev session locally, every build remotely.
 - A pre-`dev`/pre-`build` script doing `rm -rf .next` "to be safe" — defeats the cache.
 - Custom `webpack` configuration that conflicts with Turbopack (loaders pointing at `webpack` rather than `turbo.rules`) — falls back to webpack and loses Turbopack speed.
 - A `next` invocation explicitly passing `--no-turbopack` somewhere in package.json scripts — silently downgrades.
@@ -30,10 +30,10 @@ const nextConfig = {
   experimental: {
     turbo: {
       // Disabling caching slows down restarts
-      persistentCaching: false
-    }
-  }
-}
+      persistentCaching: false,
+    },
+  },
+};
 ```
 
 **Correct (leveraging Turbopack defaults):**
@@ -47,14 +47,14 @@ const nextConfig = {
     turbo: {
       // Add custom loaders if needed
       rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js'
-        }
-      }
-    }
-  }
-}
+        "*.svg": {
+          loaders: ["@svgr/webpack"],
+          as: "*.js",
+        },
+      },
+    },
+  },
+};
 ```
 
 **Development command:**

@@ -34,7 +34,10 @@ class SortByAmountDesc implements InvoiceSortStrategy {
 }
 
 class InvoiceList {
-  constructor(private invoices: Invoice[], private strategy: InvoiceSortStrategy) {}
+  constructor(
+    private invoices: Invoice[],
+    private strategy: InvoiceSortStrategy,
+  ) {}
   sorted() {
     return [...this.invoices].sort((a, b) => this.strategy.compare(a, b));
   }
@@ -48,10 +51,14 @@ const overdue = new InvoiceList(invoices, new SortByDueDate()).sorted();
 ```typescript
 type InvoiceComparator = (a: Invoice, b: Invoice) => number;
 
-const byDueDate: InvoiceComparator = (a, b) => a.dueDate.getTime() - b.dueDate.getTime();
+const byDueDate: InvoiceComparator = (a, b) =>
+  a.dueDate.getTime() - b.dueDate.getTime();
 const byAmountDesc: InvoiceComparator = (a, b) => b.amount - a.amount;
 
-function sortInvoices(invoices: Invoice[], compare: InvoiceComparator): Invoice[] {
+function sortInvoices(
+  invoices: Invoice[],
+  compare: InvoiceComparator,
+): Invoice[] {
   return [...invoices].sort(compare);
 }
 

@@ -31,7 +31,10 @@ Tailwind CSS v4 only applies `hover:` styles on devices that support hover (`@me
   <!-- Touch: press feedback via active: -->
 </button>
 
-<a href="/settings" class="text-gray-600 hover:text-blue-500 active:text-blue-600">
+<a
+  href="/settings"
+  class="text-gray-600 hover:text-blue-500 active:text-blue-600"
+>
   Settings
 </a>
 ```
@@ -39,13 +42,15 @@ Tailwind CSS v4 only applies `hover:` styles on devices that support hover (`@me
 **Complete interactive pattern:**
 
 ```html
-<button class="
+<button
+  class="
   bg-blue-500 text-white
   hover:bg-blue-600
   active:bg-blue-700
   focus-visible:ring-2 focus-visible:ring-blue-400
   disabled:opacity-50 disabled:pointer-events-none
-">
+"
+>
   Touch-friendly button
 </button>
 ```

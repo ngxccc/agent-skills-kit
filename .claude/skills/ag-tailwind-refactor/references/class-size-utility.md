@@ -5,7 +5,7 @@ impactDescription: reduces class count by 50% for square elements
 tags: class, size, width, height
 ---
 
-## Replace Matching w-* h-* with size-*
+## Replace Matching w-_ h-_ with size-\*
 
 When an element has identical width and height values, the `size-*` utility replaces both `w-*` and `h-*` in a single class. This cuts the class count in half for square elements like avatars, icons, and equal-dimension containers. Only apply this consolidation when the width and height values are exactly the same.
 

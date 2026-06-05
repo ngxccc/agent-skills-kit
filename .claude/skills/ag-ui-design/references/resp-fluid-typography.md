@@ -12,14 +12,20 @@ Fixed font sizes at breakpoints create abrupt jumps. Fluid typography scales smo
 **Incorrect (stepped font sizes with jarring transitions):**
 
 ```css
-h1 { font-size: 24px; }
+h1 {
+  font-size: 24px;
+}
 
 @media (min-width: 768px) {
-  h1 { font-size: 36px; } /* Sudden jump at 768px */
+  h1 {
+    font-size: 36px;
+  } /* Sudden jump at 768px */
 }
 
 @media (min-width: 1024px) {
-  h1 { font-size: 48px; } /* Another jump at 1024px */
+  h1 {
+    font-size: 48px;
+  } /* Another jump at 1024px */
 }
 /* Text size changes abruptly at breakpoints */
 /* Users at 767px and 768px have very different experiences */
@@ -51,6 +57,7 @@ p {
 ```
 
 **Fluid typography formula:**
+
 ```text
 clamp(min, preferred, max)
 preferred = [viewport-unit] + [base-rem]
@@ -58,6 +65,7 @@ Example: clamp(1rem, 2vw + 0.5rem, 2rem)
 ```
 
 **Guidelines:**
+
 - Body text: 16px minimum, 20px maximum
 - Headings: More aggressive scaling (h1 may double)
 - Test at narrow widths to ensure readability

@@ -9,4 +9,4 @@ changelog:
     - title: Community
       labels: [community, hook, protocol]
     - title: Other Changes
-      labels: ['*']
+      labels: ["*"]

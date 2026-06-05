@@ -17,7 +17,7 @@ if (!user.isNotVerified) {
 }
 
 if (!isNotEmpty(list)) {
-  return 'No items';
+  return "No items";
 }
 
 if (!config.disableCache !== false) {
@@ -38,7 +38,7 @@ if (user.isVerified) {
 }
 
 if (isEmpty(list)) {
-  return 'No items';
+  return "No items";
 }
 
 if (config.enableCache) {
@@ -55,7 +55,7 @@ if (canProceed) {
 
 ```typescript
 function isNotAdmin(user: User): boolean {
-  return user.role !== 'admin';
+  return user.role !== "admin";
 }
 
 function hasNoErrors(result: Result): boolean {
@@ -76,7 +76,7 @@ if (!isNotAdmin(user) && !isDisabled(feature)) {
 
 ```typescript
 function isAdmin(user: User): boolean {
-  return user.role === 'admin';
+  return user.role === "admin";
 }
 
 function isValid(result: Result): boolean {
@@ -168,14 +168,14 @@ function canAccessSystem(user: User, config: Config): boolean {
 
 ### Refactoring Patterns
 
-| Negative Form | Positive Form |
-|--------------|---------------|
-| `!isNotValid` | `isValid` |
-| `!isEmpty` | `hasItems` |
-| `!isDisabled` | `isEnabled` |
-| `notFound === false` | `found === true` or just `found` |
-| `!user.inactive` | `user.isActive` (may need data change) |
-| `errors.length === 0` | `isValid` or `hasNoErrors` |
+| Negative Form         | Positive Form                          |
+| --------------------- | -------------------------------------- |
+| `!isNotValid`         | `isValid`                              |
+| `!isEmpty`            | `hasItems`                             |
+| `!isDisabled`         | `isEnabled`                            |
+| `notFound === false`  | `found === true` or just `found`       |
+| `!user.inactive`      | `user.isActive` (may need data change) |
+| `errors.length === 0` | `isValid` or `hasNoErrors`             |
 
 ### Benefits
 

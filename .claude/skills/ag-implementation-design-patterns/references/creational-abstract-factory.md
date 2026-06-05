@@ -7,11 +7,11 @@ tags: creational, abstract-factory, product-family, polymorphic-creation, open-c
 
 ## Use Abstract Factory to Produce Families of Related Objects
 
-**Pattern intent:** an interface for creating *families* of related or dependent objects without specifying their concrete classes. Each concrete factory returns objects from a single variant; clients work with abstract products and never know which variant is active.
+**Pattern intent:** an interface for creating _families_ of related or dependent objects without specifying their concrete classes. Each concrete factory returns objects from a single variant; clients work with abstract products and never know which variant is active.
 
 ### Shapes to recognize
 
-- Code that branches on a style/theme/variant *for every product it creates*: `if (style === 'modern') new ModernChair(); else new VictorianChair();` repeated for chair, sofa, table
+- Code that branches on a style/theme/variant _for every product it creates_: `if (style === 'modern') new ModernChair(); else new VictorianChair();` repeated for chair, sofa, table
 - Risk of accidentally pairing incompatible variants (a Victorian chair next to a Modern sofa)
 - Cross-platform UI code where button + checkbox + dialog must all match the host OS
 - "I have N parallel hierarchies that must vary together"
@@ -28,11 +28,11 @@ Declare an abstract product interface per product type (Chair, Sofa, Table). Dec
 
 ```typescript
 class FurnitureShop {
-  buildLivingRoom(style: 'modern' | 'victorian') {
+  buildLivingRoom(style: "modern" | "victorian") {
     // Each call site duplicates the style branch — if a new style ships,
     // every method that creates furniture must be updated.
-    const chair = style === 'modern' ? new ModernChair() : new VictorianChair();
-    const sofa  = style === 'modern' ? new ModernSofa()  : new VictorianSofa();
+    const chair = style === "modern" ? new ModernChair() : new VictorianChair();
+    const sofa = style === "modern" ? new ModernSofa() : new VictorianSofa();
     // Easy to mix accidentally:
     const table = new ModernTable(); // oops — should have been Victorian
     return { chair, sofa, table };
@@ -52,8 +52,8 @@ class FurnitureShop {
  * another.
  */
 interface AbstractFactory {
-    createProductA(): AbstractProductA;
-    createProductB(): AbstractProductB;
+  createProductA(): AbstractProductA;
+  createProductB(): AbstractProductB;
 }
 
 /**
@@ -61,66 +61,66 @@ interface AbstractFactory {
  * variant. The factory guarantees that resulting products are compatible.
  */
 class ConcreteFactory1 implements AbstractFactory {
-    public createProductA(): AbstractProductA {
-        return new ConcreteProductA1();
-    }
+  public createProductA(): AbstractProductA {
+    return new ConcreteProductA1();
+  }
 
-    public createProductB(): AbstractProductB {
-        return new ConcreteProductB1();
-    }
+  public createProductB(): AbstractProductB {
+    return new ConcreteProductB1();
+  }
 }
 
 class ConcreteFactory2 implements AbstractFactory {
-    public createProductA(): AbstractProductA {
-        return new ConcreteProductA2();
-    }
+  public createProductA(): AbstractProductA {
+    return new ConcreteProductA2();
+  }
 
-    public createProductB(): AbstractProductB {
-        return new ConcreteProductB2();
-    }
+  public createProductB(): AbstractProductB {
+    return new ConcreteProductB2();
+  }
 }
 
 interface AbstractProductA {
-    usefulFunctionA(): string;
+  usefulFunctionA(): string;
 }
 
 class ConcreteProductA1 implements AbstractProductA {
-    public usefulFunctionA(): string {
-        return 'The result of the product A1.';
-    }
+  public usefulFunctionA(): string {
+    return "The result of the product A1.";
+  }
 }
 
 class ConcreteProductA2 implements AbstractProductA {
-    public usefulFunctionA(): string {
-        return 'The result of the product A2.';
-    }
+  public usefulFunctionA(): string {
+    return "The result of the product A2.";
+  }
 }
 
 interface AbstractProductB {
-    usefulFunctionB(): string;
-    anotherUsefulFunctionB(collaborator: AbstractProductA): string;
+  usefulFunctionB(): string;
+  anotherUsefulFunctionB(collaborator: AbstractProductA): string;
 }
 
 class ConcreteProductB1 implements AbstractProductB {
-    public usefulFunctionB(): string {
-        return 'The result of the product B1.';
-    }
+  public usefulFunctionB(): string {
+    return "The result of the product B1.";
+  }
 
-    public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-        const result = collaborator.usefulFunctionA();
-        return `The result of the B1 collaborating with the (${result})`;
-    }
+  public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
+    const result = collaborator.usefulFunctionA();
+    return `The result of the B1 collaborating with the (${result})`;
+  }
 }
 
 class ConcreteProductB2 implements AbstractProductB {
-    public usefulFunctionB(): string {
-        return 'The result of the product B2.';
-    }
+  public usefulFunctionB(): string {
+    return "The result of the product B2.";
+  }
 
-    public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
-        const result = collaborator.usefulFunctionA();
-        return `The result of the B2 collaborating with the (${result})`;
-    }
+  public anotherUsefulFunctionB(collaborator: AbstractProductA): string {
+    const result = collaborator.usefulFunctionA();
+    return `The result of the B2 collaborating with the (${result})`;
+  }
 }
 
 /**
@@ -129,19 +129,21 @@ class ConcreteProductB2 implements AbstractProductB {
  * product subclass to the client code without breaking it.
  */
 function clientCode(factory: AbstractFactory) {
-    const productA = factory.createProductA();
-    const productB = factory.createProductB();
+  const productA = factory.createProductA();
+  const productB = factory.createProductB();
 
-    console.log(productB.usefulFunctionB());
-    console.log(productB.anotherUsefulFunctionB(productA));
+  console.log(productB.usefulFunctionB());
+  console.log(productB.anotherUsefulFunctionB(productA));
 }
 
-console.log('Client: Testing client code with the first factory type...');
+console.log("Client: Testing client code with the first factory type...");
 clientCode(new ConcreteFactory1());
 
-console.log('');
+console.log("");
 
-console.log('Client: Testing the same client code with the second factory type...');
+console.log(
+  "Client: Testing the same client code with the second factory type...",
+);
 clientCode(new ConcreteFactory2());
 ```
 

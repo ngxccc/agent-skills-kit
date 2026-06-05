@@ -13,57 +13,59 @@ A `string`-keyed event emitter offers zero protection: a typo in the event name 
 
 ```typescript
 class Emitter {
-  private listeners = new Map<string, Array<(payload: unknown) => void>>()
+  private listeners = new Map<string, Array<(payload: unknown) => void>>();
 
   on(event: string, handler: (payload: unknown) => void) {
-    this.listeners.set(event, [...(this.listeners.get(event) ?? []), handler])
+    this.listeners.set(event, [...(this.listeners.get(event) ?? []), handler]);
   }
 
   emit(event: string, payload: unknown) {
-    for (const h of this.listeners.get(event) ?? []) h(payload)
+    for (const h of this.listeners.get(event) ?? []) h(payload);
   }
 }
 
-const bus = new Emitter()
-bus.on('user:loggedIn', (p) => console.log((p as { userId: string }).userId))
-bus.emit('user:loggedin', { userId: 'u_1' }) // Silent typo: listener never fires.
-bus.emit('user:loggedIn', { id: 'u_1' })     // Compiles. Crashes at first listener.
+const bus = new Emitter();
+bus.on("user:loggedIn", (p) => console.log((p as { userId: string }).userId));
+bus.emit("user:loggedin", { userId: "u_1" }); // Silent typo: listener never fires.
+bus.emit("user:loggedIn", { id: "u_1" }); // Compiles. Crashes at first listener.
 ```
 
 **Correct (event map drives both `on` and `emit`):**
 
 ```typescript
 interface AppEvents {
-  'user:loggedIn':  { userId: string; sessionId: string }
-  'user:loggedOut': { userId: string; reason: 'manual' | 'timeout' }
-  'cart:itemAdded': { sku: string; quantity: number }
+  "user:loggedIn": { userId: string; sessionId: string };
+  "user:loggedOut": { userId: string; reason: "manual" | "timeout" };
+  "cart:itemAdded": { sku: string; quantity: number };
 }
 
 class TypedEmitter<E extends Record<string, unknown>> {
-  private listeners: { [K in keyof E]?: Array<(payload: E[K]) => void> } = {}
+  private listeners: { [K in keyof E]?: Array<(payload: E[K]) => void> } = {};
 
   on<K extends keyof E>(event: K, handler: (payload: E[K]) => void): void {
-    (this.listeners[event] ??= []).push(handler)
+    (this.listeners[event] ??= []).push(handler);
   }
 
   emit<K extends keyof E>(event: K, payload: E[K]): void {
-    for (const h of this.listeners[event] ?? []) h(payload)
+    for (const h of this.listeners[event] ?? []) h(payload);
   }
 }
 
-const bus = new TypedEmitter<AppEvents>()
-bus.on('user:loggedIn', ({ userId }) => console.log(userId)) // payload inferred as { userId, sessionId }
-bus.emit('user:loggedin', { userId: 'u_1', sessionId: 's' }) // Error: 'user:loggedin' is not a known event.
-bus.emit('user:loggedIn', { userId: 'u_1' })                 // Error: missing 'sessionId'.
+const bus = new TypedEmitter<AppEvents>();
+bus.on("user:loggedIn", ({ userId }) => console.log(userId)); // payload inferred as { userId, sessionId }
+bus.emit("user:loggedin", { userId: "u_1", sessionId: "s" }); // Error: 'user:loggedin' is not a known event.
+bus.emit("user:loggedIn", { userId: "u_1" }); // Error: missing 'sessionId'.
 ```
 
 Autocomplete now lists all valid event names, and each handler's payload is the exact shape declared in the map.
 
 **When NOT to apply:**
+
 - Dynamic event names known only at runtime (plugin systems, user-defined events) — the map approach can't represent them.
 - Cross-process events where TypeScript can't see both ends of the channel; rely on schema validation at the boundary instead.
 
 **Scope delta:**
+
 - This pattern composes cleanly with `[[dsl-schema-first-inference]]`: derive `AppEvents` from runtime schemas so the emitter rejects malformed payloads at the source.
 
 Reference: [TypeScript Handbook — Mapped Types](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html)

@@ -75,6 +75,7 @@ Mobile-first design starts with the smallest viewport and progressively enhances
 ```
 
 **Mobile-first benefits:**
+
 - Forces prioritization of essential content
 - Smaller base CSS file (add vs. override)
 - Better performance on slower mobile connections

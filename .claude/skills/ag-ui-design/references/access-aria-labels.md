@@ -49,6 +49,7 @@ Buttons and links with only icons have no accessible name. Screen readers announ
 ```
 
 **ARIA labeling rules:**
+
 - Use `aria-label` for concise names
 - Use `aria-labelledby` to reference visible text elsewhere
 - Add `aria-hidden="true"` to decorative icons

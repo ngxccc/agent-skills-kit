@@ -33,7 +33,9 @@ function allOrderLineItems(users: User[]): LineItem[] {
 
 ```typescript
 function allOrderLineItems(users: User[]): LineItem[] {
-  return users.flatMap((user) => user.orders.flatMap((order) => order.lineItems));
+  return users.flatMap((user) =>
+    user.orders.flatMap((order) => order.lineItems),
+  );
 }
 ```
 

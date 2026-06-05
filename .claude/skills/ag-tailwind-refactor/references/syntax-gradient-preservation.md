@@ -22,7 +22,9 @@ In Tailwind v3, gradient color stops were reset when a variant changed the `from
 
 ```html
 <!-- Explicitly set all stops per variant -->
-<div class="bg-linear-to-r from-red-500 to-yellow-400 dark:from-blue-500 dark:to-teal-400">
+<div
+  class="bg-linear-to-r from-red-500 to-yellow-400 dark:from-blue-500 dark:to-teal-400"
+>
   Each variant fully defines its gradient
 </div>
 ```

@@ -14,6 +14,7 @@ Comprehensive code quality refactoring guide for Tailwind CSS applications targe
 **Before manual migration:** Run `npx @tailwindcss/upgrade` first — it handles most configuration and renamed utility changes automatically. Then use this skill for patterns the automated tool does not cover.
 
 Reference these guidelines when:
+
 - Migrating a project from Tailwind CSS v3 to v4
 - Cleaning up deprecated or renamed utility classes
 - Consolidating verbose multi-class patterns
@@ -23,16 +24,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Configuration Migration | CRITICAL | `config-` |
-| 2 | Deprecated Utility Replacement | CRITICAL | `dep-` |
-| 3 | Renamed Utility Updates | HIGH | `rename-` |
-| 4 | Class Consolidation | HIGH | `class-` |
-| 5 | Arbitrary Value Cleanup | MEDIUM-HIGH | `arb-` |
-| 6 | Syntax Modernization | MEDIUM | `syntax-` |
-| 7 | @apply & Architecture Cleanup | MEDIUM | `arch-` |
-| 8 | Modern Feature Adoption | LOW-MEDIUM | `adopt-` |
+| Priority | Category                       | Impact      | Prefix    |
+| -------- | ------------------------------ | ----------- | --------- |
+| 1        | Configuration Migration        | CRITICAL    | `config-` |
+| 2        | Deprecated Utility Replacement | CRITICAL    | `dep-`    |
+| 3        | Renamed Utility Updates        | HIGH        | `rename-` |
+| 4        | Class Consolidation            | HIGH        | `class-`  |
+| 5        | Arbitrary Value Cleanup        | MEDIUM-HIGH | `arb-`    |
+| 6        | Syntax Modernization           | MEDIUM      | `syntax-` |
+| 7        | @apply & Architecture Cleanup  | MEDIUM      | `arch-`   |
+| 8        | Modern Feature Adoption        | LOW-MEDIUM  | `adopt-`  |
 
 ## Quick Reference
 
@@ -50,10 +51,10 @@ Reference these guidelines when:
 
 ### 2. Deprecated Utility Replacement (CRITICAL)
 
-- [`dep-opacity-modifiers`](references/dep-opacity-modifiers.md) - Replace *-opacity-* with opacity modifiers (/50)
+- [`dep-opacity-modifiers`](references/dep-opacity-modifiers.md) - Replace _-opacity-_ with opacity modifiers (/50)
 - [`dep-flex-shorthand`](references/dep-flex-shorthand.md) - Replace flex-shrink/flex-grow with shrink/grow
 - [`dep-text-ellipsis`](references/dep-text-ellipsis.md) - Replace overflow-ellipsis with text-ellipsis
-- [`dep-decoration-utilities`](references/dep-decoration-utilities.md) - Replace decoration-slice/clone with box-decoration-*
+- [`dep-decoration-utilities`](references/dep-decoration-utilities.md) - Replace decoration-slice/clone with box-decoration-\*
 - [`dep-transform-composites`](references/dep-transform-composites.md) - Replace transform-none with individual resets
 - [`dep-transition-properties`](references/dep-transition-properties.md) - Update transition-[transform] to individual properties
 
@@ -63,14 +64,14 @@ Reference these guidelines when:
 - [`rename-blur-scale`](references/rename-blur-scale.md) - Update blur utilities to new scale
 - [`rename-rounded-scale`](references/rename-rounded-scale.md) - Update border radius utilities to new scale
 - [`rename-ring-width`](references/rename-ring-width.md) - Replace ring with ring-3 for v3 default
-- [`rename-gradient-utilities`](references/rename-gradient-utilities.md) - Replace bg-gradient-* with bg-linear-*
+- [`rename-gradient-utilities`](references/rename-gradient-utilities.md) - Replace bg-gradient-_ with bg-linear-_
 - [`rename-outline-hidden`](references/rename-outline-hidden.md) - Replace outline-none with outline-hidden
 
 ### 4. Class Consolidation (HIGH)
 
-- [`class-size-utility`](references/class-size-utility.md) - Replace matching w-* h-* with size-*
-- [`class-gap-over-space`](references/class-gap-over-space.md) - Prefer gap-* over space-x/y-* in flex/grid
-- [`class-inset-shorthand`](references/class-inset-shorthand.md) - Replace top/right/bottom/left with inset-*
+- [`class-size-utility`](references/class-size-utility.md) - Replace matching w-_ h-_ with size-\*
+- [`class-gap-over-space`](references/class-gap-over-space.md) - Prefer gap-_ over space-x/y-_ in flex/grid
+- [`class-inset-shorthand`](references/class-inset-shorthand.md) - Replace top/right/bottom/left with inset-\*
 - [`class-border-color-explicit`](references/class-border-color-explicit.md) - Add explicit border color for v4 default change
 - [`class-ring-color-explicit`](references/class-ring-color-explicit.md) - Add explicit ring color for v4 default change
 - [`class-redundant-display`](references/class-redundant-display.md) - Remove redundant display classes
@@ -105,8 +106,8 @@ Reference these guidelines when:
 ### 8. Modern Feature Adoption (LOW-MEDIUM)
 
 - [`adopt-container-queries`](references/adopt-container-queries.md) - Use container queries instead of viewport breakpoints
-- [`adopt-not-variant`](references/adopt-not-variant.md) - Use not-* variant for negated conditions
-- [`adopt-in-variant`](references/adopt-in-variant.md) - Use in-* variant to simplify parent-state styling
+- [`adopt-not-variant`](references/adopt-not-variant.md) - Use not-\* variant for negated conditions
+- [`adopt-in-variant`](references/adopt-in-variant.md) - Use in-\* variant to simplify parent-state styling
 - [`adopt-field-sizing`](references/adopt-field-sizing.md) - Use field-sizing-content for auto-resizing textareas
 - [`adopt-starting-variant`](references/adopt-starting-variant.md) - Use starting variant for entry animations without JS
 
@@ -119,8 +120,8 @@ Read individual reference files for detailed explanations and code examples:
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and reference information |
+| File                                                            | Description                       |
+| --------------------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for new rules            |
+| [metadata.json](metadata.json)                                  | Version and reference information |

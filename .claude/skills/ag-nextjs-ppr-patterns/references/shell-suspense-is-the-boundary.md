@@ -5,10 +5,10 @@ tags: shell, suspense, streaming, static-shell
 
 ## Treat Suspense as the static/dynamic boundary, not a spinner
 
-The model treats `<Suspense>` as a loading-spinner convenience. Under PPR it is the **architectural seam**: everything outside a boundary is prerendered into the static shell and sent to the browser instantly; at the boundary, the *fallback* also ships in the shell while the *children* stream in at request time. Where you draw the boundary literally decides what is static versus dynamic — so place it deliberately, not just "wherever something loads."
+The model treats `<Suspense>` as a loading-spinner convenience. Under PPR it is the **architectural seam**: everything outside a boundary is prerendered into the static shell and sent to the browser instantly; at the boundary, the _fallback_ also ships in the shell while the _children_ stream in at request time. Where you draw the boundary literally decides what is static versus dynamic — so place it deliberately, not just "wherever something loads."
 
 ```tsx
-import { Suspense } from 'react'
+import { Suspense } from "react";
 
 export default function BlogPage() {
   return (
@@ -23,7 +23,7 @@ export default function BlogPage() {
         <LatestPosts />
       </Suspense>
     </>
-  )
+  );
 }
 ```
 

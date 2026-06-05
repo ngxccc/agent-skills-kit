@@ -33,11 +33,11 @@ Tailwind CSS v4 changes default colors for borders and rings from `gray-200`/`bl
 
 **v4 default changes:**
 
-| Property | v3 Default | v4 Default |
-|----------|------------|------------|
-| Border color | `gray-200` | `currentColor` |
-| Ring color | `blue-500` | `currentColor` |
-| Ring width | `3px` | `1px` |
-| Placeholder | `gray-400` | `currentColor` at 50% |
+| Property     | v3 Default | v4 Default            |
+| ------------ | ---------- | --------------------- |
+| Border color | `gray-200` | `currentColor`        |
+| Ring color   | `blue-500` | `currentColor`        |
+| Ring width   | `3px`      | `1px`                 |
+| Placeholder  | `gray-400` | `currentColor` at 50% |
 
 Reference: [Tailwind CSS Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide)

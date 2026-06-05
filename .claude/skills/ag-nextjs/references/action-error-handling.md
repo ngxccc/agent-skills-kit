@@ -15,7 +15,7 @@ tags: action, action-result, useActionState, typed-errors
 - An action that calls `console.error('Invalid input')` and `return undefined` — silent failure; user has no idea why nothing happened.
 - An action with a `try/catch` that swallows errors and returns `null` — silently drops user input.
 - An action that returns `{ error: e.message }` but the caller doesn't render `state.error` anywhere — the typed result exists but isn't surfaced.
-- An action that uses `redirect` *as* the error path (`if (!ok) redirect('/error')`) — loses field-level error context; user can't fix the form.
+- An action that uses `redirect` _as_ the error path (`if (!ok) redirect('/error')`) — loses field-level error context; user can't fix the form.
 
 The canonical resolution: define a typed state (`{ error?, success?, errors? }`); validate first, return `{ error }` on failure; on success do the mutation, `revalidatePath`/`revalidateTag`, and either `redirect` or `return { success: true }`. The form uses `useActionState(action, {})`.
 
@@ -23,10 +23,10 @@ The canonical resolution: define a typed state (`{ error?, success?, errors? }`)
 
 ```typescript
 async function createPost(formData: FormData) {
-  'use server'
+  "use server";
 
-  const title = formData.get('title') as string
-  await db.posts.create({ data: { title } })
+  const title = formData.get("title") as string;
+  await db.posts.create({ data: { title } });
   // If validation fails or DB errors, user sees nothing
 }
 ```

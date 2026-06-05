@@ -69,12 +69,12 @@ for category in categories:
 
 ### Guidelines
 
-| Use Comprehensions | Use Loops |
-|-------------------|-----------|
-| Single filter + map | Multiple conditions |
-| One level of nesting | Side effects needed |
-| Fits on one line (~80 chars) | Complex transformations |
-| Pure data transformation | Exception handling required |
+| Use Comprehensions           | Use Loops                   |
+| ---------------------------- | --------------------------- |
+| Single filter + map          | Multiple conditions         |
+| One level of nesting         | Side effects needed         |
+| Fits on one line (~80 chars) | Complex transformations     |
+| Pure data transformation     | Exception handling required |
 
 ### Walrus Operator in Comprehensions (Python 3.8+)
 

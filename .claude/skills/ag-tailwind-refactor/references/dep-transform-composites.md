@@ -25,9 +25,7 @@ Tailwind CSS v4 uses individual CSS transform properties (`scale`, `rotate`, `tr
 
 ```html
 <!-- Reset each individual transform property -->
-<div class="scale-150 hover:scale-none">
-  This element resets scale on hover
-</div>
+<div class="scale-150 hover:scale-none">This element resets scale on hover</div>
 <div class="rotate-45 translate-x-4 md:rotate-none md:translate-x-0">
   This element resets rotation and translation on md
 </div>

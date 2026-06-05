@@ -13,7 +13,7 @@ tags: route, link-prefetch, on-hover-prefetch, bandwidth
 
 - A footer with 20+ `<Link>` elements all default-prefetched — every page load prefetches the same 20 routes the user almost never visits.
 - A nav with `<Link prefetch={false}>` everywhere "to save bandwidth" — defeats the optimization for primary routes.
-- Product cards rendered in a list, each with a default-prefetched `<Link>` to the detail page — prefetches *all* product pages on every list view.
+- Product cards rendered in a list, each with a default-prefetched `<Link>` to the detail page — prefetches _all_ product pages on every list view.
 - A `router.prefetch(...)` call in a `useEffect` that fires for every item in a list — same blast as above, manually.
 - A workaround `setTimeout(() => router.prefetch(...), 1000)` to "delay" prefetching — fragile; use `prefetch={false}` + hover prefetch instead.
 

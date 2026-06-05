@@ -13,24 +13,27 @@ The `const` modifier on type parameters (TS 5.0+) makes the compiler infer liter
 
 ```typescript
 function createRoute<T extends readonly string[]>(methods: T, path: string) {
-  return { methods, path }
+  return { methods, path };
 }
 
-const route = createRoute(["GET", "POST"], "/users")
+const route = createRoute(["GET", "POST"], "/users");
 // route.methods type: string[] — literals lost
 
-const route2 = createRoute(["GET", "POST"] as const, "/users")
+const route2 = createRoute(["GET", "POST"] as const, "/users");
 // route2.methods type: readonly ["GET", "POST"] — but callers must remember
 ```
 
 **Correct (const type parameter infers literals):**
 
 ```typescript
-function createRoute<const T extends readonly string[]>(methods: T, path: string) {
-  return { methods, path }
+function createRoute<const T extends readonly string[]>(
+  methods: T,
+  path: string,
+) {
+  return { methods, path };
 }
 
-const route = createRoute(["GET", "POST"], "/users")
+const route = createRoute(["GET", "POST"], "/users");
 // route.methods type: readonly ["GET", "POST"] — automatic
 ```
 

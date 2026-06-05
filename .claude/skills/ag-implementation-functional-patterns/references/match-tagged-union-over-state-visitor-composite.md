@@ -29,12 +29,18 @@ class Idle extends ConnectionState {
 }
 
 class Connecting extends ConnectionState {
-  constructor(public url: string) { super(); }
-  send(): ConnectionState { throw new Error('not connected yet'); }
+  constructor(public url: string) {
+    super();
+  }
+  send(): ConnectionState {
+    throw new Error("not connected yet");
+  }
 }
 
 class Open extends ConnectionState {
-  constructor(public socket: WebSocket) { super(); }
+  constructor(public socket: WebSocket) {
+    super();
+  }
   send(_ctx: Connection, msg: string): ConnectionState {
     this.socket.send(msg);
     return this;
@@ -42,8 +48,12 @@ class Open extends ConnectionState {
 }
 
 class Closed extends ConnectionState {
-  constructor(public reason: string) { super(); }
-  send(): ConnectionState { throw new Error(`closed: ${this.reason}`); }
+  constructor(public reason: string) {
+    super();
+  }
+  send(): ConnectionState {
+    throw new Error(`closed: ${this.reason}`);
+  }
 }
 ```
 
@@ -51,10 +61,10 @@ class Closed extends ConnectionState {
 
 ```typescript
 type ConnectionState =
-  | { tag: 'idle' }
-  | { tag: 'connecting'; url: string }
-  | { tag: 'open'; socket: WebSocket }
-  | { tag: 'closed'; reason: string };
+  | { tag: "idle" }
+  | { tag: "connecting"; url: string }
+  | { tag: "open"; socket: WebSocket }
+  | { tag: "closed"; reason: string };
 
 const assertNever = (x: never): never => {
   throw new Error(`Unhandled variant: ${JSON.stringify(x)}`);
@@ -62,11 +72,17 @@ const assertNever = (x: never): never => {
 
 function send(state: ConnectionState, msg: string): ConnectionState {
   switch (state.tag) {
-    case 'idle':       return { tag: 'connecting', url: 'wss://…' };
-    case 'connecting': throw new Error('not connected yet');
-    case 'open':       state.socket.send(msg); return state;
-    case 'closed':     throw new Error(`closed: ${state.reason}`);
-    default:           return assertNever(state);
+    case "idle":
+      return { tag: "connecting", url: "wss://…" };
+    case "connecting":
+      throw new Error("not connected yet");
+    case "open":
+      state.socket.send(msg);
+      return state;
+    case "closed":
+      throw new Error(`closed: ${state.reason}`);
+    default:
+      return assertNever(state);
   }
 }
 ```
@@ -77,21 +93,27 @@ The Visitor pattern collapses the same way:
 
 ```typescript
 type Expr =
-  | { tag: 'num'; value: number }
-  | { tag: 'add'; left: Expr; right: Expr }
-  | { tag: 'mul'; left: Expr; right: Expr };
+  | { tag: "num"; value: number }
+  | { tag: "add"; left: Expr; right: Expr }
+  | { tag: "mul"; left: Expr; right: Expr };
 
-const evaluate  = (e: Expr): number =>
-  e.tag === 'num' ? e.value :
-  e.tag === 'add' ? evaluate(e.left) + evaluate(e.right) :
-  e.tag === 'mul' ? evaluate(e.left) * evaluate(e.right) :
-  assertNever(e);
+const evaluate = (e: Expr): number =>
+  e.tag === "num"
+    ? e.value
+    : e.tag === "add"
+      ? evaluate(e.left) + evaluate(e.right)
+      : e.tag === "mul"
+        ? evaluate(e.left) * evaluate(e.right)
+        : assertNever(e);
 
 const prettyPrint = (e: Expr): string =>
-  e.tag === 'num' ? String(e.value) :
-  e.tag === 'add' ? `(${prettyPrint(e.left)} + ${prettyPrint(e.right)})` :
-  e.tag === 'mul' ? `(${prettyPrint(e.left)} * ${prettyPrint(e.right)})` :
-  assertNever(e);
+  e.tag === "num"
+    ? String(e.value)
+    : e.tag === "add"
+      ? `(${prettyPrint(e.left)} + ${prettyPrint(e.right)})`
+      : e.tag === "mul"
+        ? `(${prettyPrint(e.left)} * ${prettyPrint(e.right)})`
+        : assertNever(e);
 ```
 
 Each "visitor" is just a function. Composite is the same shape with a recursive case.
@@ -101,13 +123,13 @@ Each "visitor" is just a function. Composite is the same shape with a recursive 
 - **Forgotten `default: assertNever(x)`.** Without it, adding a new variant fails silently — the switch returns `undefined` and you find out at runtime. Always finalize the switch with `assertNever` (or `const _exhaustive: never = state`).
 - **Tag field naming inconsistency.** Pick one — `kind`, `type`, or `tag` — and stick to it across the codebase. `type` collides with the TypeScript keyword in mental parsing; many style guides recommend `kind` or `tag`.
 - **`instanceof` on the union.** Once you've gone to a discriminated union, never reach for `instanceof` again — it tests the runtime class, which the union doesn't have. Tag-check is correct; `instanceof` is wrong.
-- **Mutable transitions.** State transitions should return a *new* state value, not mutate the current one. `state.tag = 'open'` is illegal TypeScript on a readonly union and conceptually wrong (the union narrowed the type — you can't change its tag in place).
+- **Mutable transitions.** State transitions should return a _new_ state value, not mutate the current one. `state.tag = 'open'` is illegal TypeScript on a readonly union and conceptually wrong (the union narrowed the type — you can't change its tag in place).
 - **Class-and-tag both.** Sometimes legacy code has classes that also have a `kind` field. Pick one: drop the classes and use plain object literals, or keep the classes and use `instanceof`. Mixing both invites bugs.
 
 ### Performance trade-offs
 
 - **Time:** switch on a string tag is O(1) in V8 (often compiled to a jump table for small unions); class-based virtual dispatch is also O(1). Performance-equivalent at the per-call level.
-- **Memory:** an object literal `{ tag: 'open', socket }` is typically *smaller* than a class instance with the same fields — no prototype chain reference per instance, no constructor overhead. Often 16–24 bytes less per state value.
+- **Memory:** an object literal `{ tag: 'open', socket }` is typically _smaller_ than a class instance with the same fields — no prototype chain reference per instance, no constructor overhead. Often 16–24 bytes less per state value.
 - **Bundle size:** a discriminated-union match function tree-shakes — unused operations on a type don't get bundled. Unused methods on a class don't tree-shake if the class is exported.
 - **Inference cost:** TypeScript compile time grows with the size of the union, but is rarely the bottleneck below ~50 variants. Beyond that, splitting the union into nested unions helps.
 
@@ -121,7 +143,7 @@ Each "visitor" is just a function. Composite is the same shape with a recursive 
 ### Related
 
 - GoF class forms collapsed: [`behavioral-state`](../../implementation-design-patterns/references/behavioral-state.md), [`behavioral-visitor`](../../implementation-design-patterns/references/behavioral-visitor.md), [`structural-composite`](../../implementation-design-patterns/references/structural-composite.md)
-- Adjacent: closures that *carry* state are a different shape — see [`closure-as-command`](closure-as-command.md)
-- The factory function that *produces* tagged values: [`create-factory-function-over-factory-classes`](create-factory-function-over-factory-classes.md)
+- Adjacent: closures that _carry_ state are a different shape — see [`closure-as-command`](closure-as-command.md)
+- The factory function that _produces_ tagged values: [`create-factory-function-over-factory-classes`](create-factory-function-over-factory-classes.md)
 
 Reference: [TS Handbook — Discriminated Unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions) · [TS Handbook — `never`](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#the-never-type)

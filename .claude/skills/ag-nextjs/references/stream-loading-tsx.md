@@ -58,6 +58,7 @@ export default async function DashboardPage() {
 ```
 
 **Best practices:**
+
 - Match skeleton structure to actual content
 - Use CSS animations for polish
 - Keep skeletons lightweight (no data fetching)

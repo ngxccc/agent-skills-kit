@@ -17,7 +17,7 @@ tags: cross, dead-code, unused-routes, unused-actions, deletion
 - `loading.tsx` / `error.tsx` / `not-found.tsx` co-located with deleted page files.
 - Custom hooks/utilities in `lib/` or `hooks/` with zero importers (after route auto-discovery is accounted for).
 - "Legacy" / "Old" / "V1" / "Deprecated" prefixed exports kept "in case we need them."
-- Components imported only by *other dead components* (transitive dead code), or by tests for a route that no longer ships.
+- Components imported only by _other dead components_ (transitive dead code), or by tests for a route that no longer ships.
 
 ### Detection procedure
 
@@ -58,13 +58,13 @@ actions/oldCreateUser.ts                      — deleted
 
 ### Reporting shape (what the audit emits)
 
-| File | Type | Last traffic | Importers | Action | Risk |
-|---|---|---|---|---|---|
-| `app/(deprecated)/old-dashboard/page.tsx` | route | 0 (90d) | 0 inbound | delete | check analytics retention |
-| `app/api/legacy-export/route.ts` | API | 0 (90d) | 0 internal | delete | check external integrations |
-| `lib/legacy/auth.ts` | util | n/a | 0 | delete | none |
-| `hooks/useDeprecatedSession.ts` | hook | n/a | 0 | delete | check Storybook |
-| `actions/oldCreateUser.ts` | server action | n/a | 0 forms | delete | none |
+| File                                      | Type          | Last traffic | Importers  | Action | Risk                        |
+| ----------------------------------------- | ------------- | ------------ | ---------- | ------ | --------------------------- |
+| `app/(deprecated)/old-dashboard/page.tsx` | route         | 0 (90d)      | 0 inbound  | delete | check analytics retention   |
+| `app/api/legacy-export/route.ts`          | API           | 0 (90d)      | 0 internal | delete | check external integrations |
+| `lib/legacy/auth.ts`                      | util          | n/a          | 0          | delete | none                        |
+| `hooks/useDeprecatedSession.ts`           | hook          | n/a          | 0          | delete | check Storybook             |
+| `actions/oldCreateUser.ts`                | server action | n/a          | 0 forms    | delete | none                        |
 
 ### When NOT to delete
 
@@ -76,7 +76,7 @@ actions/oldCreateUser.ts                      — deleted
 ### Risk before deleting
 
 - Sitemap and `robots.ts` may reference deleted routes. Re-run a sitemap build after deletion.
-- 404 errors are a *symptom* of dead-code deletion done without redirects — add `redirect()` calls in `proxy.ts` for routes that had real traffic.
-- Run the full test suite *after* deletion, not before — broken imports from dead files will surface.
+- 404 errors are a _symptom_ of dead-code deletion done without redirects — add `redirect()` calls in `proxy.ts` for routes that had real traffic.
+- Run the full test suite _after_ deletion, not before — broken imports from dead files will surface.
 
 Reference: [Routing Fundamentals](https://nextjs.org/docs/app/building-your-application/routing), [proxy.ts redirects](https://nextjs.org/docs/app/building-your-application/routing/redirecting)

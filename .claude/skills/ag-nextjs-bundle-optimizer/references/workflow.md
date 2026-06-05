@@ -56,6 +56,7 @@ If any fails: fix the prerequisite. The skill cannot help while the build is bro
 ### 1. `baseline.sh` — establish the reference point
 
 **What it does:**
+
 - `rm -rf .next` (cold build for reproducibility)
 - Runs `$BUILD_COMMAND`, captures wall-clock time
 - For Next.js 16 + Turbopack: runs `next experimental-analyze --output`
@@ -65,10 +66,12 @@ If any fails: fix the prerequisite. The skill cannot help while the build is bro
 - Symlinks `baselines/current` → this run
 
 **Failure modes:**
+
 - Build fails → `exit 1`. Fix the build at HEAD; nothing this skill does helps a broken main branch.
 - `experimental-analyze` fails → continues with a warning (manifest-only snapshot still works).
 
 **When to re-baseline:**
+
 - After a successful optimization commit, if you want to start a new "session" with the post-improvement state as the reference.
 - After upgrading Next.js, React, or other foundational deps.
 - Don't re-baseline mid-loop — you'll lose your ability to compare against the original.
@@ -76,11 +79,13 @@ If any fails: fix the prerequisite. The skill cannot help while the build is bro
 ### 2. `analyze.sh [iteration-name]` — extract findings
 
 **What it does:**
+
 - Runs `next experimental-analyze --output` (or reuses output if already present in `.next/`)
 - Walks `build-manifest.json` to compute per-chunk sizes, per-route totals, cross-route usage counts
 - Writes `iterations/{name}/findings.json` with: top_chunks, heaviest_routes, hints
 
 **Reading the output:**
+
 ```
 Top chunks (largest):
   234567 B  static/chunks/main-abc.js  (×8 routes)   ← shared & heavy
@@ -95,10 +100,12 @@ A heavy chunk used by many routes is usually a barrel import, polyfill, or a sha
 ### 3. `diagnose.sh [findings.json]` — map findings to recipes
 
 **What it does:**
+
 - Classifies each top offender by heuristics (shared/route-specific, polyfill-like, framework, threshold sizes)
 - Emits a prioritized list pointing at recipes in `references/optimizations.md`
 
 **Reading the output:**
+
 ```
 1. [HIGH] 234 KB shared chunk used by 8 routes: static/chunks/main-abc.js
    Recipe:  references/optimizations.md#shared-heavy-dep
@@ -123,22 +130,26 @@ Open `references/optimizations.md`, find the section matching the recipe id, and
 ### 5. `measure.sh [name]` — re-measure
 
 **What it does:**
+
 - `rm -rf .next` (cold by default; pass `--warm` to skip)
 - Re-runs `$BUILD_COMMAND`
 - Delegates to `analyze.sh` to capture new `bundle.json` and `findings.json`
 
 **Failure modes:**
+
 - Build fails → writes `timing.json` with `status: build_failed` and exits 1. The recipe broke the build. Revert and try another.
 
 ### 6. `compare.sh` — delta against baseline
 
 **What it does:**
+
 - Diffs `baselines/current/bundle.json` vs the latest iteration's `bundle.json`
 - Prints overall delta + top 15 per-route changes
 - Prints build-time delta
 - Exit code: 0 if overall bytes decreased or stayed the same; 1 if overall grew
 
 **Reading the output:**
+
 ```
 Total: 1240.5 KB → 1098.3 KB  (-142.2 KB, -11.5%)
 
@@ -153,6 +164,7 @@ A small regression on a non-target route is normal — chunk hashes shift around
 ### 7. `verify.sh` — hard PASS/FAIL
 
 **Runs in order:**
+
 1. Build (skipped if a fresh `.next/` is present from `measure.sh`).
 2. Type check (`$TYPECHECK_COMMAND`).
 3. Tests (`$TEST_COMMAND`, skipped if no test files are found).
@@ -163,6 +175,7 @@ A small regression on a non-target route is normal — chunk hashes shift around
 ### 8. Commit OR revert
 
 **On PASS:**
+
 ```bash
 git add -A
 git commit -m "optim(<recipe>): <route or chunk> -<delta>"
@@ -171,6 +184,7 @@ git commit -m "optim(<recipe>): <route or chunk> -<delta>"
 Example commit message: `optim(shared-heavy-dep): main-abc.js -78 KB (lodash → lodash-es subpath)`
 
 **On FAIL:**
+
 ```bash
 git reset --hard HEAD       # discard the experimental change
 # Re-read diagnose.sh output and pick the next recipe.
@@ -192,6 +206,7 @@ Skill state in `baselines/` and `iterations/` is fine to keep; it's historical d
 ## When to stop optimizing
 
 Stop when:
+
 - `diagnose.sh` reports "No obvious offenders" twice in a row after iterations.
 - The next ranked recipe targets a chunk under ~50KB. Returns diminish fast below that.
 - Build-time has plateaued and bundle deltas are <1% per iteration.
@@ -200,10 +215,10 @@ Document where you stopped (`gotchas.md` or commit message) so the next session 
 
 ## Troubleshooting
 
-| Symptom | Likely cause | Action |
-|---------|--------------|--------|
-| `ERROR: working tree is dirty` | Uncommitted changes from previous iteration | `git stash` or `git commit` first |
-| `experimental-analyze` writes no `.next/diagnostics/analyze` | Project on Next 15 / webpack mode | Skill falls back to manifest-only; consider installing `@next/bundle-analyzer` |
-| `compare.sh` always shows huge deltas | Comparing cold vs warm builds | Both runs must match cache state; use `baseline.sh` (always cold) and `measure.sh` without `--warm` |
-| `verify.sh` fails on tests that always pass locally | Build mutated something unexpectedly (env, snapshots) | Inspect `iterations/{name}/build.log`; revert and consider whether the recipe touches test infrastructure |
-| Recipe is applied but bundle didn't change | The targeted import wasn't actually the bottleneck | Re-run `analyze.sh` from the post-change state; treemap rarely lies |
+| Symptom                                                      | Likely cause                                          | Action                                                                                                    |
+| ------------------------------------------------------------ | ----------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `ERROR: working tree is dirty`                               | Uncommitted changes from previous iteration           | `git stash` or `git commit` first                                                                         |
+| `experimental-analyze` writes no `.next/diagnostics/analyze` | Project on Next 15 / webpack mode                     | Skill falls back to manifest-only; consider installing `@next/bundle-analyzer`                            |
+| `compare.sh` always shows huge deltas                        | Comparing cold vs warm builds                         | Both runs must match cache state; use `baseline.sh` (always cold) and `measure.sh` without `--warm`       |
+| `verify.sh` fails on tests that always pass locally          | Build mutated something unexpectedly (env, snapshots) | Inspect `iterations/{name}/build.log`; revert and consider whether the recipe touches test infrastructure |
+| Recipe is applied but bundle didn't change                   | The targeted import wasn't actually the bottleneck    | Re-run `analyze.sh` from the post-change state; treemap rarely lies                                       |

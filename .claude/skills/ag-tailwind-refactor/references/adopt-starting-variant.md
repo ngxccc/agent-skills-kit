@@ -14,13 +14,16 @@ Entry animations for elements that appear on the page (popovers, dialogs, dynami
 ```html
 <!-- JavaScript orchestration needed to animate entry -->
 <div id="popover" popover class="opacity-100 transition-opacity duration-300">
-<!-- JS: element.classList.add('opacity-0') then requestAnimationFrame to remove -->
+  <!-- JS: element.classList.add('opacity-0') then requestAnimationFrame to remove -->
+</div>
 ```
 
 **Correct (what's right):**
 
 ```html
 <!-- CSS-only entry animation using starting variant -->
-<div popover class="open:opacity-100 starting:open:opacity-0 transition-opacity duration-300">
-</div>
+<div
+  popover
+  class="open:opacity-100 starting:open:opacity-0 transition-opacity duration-300"
+></div>
 ```

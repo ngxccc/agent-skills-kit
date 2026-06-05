@@ -19,28 +19,28 @@ function sendNotification(user: User, message: string, channel: Channel): void {
     if (message && message.trim().length > 0) {
       const sanitized = sanitizeMessage(message);
 
-      if (channel === 'email') {
+      if (channel === "email") {
         if (user.emailVerified) {
           result = emailService.send(user.email, sanitized);
         } else {
-          console.log('Email not verified');
+          console.log("Email not verified");
         }
-      } else if (channel === 'sms') {
+      } else if (channel === "sms") {
         if (user.phone) {
           if (user.phoneVerified) {
             result = smsService.send(user.phone, sanitized);
           } else {
-            console.log('Phone not verified');
+            console.log("Phone not verified");
           }
         } else {
-          console.log('No phone number');
+          console.log("No phone number");
         }
       }
     } else {
-      console.log('Empty message');
+      console.log("Empty message");
     }
   } else {
-    console.log('Invalid user');
+    console.log("Invalid user");
   }
 
   return result;
@@ -53,31 +53,31 @@ function sendNotification(user: User, message: string, channel: Channel): void {
 function sendNotification(user: User, message: string, channel: Channel): void {
   // Guard clauses - all preconditions checked upfront
   if (!user?.email) {
-    throw new ValidationError('User must have an email address');
+    throw new ValidationError("User must have an email address");
   }
   if (!message?.trim()) {
-    throw new ValidationError('Message cannot be empty');
+    throw new ValidationError("Message cannot be empty");
   }
-  if (!['email', 'sms'].includes(channel)) {
+  if (!["email", "sms"].includes(channel)) {
     throw new ValidationError(`Invalid channel: ${channel}`);
   }
 
   const sanitized = sanitizeMessage(message);
 
   // Channel-specific guards
-  if (channel === 'email') {
+  if (channel === "email") {
     if (!user.emailVerified) {
-      throw new ValidationError('Email address not verified');
+      throw new ValidationError("Email address not verified");
     }
     return emailService.send(user.email, sanitized);
   }
 
-  if (channel === 'sms') {
+  if (channel === "sms") {
     if (!user.phone) {
-      throw new ValidationError('User must have a phone number for SMS');
+      throw new ValidationError("User must have a phone number for SMS");
     }
     if (!user.phoneVerified) {
-      throw new ValidationError('Phone number not verified');
+      throw new ValidationError("Phone number not verified");
     }
     return smsService.send(user.phone, sanitized);
   }
@@ -99,7 +99,7 @@ function calculateShipping(order: Order): number {
         }
       }
       if (order.address) {
-        if (order.address.country !== 'US') {
+        if (order.address.country !== "US") {
           shipping *= INTERNATIONAL_MULTIPLIER;
         }
       }
@@ -115,13 +115,13 @@ function calculateShipping(order: Order): number {
 ```typescript
 function calculateShipping(order: Order): number {
   if (!order) {
-    throw new Error('Order is required');
+    throw new Error("Order is required");
   }
   if (!order.items?.length) {
-    throw new Error('Order must have items');
+    throw new Error("Order must have items");
   }
   if (!order.address) {
-    throw new Error('Order must have an address');
+    throw new Error("Order must have an address");
   }
 
   let shipping = 0;
@@ -130,7 +130,7 @@ function calculateShipping(order: Order): number {
     shipping += (item.weight ?? 0) * RATE_PER_KG;
   }
 
-  if (order.address.country !== 'US') {
+  if (order.address.country !== "US") {
     shipping *= INTERNATIONAL_MULTIPLIER;
   }
 

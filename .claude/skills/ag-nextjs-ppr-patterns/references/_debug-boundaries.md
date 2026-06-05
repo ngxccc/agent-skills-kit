@@ -1,7 +1,7 @@
 # Debugging the boundary — what actually rendered static vs dynamic
 
-The rules in this skill tell you how to *write* PPR. They can't tell you what you
-actually *got*. With Cache Components the static/dynamic split is implicit — it falls out
+The rules in this skill tell you how to _write_ PPR. They can't tell you what you
+actually _got_. With Cache Components the static/dynamic split is implicit — it falls out
 of where your `<Suspense>` boundaries, `'use cache'` directives, and runtime reads happen —
 so a code read is a hypothesis, not proof. The questions only the running build/app can answer:
 
@@ -12,7 +12,7 @@ so a code read is a hypothesis, not proof. The questions only the running build/
 - **Why is a route dynamic when you expected it static** (a stray `cookies()`, an uncached `fetch`, a `Math.random()`)?
 
 Reach for this when a PPR result surprises you, when chasing a `blocking-route` build error,
-or to *verify* a page renders as the `shell-`, `runtime-`, and `compose-` rules intend. Use the
+or to _verify_ a page renders as the `shell-`, `runtime-`, and `compose-` rules intend. Use the
 two instruments below in order — the build is cheapest and most authoritative; drive a browser
 when the verdict depends on what was actually received and when. **Stay read-only:** you are
 observing the app, not mutating it.
@@ -38,7 +38,7 @@ Read the route legend in the summary:
   shows as `ƒ`, a runtime read escaped to the page root — see `runtime-request-apis-force-a-boundary`
   and `shell-place-boundaries-low`.
 
-The build is also where the boundary contract is *enforced*: uncached/runtime data that isn't wrapped
+The build is also where the boundary contract is _enforced_: uncached/runtime data that isn't wrapped
 or cached fails here with `Uncached data was accessed outside of <Suspense>` (the `blocking-route`
 error — see `shell-wrap-uncached-data`). A clean build is your first proof the boundaries are placed
 legally. If the error only surfaces in CI / `next build` rather than the dev overlay, run
@@ -57,7 +57,7 @@ NEXT_PRIVATE_DEBUG_CACHE=1 npm run build
 
 ## Instrument 2 — chrome-devtools-mcp via mcporter (the rendered truth)
 
-When the verdict depends on what the *browser* received and when, drive a real Chrome via
+When the verdict depends on what the _browser_ received and when, drive a real Chrome via
 **`chrome-devtools-mcp`**, invoked from the CLI with **`mcporter`**. Configure it once per the
 [mcporter Chrome config](https://raw.githubusercontent.com/steipete/agent-scripts/refs/heads/main/skills/browser-use/mcporter-config.md);
 the `chrome-devtools` server reattaches to your existing logged-in profile (use `chrome-isolated`
@@ -76,7 +76,7 @@ mcporter daemon restart                                             # if calls h
 
 ### The static shell vs the hydrated DOM — diff them to find the holes
 
-This is the single most direct way to *see* the PPR boundary. The raw HTML response is exactly the
+This is the single most direct way to _see_ the PPR boundary. The raw HTML response is exactly the
 static shell (it's what ships before any JS); the live DOM is the shell **plus** everything that
 streamed in. The difference is your set of dynamic holes.
 
@@ -106,7 +106,7 @@ Sanity checks on the result:
 
 `'use client'` components are the only interactive (hydrated) islands; everything else is static
 server HTML. React 19 stamps no public DOM marker for hydration roots, so confirm islands
-*behaviorally* rather than by selector, and pull console messages to catch hydration mismatches (the
+_behaviorally_ rather than by selector, and pull console messages to catch hydration mismatches (the
 classic CSR/SSR-boundary bug where server and client HTML disagree):
 
 ```bash
@@ -142,19 +142,19 @@ mcporter call chrome-devtools.emulate --args '{"cpuThrottlingRate":4}' --output 
 
 ## Reading the evidence
 
-| Symptom observed | Likely cause | Rule |
-|---|---|---|
-| Route is `ƒ` (fully dynamic) when you expected partial | A runtime read (`cookies`/`headers`/`searchParams`) or uncached `fetch` at the page root | `runtime-request-apis-force-a-boundary`, `shell-place-boundaries-low` |
-| `Uncached data was accessed outside of <Suspense>` at build | Uncached/runtime data not wrapped or `'use cache'`d | `shell-wrap-uncached-data` |
-| Personalized value appears in `curl` shell HTML | It leaked into the static shell (missing boundary, or cached request data) | `cache-pass-runtime-values-as-props`, `shell-suspense-is-the-boundary` |
-| Whole page is one big fallback / empty shell | One boundary wrapped too much, or the app opted out of the shell | `shell-place-boundaries-low`, `compose-do-not-opt-out-the-shell` |
-| Hydration mismatch in the browser console | Non-deterministic value rendered without `connection()`/cache | `runtime-gate-nondeterminism-with-connection` |
-| Hole never streams in / build hangs ~50s | A runtime Promise passed into a `'use cache'` scope | `cache-pass-runtime-values-as-props` |
+| Symptom observed                                            | Likely cause                                                                             | Rule                                                                   |
+| ----------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- |
+| Route is `ƒ` (fully dynamic) when you expected partial      | A runtime read (`cookies`/`headers`/`searchParams`) or uncached `fetch` at the page root | `runtime-request-apis-force-a-boundary`, `shell-place-boundaries-low`  |
+| `Uncached data was accessed outside of <Suspense>` at build | Uncached/runtime data not wrapped or `'use cache'`d                                      | `shell-wrap-uncached-data`                                             |
+| Personalized value appears in `curl` shell HTML             | It leaked into the static shell (missing boundary, or cached request data)               | `cache-pass-runtime-values-as-props`, `shell-suspense-is-the-boundary` |
+| Whole page is one big fallback / empty shell                | One boundary wrapped too much, or the app opted out of the shell                         | `shell-place-boundaries-low`, `compose-do-not-opt-out-the-shell`       |
+| Hydration mismatch in the browser console                   | Non-deterministic value rendered without `connection()`/cache                            | `runtime-gate-nondeterminism-with-connection`                          |
+| Hole never streams in / build hangs ~50s                    | A runtime Promise passed into a `'use cache'` scope                                      | `cache-pass-runtime-values-as-props`                                   |
 
 ## Guardrails
 
 - **Read-only.** `curl`, traces, console reads, and `evaluate_script` reads observe the app.
-  `click`/`fill` are only for *driving* to the state under test — never to mutate real data, and not
+  `click`/`fill` are only for _driving_ to the state under test — never to mutate real data, and not
   against a production account that can write.
 - **Reattach, don't spawn.** Prefer the `chrome-devtools` (existing-profile) server; use
   `chrome-isolated` only for a deliberately signed-out session.

@@ -40,12 +40,13 @@ Add custom breakpoints using the `@theme` directive. This is useful for project-
 ```css
 @theme {
   /* Override existing breakpoints */
-  --breakpoint-sm: 600px;  /* Was 640px */
-  --breakpoint-lg: 992px;  /* Was 1024px */
+  --breakpoint-sm: 600px; /* Was 640px */
+  --breakpoint-lg: 992px; /* Was 1024px */
 }
 ```
 
 **Benefits:**
+
 - Consistent breakpoint values across codebase
 - Self-documenting (named vs arbitrary)
 - Easy to update project-wide

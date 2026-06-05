@@ -24,7 +24,7 @@ tags: cross, naming, prop-drift, params-drift, conventions
    - **Component props** — group by type signature (all `User`-typed, all `(v: T) => void` handlers).
    - **Route params** — list every `[param]` segment across the route tree.
    - **Search params** — grep for `searchParams.get(`/`useSearchParams().get(` calls; cluster by what they read.
-2. For each group with > 1 name, ask: *is the difference meaningful (domain concept) or accidental (whoever wrote this picked a name)?*
+2. For each group with > 1 name, ask: _is the difference meaningful (domain concept) or accidental (whoever wrote this picked a name)?_
 3. Concept-meaningful drift is fine. Accidental drift is the finding.
 
 ### Multi-file example
@@ -33,22 +33,44 @@ tags: cross, naming, prop-drift, params-drift, conventions
 
 ```typescript
 // app/users/[id]/page.tsx
-export default async function UserRoute({ params }: { params: { id: string } }) { /* ... */ }
+export default async function UserRoute({
+  params,
+}: {
+  params: { id: string };
+}) {
+  /* ... */
+}
 
 // app/members/[memberId]/page.tsx
-export default async function MemberRoute({ params }: { params: { memberId: string } }) { /* ... */ }
+export default async function MemberRoute({
+  params,
+}: {
+  params: { memberId: string };
+}) {
+  /* ... */
+}
 
 // app/teams/[teamSlug]/members/[m]/page.tsx
-export default async function NestedMember({ params }: { params: { teamSlug: string; m: string } }) { /* ... */ }
+export default async function NestedMember({
+  params,
+}: {
+  params: { teamSlug: string; m: string };
+}) {
+  /* ... */
+}
 
 // actions/profile.ts
-export async function updateUser(userId: string, data: User) { /* ... */ }
-export async function updateMember(id: string, data: User) { /* same User type, different param name */ }
+export async function updateUser(userId: string, data: User) {
+  /* ... */
+}
+export async function updateMember(id: string, data: User) {
+  /* same User type, different param name */
+}
 
 // app/search/page.tsx — three search-param names across three pages
-const q = searchParams.get('q')           // app/search
-const query = searchParams.get('query')   // app/users
-const search = searchParams.get('search') // app/admin/users
+const q = searchParams.get("q"); // app/search
+const query = searchParams.get("query"); // app/users
+const search = searchParams.get("search"); // app/admin/users
 ```
 
 Every link, every navigation, every action call site has to remember "which name does THIS surface want?"
@@ -62,23 +84,27 @@ Every link, every navigation, every action call site has to remember "which name
 // app/teams/[teamId]/members/[id]/page.tsx — teamId only when nesting is ambiguous
 
 // actions/profile.ts — all "edit this person" actions take userId
-export async function updateUser(userId: string, data: User) { /* ... */ }
-export async function updateMember(userId: string, data: User) { /* ... */ }
+export async function updateUser(userId: string, data: User) {
+  /* ... */
+}
+export async function updateMember(userId: string, data: User) {
+  /* ... */
+}
 
 // All search params use canonical names
-const q = searchParams.get('q')  // q for full-text search across all pages
-const page = searchParams.get('page')  // page for pagination
+const q = searchParams.get("q"); // q for full-text search across all pages
+const page = searchParams.get("page"); // page for pagination
 ```
 
 ### Cross-file observation shape (what the audit emits)
 
-| Concept | Type | Names found | Suggested canonical | Files |
-|---|---|---|---|---|
-| profile entity ID (route segment) | `string` | `[id]`, `[memberId]`, `[m]`, `[accountSlug]` | `[id]` | 6 route files |
-| profile entity ID (action arg) | `string` | `userId`, `id`, `accountId` | `userId` | 4 action files |
-| full-text search query | `string` | `q`, `query`, `search`, `term` | `q` | 5 pages |
-| pagination cursor | `string \| number` | `page`, `p`, `cursor`, `offset` | `page` | 7 pages |
-| value-changed event (forms) | `(v: T) => void` | `onChange`, `onUpdate`, `onValueChange` | `onChange` | 12 components |
+| Concept                           | Type               | Names found                                  | Suggested canonical | Files          |
+| --------------------------------- | ------------------ | -------------------------------------------- | ------------------- | -------------- |
+| profile entity ID (route segment) | `string`           | `[id]`, `[memberId]`, `[m]`, `[accountSlug]` | `[id]`              | 6 route files  |
+| profile entity ID (action arg)    | `string`           | `userId`, `id`, `accountId`                  | `userId`            | 4 action files |
+| full-text search query            | `string`           | `q`, `query`, `search`, `term`               | `q`                 | 5 pages        |
+| pagination cursor                 | `string \| number` | `page`, `p`, `cursor`, `offset`              | `page`              | 7 pages        |
+| value-changed event (forms)       | `(v: T) => void`   | `onChange`, `onUpdate`, `onValueChange`      | `onChange`          | 12 components  |
 
 ### When NOT to converge
 

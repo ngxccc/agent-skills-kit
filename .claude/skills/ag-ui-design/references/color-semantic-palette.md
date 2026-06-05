@@ -12,11 +12,21 @@ Hardcoded color values scattered through CSS are impossible to maintain and them
 **Incorrect (literal color names and raw values):**
 
 ```css
-.header { background: #1a365d; }
-.error { color: #dc2626; }
-.success { color: #16a34a; }
-.button { background: blue; }
-.sidebar { background: #f3f4f6; }
+.header {
+  background: #1a365d;
+}
+.error {
+  color: #dc2626;
+}
+.success {
+  color: #16a34a;
+}
+.button {
+  background: blue;
+}
+.sidebar {
+  background: #f3f4f6;
+}
 
 /* Renaming "blue" requires find-replace across codebase */
 /* No clear relationship between colors */
@@ -47,16 +57,29 @@ Hardcoded color values scattered through CSS are impossible to maintain and them
   --color-feedback-success: var(--green-600);
 }
 
-.header { background: var(--color-bg-inverse); }
-.error { color: var(--color-feedback-error); }
-.success { color: var(--color-feedback-success); }
-.button { background: var(--color-interactive); }
-.button:hover { background: var(--color-interactive-hover); }
-.sidebar { background: var(--color-bg-primary); }
+.header {
+  background: var(--color-bg-inverse);
+}
+.error {
+  color: var(--color-feedback-error);
+}
+.success {
+  color: var(--color-feedback-success);
+}
+.button {
+  background: var(--color-interactive);
+}
+.button:hover {
+  background: var(--color-interactive-hover);
+}
+.sidebar {
+  background: var(--color-bg-primary);
+}
 /* Change brand color in one place, updates everywhere */
 ```
 
 **Token naming hierarchy:**
+
 1. Primitive: `--blue-600` (raw values)
 2. Semantic: `--color-interactive` (purpose)
 3. Component: `--button-bg` (optional, specific)

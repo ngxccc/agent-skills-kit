@@ -12,11 +12,23 @@ Grid systems create alignment and consistency across pages. Without a grid, elem
 **Incorrect (arbitrary positioning and widths):**
 
 ```css
-.header { padding: 15px 23px; }
-.hero-section { max-width: 1150px; margin: 0 auto; }
-.feature-card { width: 31.333%; margin-right: 17px; }
-.sidebar { width: 287px; }
-.footer { padding: 43px 20px; }
+.header {
+  padding: 15px 23px;
+}
+.hero-section {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+.feature-card {
+  width: 31.333%;
+  margin-right: 17px;
+}
+.sidebar {
+  width: 287px;
+}
+.footer {
+  padding: 43px 20px;
+}
 /* Arbitrary numbers everywhere */
 /* No relationship between element sizes */
 ```
@@ -59,6 +71,7 @@ Grid systems create alignment and consistency across pages. Without a grid, elem
 ```
 
 **Grid system benefits:**
+
 - 12-column grid divides evenly (1, 2, 3, 4, 6, 12)
 - Consistent gutters create visual rhythm
 - Responsive breakpoints modify column spans

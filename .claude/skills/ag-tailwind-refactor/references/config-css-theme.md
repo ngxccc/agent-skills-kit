@@ -17,14 +17,14 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        brand: '#3b82f6',
-        surface: '#f8fafc',
+        brand: "#3b82f6",
+        surface: "#f8fafc",
       },
       fontFamily: {
-        display: ['Inter', 'sans-serif'],
+        display: ["Inter", "sans-serif"],
       },
       spacing: {
-        18: '4.5rem',
+        18: "4.5rem",
       },
     },
   },

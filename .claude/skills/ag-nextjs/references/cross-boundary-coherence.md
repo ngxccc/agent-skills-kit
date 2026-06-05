@@ -7,11 +7,11 @@ tags: cross, use-client, boundary-placement, route-tree, bundle-size
 
 ## Audit `'use client'` placement across the route tree — demote files (or whole subtrees) that don't need the client
 
-**This is a cross-cutting rule.** It surfaces when you map *every* `'use client'` directive against the route tree and look for placements that drag in more JS than they need to.
+**This is a cross-cutting rule.** It surfaces when you map _every_ `'use client'` directive against the route tree and look for placements that drag in more JS than they need to.
 
 ### Shapes to recognize
 
-- A `layout.tsx` marked `'use client'` because one descendant button needs interactivity — the *entire route group* is now client-rendered. Lift the directive down to the interactive leaf.
+- A `layout.tsx` marked `'use client'` because one descendant button needs interactivity — the _entire route group_ is now client-rendered. Lift the directive down to the interactive leaf.
 - A `'use client'` file whose only "hook" is `useId` for an ARIA attribute on otherwise-static markup — `useId` is SSR-safe; the directive is unnecessary.
 - A `'use client'` page that imports `<Header>`, `<Footer>`, `<Sidebar>`, all of which are static — those components are now bundled to the client; should be passed as `children` from a Server Component parent.
 - A `'use client'` file using `useState` to hold a value initialized once and never updated by an event — you wanted a constant; the directive is vestigial.
@@ -97,7 +97,7 @@ export function ThemeToggle() {
 ### When NOT to demote
 
 - The file uses `useEffect`, `useLayoutEffect`, `useSyncExternalStore`, or a DOM ref — those are real client requirements.
-- The file uses `useState` and *does* update it from an event handler or callback — even if the JSX looks static at a glance.
+- The file uses `useState` and _does_ update it from an event handler or callback — even if the JSX looks static at a glance.
 - The file is imported by a Client Component context provider that needs to wrap the children — splitting will break the context.
 - Removing `'use client'` from a layout removes a context provider that descendants depend on.
 

@@ -56,6 +56,7 @@ Multiple competing CTAs create decision paralysis. Users who can't decide often 
 ```
 
 **CTA hierarchy:**
+
 - Primary: Filled button, high contrast, largest size
 - Secondary: Outlined button or text link
 - Tertiary: Plain text link, smallest size

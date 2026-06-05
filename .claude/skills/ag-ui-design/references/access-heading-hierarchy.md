@@ -13,10 +13,13 @@ Screen reader users navigate by jumping between headings. Skipped heading levels
 
 ```html
 <h1>Company Website</h1>
-<h3>Our Products</h3>  <!-- Skipped h2 -->
-<h5>Product Details</h5>  <!-- Skipped h4 -->
+<h3>Our Products</h3>
+<!-- Skipped h2 -->
+<h5>Product Details</h5>
+<!-- Skipped h4 -->
 
-<div class="section-title">Services</div>  <!-- Not a heading at all -->
+<div class="section-title">Services</div>
+<!-- Not a heading at all -->
 <h2>Contact Us</h2>
 <!-- Screen reader users cannot build mental model of page structure -->
 ```
@@ -40,6 +43,7 @@ Screen reader users navigate by jumping between headings. Skipped heading levels
 ```
 
 **Heading rules:**
+
 - One `<h1>` per page (usually the page title)
 - Never skip levels (h2 → h4 is invalid)
 - Headings should describe the section content

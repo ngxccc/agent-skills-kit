@@ -14,7 +14,7 @@ tags: cross, duplication, consolidation, route-variants, composition
 - Two `app/<entity-a>/page.tsx` and `app/<entity-b>/page.tsx` with the same JSX skeleton, same data-fetcher shape, differing only by entity name and a couple of strings.
 - Two layouts with the same `<header><main><footer>` shell and identical children handling, differing only by a className or a static title.
 - Two parallel routes (`@modalA`, `@modalB`) whose content components are 90% the same — should be one slot with a discriminated prop.
-- Two route handlers (`/api/v1/users` and `/api/v1/members`) doing the same CRUD against different tables — usually a sign that the *data model* should be one with a `kind` column.
+- Two route handlers (`/api/v1/users` and `/api/v1/members`) doing the same CRUD against different tables — usually a sign that the _data model_ should be one with a `kind` column.
 - Two `(group-a)/page.tsx` and `(group-b)/page.tsx` files that exist only to apply different route groups to functionally identical content.
 
 ### Detection procedure
@@ -110,7 +110,7 @@ Option 1 collapses to one route segment. Option 2 keeps two routes (for routing/
 
 ### When NOT to consolidate
 
-- The two routes are in different access tiers (admin vs public) and the divergence is *intentional* (different layouts, different middleware checks).
+- The two routes are in different access tiers (admin vs public) and the divergence is _intentional_ (different layouts, different middleware checks).
 - One route is server-rendered statically and the other is dynamic — Next.js may force them apart even if they look alike.
 - The data shapes are nominally the same but semantically different (e.g., users have permissions; members don't).
 

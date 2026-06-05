@@ -3,8 +3,22 @@
   "report_path": ".rhf-audit-report.md",
   "json_report_path": ".rhf-audit-report.json",
   "rule_link_base": "https://github.com/pproenca/dot-skills/blob/master/skills/.curated/react-hook-form/references",
-  "include_globs": ["app/**/*.tsx", "app/**/*.ts", "src/**/*.tsx", "src/**/*.ts", "components/**/*.tsx"],
-  "exclude_globs": ["**/node_modules/**", "**/.next/**", "**/dist/**", "**/build/**", "**/*.test.tsx", "**/*.test.ts", "**/*.stories.tsx"],
+  "include_globs": [
+    "app/**/*.tsx",
+    "app/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.ts",
+    "components/**/*.tsx"
+  ],
+  "exclude_globs": [
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/*.stories.tsx"
+  ],
   "_setup_instructions": {
     "project_root": "Absolute path to the Next.js project to audit. Defaults to the current working directory when empty.",
     "report_path": "Path (relative to project_root) for the markdown report. Default: .rhf-audit-report.md",

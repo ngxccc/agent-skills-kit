@@ -1,40 +1,40 @@
 #!/usr/bin/env node
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 import {
   parseFrontmatter,
   listSkillDirs,
   exists,
   abs,
-} from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
+} from '../../ag-audit-context/scripts/shared-skill-utils.mjs';
 
 const root = process.cwd();
 const failures = [];
 const warnings = [];
 const blockingKeys = new Set([
-  "name",
-  "description",
-  "license",
-  "allowed-tools",
-  "metadata",
-  "argument-hint",
-  "languages",
+  'name',
+  'description',
+  'license',
+  'allowed-tools',
+  'metadata',
+  'argument-hint',
+  'languages',
 ]);
 const advisoryKeys = new Set([
-  "user-invocable",
-  "when_to_use",
-  "category",
-  "keywords",
+  'user-invocable',
+  'when_to_use',
+  'category',
+  'keywords',
 ]);
-const intentionallyIgnored = new Set(["sync-from-riper5", "sync-to-riper5"]);
+const intentionallyIgnored = new Set(['sync-from-riper5', 'sync-to-riper5']);
 const staleOwnershipPatterns = [
-  "default workflow owner",
-  "workflow owner",
-  "ag:plan",
-  "ag:cook",
-  "ag:fix",
-  "ag:research",
-  "ag:code-review",
+  'default workflow owner',
+  'workflow owner',
+  'ag:plan',
+  'ag:cook',
+  'ag:fix',
+  'ag:research',
+  'ag:code-review',
 ];
 
 function fail(message) {
@@ -46,22 +46,22 @@ function warn(message) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), "utf8");
+  return fs.readFileSync(path.join(root, relPath), 'utf8');
 }
 
-const skillsDir = path.join(root, ".claude/skills");
+const skillsDir = path.join(root, '.claude/skills');
 if (!fs.existsSync(skillsDir)) {
-  fail(".claude/skills missing");
+  fail('.claude/skills missing');
 }
 
-const agentsSkills = path.join(root, ".agents/skills");
+const agentsSkills = path.join(root, '.agents/skills');
 if (!fs.existsSync(agentsSkills)) {
-  fail(".agents/skills missing");
+  fail('.agents/skills missing');
 } else if (fs.existsSync(skillsDir)) {
   const source = fs.realpathSync(skillsDir);
   const discovered = fs.realpathSync(agentsSkills);
   if (source !== discovered) {
-    fail(".agents/skills does not resolve to .claude/skills");
+    fail('.agents/skills does not resolve to .claude/skills');
   }
 }
 
@@ -143,7 +143,7 @@ for (const skill of skillNames) {
     (key) => !blockingKeys.has(key) && !advisoryKeys.has(key),
   );
   if (unexpected.length > 0)
-    warn(`${file} has non-system frontmatter keys: ${unexpected.join(", ")}`);
+    warn(`${file} has non-system frontmatter keys: ${unexpected.join(', ')}`);
 
   for (const key of keys.filter((item) => advisoryKeys.has(item))) {
     warn(

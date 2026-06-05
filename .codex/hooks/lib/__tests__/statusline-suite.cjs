@@ -17,7 +17,7 @@ const SUITES = [
   '.codex/hooks/lib/__tests__/usage-limits-cache.test.cjs',
   '.codex/hooks/lib/__tests__/statusline.test.cjs',
   '.codex/hooks/lib/__tests__/statusline-integration.test.cjs',
-  '.codex/hooks/lib/__tests__/statusline-scenarios.test.cjs'
+  '.codex/hooks/lib/__tests__/statusline-scenarios.test.cjs',
 ];
 
 let failed = 0;
@@ -30,7 +30,7 @@ for (const suite of SUITES) {
   const result = spawnSync('node', [suite], {
     cwd: ROOT,
     stdio: 'inherit',
-    env: process.env
+    env: process.env,
   });
 
   if (result.status !== 0) {

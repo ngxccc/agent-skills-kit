@@ -17,17 +17,43 @@ Persistent sidebar navigation consumes 250px+ on mobile, leaving only ~125px for
   <aside class="w-64 shrink-0 border-r bg-slate-900 p-4 text-white">
     <div class="mb-8 text-lg font-bold">WorkspaceApp</div>
     <nav class="flex flex-col gap-1">
-      <a href="/dashboard" class="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium">Dashboard</a>
-      <a href="/projects" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Projects</a>
-      <a href="/team" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Team</a>
-      <a href="/calendar" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Calendar</a>
-      <a href="/documents" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Documents</a>
-      <a href="/settings" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Settings</a>
+      <a
+        href="/dashboard"
+        class="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium"
+        >Dashboard</a
+      >
+      <a
+        href="/projects"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Projects</a
+      >
+      <a
+        href="/team"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Team</a
+      >
+      <a
+        href="/calendar"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Calendar</a
+      >
+      <a
+        href="/documents"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Documents</a
+      >
+      <a
+        href="/settings"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Settings</a
+      >
     </nav>
   </aside>
   <main class="flex-1 p-6">
     <h1 class="text-2xl font-bold">Dashboard</h1>
-    <p class="mt-2 text-gray-600">Welcome back. Here is your project overview.</p>
+    <p class="mt-2 text-gray-600">
+      Welcome back. Here is your project overview.
+    </p>
   </main>
 </div>
 ```
@@ -36,7 +62,6 @@ Persistent sidebar navigation consumes 250px+ on mobile, leaving only ~125px for
 
 ```html
 <div class="relative min-h-screen lg:flex">
-
   <!-- Backdrop overlay — shown when drawer is open on mobile -->
   <div
     id="sidebar-backdrop"
@@ -58,18 +83,52 @@ Persistent sidebar navigation consumes 250px+ on mobile, leaving only ~125px for
         data-close="sidebar"
         class="rounded-md p-1 text-slate-400 hover:text-white lg:hidden"
       >
-        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <svg
+          class="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
         </svg>
       </button>
     </div>
     <nav class="mt-8 flex flex-col gap-1">
-      <a href="/dashboard" class="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium">Dashboard</a>
-      <a href="/projects" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Projects</a>
-      <a href="/team" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Team</a>
-      <a href="/calendar" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Calendar</a>
-      <a href="/documents" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Documents</a>
-      <a href="/settings" class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800">Settings</a>
+      <a
+        href="/dashboard"
+        class="rounded-md bg-slate-800 px-3 py-2 text-sm font-medium"
+        >Dashboard</a
+      >
+      <a
+        href="/projects"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Projects</a
+      >
+      <a
+        href="/team"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Team</a
+      >
+      <a
+        href="/calendar"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Calendar</a
+      >
+      <a
+        href="/documents"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Documents</a
+      >
+      <a
+        href="/settings"
+        class="rounded-md px-3 py-2 text-sm font-medium text-slate-300 hover:bg-slate-800"
+        >Settings</a
+      >
     </nav>
   </aside>
 
@@ -82,12 +141,24 @@ Persistent sidebar navigation consumes 250px+ on mobile, leaving only ~125px for
       data-open="sidebar"
       class="mb-4 rounded-md border p-2 text-gray-700 hover:bg-gray-100 lg:hidden"
     >
-      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      <svg
+        class="h-5 w-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"
+        />
       </svg>
     </button>
     <h1 class="text-2xl font-bold">Dashboard</h1>
-    <p class="mt-2 text-gray-600">Welcome back. Here is your project overview.</p>
+    <p class="mt-2 text-gray-600">
+      Welcome back. Here is your project overview.
+    </p>
   </main>
 </div>
 ```

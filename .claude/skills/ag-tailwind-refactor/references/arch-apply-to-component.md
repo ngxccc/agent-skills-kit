@@ -28,10 +28,10 @@ tags: arch, apply, components, architecture
 
 ```tsx
 // Framework component with utility classes directly in markup
-function Button({ variant = 'primary', children, ...props }) {
+function Button({ variant = "primary", children, ...props }) {
   const styles = {
-    primary: 'bg-blue-500 text-white hover:bg-blue-600',
-    secondary: 'bg-gray-100 text-gray-800 hover:bg-gray-200',
+    primary: "bg-blue-500 text-white hover:bg-blue-600",
+    secondary: "bg-gray-100 text-gray-800 hover:bg-gray-200",
   };
 
   return (

@@ -13,15 +13,6 @@
     "types": ["node"],
     "noEmit": true
   },
-  "include": [
-    ".omp/**/*.ts",
-    "**/*.ts",
-    "**/*.js",
-    "**/*.mjs",
-    "**/*.cjs"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/node_modules"
-  ]
+  "include": [".omp/**/*.ts", "**/*.ts", "**/*.js", "**/*.mjs", "**/*.cjs"],
+  "exclude": ["node_modules", "**/node_modules"]
 }

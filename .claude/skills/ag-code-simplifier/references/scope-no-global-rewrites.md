@@ -70,13 +70,13 @@ export async function processOrder(cart: Cart, payment: Payment) {
 
 ### Changes That Require Separate Planning
 
-| Change Type | Why It's Not Simplification |
-|-------------|---------------------------|
-| Global renames | Touches every file, massive merge conflicts |
-| Dependency upgrades | Requires compatibility testing |
-| Architecture changes | Needs design review and migration plan |
-| Pattern migrations | (callbacks->promises, classes->hooks) Need incremental rollout |
-| Directory restructuring | Breaks imports across entire codebase |
+| Change Type             | Why It's Not Simplification                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| Global renames          | Touches every file, massive merge conflicts                    |
+| Dependency upgrades     | Requires compatibility testing                                 |
+| Architecture changes    | Needs design review and migration plan                         |
+| Pattern migrations      | (callbacks->promises, classes->hooks) Need incremental rollout |
+| Directory restructuring | Breaks imports across entire codebase                          |
 
 ### When NOT to Apply
 

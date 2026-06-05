@@ -12,17 +12,17 @@ INP measures responsiveness to user interactions. Slow INP (over 200ms) makes bu
 **Incorrect (blocking main thread during interaction):**
 
 ```javascript
-button.addEventListener('click', () => {
+button.addEventListener("click", () => {
   // Synchronous heavy computation blocks UI
   const result = processLargeDataset(items); // 500ms blocking
   renderResults(result);
 });
 // User sees no response for 500ms after click
 
-dropdown.addEventListener('change', (event) => {
+dropdown.addEventListener("change", (event) => {
   // DOM thrashing during interaction
-  items.forEach(item => {
-    item.style.display = shouldShow(item) ? 'block' : 'none';
+  items.forEach((item) => {
+    item.style.display = shouldShow(item) ? "block" : "none";
     item.getBoundingClientRect(); // Forces reflow each iteration
   });
 });
@@ -32,7 +32,7 @@ dropdown.addEventListener('change', (event) => {
 **Correct (non-blocking responsive interactions):**
 
 ```javascript
-button.addEventListener('click', async () => {
+button.addEventListener("click", async () => {
   // Show immediate feedback
   button.disabled = true;
   showLoadingSpinner();
@@ -45,11 +45,11 @@ button.addEventListener('click', async () => {
 });
 // User sees spinner within 16ms
 
-dropdown.addEventListener('change', (event) => {
+dropdown.addEventListener("change", (event) => {
   // Batch DOM updates
-  const updates = items.map(item => ({
+  const updates = items.map((item) => ({
     element: item,
-    display: shouldShow(item) ? 'block' : 'none'
+    display: shouldShow(item) ? "block" : "none",
   }));
 
   requestAnimationFrame(() => {
@@ -62,6 +62,7 @@ dropdown.addEventListener('change', (event) => {
 ```
 
 **INP optimization strategies:**
+
 - Show immediate visual feedback on interaction
 - Use `requestAnimationFrame` for DOM updates
 - Break long tasks with `scheduler.yield()` or `setTimeout`

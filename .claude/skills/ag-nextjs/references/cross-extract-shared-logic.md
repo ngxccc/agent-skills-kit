@@ -20,7 +20,7 @@ tags: cross, duplication, shared-fetcher, server-action, refactor
 ### Detection procedure
 
 1. After completing Categories 1–8, list every `await fetch(`, `await db.`, `revalidateTag(` and `revalidatePath(` call in the inventory, grouped by what they hit.
-2. For each group with 2+ members, ask: *would a single `getX = cache(async () => ...)` (or a single Server Action) eliminate the duplication?*
+2. For each group with 2+ members, ask: _would a single `getX = cache(async () => ...)` (or a single Server Action) eliminate the duplication?_
 3. The threshold is **2 occurrences**, not 3 — by the time you have 3, the drift has already started.
 
 ### Multi-file example
@@ -90,7 +90,7 @@ One module owns the cache semantics. `revalidateTag('session')` invalidates ever
 
 ### When NOT to extract
 
-- The two fetchers happen to hit the same endpoint but want different caching policies *on purpose* (a public page wants long cache, an admin page wants no-store). Document the divergence; don't collapse.
+- The two fetchers happen to hit the same endpoint but want different caching policies _on purpose_ (a public page wants long cache, an admin page wants no-store). Document the divergence; don't collapse.
 - One caller is at the edge (proxy.ts), one is in a Server Component — the abstraction boundary is different.
 - The duplication is two occurrences of trivial code (one-line fetch). Wait for the third.
 

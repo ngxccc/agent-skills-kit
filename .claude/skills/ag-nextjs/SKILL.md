@@ -28,29 +28,30 @@ Rule files describe **pattern shapes** (not API names) and open with a **"Shapes
 Four non-negotiables from that doc:
 
 1. **Two modes — never refuse a whole-repo audit.** Pick **Mode A** (scoped, ≤~20 files) or **Mode B** (whole-tree: inventory pass + targeted sweeps + full Category 9).
-2. **Judgment over grep.** Each rule names a *pattern shape*, not a syntactic marker. Read each rule's **Shapes to recognize** section before sweeping — grep finds the easy violations and misses the high-value ones (a layout marked `'use client'` for one button; TanStack Query fetching initial page data; a route handler doing the work of a Server Action; a hand-rolled cache layer mimicking `'use cache'`; sequential fetches hidden across parent/child Server Components).
-3. **Category-major, not file-major — with forcing functions.** Sweep one category at a time across all in-scope files in priority order (CRITICAL → … → CROSS-CUTTING). The algorithm requires a **scope declaration**, **per-category progress lines**, and a final **coverage table** (category × file/bucket, cells ∈ `{clean, N findings, n/a}`). A missing category in the output is *immediately visible*.
+2. **Judgment over grep.** Each rule names a _pattern shape_, not a syntactic marker. Read each rule's **Shapes to recognize** section before sweeping — grep finds the easy violations and misses the high-value ones (a layout marked `'use client'` for one button; TanStack Query fetching initial page data; a route handler doing the work of a Server Action; a hand-rolled cache layer mimicking `'use cache'`; sequential fetches hidden across parent/child Server Components).
+3. **Category-major, not file-major — with forcing functions.** Sweep one category at a time across all in-scope files in priority order (CRITICAL → … → CROSS-CUTTING). The algorithm requires a **scope declaration**, **per-category progress lines**, and a final **coverage table** (category × file/bucket, cells ∈ `{clean, N findings, n/a}`). A missing category in the output is _immediately visible_.
 4. **Codebase-level findings come from Category 9.** Single-file rules can't tell you "these two routes should be one" or "this server action is dead." Category 9 (Codebase Hygiene) sweeps the full inventory at the end and produces remove / dedup / reuse / consolidate findings.
 
 Single-file ad-hoc questions ("is this caching strategy right?") can go straight to the relevant rule. The algorithm exists for the multi-file and whole-repo cases.
 
 ## Rule Categories
 
-| # | Category | Impact | Rules | Key Topics |
-|---|----------|--------|-------|------------|
-| 1 | Build & Bundle Optimization | CRITICAL | 5 | Turbopack, optimizePackageImports, dynamic imports, barrel files, serverExternalPackages |
-| 2 | Caching Strategy | CRITICAL | 6 | `'use cache'`, `revalidateTag`+cacheLife, fetch options, segment config |
-| 3 | Server Components & Data Fetching | HIGH | 6 | Parallel fetching, streaming, colocation, preload, no-client-fetch, error handling |
-| 4 | Routing & Navigation | HIGH | 5 | Parallel routes, intercepting routes, prefetching, `proxy.ts`, `notFound()` |
-| 5 | Server Actions & Mutations | MEDIUM-HIGH | 5 | Server actions, useFormStatus, action-result errors, useOptimistic, revalidation |
-| 6 | Streaming & Loading States | MEDIUM | 5 | Suspense placement, loading.tsx, error.tsx, skeleton matching, nested Suspense |
-| 7 | Metadata & SEO | MEDIUM | 4 | generateMetadata, sitemap.ts, robots.ts, opengraph-image.tsx |
-| 8 | Client Components | LOW-MEDIUM | 4 | `'use client'` boundary, children pattern, hydration mismatch, next/script |
-| 9 | **Codebase Hygiene** | **LOW-MEDIUM** | **5** | **Dedup server fetchers, route consolidation, dead routes/actions, `'use client'` propagation, prop drift** |
+| #   | Category                          | Impact         | Rules | Key Topics                                                                                                  |
+| --- | --------------------------------- | -------------- | ----- | ----------------------------------------------------------------------------------------------------------- |
+| 1   | Build & Bundle Optimization       | CRITICAL       | 5     | Turbopack, optimizePackageImports, dynamic imports, barrel files, serverExternalPackages                    |
+| 2   | Caching Strategy                  | CRITICAL       | 6     | `'use cache'`, `revalidateTag`+cacheLife, fetch options, segment config                                     |
+| 3   | Server Components & Data Fetching | HIGH           | 6     | Parallel fetching, streaming, colocation, preload, no-client-fetch, error handling                          |
+| 4   | Routing & Navigation              | HIGH           | 5     | Parallel routes, intercepting routes, prefetching, `proxy.ts`, `notFound()`                                 |
+| 5   | Server Actions & Mutations        | MEDIUM-HIGH    | 5     | Server actions, useFormStatus, action-result errors, useOptimistic, revalidation                            |
+| 6   | Streaming & Loading States        | MEDIUM         | 5     | Suspense placement, loading.tsx, error.tsx, skeleton matching, nested Suspense                              |
+| 7   | Metadata & SEO                    | MEDIUM         | 4     | generateMetadata, sitemap.ts, robots.ts, opengraph-image.tsx                                                |
+| 8   | Client Components                 | LOW-MEDIUM     | 4     | `'use client'` boundary, children pattern, hydration mismatch, next/script                                  |
+| 9   | **Codebase Hygiene**              | **LOW-MEDIUM** | **5** | **Dedup server fetchers, route consolidation, dead routes/actions, `'use client'` propagation, prop drift** |
 
 ## Quick Reference
 
 **Critical patterns** — get these right first:
+
 - Add `'use cache'` to Server Components/functions whose results should be cached (Next.js 16 dropped implicit fetch caching)
 - Call `revalidateTag(tag, cacheLife)` with a profile — never the one-arg API
 - Configure `optimizePackageImports` for icon/utility libraries with flat-export surfaces
@@ -58,6 +59,7 @@ Single-file ad-hoc questions ("is this caching strategy right?") can go straight
 - Wrap `<form action={serverAction}>` instead of POST-to-`/api/...`
 
 **Next.js 16 idioms (do NOT generate Next.js 15 patterns):**
+
 - `proxy.ts` (Node runtime) — not `middleware.ts` (Edge)
 - Explicit `'use cache'` — not implicit fetch caching
 - `revalidateTag(tag, cacheLife)` — not single-arg `revalidateTag(tag)`
@@ -65,6 +67,7 @@ Single-file ad-hoc questions ("is this caching strategy right?") can go straight
 - `app/sitemap.ts` — not hand-maintained `public/sitemap.xml`
 
 **Common single-file mistakes** — avoid these anti-patterns:
+
 - Sequential `await` for independent data (use `Promise.all` or preload)
 - `useEffect` + `fetch` in a Client Component for initial page data
 - `'use client'` at the layout level for one interactive button
@@ -72,6 +75,7 @@ Single-file ad-hoc questions ("is this caching strategy right?") can go straight
 - Skeletons that don't match content dimensions (CLS hit)
 
 **Codebase-level patterns** — surface these in Category 9 sweeps:
+
 - 2+ Server Components hitting the same upstream with drifting cache policies — **extract** to a shared cached fetcher
 - 2+ near-duplicate routes/layouts that should be one with a variant or dynamic segment — **consolidate**
 - Routes / route handlers / Server Actions with no inbound traffic for 90+ days — **delete** (after analytics check)

@@ -9,28 +9,32 @@ When a dynamic hole needs client interactivity (sorting, filtering, charts), the
 
 ```tsx
 // app/reports/page.tsx — Server Component
-import { Suspense } from 'react'
-import { SalesChart } from './sales-chart'
+import { Suspense } from "react";
+import { SalesChart } from "./sales-chart";
 
 export default function ReportsPage() {
-  const salesPromise = getSales() // do NOT await — kicks off the fetch immediately
+  const salesPromise = getSales(); // do NOT await — kicks off the fetch immediately
   return (
     <Suspense fallback={<ChartSkeleton />}>
       <SalesChart salesPromise={salesPromise} />
     </Suspense>
-  )
+  );
 }
 ```
 
 ```tsx
 // app/reports/sales-chart.tsx — Client Component
-'use client'
-import { use, useState } from 'react'
+"use client";
+import { use, useState } from "react";
 
-export function SalesChart({ salesPromise }: { salesPromise: Promise<Sale[]> }) {
-  const sales = use(salesPromise) // suspends until the streamed data arrives
-  const [range, setRange] = useState<'30d' | '90d'>('30d')
-  return <Chart data={sales} range={range} onRangeChange={setRange} />
+export function SalesChart({
+  salesPromise,
+}: {
+  salesPromise: Promise<Sale[]>;
+}) {
+  const sales = use(salesPromise); // suspends until the streamed data arrives
+  const [range, setRange] = useState<"30d" | "90d">("30d");
+  return <Chart data={sales} range={range} onRangeChange={setRange} />;
 }
 ```
 

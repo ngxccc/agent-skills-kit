@@ -7,7 +7,7 @@ tags: server, data-colocation, fetch-at-leaf, no-prop-drilling
 
 ## Each Server Component fetches the data it renders — pull data to the leaf, not the route root
 
-**Pattern intent:** the Server Component that *renders* a piece of data is also the one that *fetches* it. This is what unlocks per-subtree Suspense streaming, removes prop-drilling, and (with `react.cache`) deduplicates shared fetches automatically.
+**Pattern intent:** the Server Component that _renders_ a piece of data is also the one that _fetches_ it. This is what unlocks per-subtree Suspense streaming, removes prop-drilling, and (with `react.cache`) deduplicates shared fetches automatically.
 
 ### Shapes to recognize
 

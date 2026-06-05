@@ -31,18 +31,18 @@ interface UserPayload {
 
 function isUserPayload(data: unknown): data is UserPayload {
   return (
-    typeof data === 'object' &&
+    typeof data === "object" &&
     data !== null &&
-    'items' in data &&
+    "items" in data &&
     Array.isArray((data as UserPayload).items)
   );
 }
 
 function parseUserPayload(data: unknown): string[] {
   if (!isUserPayload(data)) {
-    throw new Error('Invalid user payload structure');
+    throw new Error("Invalid user payload structure");
   }
-  return data.items.map(item => item.name.toUpperCase());
+  return data.items.map((item) => item.name.toUpperCase());
 }
 
 interface ApiResponse {

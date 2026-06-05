@@ -5,7 +5,7 @@ The section ID (in parentheses) is the filename prefix used to group pattern ref
 
 These patterns are the functional counterparts to the Gang of Four catalog covered in [`implementation-design-patterns`](../../implementation-design-patterns/SKILL.md). In TypeScript — a language with first-class functions, structural typing, discriminated unions, and zero ceremony around closures — the idiomatic answer to many GoF shapes is a function with a lambda, a tagged union with a match, or a small data structure with a factory function, not a class hierarchy. Each rule below names the GoF pattern(s) it replaces and lists the narrow conditions under which the class form is still the right call (serialization, runtime registry, typed inter-pattern relations, cross-cutting state, framework integration, lifecycle ownership).
 
-The 22 GoF patterns collapse to fewer rules here because several patterns share a functional answer: tagged unions replace State / Visitor / Composite; factory functions replace Factory Method / Abstract Factory / Prototype / Memento; event emitters replace Mediator / Observer; wrapper functions replace Adapter / Facade. See SKILL.md's *GoF → Functional Map* table for the full mapping.
+The 22 GoF patterns collapse to fewer rules here because several patterns share a functional answer: tagged unions replace State / Visitor / Composite; factory functions replace Factory Method / Abstract Factory / Prototype / Memento; event emitters replace Mediator / Observer; wrapper functions replace Adapter / Facade. See SKILL.md's _GoF → Functional Map_ table for the full mapping.
 
 ---
 
@@ -52,7 +52,7 @@ The 22 GoF patterns collapse to fewer rules here because several patterns share 
 ## 9. Placement and identity (place)
 
 **Impact:** HIGH
-**Description:** *Where* you put the lambda: module scope, function scope, or inline in JSX / a hook deps array. Placement controls referential identity (which determines memo/effect-dep behavior), closure capture (which determines correctness), tree-shakability, and per-render allocation cost. Apply on every function-definition decision in a TSX or hot-path file.
+**Description:** _Where_ you put the lambda: module scope, function scope, or inline in JSX / a hook deps array. Placement controls referential identity (which determines memo/effect-dep behavior), closure capture (which determines correctness), tree-shakability, and per-render allocation cost. Apply on every function-definition decision in a TSX or hot-path file.
 
 ## 10. Closures and data-carrying functions (closure)
 

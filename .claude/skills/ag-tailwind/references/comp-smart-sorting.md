@@ -19,9 +19,7 @@ Tailwind CSS v4 automatically sorts utilities by property count, ensuring comple
 
 ```html
 <!-- Expecting bg-indigo-500 to override, but unsure about specificity -->
-<button class="button bg-indigo-500">
-  Click me
-</button>
+<button class="button bg-indigo-500">Click me</button>
 ```
 
 **Correct (trust smart sorting):**
@@ -42,6 +40,7 @@ Tailwind CSS v4 automatically sorts utilities by property count, ensuring comple
 ```
 
 **How sorting works:**
+
 1. Multi-property utilities sorted first (e.g., `button`)
 2. Single-property utilities sorted after
 3. Within same property count, alphabetical

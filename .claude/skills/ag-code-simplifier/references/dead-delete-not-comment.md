@@ -112,6 +112,7 @@ func ProcessBatch(items []Item) error {
 ### Recovery Workflow
 
 When you need old code back:
+
 1. `git log --oneline -20` - find the commit
 2. `git show <commit>:path/to/file` - view the old version
 3. `git checkout <commit> -- path/to/file` - restore if needed

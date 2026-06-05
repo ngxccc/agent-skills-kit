@@ -34,11 +34,13 @@ Animate `transform` and `opacity` properties instead of layout-triggering proper
 ```
 
 **GPU-accelerated properties:**
+
 - `transform` (translate, rotate, scale, skew)
 - `opacity`
 - `filter` (blur, brightness, etc.)
 
 **Layout-triggering properties (avoid animating):**
+
 - `width`, `height`
 - `top`, `right`, `bottom`, `left`
 - `margin`, `padding`

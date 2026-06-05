@@ -15,8 +15,8 @@
  * Zero dependencies — Node.js built-ins only.  Requires Node >= 22.
  */
 
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 // ── CLI args ──────────────────────────────────────────────────────────────────
 
@@ -31,13 +31,13 @@ function option(name) {
   return idx !== -1 && idx + 1 < args.length ? args[idx + 1] : null;
 }
 
-const rootDir = path.resolve(option("--root") || process.cwd());
-const jsonMode = flag("--json");
-const kitOnlyMode = flag("--kit-only");
+const rootDir = path.resolve(option('--root') || process.cwd());
+const jsonMode = flag('--json');
+const kitOnlyMode = flag('--kit-only');
 
 // ── Manifest loading ──────────────────────────────────────────────────────────
 
-const manifestPath = path.join(rootDir, "ag-manifest.json");
+const manifestPath = path.join(rootDir, 'ag-manifest.json');
 
 if (!fs.existsSync(manifestPath)) {
   console.error(`Error: ag-manifest.json not found at ${manifestPath}`);
@@ -46,7 +46,7 @@ if (!fs.existsSync(manifestPath)) {
 
 let manifest;
 try {
-  manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 } catch (err) {
   console.error(`Error: Failed to parse ag-manifest.json: ${err.message}`);
   process.exit(1);
@@ -55,8 +55,8 @@ try {
 // ── Version check ─────────────────────────────────────────────────────────────
 
 function semverGte(a, b) {
-  const pa = a.split(".").map(Number);
-  const pb = b.split(".").map(Number);
+  const pa = a.split('.').map(Number);
+  const pb = b.split('.').map(Number);
   for (let i = 0; i < 3; i++) {
     if ((pa[i] || 0) > (pb[i] || 0)) return true;
     if ((pa[i] || 0) < (pb[i] || 0)) return false;
@@ -64,8 +64,8 @@ function semverGte(a, b) {
   return true; // equal
 }
 
-const version = manifest.version || "0.0.0";
-const useGlob = semverGte(version, "2.1.0");
+const version = manifest.version || '0.0.0';
+const useGlob = semverGte(version, '2.1.0');
 
 // ── Glob resolution (v2.1+) ──────────────────────────────────────────────────
 
@@ -103,7 +103,7 @@ function walkDirAll(dirPath) {
  * Check if a filename matches a dotfile pattern like .??* (dot + 2+ chars).
  */
 function isDotfile(filename) {
-  return filename.startsWith(".") && filename.length >= 3;
+  return filename.startsWith('.') && filename.length >= 3;
 }
 
 /**
@@ -129,7 +129,7 @@ function resolveGlobPatterns(patterns) {
       const allFiles = walkDirAll(baseDir);
       for (const f of allFiles) {
         const basename = path.basename(f);
-        if (dotPattern === ".??*") {
+        if (dotPattern === '.??*') {
           // Match any dotfile with 3+ char name
           if (isDotfile(basename)) matches.add(f);
         } else {
@@ -178,29 +178,29 @@ function matchesExclude(filePath, excludePatterns) {
     if (filePath === pattern) return true;
 
     // Pattern ending with /** — directory prefix match
-    if (pattern.endsWith("/**")) {
+    if (pattern.endsWith('/**')) {
       const prefix = pattern.slice(0, -3); // remove /**
-      if (filePath.startsWith(prefix + "/") || filePath === prefix) return true;
+      if (filePath.startsWith(prefix + '/') || filePath === prefix) return true;
     }
 
     // Pattern starting with **/ — suffix match
-    if (pattern.startsWith("**/")) {
+    if (pattern.startsWith('**/')) {
       const suffix = pattern.slice(3); // remove **/
       // suffix could be a dir pattern like .git/**
-      if (suffix.endsWith("/**")) {
+      if (suffix.endsWith('/**')) {
         const dirName = suffix.slice(0, -3); // e.g. ".git"
         if (
-          filePath.includes("/" + dirName + "/") ||
-          filePath.startsWith(dirName + "/")
+          filePath.includes('/' + dirName + '/') ||
+          filePath.startsWith(dirName + '/')
         ) {
           return true;
         }
       } else {
         // suffix is a file pattern like .logs/**
         if (
-          filePath.includes("/" + suffix + "/") ||
-          filePath.startsWith(suffix + "/") ||
-          filePath.endsWith("/" + suffix) ||
+          filePath.includes('/' + suffix + '/') ||
+          filePath.startsWith(suffix + '/') ||
+          filePath.endsWith('/' + suffix) ||
           filePath === suffix
         ) {
           return true;
@@ -221,15 +221,17 @@ function matchesPatternList(filePath, patterns) {
     if (filePath === pattern) return true;
 
     // dir/** pattern
-    if (pattern.endsWith("/**")) {
+    if (pattern.endsWith('/**')) {
       const prefix = pattern.slice(0, -3);
-      if (filePath.startsWith(prefix + "/") || filePath === prefix) return true;
+      if (filePath.startsWith(prefix + '/') || filePath === prefix) return true;
     }
 
     // Simple wildcard: e.g. README-preview*.html
-    if (pattern.includes("*") && !pattern.includes("**")) {
+    if (pattern.includes('*') && !pattern.includes('**')) {
       const regex = new RegExp(
-        "^" + pattern.replace(/[.+^${}()|[\]\\]/g, "\\$&").replace(/\*/g, ".*") + "$",
+        '^' +
+          pattern.replace(/[.+^${}()|[\]\\]/g, '\\$&').replace(/\*/g, '.*') +
+          '$',
       );
       if (regex.test(filePath)) return true;
     }
@@ -298,9 +300,9 @@ function resolveGlob() {
       ),
     );
   } else if (kitOnlyMode) {
-    console.log(kitOnlyFiles.sort().join("\n"));
+    console.log(kitOnlyFiles.sort().join('\n'));
   } else {
-    console.log(managedFiles.join("\n"));
+    console.log(managedFiles.join('\n'));
   }
 }
 
@@ -308,62 +310,62 @@ function resolveGlob() {
 
 // Final v2.0.4 deletions array — embedded for one-time migration
 const LEGACY_DELETIONS = [
-  ".claude/skills/add-worktree",
-  ".claude/skills/agent-browser",
-  ".claude/skills/audit-context",
-  ".claude/skills/audit-plans",
-  ".claude/skills/audit-vc",
-  ".claude/skills/chrome-devtools",
-  ".claude/skills/ck-autoresearch",
-  ".claude/skills/ck-debug",
-  ".claude/skills/ck-predict",
-  ".claude/skills/ck-scenario",
-  ".claude/skills/ck-security",
-  ".claude/skills/context-engineering",
-  ".claude/skills/docs",
-  ".claude/skills/docs-seeker",
-  ".claude/skills/frontend-design",
-  ".claude/skills/generate-context",
-  ".claude/skills/generate-plan",
-  ".claude/skills/mcp-management",
-  ".claude/skills/merge-worktree",
-  ".claude/skills/preview",
-  ".claude/skills/problem-solving",
-  ".claude/skills/repomix",
-  ".claude/skills/scout",
-  ".claude/skills/sequential-thinking",
-  ".claude/skills/team",
-  ".claude/skills/tech-graph",
-  ".claude/skills/watzup",
-  ".claude/skills/web-testing",
-  ".claude/skills/xia",
-  ".claude/agents/code-reviewer.md",
-  ".claude/agents/code-simplifier.md",
-  ".claude/agents/debugger.md",
-  ".claude/agents/execute-agent.md",
-  ".claude/agents/fast-mode-agent.md",
-  ".claude/agents/git-manager.md",
-  ".claude/agents/innovate-agent.md",
-  ".claude/agents/plan-agent.md",
-  ".claude/agents/research-agent.md",
-  ".claude/agents/tester.md",
-  ".claude/agents/ui-ux-designer.md",
-  ".claude/agents/update-process-agent.md",
-  ".codex/agents/code-reviewer.toml",
-  ".codex/agents/code-simplifier.toml",
-  ".codex/agents/debugger.toml",
-  ".codex/agents/execute-agent.toml",
-  ".codex/agents/fast-mode-agent.toml",
-  ".codex/agents/git-manager.toml",
-  ".codex/agents/innovate-agent.toml",
-  ".codex/agents/plan-agent.toml",
-  ".codex/agents/research-agent.toml",
-  ".codex/agents/tester.toml",
-  ".codex/agents/ui-ux-designer.toml",
-  ".codex/agents/update-process-agent.toml",
-  ".claude/hooks/lib/ck-config-utils.cjs",
-  ".codex/hooks/lib/ck-config-utils.cjs",
-  ".claude/CLAUDE.md",
+  '.claude/skills/add-worktree',
+  '.claude/skills/agent-browser',
+  '.claude/skills/audit-context',
+  '.claude/skills/audit-plans',
+  '.claude/skills/audit-vc',
+  '.claude/skills/chrome-devtools',
+  '.claude/skills/ck-autoresearch',
+  '.claude/skills/ck-debug',
+  '.claude/skills/ck-predict',
+  '.claude/skills/ck-scenario',
+  '.claude/skills/ck-security',
+  '.claude/skills/context-engineering',
+  '.claude/skills/docs',
+  '.claude/skills/docs-seeker',
+  '.claude/skills/frontend-design',
+  '.claude/skills/generate-context',
+  '.claude/skills/generate-plan',
+  '.claude/skills/mcp-management',
+  '.claude/skills/merge-worktree',
+  '.claude/skills/preview',
+  '.claude/skills/problem-solving',
+  '.claude/skills/repomix',
+  '.claude/skills/scout',
+  '.claude/skills/sequential-thinking',
+  '.claude/skills/team',
+  '.claude/skills/tech-graph',
+  '.claude/skills/watzup',
+  '.claude/skills/web-testing',
+  '.claude/skills/xia',
+  '.claude/agents/code-reviewer.md',
+  '.claude/agents/code-simplifier.md',
+  '.claude/agents/debugger.md',
+  '.claude/agents/execute-agent.md',
+  '.claude/agents/fast-mode-agent.md',
+  '.claude/agents/git-manager.md',
+  '.claude/agents/innovate-agent.md',
+  '.claude/agents/plan-agent.md',
+  '.claude/agents/research-agent.md',
+  '.claude/agents/tester.md',
+  '.claude/agents/ui-ux-designer.md',
+  '.claude/agents/update-process-agent.md',
+  '.codex/agents/code-reviewer.toml',
+  '.codex/agents/code-simplifier.toml',
+  '.codex/agents/debugger.toml',
+  '.codex/agents/execute-agent.toml',
+  '.codex/agents/fast-mode-agent.toml',
+  '.codex/agents/git-manager.toml',
+  '.codex/agents/innovate-agent.toml',
+  '.codex/agents/plan-agent.toml',
+  '.codex/agents/research-agent.toml',
+  '.codex/agents/tester.toml',
+  '.codex/agents/ui-ux-designer.toml',
+  '.codex/agents/update-process-agent.toml',
+  '.claude/hooks/lib/ck-config-utils.cjs',
+  '.codex/hooks/lib/ck-config-utils.cjs',
+  '.claude/CLAUDE.md',
 ];
 
 function walkDir(dirPath) {
@@ -391,7 +393,7 @@ function walkDir(dirPath) {
 function resolveLegacy() {
   const managed = manifest.managed || [];
   const managedDirs = manifest.managedDirs || [];
-  const seedsDir = manifest.seedsDir || "";
+  const seedsDir = manifest.seedsDir || '';
   const symlinkMap = manifest.symlinks || {};
   const deletions = manifest.deletions || [];
 
@@ -439,7 +441,7 @@ function resolveLegacy() {
       ),
     );
   } else {
-    console.log(sorted.join("\n"));
+    console.log(sorted.join('\n'));
   }
 }
 

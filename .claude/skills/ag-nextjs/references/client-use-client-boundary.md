@@ -13,7 +13,7 @@ tags: client, boundary-placement, leaf-client, no-route-client
 
 - `'use client'` at the top of `page.tsx` / `layout.tsx`, with most of the body being static markup and only one or two interactive leaves.
 - A `<ProductPage>` Client Component receiving `{ product, reviews, related, recommendations }` — most of those exist only to render static children that don't need the client.
-- A wrapper component is `'use client'` only because *one* descendant uses `useState` — the wrapper itself never needs the client.
+- A wrapper component is `'use client'` only because _one_ descendant uses `useState` — the wrapper itself never needs the client.
 - A `'use client'` layout toggling a sidebar — could be a static layout with a small client island for the sidebar toggle button.
 - Heavy server-only data (large arrays, formatted HTML, image URLs) crossing the boundary because the boundary is too high — every byte gets serialized into the RSC payload.
 
@@ -23,7 +23,7 @@ The canonical resolution: keep `page.tsx` / `layout.tsx` as a Server Component; 
 
 ### In disguise — `'use client'` on a `layout.tsx` because of one interactive element three levels deep
 
-The grep-friendly anti-pattern is `'use client'` at the top of `page.tsx`. The disguise is the directive on a *layout* — usually because the team added a theme toggle, a notification bell, or an auth-conditional element to the layout's `<header>` and didn't realize the whole subtree under the layout is now a Client Component.
+The grep-friendly anti-pattern is `'use client'` at the top of `page.tsx`. The disguise is the directive on a _layout_ — usually because the team added a theme toggle, a notification bell, or an auth-conditional element to the layout's `<header>` and didn't realize the whole subtree under the layout is now a Client Component.
 
 **Incorrect — in disguise (layout marked client for a single interactive header element):**
 

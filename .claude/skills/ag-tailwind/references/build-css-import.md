@@ -28,6 +28,7 @@ Tailwind CSS v4 replaces the old `@tailwind` directives with a single CSS import
 ```
 
 **Benefits:**
+
 - Zero configuration required for most projects
 - Automatic template file detection
 - Built-in @import support without additional plugins

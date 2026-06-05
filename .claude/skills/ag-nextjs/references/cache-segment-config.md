@@ -49,22 +49,23 @@ export default async function AboutPage() {
 
 ```typescript
 // Force dynamic rendering (never cache)
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 // Force static generation (build-time only)
-export const dynamic = 'force-static'
+export const dynamic = "force-static";
 
 // Revalidate time in seconds
-export const revalidate = 3600  // 1 hour
+export const revalidate = 3600; // 1 hour
 
 // Generate static params for dynamic routes
 export async function generateStaticParams() {
-  const products = await getProducts()
-  return products.map((p) => ({ slug: p.slug }))
+  const products = await getProducts();
+  return products.map((p) => ({ slug: p.slug }));
 }
 ```
 
 **Decision matrix:**
+
 - Static content → `force-static`
 - User-specific/auth → `force-dynamic`
 - Semi-static → `revalidate: N`

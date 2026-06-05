@@ -14,13 +14,16 @@ LCP measures how long the largest visible element takes to render. A slow LCP (o
 ```html
 <head>
   <!-- Render-blocking CSS -->
-  <link rel="stylesheet" href="all-styles.css">
+  <link rel="stylesheet" href="all-styles.css" />
   <!-- Blocking fonts -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Roboto"
+  />
 </head>
 <body>
   <!-- Hero image without optimization -->
-  <img src="hero-4k.jpg" alt="Hero banner">
+  <img src="hero-4k.jpg" alt="Hero banner" />
   <!-- LCP element loads after all CSS and fonts -->
 </body>
 ```
@@ -30,11 +33,23 @@ LCP measures how long the largest visible element takes to render. A slow LCP (o
 ```html
 <head>
   <!-- Preload LCP image -->
-  <link rel="preload" as="image" href="hero-optimized.webp" fetchpriority="high">
+  <link
+    rel="preload"
+    as="image"
+    href="hero-optimized.webp"
+    fetchpriority="high"
+  />
   <!-- Critical CSS inlined -->
-  <style>/* Above-fold styles */</style>
+  <style>
+    /* Above-fold styles */
+  </style>
   <!-- Non-critical CSS deferred -->
-  <link rel="stylesheet" href="styles.css" media="print" onload="this.media='all'">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+    media="print"
+    onload="this.media='all'"
+  />
 </head>
 <body>
   <!-- Optimized hero with explicit dimensions -->
@@ -45,12 +60,13 @@ LCP measures how long the largest visible element takes to render. A slow LCP (o
     height="600"
     fetchpriority="high"
     decoding="async"
-  >
+  />
   <!-- LCP element loads first, renders within 2.5s -->
 </body>
 ```
 
 **LCP optimization strategies:**
+
 - Preload LCP images with `fetchpriority="high"`
 - Use WebP/AVIF formats (30-50% smaller than JPEG)
 - Inline critical CSS, defer non-critical styles

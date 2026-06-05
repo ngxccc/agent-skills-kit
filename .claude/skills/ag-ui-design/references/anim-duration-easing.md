@@ -50,8 +50,9 @@ Too-slow animations feel laggy; too-fast ones feel jarring. Proper duration and 
 
 /* Modal/overlay: 200-400ms */
 .modal {
-  transition: opacity 200ms ease-out,
-              transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition:
+    opacity 200ms ease-out,
+    transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 /* Page transitions: 300-500ms */
@@ -70,6 +71,7 @@ Too-slow animations feel laggy; too-fast ones feel jarring. Proper duration and 
 | Page transitions | 300-500ms |
 
 **Common easing curves:**
+
 - `ease-out`: Fast start, slow end (entering)
 - `ease-in`: Slow start, fast end (exiting)
 - `cubic-bezier(0.4, 0, 0.2, 1)`: Material Design standard

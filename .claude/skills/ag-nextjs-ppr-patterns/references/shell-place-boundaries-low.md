@@ -17,7 +17,7 @@ export default function ProductPage() {
       <ProductInfo /> {/* static */}
       <LiveInventory /> {/* the only genuinely dynamic part */}
     </Suspense>
-  )
+  );
 }
 ```
 
@@ -33,7 +33,7 @@ export default function ProductPage() {
         <LiveInventory />
       </Suspense>
     </>
-  )
+  );
 }
 ```
 

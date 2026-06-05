@@ -17,7 +17,7 @@ const d = 86400000; // milliseconds in a day
 
 function calc(a: number[], f: number): number {
   // Bad: What is being calculated? What are a and f?
-  return a.filter(x => x > f).length;
+  return a.filter((x) => x > f).length;
 }
 
 // Bad: What does this list contain?
@@ -30,7 +30,7 @@ const list = getUsers();
 const MILLISECONDS_PER_DAY = 86400000;
 
 function countItemsAboveThreshold(items: number[], threshold: number): number {
-  return items.filter(item => item > threshold).length;
+  return items.filter((item) => item > threshold).length;
 }
 
 const activeUsers = getActiveUsers();

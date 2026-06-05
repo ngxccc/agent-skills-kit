@@ -15,20 +15,20 @@ Global type augmentation — `declare global { interface Window { ... } }` — i
 // In an analytics library — distributed via npm
 declare global {
   interface Window {
-    analytics: { track(event: string): void; identify(userId: string): void }
+    analytics: { track(event: string): void; identify(userId: string): void };
   }
 }
 
 // In a feature-flag library — same npm install
 declare global {
   interface Window {
-    analytics: { variant(flag: string): boolean }   // same name, different shape
+    analytics: { variant(flag: string): boolean }; // same name, different shape
   }
 }
 
 // In the application that depends on both:
-window.analytics.track('clicked')      // OK in some files, type error in others depending on import order
-window.analytics.variant('newSearch')  // same
+window.analytics.track("clicked"); // OK in some files, type error in others depending on import order
+window.analytics.variant("newSearch"); // same
 ```
 
 **Correct (libraries export, apps augment with namespaced shape):**
@@ -37,41 +37,46 @@ window.analytics.variant('newSearch')  // same
 // analytics library — no global augmentation. Just exports.
 // src/index.ts
 export interface AnalyticsClient {
-  track(event: string, props?: Record<string, unknown>): void
-  identify(userId: string): void
+  track(event: string, props?: Record<string, unknown>): void;
+  identify(userId: string): void;
 }
-export function getAnalytics(): AnalyticsClient { /* … */ }
+export function getAnalytics(): AnalyticsClient {
+  /* … */
+}
 ```
 
 ```typescript
 // feature-flag library — same discipline
 export interface FlagClient {
-  variant(flag: string): boolean
+  variant(flag: string): boolean;
 }
-export function getFlags(): FlagClient { /* … */ }
+export function getFlags(): FlagClient {
+  /* … */
+}
 ```
 
 ```typescript
 // src/types/global.d.ts — in the application only
-import type { AnalyticsClient } from 'analytics-sdk'
-import type { FlagClient }      from 'feature-flags-sdk'
+import type { AnalyticsClient } from "analytics-sdk";
+import type { FlagClient } from "feature-flags-sdk";
 
 declare global {
   interface Window {
-    __acme: {                  // project-namespaced — no risk of collision
-      analytics: AnalyticsClient
-      flags: FlagClient
-    }
+    __acme: {
+      // project-namespaced — no risk of collision
+      analytics: AnalyticsClient;
+      flags: FlagClient;
+    };
   }
 }
 
-export {}  // marker to ensure module status
+export {}; // marker to ensure module status
 ```
 
 ```typescript
 // Usage in the application:
-window.__acme.analytics.track('clicked')
-window.__acme.flags.variant('newSearch')
+window.__acme.analytics.track("clicked");
+window.__acme.flags.variant("newSearch");
 ```
 
 Five rules that make this safe:
@@ -83,10 +88,12 @@ Five rules that make this safe:
 5. **Augment `globalThis` for non-browser globals.** `declare global { var __cache: Map<string, unknown> }` works for Node globals.
 
 **When NOT to apply:**
+
 - Single-file applications or scripts where the surface is small enough that a flat declaration file is no risk.
 - Monorepo internal libraries that are guaranteed to be the only consumer of a global (e.g. a shared test harness) — but document the assumption.
 
 **Scope delta:**
-- No existing TypeScript skill in this repo covers global augmentation discipline. It's the partner rule to `[[decl-module-augmentation]]` — both use the same mechanism, but global augmentation has *much* worse blast radius when done wrong.
+
+- No existing TypeScript skill in this repo covers global augmentation discipline. It's the partner rule to `[[decl-module-augmentation]]` — both use the same mechanism, but global augmentation has _much_ worse blast radius when done wrong.
 
 Reference: [TypeScript Handbook — Global Augmentation](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#global-augmentation)

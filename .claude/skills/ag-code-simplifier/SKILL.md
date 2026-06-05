@@ -17,6 +17,7 @@ Comprehensive code simplification guide for AI agents and LLMs. Contains 47 rule
 ## When to Apply
 
 Reference these guidelines when:
+
 - Simplifying or cleaning up recently modified code
 - Reducing nesting, complexity, or duplication
 - Improving naming and readability
@@ -25,16 +26,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix | Rules |
-|----------|----------|--------|--------|-------|
-| 1 | Context Discovery | CRITICAL | `ctx-` | 4 |
-| 2 | Behavior Preservation | CRITICAL | `behave-` | 6 |
-| 3 | Scope Management | HIGH | `scope-` | 5 |
-| 4 | Control Flow Simplification | HIGH | `flow-` | 9 |
-| 5 | Naming and Clarity | MEDIUM-HIGH | `name-` | 6 |
-| 6 | Duplication Reduction | MEDIUM | `dup-` | 5 |
-| 7 | Dead Code Elimination | MEDIUM | `dead-` | 5 |
-| 8 | Language Idioms | LOW-MEDIUM | `idiom-` | 7 |
+| Priority | Category                    | Impact      | Prefix    | Rules |
+| -------- | --------------------------- | ----------- | --------- | ----- |
+| 1        | Context Discovery           | CRITICAL    | `ctx-`    | 4     |
+| 2        | Behavior Preservation       | CRITICAL    | `behave-` | 6     |
+| 3        | Scope Management            | HIGH        | `scope-`  | 5     |
+| 4        | Control Flow Simplification | HIGH        | `flow-`   | 9     |
+| 5        | Naming and Clarity          | MEDIUM-HIGH | `name-`   | 6     |
+| 6        | Duplication Reduction       | MEDIUM      | `dup-`    | 5     |
+| 7        | Dead Code Elimination       | MEDIUM      | `dead-`   | 5     |
+| 8        | Language Idioms             | LOW-MEDIUM  | `idiom-`  | 7     |
 
 ## Quick Reference
 
@@ -126,8 +127,8 @@ Read individual reference files for detailed explanations and code examples:
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and reference information |
+| File                                                            | Description                       |
+| --------------------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for new rules            |
+| [metadata.json](metadata.json)                                  | Version and reference information |

@@ -17,6 +17,7 @@ Detailed end-to-end workflow for the React Hook Form audit. Read this when you n
 **Purpose:** Fail fast when the target isn't a Next.js + RHF project.
 
 **Checks:**
+
 - `package.json` exists at `<project-root>`
 - `next` is listed in `dependencies` or `devDependencies`
 - `react-hook-form` is listed in `dependencies` or `devDependencies`
@@ -33,6 +34,7 @@ Detailed end-to-end workflow for the React Hook Form audit. Read this when you n
 **Purpose:** Narrow the AST pass to only files that import `react-hook-form`. This keeps the audit fast on large monorepos.
 
 **How it works:**
+
 - Reads `include_globs` / `exclude_globs` from `config.json`
 - Runs ripgrep for `from ['"]react-hook-form(/|['"])` (matches subpath imports too)
 - Emits a JSON array of relative paths to stdout
@@ -48,6 +50,7 @@ Detailed end-to-end workflow for the React Hook Form audit. Read this when you n
 **Purpose:** Run the detectors whose patterns are reliably detectable with a line-level regex.
 
 **Implements:**
+
 - Rule 05: file missing `"use client"` directive while importing RHF
 - Rule 11: `mode: 'onChange'`
 - Rule 14: `reValidateMode: 'onBlur'`
@@ -65,6 +68,7 @@ Detailed end-to-end workflow for the React Hook Form audit. Read this when you n
 **First-run setup:** `audit.sh` runs `npm install` in `scripts/` to pull `ts-morph` into a local `node_modules`. This is one-time and self-contained — the audited project's `node_modules` is never touched.
 
 **Implements:**
+
 - Rule 01: `watch()` in same enclosing function as `useForm()`
 - Rule 02: `watch()` with no arguments
 - Rule 03: `useForm()` without `defaultValues` in its options object
@@ -89,12 +93,14 @@ Detailed end-to-end workflow for the React Hook Form audit. Read this when you n
 **Purpose:** Merge fast-pass and AST-pass findings, sort by severity then file:line, render as markdown.
 
 **Output structure:**
+
 - Header: project path, generation timestamp, total finding count
 - Summary table: count per severity
 - By-rule table: count per rule, with link to companion distillation rule
 - One section per severity, each finding rendered with file:line:column, rule ID, link, message, and a snippet
 
 **Companion-rule links:** the report links each finding back to the corresponding rule file in the `react-hook-form` distillation skill. Configure `rule_link_base` in `config.json`:
+
 - For PR review (default): GitHub URL to the dot-skills repo
 - For local agents: a relative path like `skills/.curated/react-hook-form/references`
 
@@ -131,16 +137,16 @@ The skill's exit code drives the job result: red on CRITICAL/HIGH, green otherwi
 
 ## Error Handling
 
-| Failure | Where | Exit | Recovery |
-|---------|-------|------|----------|
-| `rg` missing | audit.sh dependency check | 2 | Install ripgrep |
-| `node` missing | audit.sh dependency check | 2 | Install Node 18+ |
-| `jq` missing | audit.sh dependency check | 2 | Install jq |
-| `ts-morph` install fails | audit.sh first-run | 2 | Run `cd scripts && npm install` manually with verbose output |
-| `package.json` not found | detect-project.sh | 2 | Verify `--project` path is correct |
-| `next` / `react-hook-form` missing from deps | detect-project.sh | 2 | Verify the project actually uses RHF; otherwise skip the audit |
-| File parse error in AST pass | detect-ast.mjs | 2 | Likely a TypeScript syntax error in the target file — fix the file or exclude it via `exclude_globs` |
-| No candidate files found | collect-files.sh | 0 | Not an error; the project doesn't use RHF in scanned paths |
+| Failure                                      | Where                     | Exit | Recovery                                                                                             |
+| -------------------------------------------- | ------------------------- | ---- | ---------------------------------------------------------------------------------------------------- |
+| `rg` missing                                 | audit.sh dependency check | 2    | Install ripgrep                                                                                      |
+| `node` missing                               | audit.sh dependency check | 2    | Install Node 18+                                                                                     |
+| `jq` missing                                 | audit.sh dependency check | 2    | Install jq                                                                                           |
+| `ts-morph` install fails                     | audit.sh first-run        | 2    | Run `cd scripts && npm install` manually with verbose output                                         |
+| `package.json` not found                     | detect-project.sh         | 2    | Verify `--project` path is correct                                                                   |
+| `next` / `react-hook-form` missing from deps | detect-project.sh         | 2    | Verify the project actually uses RHF; otherwise skip the audit                                       |
+| File parse error in AST pass                 | detect-ast.mjs            | 2    | Likely a TypeScript syntax error in the target file — fix the file or exclude it via `exclude_globs` |
+| No candidate files found                     | collect-files.sh          | 0    | Not an error; the project doesn't use RHF in scanned paths                                           |
 
 ## Idempotency
 

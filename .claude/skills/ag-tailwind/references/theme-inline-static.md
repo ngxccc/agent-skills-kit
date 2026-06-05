@@ -45,6 +45,7 @@ Tailwind v4 provides `@theme inline` and `@theme static` modifiers to control ho
 ```
 
 **When to use each:**
+
 - `@theme` (default) — most cases, balances runtime access with output size
 - `@theme inline` — when you don't need runtime CSS variable access (e.g., fonts, static values)
 - `@theme static` — when building shared libraries where consumers reference your variables

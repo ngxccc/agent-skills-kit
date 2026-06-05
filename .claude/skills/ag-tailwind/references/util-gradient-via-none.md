@@ -12,8 +12,10 @@ Tailwind CSS v4 preserves gradient values across variants instead of resetting t
 **Incorrect (expecting gradient reset):**
 
 ```html
-<div class="bg-linear-to-r from-red-500 via-orange-400 to-yellow-400
-            dark:from-blue-500 dark:to-teal-400">
+<div
+  class="bg-linear-to-r from-red-500 via-orange-400 to-yellow-400
+            dark:from-blue-500 dark:to-teal-400"
+>
   <!-- v3: dark mode resets entire gradient -->
   <!-- v4: dark mode keeps via-orange-400! -->
 </div>
@@ -22,13 +24,16 @@ Tailwind CSS v4 preserves gradient values across variants instead of resetting t
 **Correct (explicit via-none):**
 
 ```html
-<div class="bg-linear-to-r from-red-500 via-orange-400 to-yellow-400
-            dark:via-none dark:from-blue-500 dark:to-teal-400">
+<div
+  class="bg-linear-to-r from-red-500 via-orange-400 to-yellow-400
+            dark:via-none dark:from-blue-500 dark:to-teal-400"
+>
   <!-- Explicitly remove via stop in dark mode -->
 </div>
 ```
 
 **How v4 works:**
+
 - Gradient stops are preserved across variants
 - Each stop can be individually overridden
 - Use `via-none` to convert 3-stop to 2-stop gradient

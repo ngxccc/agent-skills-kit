@@ -2,13 +2,14 @@
 name: ag-nextjs-ppr-patterns
 description: Next.js 16 App Router pages mixing static and dynamic content — Partial Prerendering (PPR) under the Cache Components model. Covers enabling it with cacheComponents (the removed experimental.ppr / experimental_ppr flags), the dynamic-by-default rendering inversion, the Suspense static-shell/dynamic-hole boundary, the 'use cache' directive (automatic keys, cacheLife/cacheTag, children/action pass-through, runtime values as props, serverless durability), async runtime APIs and connection() for non-determinism, page composition from a single hole to parallel dashboards to streaming a Promise into a Client Component with use(), and forms/wizards with updateTag read-your-writes and Activity state preservation. Triggers on PPR, cacheComponents, 'use cache', Suspense streaming, partial prerendering, or static-shell work even when not named explicitly.
 ---
+
 # Next.js 16 Partial Prerendering Patterns
 
 Partial Prerendering (PPR) for the **Next.js 16 App Router** under the **Cache Components** model — the decisions PPR forces and how to settle them, written so an agent applies them while writing or reviewing code. Contains **21 rules across 6 categories**, ordered from easy to complex: enable PPR → understand the static/dynamic boundary → cache → handle runtime data → compose whole pages → build forms and wizards. Each rule corrects a specific wrong default of a model defaulting to Next.js 14/15; there is no rule for things the model already gets right.
 
 > **Version-specific.** This skill targets **Next.js 16** (PPR via `cacheComponents`, React 19.2). The Next.js 14/15 `experimental.ppr` flag and `export const experimental_ppr` route export were **removed** — see `setup-enable-cache-components`. For migrating an existing app, see the [migration guide](https://nextjs.org/docs/app/guides/migrating-to-cache-components).
 
-> **Write, then verify.** These rules are for *authoring* PPR; they can't tell you what actually rendered. To empirically deconstruct the boundary — diff the static shell against the hydrated DOM to find the dynamic holes, locate the `'use client'` islands, measure loading, and explain why a route is dynamic — drive `next build` and a real browser per [_debug-boundaries.md](references/_debug-boundaries.md).
+> **Write, then verify.** These rules are for _authoring_ PPR; they can't tell you what actually rendered. To empirically deconstruct the boundary — diff the static shell against the hydrated DOM to find the dynamic holes, locate the `'use client'` islands, measure loading, and explain why a route is dynamic — drive `next build` and a real browser per [\_debug-boundaries.md](references/_debug-boundaries.md).
 
 ## When to Apply
 
@@ -21,14 +22,14 @@ Partial Prerendering (PPR) for the **Next.js 16 App Router** under the **Cache C
 
 ## Rule Categories
 
-| # | Category | Prefix | Covers |
-|---|----------|--------|--------|
-| 1 | Setup & Mental Model | `setup-` | Enabling PPR with `cacheComponents`; the removed experimental flags; dynamic-by-default / opt-in caching inversion |
-| 2 | The Suspense Boundary | `shell-` | `<Suspense>` as the static/dynamic seam; the build error; boundary granularity; what Suspense does *not* do |
-| 3 | Caching with `'use cache'` | `cache-` | Directive levels; automatic keys; runtime values as props; pass-through; `cacheLife`/`cacheTag`; serverless durability |
-| 4 | Runtime APIs & Non-Determinism | `runtime-` | Async request APIs forcing a boundary; `generateStaticParams`; `connection()` for randomness/time |
-| 5 | Page Composition Recipes | `compose-` | Single hole → parallel dashboard → Promise + `use()` streaming → not opting the whole app out of the shell |
-| 6 | Forms, Mutations & Wizards | `mutate-` | `updateTag` vs `revalidateTag` vs `refresh`; URL-driven wizard steps; `<Activity>` field preservation |
+| #   | Category                       | Prefix     | Covers                                                                                                                 |
+| --- | ------------------------------ | ---------- | ---------------------------------------------------------------------------------------------------------------------- |
+| 1   | Setup & Mental Model           | `setup-`   | Enabling PPR with `cacheComponents`; the removed experimental flags; dynamic-by-default / opt-in caching inversion     |
+| 2   | The Suspense Boundary          | `shell-`   | `<Suspense>` as the static/dynamic seam; the build error; boundary granularity; what Suspense does _not_ do            |
+| 3   | Caching with `'use cache'`     | `cache-`   | Directive levels; automatic keys; runtime values as props; pass-through; `cacheLife`/`cacheTag`; serverless durability |
+| 4   | Runtime APIs & Non-Determinism | `runtime-` | Async request APIs forcing a boundary; `generateStaticParams`; `connection()` for randomness/time                      |
+| 5   | Page Composition Recipes       | `compose-` | Single hole → parallel dashboard → Promise + `use()` streaming → not opting the whole app out of the shell             |
+| 6   | Forms, Mutations & Wizards     | `mutate-`  | `updateTag` vs `revalidateTag` vs `refresh`; URL-driven wizard steps; `<Activity>` field preservation                  |
 
 ## Quick Reference
 
@@ -88,9 +89,9 @@ Read a reference file when its decision comes up. Each rule names the wrong defa
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [references/_debug-boundaries.md](references/_debug-boundaries.md) | Empirical CSR/SSR boundary & loading debugging (`next build` + chrome-devtools-mcp via mcporter) |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and source references |
+| File                                                                | Description                                                                                      |
+| ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| [references/\_sections.md](references/_sections.md)                 | Category definitions and ordering                                                                |
+| [references/\_debug-boundaries.md](references/_debug-boundaries.md) | Empirical CSR/SSR boundary & loading debugging (`next build` + chrome-devtools-mcp via mcporter) |
+| [assets/templates/\_template.md](assets/templates/_template.md)     | Template for new rules                                                                           |
+| [metadata.json](metadata.json)                                      | Version and source references                                                                    |

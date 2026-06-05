@@ -13,10 +13,13 @@ Three similar lines of code are often better than a premature abstraction. The w
 
 ```typescript
 // "Both format currency, let's make it generic!"
-function formatValue(value: number, type: 'price' | 'salary' | 'discount'): string {
-  const symbol = type === 'discount' ? '-$' : '$';
-  const decimals = type === 'salary' ? 0 : 2;
-  const prefix = type === 'price' ? '' : ' ';
+function formatValue(
+  value: number,
+  type: "price" | "salary" | "discount",
+): string {
+  const symbol = type === "discount" ? "-$" : "$";
+  const decimals = type === "salary" ? 0 : 2;
+  const prefix = type === "price" ? "" : " ";
 
   return `${prefix}${symbol}${value.toFixed(decimals)}`;
 }

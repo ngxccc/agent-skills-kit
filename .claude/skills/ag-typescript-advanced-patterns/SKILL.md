@@ -2,6 +2,7 @@
 name: ag-typescript-advanced-patterns
 description: Advanced TypeScript — type-level programming, library/DSL APIs, declaration merging, modern language features at depth (decorators, using, const T, NoInfer, variance), and feature implementation patterns built on advanced types. Trigger on tasks involving recursive conditional types, infer patterns, mapped-type key remapping, variadic tuples, fluent builders with phantom state, schema-first inference (Zod/Valibot), end-to-end-typed API clients, finite state machines, module augmentation, and library-publishing concerns. Trigger even when the user does not say "advanced" — if the work involves type-level algorithms, library-author API design, or going beyond surface-level uses of TS 5.x features, this is the skill. Assumes the reader has absorbed the `typescript-refactor` skill — this one extends those patterns at depth, never restates them.
 ---
+
 # TypeScript Advanced Patterns Best Practices
 
 Type-level programming, library-author idioms, and feature-implementation patterns that go beyond surface uses of TypeScript 5.x. Contains 40 rules across 5 categories, prioritised by impact on consumer codebases.
@@ -18,25 +19,25 @@ Reference these guidelines when:
 
 ## Boundary with neighbouring skills
 
-| Skill | Don't reach for this skill if you need… |
-|-------|-----------------------------------------|
-| `typescript` (curated) | Compiler performance / tsconfig tuning |
-| `typescript-refactor` | General refactoring patterns and modern-TS surface basics |
-| `ts-google` | Google-style code style decisions |
-| `clean-code-ts-react` | Clean-code principles (naming, function shape, abstraction) |
-| `effect-ts` / `opencode-ts` | Effect library-specific patterns |
+| Skill                       | Don't reach for this skill if you need…                     |
+| --------------------------- | ----------------------------------------------------------- |
+| `typescript` (curated)      | Compiler performance / tsconfig tuning                      |
+| `typescript-refactor`       | General refactoring patterns and modern-TS surface basics   |
+| `ts-google`                 | Google-style code style decisions                           |
+| `clean-code-ts-react`       | Clean-code principles (naming, function shape, abstraction) |
+| `effect-ts` / `opencode-ts` | Effect library-specific patterns                            |
 
 If a rule in this skill overlaps with one in `typescript-refactor` or `.curated/typescript`, the rule's **Scope delta** section names what this skill adds beyond the simpler version.
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix | Rules |
-|----------|----------|--------|--------|-------|
-| 1 | Library Author / DSL Patterns | CRITICAL | `dsl-` | 8 |
-| 2 | Type-level Programming | HIGH | `tlp-` | 10 |
-| 3 | Modern Features at Depth | HIGH | `mod-` | 8 |
-| 4 | Feature Implementation Patterns | MEDIUM-HIGH | `impl-` | 8 |
-| 5 | Declaration & Module System | MEDIUM | `decl-` | 6 |
+| Priority | Category                        | Impact      | Prefix  | Rules |
+| -------- | ------------------------------- | ----------- | ------- | ----- |
+| 1        | Library Author / DSL Patterns   | CRITICAL    | `dsl-`  | 8     |
+| 2        | Type-level Programming          | HIGH        | `tlp-`  | 10    |
+| 3        | Modern Features at Depth        | HIGH        | `mod-`  | 8     |
+| 4        | Feature Implementation Patterns | MEDIUM-HIGH | `impl-` | 8     |
+| 5        | Declaration & Module System     | MEDIUM      | `decl-` | 6     |
 
 ## Quick Reference
 
@@ -106,8 +107,8 @@ Rules cross-link via `[[other-rule-slug]]`; follow them when a related pattern i
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and reference information |
+| File                                                            | Description                       |
+| --------------------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for new rules            |
+| [metadata.json](metadata.json)                                  | Version and reference information |

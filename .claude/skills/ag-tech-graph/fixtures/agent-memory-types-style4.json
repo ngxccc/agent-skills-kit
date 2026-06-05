@@ -33,7 +33,12 @@
       "stroke": "#e5e7eb",
       "flat": true,
       "tags": [
-        { "label": "RAM / context", "fill": "#eff6ff", "stroke": "#bfdbfe", "text_fill": "#3b82f6" }
+        {
+          "label": "RAM / context",
+          "fill": "#eff6ff",
+          "stroke": "#bfdbfe",
+          "text_fill": "#3b82f6"
+        }
       ]
     },
     {
@@ -50,7 +55,12 @@
       "stroke": "#e5e7eb",
       "flat": true,
       "tags": [
-        { "label": "Context Window", "fill": "#eff6ff", "stroke": "#bfdbfe", "text_fill": "#3b82f6" }
+        {
+          "label": "Context Window",
+          "fill": "#eff6ff",
+          "stroke": "#bfdbfe",
+          "text_fill": "#3b82f6"
+        }
       ]
     },
     {
@@ -67,7 +77,12 @@
       "stroke": "#e5e7eb",
       "flat": true,
       "tags": [
-        { "label": "Vector DB + timestamp", "fill": "#eff6ff", "stroke": "#bfdbfe", "text_fill": "#3b82f6" }
+        {
+          "label": "Vector DB + timestamp",
+          "fill": "#eff6ff",
+          "stroke": "#bfdbfe",
+          "text_fill": "#3b82f6"
+        }
       ]
     },
     {
@@ -99,7 +114,12 @@
       "stroke": "#e5e7eb",
       "flat": true,
       "tags": [
-        { "label": "Vector DB + Graph DB", "fill": "#eff6ff", "stroke": "#bfdbfe", "text_fill": "#3b82f6" }
+        {
+          "label": "Vector DB + Graph DB",
+          "fill": "#eff6ff",
+          "stroke": "#bfdbfe",
+          "text_fill": "#3b82f6"
+        }
       ]
     },
     {
@@ -116,7 +136,12 @@
       "stroke": "#e5e7eb",
       "flat": true,
       "tags": [
-        { "label": "Code store / fine-tune", "fill": "#eff6ff", "stroke": "#bfdbfe", "text_fill": "#3b82f6" }
+        {
+          "label": "Code store / fine-tune",
+          "fill": "#eff6ff",
+          "stroke": "#bfdbfe",
+          "text_fill": "#3b82f6"
+        }
       ]
     }
   ],

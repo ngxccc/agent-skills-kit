@@ -45,7 +45,9 @@ Animating layout properties like `width`, `height`, or `top` triggers expensive 
 }
 
 .modal {
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    opacity 0.3s ease;
 }
 .modal.open {
   transform: translate(-50%, -50%); /* No layout recalculation */
@@ -63,11 +65,13 @@ Animating layout properties like `width`, `height`, or `top` triggers expensive 
 ```
 
 **GPU-accelerated properties:**
+
 - `transform` (translate, scale, rotate, skew)
 - `opacity`
 - `filter` (blur, brightness, etc.)
 
 **Properties that trigger layout (avoid animating):**
+
 - `width`, `height`, `padding`, `margin`
 - `top`, `right`, `bottom`, `left`
 - `font-size`, `line-height`

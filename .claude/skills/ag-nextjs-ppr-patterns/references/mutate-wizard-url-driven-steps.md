@@ -9,24 +9,26 @@ For a multi-step form/wizard the model holds the current step in `useState` and 
 
 ```tsx
 // app/onboarding/page.tsx — step lives in the URL: /onboarding?step=billing
-import { Suspense } from 'react'
+import { Suspense } from "react";
 
-const STEPS = ['account', 'billing', 'review'] as const
+const STEPS = ["account", "billing", "review"] as const;
 
 export default async function Wizard({
   searchParams,
 }: {
-  searchParams: Promise<{ step?: string }>
+  searchParams: Promise<{ step?: string }>;
 }) {
-  const { step = 'account' } = await searchParams
+  const { step = "account" } = await searchParams;
   return (
     <>
-      <WizardProgress steps={STEPS} current={step} /> {/* static chrome in the shell */}
+      <WizardProgress steps={STEPS} current={step} />{" "}
+      {/* static chrome in the shell */}
       <Suspense fallback={<StepSkeleton />}>
-        <Step name={step} /> {/* Activity preserves fields when the user steps back */}
+        <Step name={step} />{" "}
+        {/* Activity preserves fields when the user steps back */}
       </Suspense>
     </>
-  )
+  );
 }
 ```
 

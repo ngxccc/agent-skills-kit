@@ -14,7 +14,7 @@ Code simplification must never alter what a function returns. Even "equivalent" 
 ```typescript
 // Before: returns null for missing users
 function findUser(id: string): User | null {
-  const user = users.find(u => u.id === id);
+  const user = users.find((u) => u.id === id);
   if (!user) {
     return null;
   }
@@ -23,7 +23,7 @@ function findUser(id: string): User | null {
 
 // After "simplification": now returns undefined
 function findUser(id: string): User | undefined {
-  return users.find(u => u.id === id);
+  return users.find((u) => u.id === id);
 }
 // Breaks: if (findUser(id) === null) { ... }
 ```
@@ -32,7 +32,7 @@ function findUser(id: string): User | undefined {
 
 ```typescript
 function findUser(id: string): User | null {
-  return users.find(u => u.id === id) ?? null;
+  return users.find((u) => u.id === id) ?? null;
 }
 ```
 

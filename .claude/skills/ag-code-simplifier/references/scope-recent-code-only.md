@@ -30,7 +30,7 @@ function validateSession(token: string): boolean {
 
 // 3. Old utility last touched 18 months ago (wrong!)
 // "This helper was verbose, made it more functional..."
-const formatDate = (d: Date) => d.toISOString().split('T')[0];
+const formatDate = (d: Date) => d.toISOString().split("T")[0];
 ```
 
 **Correct (focused on recent code only):**

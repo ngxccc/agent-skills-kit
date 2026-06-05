@@ -13,18 +13,22 @@ Device widths change yearly -- foldables, new tablet sizes, and manufacturer-spe
 
 ```css
 @theme {
-  --breakpoint-phone: 375px;   /* iPhone 15 */
+  --breakpoint-phone: 375px; /* iPhone 15 */
   --breakpoint-phone-lg: 430px; /* iPhone 15 Pro Max */
-  --breakpoint-tablet: 768px;   /* iPad Mini */
+  --breakpoint-tablet: 768px; /* iPad Mini */
   --breakpoint-tablet-lg: 1024px; /* iPad Pro 11" */
-  --breakpoint-laptop: 1440px;  /* MacBook Pro 14" */
+  --breakpoint-laptop: 1440px; /* MacBook Pro 14" */
 }
 ```
 
 ```html
 <!-- Tied to specific Apple devices — breaks on Samsung, Pixel, Surface -->
-<header class="phone:px-4 tablet:px-8 laptop:px-16 flex items-center justify-between">
-  <span class="phone:text-sm tablet:text-base laptop:text-lg font-semibold">Acme Inc</span>
+<header
+  class="phone:px-4 tablet:px-8 laptop:px-16 flex items-center justify-between"
+>
+  <span class="phone:text-sm tablet:text-base laptop:text-lg font-semibold"
+    >Acme Inc</span
+  >
   <nav class="phone:hidden tablet:flex gap-6">
     <a href="/products" class="text-gray-700">Products</a>
     <a href="/pricing" class="text-gray-700">Pricing</a>
@@ -50,7 +54,7 @@ Device widths change yearly -- foldables, new tablet sizes, and manufacturer-spe
 
 ```css
 @theme {
-  --breakpoint-content-narrow: 32rem;  /* where single-column content fits */
-  --breakpoint-content-wide: 64rem;    /* where multi-column layout works */
+  --breakpoint-content-narrow: 32rem; /* where single-column content fits */
+  --breakpoint-content-wide: 64rem; /* where multi-column layout works */
 }
 ```

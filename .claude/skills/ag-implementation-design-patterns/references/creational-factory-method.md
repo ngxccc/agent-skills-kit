@@ -28,11 +28,11 @@ Replace direct construction calls with invocations of a factory method declared 
 
 ```typescript
 class LogisticsApp {
-  planRoute(transportKind: 'truck' | 'ship') {
-    if (transportKind === 'truck') {
+  planRoute(transportKind: "truck" | "ship") {
+    if (transportKind === "truck") {
       const truck = new Truck();
       truck.deliver();
-    } else if (transportKind === 'ship') {
+    } else if (transportKind === "ship") {
       const ship = new Ship();
       ship.deliver();
     }
@@ -50,23 +50,23 @@ class LogisticsApp {
  * implementation of this method.
  */
 abstract class Creator {
-    /**
-     * Note that the Creator may also provide some default implementation of the
-     * factory method.
-     */
-    public abstract factoryMethod(): Product;
+  /**
+   * Note that the Creator may also provide some default implementation of the
+   * factory method.
+   */
+  public abstract factoryMethod(): Product;
 
-    /**
-     * Also note that, despite its name, the Creator's primary responsibility is
-     * not creating products. Usually, it contains some core business logic that
-     * relies on Product objects, returned by the factory method. Subclasses can
-     * indirectly change that business logic by overriding the factory method
-     * and returning a different type of product from it.
-     */
-    public someOperation(): string {
-        const product = this.factoryMethod();
-        return `Creator: The same creator's code has just worked with ${product.operation()}`;
-    }
+  /**
+   * Also note that, despite its name, the Creator's primary responsibility is
+   * not creating products. Usually, it contains some core business logic that
+   * relies on Product objects, returned by the factory method. Subclasses can
+   * indirectly change that business logic by overriding the factory method
+   * and returning a different type of product from it.
+   */
+  public someOperation(): string {
+    const product = this.factoryMethod();
+    return `Creator: The same creator's code has just worked with ${product.operation()}`;
+  }
 }
 
 /**
@@ -74,15 +74,15 @@ abstract class Creator {
  * resulting product's type.
  */
 class ConcreteCreator1 extends Creator {
-    public factoryMethod(): Product {
-        return new ConcreteProduct1();
-    }
+  public factoryMethod(): Product {
+    return new ConcreteProduct1();
+  }
 }
 
 class ConcreteCreator2 extends Creator {
-    public factoryMethod(): Product {
-        return new ConcreteProduct2();
-    }
+  public factoryMethod(): Product {
+    return new ConcreteProduct2();
+  }
 }
 
 /**
@@ -90,19 +90,19 @@ class ConcreteCreator2 extends Creator {
  * implement.
  */
 interface Product {
-    operation(): string;
+  operation(): string;
 }
 
 class ConcreteProduct1 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct1}';
-    }
+  public operation(): string {
+    return "{Result of the ConcreteProduct1}";
+  }
 }
 
 class ConcreteProduct2 implements Product {
-    public operation(): string {
-        return '{Result of the ConcreteProduct2}';
-    }
+  public operation(): string {
+    return "{Result of the ConcreteProduct2}";
+  }
 }
 
 /**
@@ -111,15 +111,17 @@ class ConcreteProduct2 implements Product {
  * the base interface, you can pass it any creator's subclass.
  */
 function clientCode(creator: Creator) {
-    console.log('Client: I\'m not aware of the creator\'s class, but it still works.');
-    console.log(creator.someOperation());
+  console.log(
+    "Client: I'm not aware of the creator's class, but it still works.",
+  );
+  console.log(creator.someOperation());
 }
 
-console.log('App: Launched with the ConcreteCreator1.');
+console.log("App: Launched with the ConcreteCreator1.");
 clientCode(new ConcreteCreator1());
-console.log('');
+console.log("");
 
-console.log('App: Launched with the ConcreteCreator2.');
+console.log("App: Launched with the ConcreteCreator2.");
 clientCode(new ConcreteCreator2());
 ```
 
@@ -145,7 +147,7 @@ Creator: The same creator's code has just worked with {Result of the ConcretePro
 
 - The number of product types is fixed and small, and the construction logic is trivial — a plain `new` suffices
 - You only need one variant — introducing a creator hierarchy is dead weight
-- You need to vary a *family* of related objects together — reach for **Abstract Factory** instead
+- You need to vary a _family_ of related objects together — reach for **Abstract Factory** instead
 
 ### Implementation Steps
 
@@ -168,7 +170,7 @@ Creator: The same creator's code has just worked with {Result of the ConcretePro
 
 ### Related Patterns
 
-- **Abstract Factory** — often evolves from Factory Method when you need *families* of related products
+- **Abstract Factory** — often evolves from Factory Method when you need _families_ of related products
 - **Prototype** — alternative when inheritance is not desirable; clone configured instances instead
 - **Template Method** — Factory Method is often a single step inside a Template Method
 - **Iterator** — collections frequently expose iterators via a factory method

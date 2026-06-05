@@ -20,17 +20,48 @@ Narrow dropdown menus designed for mouse hover are difficult to use on touch dev
   >
     Categories
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
     </svg>
   </button>
 
-  <div class="absolute left-0 top-full z-20 mt-1 w-48 rounded-md border bg-white py-1 shadow-lg">
-    <a href="/category/electronics" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Electronics</a>
-    <a href="/category/clothing" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Clothing</a>
-    <a href="/category/home-garden" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Home & Garden</a>
-    <a href="/category/sports" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Sports & Outdoors</a>
-    <a href="/category/books" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Books</a>
-    <a href="/category/toys" class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100">Toys & Games</a>
+  <div
+    class="absolute left-0 top-full z-20 mt-1 w-48 rounded-md border bg-white py-1 shadow-lg"
+  >
+    <a
+      href="/category/electronics"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Electronics</a
+    >
+    <a
+      href="/category/clothing"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Clothing</a
+    >
+    <a
+      href="/category/home-garden"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Home & Garden</a
+    >
+    <a
+      href="/category/sports"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Sports & Outdoors</a
+    >
+    <a
+      href="/category/books"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Books</a
+    >
+    <a
+      href="/category/toys"
+      class="block px-4 py-1.5 text-sm text-gray-700 hover:bg-gray-100"
+      >Toys & Games</a
+    >
   </div>
 </div>
 ```
@@ -47,18 +78,49 @@ Narrow dropdown menus designed for mouse hover are difficult to use on touch dev
   >
     Categories
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 9l-7 7-7-7"
+      />
     </svg>
   </button>
 
-  <div class="absolute inset-x-0 top-full z-20 mt-1 rounded-md border bg-white shadow-lg md:inset-x-auto md:left-0 md:w-48">
+  <div
+    class="absolute inset-x-0 top-full z-20 mt-1 rounded-md border bg-white shadow-lg md:inset-x-auto md:left-0 md:w-48"
+  >
     <div class="py-2 md:py-1">
-      <a href="/category/electronics" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Electronics</a>
-      <a href="/category/clothing" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Clothing</a>
-      <a href="/category/home-garden" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Home & Garden</a>
-      <a href="/category/sports" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Sports & Outdoors</a>
-      <a href="/category/books" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Books</a>
-      <a href="/category/toys" class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100">Toys & Games</a>
+      <a
+        href="/category/electronics"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Electronics</a
+      >
+      <a
+        href="/category/clothing"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Clothing</a
+      >
+      <a
+        href="/category/home-garden"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Home & Garden</a
+      >
+      <a
+        href="/category/sports"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Sports & Outdoors</a
+      >
+      <a
+        href="/category/books"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Books</a
+      >
+      <a
+        href="/category/toys"
+        class="block px-4 py-3 text-base text-gray-700 active:bg-gray-100 md:py-2 md:text-sm md:hover:bg-gray-100"
+        >Toys & Games</a
+      >
     </div>
   </div>
 </div>

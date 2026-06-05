@@ -46,6 +46,7 @@ Use the `color-scheme` utility to ensure native browser elements (scrollbars, fo
 ```
 
 **Affected native elements:**
+
 - Scrollbars
 - Form inputs (checkboxes, radios)
 - `<select>` dropdowns

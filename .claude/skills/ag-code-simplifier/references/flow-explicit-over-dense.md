@@ -12,14 +12,18 @@ Dense one-liners optimize for code golf, not comprehension. When multiple operat
 **Incorrect (dense chained operations):**
 
 ```typescript
-const result = data.filter(x => x.active).map(x => x.value).reduce((a, b) => a + b, 0) / data.filter(x => x.active).length || 0;
+const result =
+  data
+    .filter((x) => x.active)
+    .map((x) => x.value)
+    .reduce((a, b) => a + b, 0) / data.filter((x) => x.active).length || 0;
 ```
 
 **Correct (explicit steps with meaningful names):**
 
 ```typescript
-const activeItems = data.filter(item => item.active);
-const values = activeItems.map(item => item.value);
+const activeItems = data.filter((item) => item.active);
+const values = activeItems.map((item) => item.value);
 const sum = values.reduce((total, value) => total + value, 0);
 const average = activeItems.length > 0 ? sum / activeItems.length : 0;
 ```
@@ -27,16 +31,23 @@ const average = activeItems.length > 0 ? sum / activeItems.length : 0;
 **Incorrect (boolean logic golfing):**
 
 ```typescript
-const canProceed = !!(user && user.verified && (user.role === 'admin' || (user.role === 'member' && user.subscription?.active && new Date(user.subscription.expiresAt) > new Date())));
+const canProceed = !!(
+  user &&
+  user.verified &&
+  (user.role === "admin" ||
+    (user.role === "member" &&
+      user.subscription?.active &&
+      new Date(user.subscription.expiresAt) > new Date()))
+);
 ```
 
 **Correct (readable boolean expression):**
 
 ```typescript
 const isVerifiedUser = user?.verified ?? false;
-const isAdmin = user?.role === 'admin';
+const isAdmin = user?.role === "admin";
 const hasActiveSubscription =
-  user?.role === 'member' &&
+  user?.role === "member" &&
   user?.subscription?.active &&
   new Date(user.subscription.expiresAt) > new Date();
 
@@ -47,9 +58,12 @@ const canProceed = isVerifiedUser && (isAdmin || hasActiveSubscription);
 
 ```typescript
 function updateUser(id: string, data: Partial<User>) {
-  const user = db.get(id) || (throwError('Not found'), null);
-  data.email && validateEmail(data.email) || (throwError('Invalid email'), null);
-  data.age && (data.age < 0 || data.age > 150) && (throwError('Invalid age'), null);
+  const user = db.get(id) || (throwError("Not found"), null);
+  (data.email && validateEmail(data.email)) ||
+    (throwError("Invalid email"), null);
+  data.age &&
+    (data.age < 0 || data.age > 150) &&
+    (throwError("Invalid age"), null);
   return db.update(id, { ...user, ...data, updatedAt: Date.now() });
 }
 ```
@@ -65,13 +79,13 @@ function updateUser(id: string, data: Partial<User>) {
 
   if (data.email !== undefined) {
     if (!validateEmail(data.email)) {
-      throw new ValidationError('Invalid email format');
+      throw new ValidationError("Invalid email format");
     }
   }
 
   if (data.age !== undefined) {
     if (data.age < 0 || data.age > 150) {
-      throw new ValidationError('Age must be between 0 and 150');
+      throw new ValidationError("Age must be between 0 and 150");
     }
   }
 
@@ -86,7 +100,13 @@ function updateUser(id: string, data: Partial<User>) {
 **Incorrect (compressed array building):**
 
 ```typescript
-const items = [...(showArchived ? archivedItems : []), ...activeItems.filter(i => !i.hidden), ...(includeDeleted && deletedItems || [])].sort((a, b) => a.date - b.date).slice(0, limit);
+const items = [
+  ...(showArchived ? archivedItems : []),
+  ...activeItems.filter((i) => !i.hidden),
+  ...((includeDeleted && deletedItems) || []),
+]
+  .sort((a, b) => a.date - b.date)
+  .slice(0, limit);
 ```
 
 **Correct (step-by-step array construction):**
@@ -98,7 +118,7 @@ if (showArchived) {
   items.push(...archivedItems);
 }
 
-const visibleActive = activeItems.filter(item => !item.hidden);
+const visibleActive = activeItems.filter((item) => !item.hidden);
 items.push(...visibleActive);
 
 if (includeDeleted && deletedItems) {

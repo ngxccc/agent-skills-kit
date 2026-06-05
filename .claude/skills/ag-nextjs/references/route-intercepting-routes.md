@@ -13,7 +13,7 @@ tags: route, intercepting-routes, shareable-modal, deep-link
 
 - A photo gallery / product list where clicking an item opens a `useState`-driven modal — URL doesn't change; refresh closes the modal; sharing the URL doesn't deep-link to the item.
 - A "view profile" overlay that captures click events and renders a positioned div — same problem; not shareable.
-- A modal whose state is held in a `<Dialog open>` boolean tracked in URL search params via `?modal=...` — *almost* there, but loses the page semantics on refresh.
+- A modal whose state is held in a `<Dialog open>` boolean tracked in URL search params via `?modal=...` — _almost_ there, but loses the page semantics on refresh.
 - A workaround using `router.push(path, { shallow: true })` (a Pages-Router-era trick) — doesn't exist in App Router.
 - Two parallel implementations of the same view: a modal version in `'use client'` and a page version in a Server Component — should be one intercepting route with two entry paths.
 
@@ -82,6 +82,7 @@ export default async function PhotoPage({ params }: { params: { id: string } }) 
 ```
 
 **Interception conventions:**
+
 - `(.)` - Same level
 - `(..)` - One level up
 - `(..)(..)` - Two levels up

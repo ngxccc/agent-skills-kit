@@ -24,22 +24,22 @@ function processOrder(order: Order): Result {
               const finalTotal = total - discount;
               return chargeCustomer(order.customer, finalTotal);
             } else {
-              return { error: 'Invalid total' };
+              return { error: "Invalid total" };
             }
           } else {
-            return { error: 'No payment method' };
+            return { error: "No payment method" };
           }
         } else {
-          return { error: 'Customer inactive' };
+          return { error: "Customer inactive" };
         }
       } else {
-        return { error: 'No customer' };
+        return { error: "No customer" };
       }
     } else {
-      return { error: 'No items' };
+      return { error: "No items" };
     }
   } else {
-    return { error: 'No order' };
+    return { error: "No order" };
   }
 }
 ```
@@ -49,24 +49,24 @@ function processOrder(order: Order): Result {
 ```typescript
 function processOrder(order: Order): Result {
   if (!order) {
-    return { error: 'No order' };
+    return { error: "No order" };
   }
   if (order.items.length === 0) {
-    return { error: 'No items' };
+    return { error: "No items" };
   }
   if (!order.customer) {
-    return { error: 'No customer' };
+    return { error: "No customer" };
   }
   if (!order.customer.isActive) {
-    return { error: 'Customer inactive' };
+    return { error: "Customer inactive" };
   }
   if (!order.paymentMethod) {
-    return { error: 'No payment method' };
+    return { error: "No payment method" };
   }
 
   const total = calculateTotal(order.items);
   if (total <= 0) {
-    return { error: 'Invalid total' };
+    return { error: "Invalid total" };
   }
 
   const discount = getDiscount(order.customer);

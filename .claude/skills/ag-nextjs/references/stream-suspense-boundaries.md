@@ -7,13 +7,13 @@ tags: stream, suspense-placement, granular-boundary, independent-subtree
 
 ## Place Suspense boundaries around independently-paced subtrees — not one boundary per page or one per file
 
-**Pattern intent:** a Suspense boundary defines a unit of "this content will appear together when its data is ready." Place it where the *boundaries of independently-loadable content* are — not at the page level (too coarse) or around every JSX element (too fine).
+**Pattern intent:** a Suspense boundary defines a unit of "this content will appear together when its data is ready." Place it where the _boundaries of independently-loadable content_ are — not at the page level (too coarse) or around every JSX element (too fine).
 
 ### Shapes to recognize
 
 - A page-level `<Suspense fallback={<FullPageSpinner/>}>` wrapping the entire `<Dashboard/>` — one slow tile blocks all tiles.
 - A `<Suspense>` around every element of the page including static text — adds noise without benefit.
-- A `<Suspense>` placed *inside* an async component where the parent has already awaited — the boundary's fallback never shows because the async work happened upstream.
+- A `<Suspense>` placed _inside_ an async component where the parent has already awaited — the boundary's fallback never shows because the async work happened upstream.
 - Two siblings with different load times sharing one `<Suspense>` — the fast one waits for the slow one.
 - A boundary's fallback that's wildly different in dimensions from the real content — causes layout shift (CLS) when the real content swaps in.
 
@@ -66,6 +66,7 @@ export default function DashboardPage() {
 ```
 
 **Guidelines for Suspense boundaries:**
+
 - Wrap each independent data-fetching component
 - Group related components in single boundary
 - Keep fallbacks similar in size to actual content (prevent layout shift)

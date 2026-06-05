@@ -28,7 +28,7 @@ function execSafe(cmd, timeoutMs = 5000) {
     return execSync(cmd, {
       encoding: 'utf8',
       timeout: timeoutMs,
-      stdio: ['pipe', 'pipe', 'pipe']
+      stdio: ['pipe', 'pipe', 'pipe'],
     }).trim();
   } catch (e) {
     return null;
@@ -47,7 +47,7 @@ function execFileSafe(binary, args, timeoutMs = 2000) {
     return execFileSync(binary, args, {
       encoding: 'utf8',
       timeout: timeoutMs,
-      stdio: ['pipe', 'pipe', 'pipe']
+      stdio: ['pipe', 'pipe', 'pipe'],
     }).trim();
   } catch (e) {
     return null;
@@ -88,13 +88,26 @@ function getPythonPaths() {
   if (process.platform === 'win32') {
     const localAppData = process.env.LOCALAPPDATA;
     const programFiles = process.env.ProgramFiles || 'C:\\Program Files';
-    const programFilesX86 = process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
+    const programFilesX86 =
+      process.env['ProgramFiles(x86)'] || 'C:\\Program Files (x86)';
 
     if (localAppData) {
-      paths.push(path.join(localAppData, 'Microsoft', 'WindowsApps', 'python.exe'));
-      paths.push(path.join(localAppData, 'Microsoft', 'WindowsApps', 'python3.exe'));
+      paths.push(
+        path.join(localAppData, 'Microsoft', 'WindowsApps', 'python.exe'),
+      );
+      paths.push(
+        path.join(localAppData, 'Microsoft', 'WindowsApps', 'python3.exe'),
+      );
       for (const ver of ['313', '312', '311', '310', '39']) {
-        paths.push(path.join(localAppData, 'Programs', 'Python', `Python${ver}`, 'python.exe'));
+        paths.push(
+          path.join(
+            localAppData,
+            'Programs',
+            'Python',
+            `Python${ver}`,
+            'python.exe',
+          ),
+        );
       }
     }
 
@@ -243,7 +256,9 @@ function detectProjectType(configOverride) {
       const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
       if (pkg.workspaces) return 'monorepo';
       if (pkg.main || pkg.exports) return 'library';
-    } catch (e) { /* ignore */ }
+    } catch (e) {
+      /* ignore */
+    }
   }
 
   return 'single-repo';
@@ -312,7 +327,7 @@ function getCodingLevelStyleName(level) {
     2: 'coding-level-2-mid',
     3: 'coding-level-3-senior',
     4: 'coding-level-4-lead',
-    5: 'coding-level-5-god'
+    5: 'coding-level-5-god',
   };
   return styleMap[level] || 'coding-level-5-god';
 }
@@ -409,9 +424,13 @@ function detectProject(options = {}) {
     gitRoot: getGitRoot(),
     gitUrl: getGitRemoteUrl(),
     osPlatform: process.platform,
-    user: process.env.USERNAME || process.env.USER || process.env.LOGNAME || os.userInfo().username,
+    user:
+      process.env.USERNAME ||
+      process.env.USER ||
+      process.env.LOGNAME ||
+      os.userInfo().username,
     locale: process.env.LANG || '',
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
   };
 }
 
@@ -428,10 +447,14 @@ function buildStaticEnv(configDir) {
     gitUrl: getGitRemoteUrl(),
     gitBranch: getGitBranch(),
     gitRoot: getGitRoot(),
-    user: process.env.USERNAME || process.env.USER || process.env.LOGNAME || os.userInfo().username,
+    user:
+      process.env.USERNAME ||
+      process.env.USER ||
+      process.env.LOGNAME ||
+      os.userInfo().username,
     locale: process.env.LANG || '',
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    configDir: configDir || path.join(process.cwd(), '.claude')
+    configDir: configDir || path.join(process.cwd(), '.claude'),
   };
 }
 
@@ -470,5 +493,5 @@ module.exports = {
 
   // Helpers
   execSafe,
-  execFileSafe
+  execFileSafe,
 };

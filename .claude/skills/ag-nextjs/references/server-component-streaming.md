@@ -13,7 +13,7 @@ tags: server, streaming, suspense-granularity, async-leaves
 
 - A single `Promise.all(...)` at the top of a `page.tsx` that gathers everything before returning JSX — page can't begin streaming until the slowest fetch lands.
 - A `page.tsx` that fetches three independent things sequentially then renders one big tree — the user stares at a blank page (or the route-level `loading.tsx`) for the sum of latencies.
-- A page-level `loading.tsx` as the *only* loading state — fine for navigation, does nothing for slow children once the page starts rendering.
+- A page-level `loading.tsx` as the _only_ loading state — fine for navigation, does nothing for slow children once the page starts rendering.
 - A `Suspense` at the route level wrapping everything — better than nothing, but blocks fast subtrees.
 - Workaround: a `useEffect`/`useState` skeleton dance in a client component to "stream" a section — homemade streaming, brittler than `<Suspense>`.
 
@@ -75,6 +75,7 @@ async function Analytics() {
 ```
 
 **Benefits:**
+
 - First paint happens immediately
 - Each section appears as soon as its data is ready
 - Slow components don't block fast ones

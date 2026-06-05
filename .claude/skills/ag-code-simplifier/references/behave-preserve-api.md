@@ -28,7 +28,7 @@ function formatDate(format: string, date: Date, locale?: string): string {
 
 ```typescript
 function formatDate(date: Date, format: string, locale?: string): string {
-  const loc = locale ?? 'en-US';
+  const loc = locale ?? "en-US";
   return new Intl.DateTimeFormat(loc, parseFormat(format)).format(date);
 }
 ```

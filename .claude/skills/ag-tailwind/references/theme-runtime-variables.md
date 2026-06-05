@@ -36,17 +36,21 @@ function applyTheme(theme) {
 // Change theme at runtime without rebuild
 function applyTheme(theme: { primary: string; secondary: string }) {
   document.documentElement.style.setProperty("--color-primary", theme.primary);
-  document.documentElement.style.setProperty("--color-secondary", theme.secondary);
+  document.documentElement.style.setProperty(
+    "--color-secondary",
+    theme.secondary,
+  );
 }
 
 // Usage
 applyTheme({
-  primary: "oklch(0.7 0.15 150)",  // Green theme
+  primary: "oklch(0.7 0.15 150)", // Green theme
   secondary: "oklch(0.6 0.1 160)",
 });
 ```
 
 **Use cases:**
+
 - User-customizable themes
 - White-label applications
 - A/B testing color schemes

@@ -17,7 +17,9 @@ Sticky headers, toolbars, and sidebars consume fixed vertical space that is scar
   <header class="sticky top-0 z-30 border-b bg-white px-4 py-4">
     <div class="flex items-center justify-between">
       <h1 class="text-lg font-bold">Project Board</h1>
-      <button class="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">New Task</button>
+      <button class="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">
+        New Task
+      </button>
     </div>
   </header>
 
@@ -45,12 +47,16 @@ Sticky headers, toolbars, and sidebars consume fixed vertical space that is scar
   <header class="static border-b bg-white px-4 py-4 lg:sticky lg:top-0 lg:z-30">
     <div class="flex items-center justify-between">
       <h1 class="text-lg font-bold">Project Board</h1>
-      <button class="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">New Task</button>
+      <button class="rounded bg-blue-600 px-3 py-1.5 text-sm text-white">
+        New Task
+      </button>
     </div>
   </header>
 
   <!-- Also static on mobile, sticky only on lg -->
-  <div class="static border-b bg-gray-50 px-4 py-3 lg:sticky lg:top-[64px] lg:z-20">
+  <div
+    class="static border-b bg-gray-50 px-4 py-3 lg:sticky lg:top-[64px] lg:z-20"
+  >
     <div class="flex gap-2">
       <button class="rounded border px-3 py-1 text-sm">All</button>
       <button class="rounded border px-3 py-1 text-sm">In Progress</button>

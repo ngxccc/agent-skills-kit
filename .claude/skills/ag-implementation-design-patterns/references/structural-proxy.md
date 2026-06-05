@@ -28,14 +28,18 @@ Create a proxy class implementing the same interface as the real subject. The pr
 
 ```typescript
 class HeavyVideo {
-  constructor(filename: string) { /* eager load — slow */ }
-  play() { /* ... */ }
+  constructor(filename: string) {
+    /* eager load — slow */
+  }
+  play() {
+    /* ... */
+  }
 }
 
 class Player {
   private cache: Record<string, HeavyVideo> = {};
   play(filename: string, user: User) {
-    if (!user.canWatch(filename)) throw new Error('forbidden'); // duplicated everywhere
+    if (!user.canWatch(filename)) throw new Error("forbidden"); // duplicated everywhere
     if (!this.cache[filename]) this.cache[filename] = new HeavyVideo(filename); // duplicated everywhere
     this.cache[filename].play();
   }
@@ -51,7 +55,7 @@ class Player {
  * you'll be able to pass it a proxy instead of a real subject.
  */
 interface Subject {
-    request(): void;
+  request(): void;
 }
 
 /**
@@ -61,47 +65,47 @@ interface Subject {
  * changes to the RealSubject's code.
  */
 class RealSubject implements Subject {
-    public request(): void {
-        console.log('RealSubject: Handling request.');
-    }
+  public request(): void {
+    console.log("RealSubject: Handling request.");
+  }
 }
 
 /**
  * The Proxy has an interface identical to the RealSubject.
  */
 class ProtectionProxy implements Subject {
-    private realSubject: RealSubject;
+  private realSubject: RealSubject;
 
-    /**
-     * The Proxy maintains a reference to an object of the RealSubject class. It
-     * can be either lazy-loaded or passed to the Proxy by the client.
-     */
-    constructor(realSubject: RealSubject) {
-        this.realSubject = realSubject;
-    }
+  /**
+   * The Proxy maintains a reference to an object of the RealSubject class. It
+   * can be either lazy-loaded or passed to the Proxy by the client.
+   */
+  constructor(realSubject: RealSubject) {
+    this.realSubject = realSubject;
+  }
 
-    /**
-     * The most common applications of the Proxy pattern are lazy loading,
-     * caching, controlling the access, logging, etc. A Proxy can perform one of
-     * these things and then, depending on the result, pass the execution to the
-     * same method in a linked RealSubject object.
-     */
-    public request(): void {
-        if (this.checkAccess()) {
-            this.realSubject.request();
-            this.logAccess();
-        }
+  /**
+   * The most common applications of the Proxy pattern are lazy loading,
+   * caching, controlling the access, logging, etc. A Proxy can perform one of
+   * these things and then, depending on the result, pass the execution to the
+   * same method in a linked RealSubject object.
+   */
+  public request(): void {
+    if (this.checkAccess()) {
+      this.realSubject.request();
+      this.logAccess();
     }
+  }
 
-    private checkAccess(): boolean {
-        // Some real checks should go here.
-        console.log('Proxy: Checking access prior to firing a real request.');
-        return true;
-    }
+  private checkAccess(): boolean {
+    // Some real checks should go here.
+    console.log("Proxy: Checking access prior to firing a real request.");
+    return true;
+  }
 
-    private logAccess(): void {
-        console.log('Proxy: Logging the time of request.');
-    }
+  private logAccess(): void {
+    console.log("Proxy: Logging the time of request.");
+  }
 }
 
 /**
@@ -112,16 +116,16 @@ class ProtectionProxy implements Subject {
  * your proxy from the real subject's class.
  */
 function clientCode(subject: Subject) {
-    subject.request();
+  subject.request();
 }
 
-console.log('Client: Executing the client code with a real subject:');
+console.log("Client: Executing the client code with a real subject:");
 const realSubject = new RealSubject();
 clientCode(realSubject);
 
-console.log('');
+console.log("");
 
-console.log('Client: Executing the same client code with a proxy:');
+console.log("Client: Executing the same client code with a proxy:");
 const proxy = new ProtectionProxy(realSubject);
 clientCode(proxy);
 ```
@@ -151,8 +155,8 @@ Proxy: Logging the time of request.
 
 - The real subject is cheap and always needed — Proxy adds latency for nothing
 - You actually want to change the interface — use **Adapter**
-- You want to *simplify* a subsystem — use **Facade**
-- You want to *layer behaviors* without lifecycle concerns — use **Decorator**
+- You want to _simplify_ a subsystem — use **Facade**
+- You want to _layer behaviors_ without lifecycle concerns — use **Decorator**
 
 ### Implementation Steps
 
@@ -177,7 +181,7 @@ Proxy: Logging the time of request.
 ### Related Patterns
 
 - **Adapter** — changes the interface; Proxy keeps it identical
-- **Facade** — simplifies a *subsystem*; Proxy wraps a *single object* and keeps the interface
+- **Facade** — simplifies a _subsystem_; Proxy wraps a _single object_ and keeps the interface
 - **Decorator** — same wrapping shape, but Decorator adds behavior recursively while Proxy controls lifecycle independently of the client
 
 Reference: [refactoring.guru/design-patterns/proxy](https://refactoring.guru/design-patterns/proxy)

@@ -40,7 +40,8 @@ Implementation guide for the functional patterns that supersede or supplement Ga
 9. [Placement and identity](references/_sections.md#9-placement-and-identity) — **HIGH**
    - 9.1 [Place pure transformer lambdas at module scope, not inside a component or hook](references/place-module-scope-pure-transformers.md)
 10. [Closures and data-carrying functions](references/_sections.md#10-closures-and-data-carrying-functions) — **MEDIUM**
-   - 10.1 [Store a closure in the queue instead of a Command class when nothing inspects or serializes it](references/closure-as-command.md)
+
+- 10.1 [Store a closure in the queue instead of a Command class when nothing inspects or serializes it](references/closure-as-command.md)
 
 ---
 
@@ -58,8 +59,8 @@ Implementation guide for the functional patterns that supersede or supplement Ga
 
 This document was compiled from individual reference files. For detailed editing or extension:
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [SKILL.md](SKILL.md) | Quick reference entry point |
-| [metadata.json](metadata.json) | Version and reference URLs |
+| File                                                | Description                       |
+| --------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md) | Category definitions and ordering |
+| [SKILL.md](SKILL.md)                                | Quick reference entry point       |
+| [metadata.json](metadata.json)                      | Version and reference URLs        |

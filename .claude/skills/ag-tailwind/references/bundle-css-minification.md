@@ -50,6 +50,7 @@ npx @tailwindcss/cli -i input.css -o output.css --minify
 ```
 
 **Benefits:**
+
 - 40-60% smaller file sizes
 - Faster network transfer
 - Improved Core Web Vitals

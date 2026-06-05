@@ -13,12 +13,12 @@ tags: server, no-client-fetch, ssr-initial-data, anti-useEffect-fetch
 
 - A `'use client'` page with `useState` + `useEffect` + `fetch('/api/...')` + a loading skeleton — the canonical anti-pattern.
 - A TanStack Query / SWR `useQuery('/api/foo')` in a Client Component for data that doesn't change after first render — should be a Server Component fetch.
-- A `useSWR` for the *current user* — that data is per-request and known on the server; ship it in the SSR.
+- A `useSWR` for the _current user_ — that data is per-request and known on the server; ship it in the SSR.
 - A page that's `'use client'` "because that's how we always do it" — the team's Next.js 12 muscle memory; rewrite as Server Component.
 - A "data hook" (`useUser`, `useDashboardData`) that wraps a client fetch and is called from every page — needs to be a server function or a `cache()`-wrapped fetcher.
 - Workaround: server-render an empty shell + hydrate with client data — works but throws away the SSR benefit.
 
-The canonical resolution: convert the page to a Server Component (`async function`, no `'use client'`); `await` the data directly. For interactivity inside, push `'use client'` down to a small leaf via composition. Use SWR/TanStack Query only for *user-initiated* refetches (search-as-you-type, infinite scroll, polling, optimistic mutations).
+The canonical resolution: convert the page to a Server Component (`async function`, no `'use client'`); `await` the data directly. For interactivity inside, push `'use client'` down to a small leaf via composition. Use SWR/TanStack Query only for _user-initiated_ refetches (search-as-you-type, infinite scroll, polling, optimistic mutations).
 
 **Incorrect (client-side fetch with useEffect):**
 
@@ -61,6 +61,7 @@ export default async function ProductsPage() {
 ```
 
 **When to use client-side fetching:**
+
 - User-initiated actions (load more, search)
 - Real-time updates (polling, WebSocket)
 - After-interaction data (comments on expand)
@@ -68,24 +69,24 @@ export default async function ProductsPage() {
 **Recommended client-side library:**
 
 ```typescript
-'use client'
+"use client";
 
-import useSWR from 'swr'
+import useSWR from "swr";
 
 export function SearchResults({ query }: { query: string }) {
   const { data, isLoading } = useSWR(
     query ? `/api/search?q=${query}` : null,
-    fetcher
-  )
+    fetcher,
+  );
   // Client fetch appropriate for user-initiated search
 }
 ```
 
 ---
 
-### In disguise — TanStack Query / SWR fetching *initial* page data instead of user-driven refetches
+### In disguise — TanStack Query / SWR fetching _initial_ page data instead of user-driven refetches
 
-The grep-friendly anti-pattern is `useEffect` + `fetch`. The disguise is the same waterfall hidden behind a *legitimate* library — TanStack Query or SWR — used in a Client Component for data that the page needs to render at all. The library is a great fit for user-driven refetches; it's the wrong tool when the data is needed for the initial paint.
+The grep-friendly anti-pattern is `useEffect` + `fetch`. The disguise is the same waterfall hidden behind a _legitimate_ library — TanStack Query or SWR — used in a Client Component for data that the page needs to render at all. The library is a great fit for user-driven refetches; it's the wrong tool when the data is needed for the initial paint.
 
 **Incorrect — in disguise (TanStack Query for initial page data):**
 
@@ -108,6 +109,7 @@ export default function DashboardPage() {
 ```
 
 What this looks like in production:
+
 1. Browser fetches `/dashboard` → server returns HTML shell with no data.
 2. Browser downloads the JS bundle (which now includes TanStack Query, the fetcher, the Dashboard component).
 3. Hydration runs; `useQuery` fires `/api/dashboard`.
@@ -148,4 +150,4 @@ export function DashboardActions() {
 }
 ```
 
-Server fetch ships data inline; TanStack Query stays available for *user-initiated* mutations and refetches.
+Server fetch ships data inline; TanStack Query stays available for _user-initiated_ mutations and refetches.

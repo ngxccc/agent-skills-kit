@@ -14,10 +14,10 @@ Loading all images upfront wastes bandwidth and delays LCP. Lazy loading defers 
 ```html
 <!-- All 50 product images load on page load -->
 <div class="product-grid">
-  <img src="product-1.jpg" alt="Product 1">
-  <img src="product-2.jpg" alt="Product 2">
+  <img src="product-1.jpg" alt="Product 1" />
+  <img src="product-2.jpg" alt="Product 2" />
   <!-- ... 48 more images ... -->
-  <img src="product-50.jpg" alt="Product 50">
+  <img src="product-50.jpg" alt="Product 50" />
 </div>
 <!-- 15MB of images downloaded before user can interact -->
 
@@ -29,16 +29,12 @@ Loading all images upfront wastes bandwidth and delays LCP. Lazy loading defers 
 
 ```html
 <!-- Above-fold hero loads immediately -->
-<img
-  src="hero.webp"
-  alt="Featured product"
-  fetchpriority="high"
->
+<img src="hero.webp" alt="Featured product" fetchpriority="high" />
 
 <!-- Below-fold images lazy load -->
 <div class="product-grid">
-  <img src="product-1.jpg" alt="Product 1" loading="lazy">
-  <img src="product-2.jpg" alt="Product 2" loading="lazy">
+  <img src="product-1.jpg" alt="Product 1" loading="lazy" />
+  <img src="product-2.jpg" alt="Product 2" loading="lazy" />
   <!-- Browser loads images as user scrolls -->
 </div>
 
@@ -52,6 +48,7 @@ Loading all images upfront wastes bandwidth and delays LCP. Lazy loading defers 
 ```
 
 **Lazy loading guidelines:**
+
 - Never lazy load LCP/above-fold images
 - Use native `loading="lazy"` for broad support
 - Replace heavy embeds (YouTube, maps) with facades

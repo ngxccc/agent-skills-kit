@@ -31,14 +31,38 @@ Extract construction into a separate builder object that exposes one method per 
 class House {
   // Twelve parameters, every caller passes `null` for the ones they don't need.
   constructor(
-    walls: number, roof: string, doors: number, windows: number,
-    garage: boolean, pool: boolean, garden: boolean, statues: number,
-    fence: boolean, solarPanels: boolean, ev: boolean, smart: boolean,
-  ) { /* ... */ }
+    walls: number,
+    roof: string,
+    doors: number,
+    windows: number,
+    garage: boolean,
+    pool: boolean,
+    garden: boolean,
+    statues: number,
+    fence: boolean,
+    solarPanels: boolean,
+    ev: boolean,
+    smart: boolean,
+  ) {
+    /* ... */
+  }
 }
 
 // Call site: which `false` corresponds to which feature?
-const h = new House(4, 'tile', 2, 6, true, false, true, 0, false, true, false, true);
+const h = new House(
+  4,
+  "tile",
+  2,
+  6,
+  true,
+  false,
+  true,
+  0,
+  false,
+  true,
+  false,
+  true,
+);
 ```
 
 **Correct (steps on a builder; director orchestrates recipes):**
@@ -49,9 +73,9 @@ const h = new House(4, 'tile', 2, 6, true, false, true, 0, false, true, false, t
  * the Product objects.
  */
 interface Builder {
-    producePartA(): void;
-    producePartB(): void;
-    producePartC(): void;
+  producePartA(): void;
+  producePartB(): void;
+  producePartC(): void;
 }
 
 /**
@@ -60,47 +84,47 @@ interface Builder {
  * variations of Builders, implemented differently.
  */
 class ConcreteBuilder1 implements Builder {
-    private product!: Product1;
+  private product!: Product1;
 
-    constructor() {
-        this.reset();
-    }
+  constructor() {
+    this.reset();
+  }
 
-    public reset(): void {
-        this.product = new Product1();
-    }
+  public reset(): void {
+    this.product = new Product1();
+  }
 
-    public producePartA(): void {
-        this.product.parts.push('PartA1');
-    }
+  public producePartA(): void {
+    this.product.parts.push("PartA1");
+  }
 
-    public producePartB(): void {
-        this.product.parts.push('PartB1');
-    }
+  public producePartB(): void {
+    this.product.parts.push("PartB1");
+  }
 
-    public producePartC(): void {
-        this.product.parts.push('PartC1');
-    }
+  public producePartC(): void {
+    this.product.parts.push("PartC1");
+  }
 
-    /**
-     * Concrete Builders are supposed to provide their own methods for
-     * retrieving results. Various types of builders may create entirely
-     * different products, so methods cannot be declared in the base Builder
-     * interface (at least in a statically typed language).
-     */
-    public getProduct(): Product1 {
-        const result = this.product;
-        this.reset();
-        return result;
-    }
+  /**
+   * Concrete Builders are supposed to provide their own methods for
+   * retrieving results. Various types of builders may create entirely
+   * different products, so methods cannot be declared in the base Builder
+   * interface (at least in a statically typed language).
+   */
+  public getProduct(): Product1 {
+    const result = this.product;
+    this.reset();
+    return result;
+  }
 }
 
 class Product1 {
-    public parts: string[] = [];
+  public parts: string[] = [];
 
-    public listParts(): void {
-        console.log(`Product parts: ${this.parts.join(', ')}\n`);
-    }
+  public listParts(): void {
+    console.log(`Product parts: ${this.parts.join(", ")}\n`);
+  }
 }
 
 /**
@@ -110,40 +134,40 @@ class Product1 {
  * builders directly.
  */
 class Director {
-    private builder!: Builder;
+  private builder!: Builder;
 
-    public setBuilder(builder: Builder): void {
-        this.builder = builder;
-    }
+  public setBuilder(builder: Builder): void {
+    this.builder = builder;
+  }
 
-    public buildMinimalViableProduct(): void {
-        this.builder.producePartA();
-    }
+  public buildMinimalViableProduct(): void {
+    this.builder.producePartA();
+  }
 
-    public buildFullFeaturedProduct(): void {
-        this.builder.producePartA();
-        this.builder.producePartB();
-        this.builder.producePartC();
-    }
+  public buildFullFeaturedProduct(): void {
+    this.builder.producePartA();
+    this.builder.producePartB();
+    this.builder.producePartC();
+  }
 }
 
 function clientCode(director: Director) {
-    const builder = new ConcreteBuilder1();
-    director.setBuilder(builder);
+  const builder = new ConcreteBuilder1();
+  director.setBuilder(builder);
 
-    console.log('Standard basic product:');
-    director.buildMinimalViableProduct();
-    builder.getProduct().listParts();
+  console.log("Standard basic product:");
+  director.buildMinimalViableProduct();
+  builder.getProduct().listParts();
 
-    console.log('Standard full featured product:');
-    director.buildFullFeaturedProduct();
-    builder.getProduct().listParts();
+  console.log("Standard full featured product:");
+  director.buildFullFeaturedProduct();
+  builder.getProduct().listParts();
 
-    // The Builder pattern can be used without a Director class.
-    console.log('Custom product:');
-    builder.producePartA();
-    builder.producePartC();
-    builder.getProduct().listParts();
+  // The Builder pattern can be used without a Director class.
+  console.log("Custom product:");
+  builder.producePartA();
+  builder.producePartC();
+  builder.getProduct().listParts();
 }
 
 const director = new Director();

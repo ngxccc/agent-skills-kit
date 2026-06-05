@@ -7,7 +7,7 @@ tags: cache, revalidate-tag, cache-life-profile, swr
 
 ## Call `revalidateTag(tag, cacheLife)` with a profile — never invoke the old one-arg API
 
-**Pattern intent:** Next.js 16's `revalidateTag` requires a `cacheLife` profile (`'max' | 'hours' | 'days' | 'weeks'`) as its second argument. The profile controls *how stale* served content may be while the revalidation runs in background. Calls with one argument either throw at runtime or no-op silently depending on the codepath.
+**Pattern intent:** Next.js 16's `revalidateTag` requires a `cacheLife` profile (`'max' | 'hours' | 'days' | 'weeks'`) as its second argument. The profile controls _how stale_ served content may be while the revalidation runs in background. Calls with one argument either throw at runtime or no-op silently depending on the codepath.
 
 ### Shapes to recognize
 
@@ -25,15 +25,15 @@ Reference: [Next.js 16 Caching](https://nextjs.org/docs/app/building-your-applic
 
 ```typescript
 // app/actions.ts
-'use server'
+"use server";
 
-import { revalidateTag } from 'next/cache'
+import { revalidateTag } from "next/cache";
 
 export async function updateProduct(id: string, data: FormData) {
-  await db.products.update({ where: { id }, data })
+  await db.products.update({ where: { id }, data });
 
   // Old API - no longer works in Next.js 16
-  revalidateTag('products')
+  revalidateTag("products");
 }
 ```
 
@@ -41,15 +41,15 @@ export async function updateProduct(id: string, data: FormData) {
 
 ```typescript
 // app/actions.ts
-'use server'
+"use server";
 
-import { revalidateTag } from 'next/cache'
+import { revalidateTag } from "next/cache";
 
 export async function updateProduct(id: string, data: FormData) {
-  await db.products.update({ where: { id }, data })
+  await db.products.update({ where: { id }, data });
 
   // New API with cacheLife profile
-  revalidateTag('products', 'hours')
+  revalidateTag("products", "hours");
 }
 
 // Cache profiles: 'max', 'hours', 'days', 'weeks'
@@ -61,14 +61,14 @@ export async function updateProduct(id: string, data: FormData) {
 
 ```typescript
 // lib/data.ts
-'use cache'
+"use cache";
 
-import { cacheTag } from 'next/cache'
+import { cacheTag } from "next/cache";
 
 export async function getProducts() {
-  cacheTag('products')
-  const res = await fetch('https://api.store.com/products')
-  return res.json()
+  cacheTag("products");
+  const res = await fetch("https://api.store.com/products");
+  return res.json();
 }
 ```
 

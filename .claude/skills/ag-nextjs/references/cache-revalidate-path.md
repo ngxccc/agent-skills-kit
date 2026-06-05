@@ -15,21 +15,21 @@ tags: cache, revalidate-path, mutation-invalidate, server-action-followup
 - A bug report "data doesn't appear until I refresh twice" — almost always a missing invalidation call after the action.
 - An action that calls `revalidatePath('/x')` but the data also appears on `/y` (e.g., a global sidebar count) — under-invalidation.
 - An action that calls `revalidatePath('/', 'layout')` for any mutation — over-invalidation; nukes everyone's cache for a small change.
-- A `redirect(...)` *before* `revalidatePath(...)` — `redirect` throws internally, so the invalidation never runs. Order matters.
+- A `redirect(...)` _before_ `revalidatePath(...)` — `redirect` throws internally, so the invalidation never runs. Order matters.
 - A custom "cache buster" approach (router.refresh() in the client after the action returns) — works for client-rendered subtrees but loses the server-driven invalidation guarantee.
 
-The canonical resolution: call `revalidatePath(specificRoute)` or `revalidateTag(...)` after the mutation succeeds and *before* the `redirect()`. Prefer `revalidateTag` when multiple routes show the same data; `revalidatePath` is the coarser hammer.
+The canonical resolution: call `revalidatePath(specificRoute)` or `revalidateTag(...)` after the mutation succeeds and _before_ the `redirect()`. Prefer `revalidateTag` when multiple routes show the same data; `revalidatePath` is the coarser hammer.
 
 **Incorrect (forgetting to revalidate after mutation):**
 
 ```typescript
-'use server'
+"use server";
 
 export async function createPost(formData: FormData) {
-  const title = formData.get('title') as string
-  const content = formData.get('content') as string
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
 
-  await db.posts.create({ data: { title, content } })
+  await db.posts.create({ data: { title, content } });
 
   // User doesn't see new post until cache expires!
 }
@@ -38,19 +38,19 @@ export async function createPost(formData: FormData) {
 **Correct (revalidating after mutation):**
 
 ```typescript
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createPost(formData: FormData) {
-  const title = formData.get('title') as string
-  const content = formData.get('content') as string
+  const title = formData.get("title") as string;
+  const content = formData.get("content") as string;
 
-  const post = await db.posts.create({ data: { title, content } })
+  const post = await db.posts.create({ data: { title, content } });
 
-  revalidatePath('/posts')  // Invalidate posts list
-  redirect(`/posts/${post.id}`)  // Navigate to new post
+  revalidatePath("/posts"); // Invalidate posts list
+  redirect(`/posts/${post.id}`); // Navigate to new post
 }
 ```
 
@@ -58,16 +58,16 @@ export async function createPost(formData: FormData) {
 
 ```typescript
 // Specific route
-revalidatePath('/posts')
+revalidatePath("/posts");
 
 // Dynamic route
-revalidatePath('/posts/[slug]', 'page')
+revalidatePath("/posts/[slug]", "page");
 
 // Layout and all child routes
-revalidatePath('/dashboard', 'layout')
+revalidatePath("/dashboard", "layout");
 
 // Entire app (use sparingly)
-revalidatePath('/', 'layout')
+revalidatePath("/", "layout");
 ```
 
 **Note:** `redirect` must be called after `revalidatePath` as it throws internally.

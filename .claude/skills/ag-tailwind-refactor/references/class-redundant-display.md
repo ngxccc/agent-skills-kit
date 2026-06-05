@@ -30,6 +30,7 @@ Several commonly used utility combinations include classes that simply restate t
 ```
 
 **When NOT to use this pattern:**
+
 - Only remove these classes when they appear **without** a variant prefix
 - Classes like `md:flex-row`, `lg:items-stretch`, `hover:justify-start`, `rtl:text-left` serve a real purpose as responsive or conditional overrides and must be kept
 - Example: `flex flex-col md:flex-row` — `md:flex-row` is NOT redundant here

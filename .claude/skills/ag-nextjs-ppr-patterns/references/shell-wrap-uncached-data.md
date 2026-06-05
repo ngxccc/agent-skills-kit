@@ -11,27 +11,31 @@ With Cache Components, any component that reads uncached or runtime data must be
 
 ```tsx
 export default async function DashboardPage() {
-  const orders = await fetch('https://api.acme.com/orders').then((r) => r.json())
-  return <OrdersTable orders={orders} />
+  const orders = await fetch("https://api.acme.com/orders").then((r) =>
+    r.json(),
+  );
+  return <OrdersTable orders={orders} />;
 }
 ```
 
 **Correct (extract the dynamic part, wrap it in a boundary):**
 
 ```tsx
-import { Suspense } from 'react'
+import { Suspense } from "react";
 
 export default function DashboardPage() {
   return (
     <Suspense fallback={<OrdersTableSkeleton />}>
       <Orders />
     </Suspense>
-  )
+  );
 }
 
 async function Orders() {
-  const orders = await fetch('https://api.acme.com/orders').then((r) => r.json())
-  return <OrdersTable orders={orders} />
+  const orders = await fetch("https://api.acme.com/orders").then((r) =>
+    r.json(),
+  );
+  return <OrdersTable orders={orders} />;
 }
 ```
 

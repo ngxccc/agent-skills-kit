@@ -15,10 +15,10 @@ A single modular scale (e.g., 1.25 ratio) applied uniformly produces sizes that 
 <!-- 1.25 modular scale: sizes are too close on mobile, h1 too large on desktop -->
 <style>
   :root {
-    --text-sm: 0.8rem;    /* 12.8px */
-    --text-base: 1rem;    /* 16px */
-    --text-lg: 1.25rem;   /* 20px — barely different from base */
-    --text-xl: 1.563rem;  /* 25px */
+    --text-sm: 0.8rem; /* 12.8px */
+    --text-base: 1rem; /* 16px */
+    --text-lg: 1.25rem; /* 20px — barely different from base */
+    --text-xl: 1.563rem; /* 25px */
     --text-2xl: 1.953rem; /* 31.25px */
     --text-hero: 3.052rem; /* 48.8px — too large on mobile */
   }

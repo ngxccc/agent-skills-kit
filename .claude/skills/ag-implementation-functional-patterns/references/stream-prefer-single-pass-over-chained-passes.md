@@ -20,10 +20,10 @@ Each call in `arr.filter(p).map(f).filter(q)` is its own complete walk plus an i
 ```typescript
 function activeUserEmails(users: User[]): string[] {
   return users
-    .filter((u) => u.status === 'active')          // pass 1, allocates User[]
+    .filter((u) => u.status === "active") // pass 1, allocates User[]
     .map((u) => ({ ...u, email: u.email.trim() })) // pass 2, allocates {...User}[]
-    .filter((u) => u.email.endsWith('@acme.com'))  // pass 3, allocates User[]
-    .map((u) => u.email);                          // pass 4, allocates string[]
+    .filter((u) => u.email.endsWith("@acme.com")) // pass 3, allocates User[]
+    .map((u) => u.email); // pass 4, allocates string[]
 }
 ```
 
@@ -34,9 +34,9 @@ Four passes, four allocations of size proportional to surviving input.
 ```typescript
 function activeUserEmails(users: User[]): string[] {
   return users.reduce<string[]>((out, u) => {
-    if (u.status !== 'active') return out;
+    if (u.status !== "active") return out;
     const email = u.email.trim();
-    if (!email.endsWith('@acme.com')) return out;
+    if (!email.endsWith("@acme.com")) return out;
     out.push(email);
     return out;
   }, []);
@@ -50,16 +50,16 @@ Equivalent with a generator if you also want laziness:
 ```typescript
 function* activeUserEmails(users: Iterable<User>): Generator<string> {
   for (const u of users) {
-    if (u.status !== 'active') continue;
+    if (u.status !== "active") continue;
     const email = u.email.trim();
-    if (email.endsWith('@acme.com')) yield email;
+    if (email.endsWith("@acme.com")) yield email;
   }
 }
 ```
 
 ### Common pitfalls
 
-- **The order of `.filter` and `.map` matters for cost.** Always filter *before* map when possible — mapping then filtering does work on rows you're about to discard. `arr.map(expensive).filter(p)` is strictly worse than `arr.filter(p).map(expensive)` whenever `p` doesn't depend on `expensive`'s output.
+- **The order of `.filter` and `.map` matters for cost.** Always filter _before_ map when possible — mapping then filtering does work on rows you're about to discard. `arr.map(expensive).filter(p)` is strictly worse than `arr.filter(p).map(expensive)` whenever `p` doesn't depend on `expensive`'s output.
 - **`.length` after a chain.** `arr.filter(p).length` is a chain that allocates an intermediate array just to count it. Use `arr.reduce((n, x) => p(x) ? n + 1 : n, 0)` or a `for-of` counter.
 - **Premature collapse hurts readability.** A two-step `.filter(active).map(name)` on a small list is clearer chained than reduced. The rule fires on chains of **three or more** stages over **large or hot** data — not on every two-step chain.
 - **Don't reach for `reduce` if the chain is already a `flatMap`.** `flatMap` is one pass at this level; chaining `.filter().flatMap()` is two, but combining into a `flatMap(x => p(x) ? [f(x)] : [])` is one and idiomatic.
@@ -69,7 +69,7 @@ function* activeUserEmails(users: Iterable<User>): Generator<string> {
 - **Time:** chained Array methods are O(k·n) where k is the chain length, single-pass is O(n). The constant factor (function-call overhead per step) means for small n the chained form may even win — measure if it matters.
 - **Memory peak:** chained is O(n_after_filter1 + n_after_map + n_after_filter2 + …) held simultaneously while the next pass runs. Single-pass is O(output) only. For a 100MB array filtering down to 10MB, chained peaks at ~200MB+; single-pass peaks at ~110MB.
 - **GC pressure:** each intermediate array is short-lived garbage. In server hot paths under load, that's per-request allocation churn that costs latency tail percentiles.
-- **Native iterator helpers** (TC39 Stage 4) — `Iterator.from(arr).filter(p).map(f).filter(q).toArray()` — produce *one* output array regardless of chain length, because each helper is lazy and pulls one item at a time. For arrays this is the prettiest single-pass form that retains the chained look.
+- **Native iterator helpers** (TC39 Stage 4) — `Iterator.from(arr).filter(p).map(f).filter(q).toArray()` — produce _one_ output array regardless of chain length, because each helper is lazy and pulls one item at a time. For arrays this is the prettiest single-pass form that retains the chained look.
 
 ### When NOT to apply (keep the chain)
 

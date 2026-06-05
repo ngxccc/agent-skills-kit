@@ -68,6 +68,7 @@ Animations can trigger motion sickness, migraines, and seizures in users with ve
 ```
 
 **Motion that should be reduced/removed:**
+
 - Parallax scrolling effects
 - Auto-playing carousels and sliders
 - Decorative floating/pulsing elements
@@ -75,6 +76,7 @@ Animations can trigger motion sickness, migraines, and seizures in users with ve
 - Background video
 
 **Motion that can remain:**
+
 - Essential state change indicators
 - Loading spinners (simplified)
 - Simple opacity fades

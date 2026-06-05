@@ -7,29 +7,33 @@
  */
 
 const {
-  green, yellow, red, coloredBar, resolveColor
+  green,
+  yellow,
+  red,
+  coloredBar,
+  resolveColor,
 } = require('./colors.cjs');
 
 // Default section config (order matches visual left-to-right / top-to-bottom)
 const DEFAULT_SECTIONS = [
-  { id: 'model',     enabled: true, order: 0, icon: '🤖' },
-  { id: 'context',   enabled: true, order: 1 },
-  { id: 'quota',     enabled: true, order: 2, icon: '⌛' },
+  { id: 'model', enabled: true, order: 0, icon: '🤖' },
+  { id: 'context', enabled: true, order: 1 },
+  { id: 'quota', enabled: true, order: 2, icon: '⌛' },
   { id: 'directory', enabled: true, order: 3, icon: '📁' },
-  { id: 'git',       enabled: true, order: 4, icon: '🌿' },
-  { id: 'cost',      enabled: false, order: 5, icon: '💰' },
-  { id: 'changes',   enabled: true, order: 6, icon: '📝' },
-  { id: 'agents',    enabled: true, order: 7, icon: '🔄' },
-  { id: 'todos',     enabled: true, order: 8, icon: '✅' },
+  { id: 'git', enabled: true, order: 4, icon: '🌿' },
+  { id: 'cost', enabled: false, order: 5, icon: '💰' },
+  { id: 'changes', enabled: true, order: 6, icon: '📝' },
+  { id: 'agents', enabled: true, order: 7, icon: '🔄' },
+  { id: 'todos', enabled: true, order: 8, icon: '✅' },
 ];
 
 const DEFAULT_THEME = {
-  contextLow:  'green',
-  contextMid:  'yellow',
+  contextLow: 'green',
+  contextMid: 'yellow',
   contextHigh: 'red',
-  accent:      'cyan',
-  muted:       'dim',
-  separator:   'dim',
+  accent: 'cyan',
+  muted: 'dim',
+  separator: 'dim',
 };
 
 function getContextColorName(percent, theme) {
@@ -41,16 +45,16 @@ function getContextColorName(percent, theme) {
 function getQuotaColorName(usageWindows, theme) {
   const percents = Array.isArray(usageWindows)
     ? usageWindows
-      .map((windowText) => {
-        const match = String(windowText).match(/(\d+)%/);
-        return match ? Number(match[1]) : null;
-      })
-      .filter((percent) => Number.isFinite(percent))
+        .map((windowText) => {
+          const match = String(windowText).match(/(\d+)%/);
+          return match ? Number(match[1]) : null;
+        })
+        .filter((percent) => Number.isFinite(percent))
     : [];
   if (!theme.quotaLow && !theme.quotaHigh) return theme.muted;
   return percents.some((percent) => percent >= 85)
-    ? (theme.quotaHigh || theme.quotaLow || theme.muted)
-    : (theme.quotaLow || theme.muted);
+    ? theme.quotaHigh || theme.quotaLow || theme.muted
+    : theme.quotaLow || theme.muted;
 }
 
 // SECTION RENDERERS
@@ -63,15 +67,22 @@ function renderModelSection(ctx, sectionConfig, theme) {
 // "▰▰▱▱▱ 40%" — returns null when context is 0
 function renderContextSection(ctx, sectionConfig, theme) {
   if (ctx.contextPercent <= 0) return null;
-  const palette = { low: theme.contextLow, mid: theme.contextMid, high: theme.contextHigh };
-  const percentColor = resolveColor(getContextColorName(ctx.contextPercent, theme));
+  const palette = {
+    low: theme.contextLow,
+    mid: theme.contextMid,
+    high: theme.contextHigh,
+  };
+  const percentColor = resolveColor(
+    getContextColorName(ctx.contextPercent, theme),
+  );
   return `${coloredBar(ctx.contextPercent, 12, palette)} ${percentColor(`${ctx.contextPercent}%`)}`;
 }
 
 // "⌛ 5h 20% (1h30m)  wk 45% (4d)" — returns null when no usage windows
 function renderQuotaSection(ctx, sectionConfig, theme) {
   if (!ctx.usageWindows || ctx.usageWindows.length === 0) return null;
-  const quotaColor = sectionConfig.color || getQuotaColorName(ctx.usageWindows, theme);
+  const quotaColor =
+    sectionConfig.color || getQuotaColorName(ctx.usageWindows, theme);
   return `${sectionConfig.icon || '⌛'} ${resolveColor(quotaColor)(ctx.usageWindows.join('  '))}`;
 }
 
@@ -87,9 +98,9 @@ function renderGitSection(ctx, sectionConfig, theme) {
   let part = `${sectionConfig.icon || '🌿'} ${gitColorFn(ctx.gitBranch)}`;
   const indicators = [];
   if (ctx.gitUnstaged > 0) indicators.push(`${ctx.gitUnstaged}`);
-  if (ctx.gitStaged > 0)   indicators.push(`+${ctx.gitStaged}`);
-  if (ctx.gitAhead > 0)    indicators.push(`${ctx.gitAhead}↑`);
-  if (ctx.gitBehind > 0)   indicators.push(`${ctx.gitBehind}↓`);
+  if (ctx.gitStaged > 0) indicators.push(`+${ctx.gitStaged}`);
+  if (ctx.gitAhead > 0) indicators.push(`${ctx.gitAhead}↑`);
+  if (ctx.gitBehind > 0) indicators.push(`${ctx.gitBehind}↓`);
   if (indicators.length > 0) part += ` ${yellow(`(${indicators.join(', ')})`)}`;
   return part;
 }
@@ -111,13 +122,13 @@ function renderChangesSection(ctx, sectionConfig, theme) {
 }
 
 const SECTION_RENDERERS = {
-  model:     renderModelSection,
-  context:   renderContextSection,
-  quota:     renderQuotaSection,
+  model: renderModelSection,
+  context: renderContextSection,
+  quota: renderQuotaSection,
   directory: renderDirectorySection,
-  git:       renderGitSection,
-  cost:      renderCostSection,
-  changes:   renderChangesSection,
+  git: renderGitSection,
+  cost: renderCostSection,
+  changes: renderChangesSection,
 };
 
 function getSectionRenderer(id) {
@@ -144,8 +155,11 @@ function resolveLayout(statuslineLayout) {
 
   const defaultById = {};
   for (const s of DEFAULT_SECTIONS) defaultById[s.id] = s;
-  const sectionConfig = (statuslineLayout.sectionConfig && typeof statuslineLayout.sectionConfig === 'object')
-    ? statuslineLayout.sectionConfig : {};
+  const sectionConfig =
+    statuslineLayout.sectionConfig &&
+    typeof statuslineLayout.sectionConfig === 'object'
+      ? statuslineLayout.sectionConfig
+      : {};
 
   let sections;
 
@@ -166,9 +180,13 @@ function resolveLayout(statuslineLayout) {
     sections = statuslineLayout.sections
       .map((cs) => {
         const cfg = sectionConfig[cs.id] || {};
-        return { ...(defaultById[cs.id] || { id: cs.id, enabled: true, order: 99 }), ...cfg, ...cs };
+        return {
+          ...(defaultById[cs.id] || { id: cs.id, enabled: true, order: 99 }),
+          ...cfg,
+          ...cs,
+        };
       })
-      .filter(s => s.id)
+      .filter((s) => s.id)
       .sort((a, b) => (a.order || 0) - (b.order || 0));
   } else {
     sections = DEFAULT_SECTIONS.slice();
@@ -176,21 +194,32 @@ function resolveLayout(statuslineLayout) {
 
   // Guard: if theme is a string (e.g. "dark"), spread produces garbage {0:"d",1:"a",...}
   const themeInput = statuslineLayout.theme;
-  const themeOverride = (themeInput && typeof themeInput === 'object' && !Array.isArray(themeInput)) ? themeInput : {};
+  const themeOverride =
+    themeInput && typeof themeInput === 'object' && !Array.isArray(themeInput)
+      ? themeInput
+      : {};
   // Pass through the original lines config for the render modes to use
-  const configLines = Array.isArray(statuslineLayout.lines) ? statuslineLayout.lines : null;
+  const configLines = Array.isArray(statuslineLayout.lines)
+    ? statuslineLayout.lines
+    : null;
 
   return {
     sections,
     configLines,
     theme: { ...DEFAULT_THEME, ...themeOverride },
     themeOverrides: { ...themeOverride },
-    responsiveBreakpoint: typeof statuslineLayout.responsiveBreakpoint === 'number'
-      ? Math.max(0.5, Math.min(1.0, statuslineLayout.responsiveBreakpoint)) : 0.85,
-    maxAgentRows: typeof statuslineLayout.maxAgentRows === 'number'
-      ? statuslineLayout.maxAgentRows : 4,
-    todoTruncation: typeof statuslineLayout.todoTruncation === 'number'
-      ? statuslineLayout.todoTruncation : 50,
+    responsiveBreakpoint:
+      typeof statuslineLayout.responsiveBreakpoint === 'number'
+        ? Math.max(0.5, Math.min(1.0, statuslineLayout.responsiveBreakpoint))
+        : 0.85,
+    maxAgentRows:
+      typeof statuslineLayout.maxAgentRows === 'number'
+        ? statuslineLayout.maxAgentRows
+        : 4,
+    todoTruncation:
+      typeof statuslineLayout.todoTruncation === 'number'
+        ? statuslineLayout.todoTruncation
+        : 50,
   };
 }
 

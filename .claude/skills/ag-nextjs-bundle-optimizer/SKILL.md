@@ -1,7 +1,8 @@
 ---
 name: ag-nextjs-bundle-optimizer
-description: "Next.js 16 bundle-size and build-time optimization — runs a data-driven iteration loop: measure baseline → analyze top offenders → apply ONE recipe → re-measure → verify nothing broke (build + types + tests + no regression) → commit or revert. Built for Next.js 16 with Turbopack default, and falls back to webpack-mode tooling when the project hasn't migrated yet. Triggers on phrases like \"First Load JS is huge\", \"bundle size\", \"build takes too long\", \"page is slow to TTI\", \"reduce bundle\", \"tree-shake\", or when the user shares output from `next experimental-analyze` / `@next/bundle-analyzer` — even if the user doesn't say \"optimize\" explicitly."
+description: 'Next.js 16 bundle-size and build-time optimization — runs a data-driven iteration loop: measure baseline → analyze top offenders → apply ONE recipe → re-measure → verify nothing broke (build + types + tests + no regression) → commit or revert. Built for Next.js 16 with Turbopack default, and falls back to webpack-mode tooling when the project hasn''t migrated yet. Triggers on phrases like "First Load JS is huge", "bundle size", "build takes too long", "page is slow to TTI", "reduce bundle", "tree-shake", or when the user shares output from `next experimental-analyze` / `@next/bundle-analyzer` — even if the user doesn''t say "optimize" explicitly.'
 ---
+
 # Next.js Bundle & Build-Time Optimizer
 
 Data-driven optimization loop for Next.js 16 applications. The skill orchestrates `next experimental-analyze`, builds, type checks, and tests to make verifiable improvements one change at a time.
@@ -9,6 +10,7 @@ Data-driven optimization loop for Next.js 16 applications. The skill orchestrate
 ## When to Apply
 
 Use this skill when:
+
 - The user wants to reduce bundle size / First Load JS / route bundles in a Next.js 16 app.
 - Production builds are slow and the user wants to diagnose and fix the bottleneck.
 - The user shares analyzer output, a screenshot of the treemap, or asks "why is `<X>` so big?"
@@ -18,6 +20,7 @@ Use this skill when:
 ## Why iterative (not "apply all optimizations at once")
 
 Bundle optimization is full of foot-guns. Examples:
+
 - Moving a "client-only" dep behind `next/dynamic` can break SSR consumers that depended on its presence at first paint.
 - `experimental.optimizePackageImports` with the wrong package can mis-resolve subpath exports.
 - Aggressive `modularizeImports` regex rewrites can hit unintended modules.
@@ -72,20 +75,21 @@ Read [references/workflow.md](references/workflow.md) for the detailed loop with
 
 ### Scripts (run from the Next.js app root)
 
-| Script | Purpose | Output |
-|--------|---------|--------|
-| `scripts/baseline.sh` | Establish the reference point | `baselines/{ts}/{bundle,timing,manifest}.json` |
-| `scripts/analyze.sh` | Run analyzer, parse top offenders | `iterations/{n}/findings.json` |
-| `scripts/diagnose.sh [findings.json]` | Map findings → recipes | stdout: prioritized recipe list |
-| `scripts/measure.sh` | Re-measure after a change | `iterations/{n}/{bundle,timing}.json` |
-| `scripts/compare.sh [baseline] [current]` | Diff snapshots | stdout: delta table; exit 1 on regression |
-| `scripts/verify.sh` | Full verification | exit 0 = safe to commit, exit 1 = revert |
+| Script                                    | Purpose                           | Output                                         |
+| ----------------------------------------- | --------------------------------- | ---------------------------------------------- |
+| `scripts/baseline.sh`                     | Establish the reference point     | `baselines/{ts}/{bundle,timing,manifest}.json` |
+| `scripts/analyze.sh`                      | Run analyzer, parse top offenders | `iterations/{n}/findings.json`                 |
+| `scripts/diagnose.sh [findings.json]`     | Map findings → recipes            | stdout: prioritized recipe list                |
+| `scripts/measure.sh`                      | Re-measure after a change         | `iterations/{n}/{bundle,timing}.json`          |
+| `scripts/compare.sh [baseline] [current]` | Diff snapshots                    | stdout: delta table; exit 1 on regression      |
+| `scripts/verify.sh`                       | Full verification                 | exit 0 = safe to commit, exit 1 = revert       |
 
 ### Optimization Recipes
 
 [references/optimizations.md](references/optimizations.md) catalogs recipes by analyzer signal:
 
 **Bundle size**
+
 - Barrel-import bloat → `experimental.optimizePackageImports` (webpack) / auto in Turbopack
 - Heavy client lib pulled in on every route → `next/dynamic({ ssr: false })`
 - Server-only lib imported from a client component → move to Server Component
@@ -94,6 +98,7 @@ Read [references/workflow.md](references/workflow.md) for the detailed loop with
 - Per-icon imports for icon libraries
 
 **Build time**
+
 - Enable `experimental.turbopackFileSystemCacheForBuild`
 - Narrow `transpilePackages` (overuse balloons compile time)
 - Split `tsc --noEmit` from `next build` in CI
@@ -104,6 +109,7 @@ Each recipe documents: **signal → fix → expected impact → verify step**.
 ## Gotchas
 
 See [gotchas.md](gotchas.md) for accumulated failure points. Initially seeded with the most common Next.js 16 traps:
+
 - `next build` no longer prints First Load JS — don't grep build output for it.
 - `optimizePackageImports` is a no-op under Turbopack (default in 16) — Turbopack auto-optimizes.
 - Comparing build times needs cache state controlled — either delete `.next/` (cold) or pre-warm (warm).

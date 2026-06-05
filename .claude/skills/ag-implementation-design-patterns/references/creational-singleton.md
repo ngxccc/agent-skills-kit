@@ -11,7 +11,7 @@ tags: creational, singleton, global-access, shared-instance, lazy-initialization
 
 ### Shapes to recognize
 
-- Configuration object, logger, registry, or connection pool that *must* be shared across the program
+- Configuration object, logger, registry, or connection pool that _must_ be shared across the program
 - Bug reports where two parts of the system disagree because each created its own instance
 - A module-scope `let cached: T | null = null` with a `getInstance()` that lazy-initializes — already a Singleton in disguise
 - "I need a global, but I don't want a free-floating mutable variable"
@@ -28,13 +28,13 @@ Make the constructor private (or otherwise unreachable). Expose a static accesso
 
 ```typescript
 class AppConfig {
-  public theme: 'light' | 'dark' = 'light';
+  public theme: "light" | "dark" = "light";
 }
 
 // Two callers, two instances — toggling one doesn't affect the other.
 const configA = new AppConfig();
 const configB = new AppConfig();
-configA.theme = 'dark';
+configA.theme = "dark";
 console.log(configB.theme); // still 'light' — divergence
 ```
 
@@ -46,48 +46,46 @@ console.log(configB.theme); // still 'light' — divergence
  * the unique singleton instance.
  */
 class Singleton {
-    static #instance: Singleton;
+  static #instance: Singleton;
 
-    /**
-     * The Singleton's constructor should always be private to prevent direct
-     * construction calls with the `new` operator.
-     */
-    private constructor() { }
+  /**
+   * The Singleton's constructor should always be private to prevent direct
+   * construction calls with the `new` operator.
+   */
+  private constructor() {}
 
-    /**
-     * The static getter that controls access to the singleton instance.
-     *
-     * This implementation allows you to extend the Singleton class while
-     * keeping just one instance of each subclass around.
-     */
-    public static get instance(): Singleton {
-        if (!Singleton.#instance) {
-            Singleton.#instance = new Singleton();
-        }
-
-        return Singleton.#instance;
+  /**
+   * The static getter that controls access to the singleton instance.
+   *
+   * This implementation allows you to extend the Singleton class while
+   * keeping just one instance of each subclass around.
+   */
+  public static get instance(): Singleton {
+    if (!Singleton.#instance) {
+      Singleton.#instance = new Singleton();
     }
 
-    /**
-     * Finally, any singleton can define some business logic, which can be
-     * executed on its instance.
-     */
-    public someBusinessLogic() {
-        // ...
-    }
+    return Singleton.#instance;
+  }
+
+  /**
+   * Finally, any singleton can define some business logic, which can be
+   * executed on its instance.
+   */
+  public someBusinessLogic() {
+    // ...
+  }
 }
 
 function clientCode() {
-    const s1 = Singleton.instance;
-    const s2 = Singleton.instance;
+  const s1 = Singleton.instance;
+  const s2 = Singleton.instance;
 
-    if (s1 === s2) {
-        console.log(
-            'Singleton works, both variables contain the same instance.'
-        );
-    } else {
-        console.log('Singleton failed, variables contain different instances.');
-    }
+  if (s1 === s2) {
+    console.log("Singleton works, both variables contain the same instance.");
+  } else {
+    console.log("Singleton failed, variables contain different instances.");
+  }
 }
 
 clientCode();
@@ -101,7 +99,7 @@ Singleton works, both variables contain the same instance.
 
 ### When to use
 
-- The program needs *exactly one* instance of a class for the lifetime of the process
+- The program needs _exactly one_ instance of a class for the lifetime of the process
 - You need stricter control over a global than a free-floating mutable variable provides
 - You want lazy initialization — pay the cost only when first accessed
 - You need to guarantee an instance can't be silently replaced
@@ -129,7 +127,7 @@ Singleton works, both variables contain the same instance.
 
 ### Cons
 
-- Violates Single Responsibility Principle (manages lifecycle *and* business logic)
+- Violates Single Responsibility Principle (manages lifecycle _and_ business logic)
 - Can mask poor design and excessive component coupling — Singletons are easy to overuse
 - Requires careful handling in multithreaded environments (less of an issue in single-threaded JavaScript)
 - Hard to unit test — private constructors and static state resist mocking

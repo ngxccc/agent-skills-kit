@@ -35,10 +35,13 @@ Use the `/oklch` modifier for gradient interpolation to produce more vivid color
 <div class="h-10 bg-linear-to-r/oklch from-red-500 to-blue-500"></div>
 
 <!-- Longer hue path for rainbow effect -->
-<div class="h-10 bg-linear-to-r/[in_oklch_longer_hue] from-red-500 to-red-500"></div>
+<div
+  class="h-10 bg-linear-to-r/[in_oklch_longer_hue] from-red-500 to-red-500"
+></div>
 ```
 
 **When to use OKLCH:**
+
 - Gradients between complementary colors
 - Brand gradients requiring specific midpoints
 - Any gradient where sRGB looks "muddy"

@@ -10,15 +10,15 @@ To make data or UI static, the model reaches for Next.js 14/15 mechanisms — `e
 ```tsx
 // Function level — cache a query
 export async function getProducts() {
-  'use cache'
-  return db.product.findMany()
+  "use cache";
+  return db.product.findMany();
 }
 
 // Component level — cache a component's rendered output (goes into the static shell)
 export async function FeaturedProducts() {
-  'use cache'
-  const products = await getProducts()
-  return <ProductGrid products={products} />
+  "use cache";
+  const products = await getProducts();
+  return <ProductGrid products={products} />;
 }
 ```
 

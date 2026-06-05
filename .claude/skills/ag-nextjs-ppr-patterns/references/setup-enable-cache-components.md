@@ -12,24 +12,24 @@ A model defaulting to Next.js 14/15 turns on Partial Prerendering with `experime
 ```ts
 // next.config.ts
 const nextConfig = {
-  experimental: { ppr: 'incremental' }, // removed
-}
+  experimental: { ppr: "incremental" }, // removed
+};
 
 // app/dashboard/page.tsx
-export const experimental_ppr = true // removed route export
+export const experimental_ppr = true; // removed route export
 ```
 
 **Correct (Next.js 16):**
 
 ```ts
 // next.config.ts
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true, // PPR is the default behavior of Cache Components
-}
+};
 
-export default nextConfig
+export default nextConfig;
 ```
 
 Reference: [Next.js 16 — Cache Components](https://nextjs.org/blog/next-16#cache-components)

@@ -10,6 +10,7 @@ Comprehensive performance optimization guide for Tailwind CSS v4 applications. C
 ## When to Apply
 
 Reference these guidelines when:
+
 - Configuring Tailwind CSS v4 build tooling (Vite plugin, PostCSS, CLI)
 - Writing or migrating styles using v4's CSS-first approach
 - Optimizing CSS bundle size and build performance
@@ -18,16 +19,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Build Configuration | CRITICAL | `build-` |
-| 2 | CSS Generation | CRITICAL | `gen-` |
-| 3 | Bundle Optimization | HIGH | `bundle-` |
-| 4 | Utility Patterns | HIGH | `util-` |
-| 5 | Component Architecture | MEDIUM-HIGH | `comp-` |
-| 6 | Theming & Design Tokens | MEDIUM | `theme-` |
-| 7 | Responsive & Adaptive | MEDIUM | `resp-` |
-| 8 | Animation & Transitions | LOW-MEDIUM | `anim-` |
+| Priority | Category                | Impact      | Prefix    |
+| -------- | ----------------------- | ----------- | --------- |
+| 1        | Build Configuration     | CRITICAL    | `build-`  |
+| 2        | CSS Generation          | CRITICAL    | `gen-`    |
+| 3        | Bundle Optimization     | HIGH        | `bundle-` |
+| 4        | Utility Patterns        | HIGH        | `util-`   |
+| 5        | Component Architecture  | MEDIUM-HIGH | `comp-`   |
+| 6        | Theming & Design Tokens | MEDIUM      | `theme-`  |
+| 7        | Responsive & Adaptive   | MEDIUM      | `resp-`   |
+| 8        | Animation & Transitions | LOW-MEDIUM  | `anim-`   |
 
 ## Quick Reference
 
@@ -112,9 +113,9 @@ For a complete guide with all rules expanded, see [AGENTS.md](AGENTS.md).
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [AGENTS.md](AGENTS.md) | Complete compiled guide with all rules |
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and reference information |
+| File                                                            | Description                            |
+| --------------------------------------------------------------- | -------------------------------------- |
+| [AGENTS.md](AGENTS.md)                                          | Complete compiled guide with all rules |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering      |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for new rules                 |
+| [metadata.json](metadata.json)                                  | Version and reference information      |

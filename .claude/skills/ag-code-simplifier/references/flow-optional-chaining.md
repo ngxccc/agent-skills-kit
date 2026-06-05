@@ -20,11 +20,11 @@ function getUserCity(user: User | null): string {
       }
     }
   }
-  return 'Unknown';
+  return "Unknown";
 }
 
 function getDisplayName(profile: Profile | null): string {
-  let displayName = 'Anonymous';
+  let displayName = "Anonymous";
   if (profile !== null && profile !== undefined) {
     if (profile.nickname !== null && profile.nickname !== undefined) {
       displayName = profile.nickname;
@@ -40,11 +40,11 @@ function getDisplayName(profile: Profile | null): string {
 
 ```typescript
 function getUserCity(user: User | null): string {
-  return user?.address?.city ?? 'Unknown';
+  return user?.address?.city ?? "Unknown";
 }
 
 function getDisplayName(profile: Profile | null): string {
-  return profile?.nickname ?? profile?.firstName ?? 'Anonymous';
+  return profile?.nickname ?? profile?.firstName ?? "Anonymous";
 }
 ```
 

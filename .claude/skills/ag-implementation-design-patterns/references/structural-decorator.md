@@ -13,7 +13,7 @@ tags: structural, decorator, wrapper, composition-over-inheritance, layering
 
 - A subclass per combination of behaviors: `EmailNotifier`, `EmailWithSMSNotifier`, `EmailWithSlackNotifier`, `EmailWithSMSAndSlackNotifier`...
 - Need to combine behaviors at runtime based on user settings or configuration
-- Cross-cutting concerns (logging, caching, encryption, compression, auth) you want to apply to *some* objects, not all
+- Cross-cutting concerns (logging, caching, encryption, compression, auth) you want to apply to _some_ objects, not all
 - "I need to add a feature to this object without changing it"
 
 ### Problem
@@ -27,10 +27,26 @@ Create a base decorator class that holds a reference to a wrapped component and 
 **Incorrect (subclass per combination):**
 
 ```typescript
-class EmailNotifier                                   { send(msg: string) { /* email */ } }
-class EmailWithSmsNotifier         extends EmailNotifier { send(msg: string) { /* email + sms */ } }
-class EmailWithSlackNotifier       extends EmailNotifier { send(msg: string) { /* email + slack */ } }
-class EmailWithSmsAndSlackNotifier extends EmailNotifier { send(msg: string) { /* email + sms + slack */ } }
+class EmailNotifier {
+  send(msg: string) {
+    /* email */
+  }
+}
+class EmailWithSmsNotifier extends EmailNotifier {
+  send(msg: string) {
+    /* email + sms */
+  }
+}
+class EmailWithSlackNotifier extends EmailNotifier {
+  send(msg: string) {
+    /* email + slack */
+  }
+}
+class EmailWithSmsAndSlackNotifier extends EmailNotifier {
+  send(msg: string) {
+    /* email + sms + slack */
+  }
+}
 // Add Facebook? Now 8 subclasses. Add Push? 16. Combinatorial.
 ```
 
@@ -42,7 +58,7 @@ class EmailWithSmsAndSlackNotifier extends EmailNotifier { send(msg: string) { /
  * decorators.
  */
 interface Component {
-    operation(): string;
+  operation(): string;
 }
 
 /**
@@ -50,9 +66,9 @@ interface Component {
  * might be several variations of these classes.
  */
 class ConcreteComponent implements Component {
-    public operation(): string {
-        return 'ConcreteComponent';
-    }
+  public operation(): string {
+    return "ConcreteComponent";
+  }
 }
 
 /**
@@ -63,24 +79,24 @@ class ConcreteComponent implements Component {
  * it.
  */
 class Decorator implements Component {
-    protected component: Component;
+  protected component: Component;
 
-    constructor(component: Component) {
-        this.component = component;
-    }
+  constructor(component: Component) {
+    this.component = component;
+  }
 
-    public operation(): string {
-        return this.component.operation();
-    }
+  public operation(): string {
+    return this.component.operation();
+  }
 }
 
 /**
  * Concrete Decorators call the wrapped object and alter its result in some way.
  */
 class ConcreteDecoratorA extends Decorator {
-    public operation(): string {
-        return `ConcreteDecoratorA(${super.operation()})`;
-    }
+  public operation(): string {
+    return `ConcreteDecoratorA(${super.operation()})`;
+  }
 }
 
 /**
@@ -88,19 +104,19 @@ class ConcreteDecoratorA extends Decorator {
  * wrapped object.
  */
 class ConcreteDecoratorB extends Decorator {
-    public operation(): string {
-        return `ConcreteDecoratorB(${super.operation()})`;
-    }
+  public operation(): string {
+    return `ConcreteDecoratorB(${super.operation()})`;
+  }
 }
 
 function clientCode(component: Component) {
-    console.log(`RESULT: ${component.operation()}`);
+  console.log(`RESULT: ${component.operation()}`);
 }
 
 const simple = new ConcreteComponent();
-console.log('Client: I\'ve got a simple component:');
+console.log("Client: I've got a simple component:");
 clientCode(simple);
-console.log('');
+console.log("");
 
 /**
  * Note how decorators can wrap not only simple components but the other
@@ -108,7 +124,7 @@ console.log('');
  */
 const decorator1 = new ConcreteDecoratorA(simple);
 const decorator2 = new ConcreteDecoratorB(decorator1);
-console.log('Client: Now I\'ve got a decorated component:');
+console.log("Client: Now I've got a decorated component:");
 clientCode(decorator2);
 ```
 

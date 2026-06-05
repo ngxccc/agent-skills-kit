@@ -13,8 +13,8 @@ Without `font-display`, browsers may hide text until custom fonts load (FOIT). T
 
 ```css
 @font-face {
-  font-family: 'Brand Font';
-  src: url('brand-font.woff2') format('woff2');
+  font-family: "Brand Font";
+  src: url("brand-font.woff2") format("woff2");
   /* No font-display specified */
   /* Safari hides text indefinitely until font loads */
   /* Chrome/Firefox hide for 3s, then show fallback */
@@ -27,8 +27,8 @@ Without `font-display`, browsers may hide text until custom fonts load (FOIT). T
 ```css
 /* Option 1: swap - always show text, swap when ready */
 @font-face {
-  font-family: 'Brand Font';
-  src: url('brand-font.woff2') format('woff2');
+  font-family: "Brand Font";
+  src: url("brand-font.woff2") format("woff2");
   font-display: swap;
 }
 /* Text visible immediately with fallback */
@@ -36,8 +36,8 @@ Without `font-display`, browsers may hide text until custom fonts load (FOIT). T
 
 /* Option 2: optional - no swap if not cached */
 @font-face {
-  font-family: 'Brand Font';
-  src: url('brand-font.woff2') format('woff2');
+  font-family: "Brand Font";
+  src: url("brand-font.woff2") format("woff2");
   font-display: optional;
 }
 /* Text visible immediately */
@@ -45,8 +45,8 @@ Without `font-display`, browsers may hide text until custom fonts load (FOIT). T
 
 /* Option 3: fallback - short block, then fallback */
 @font-face {
-  font-family: 'Brand Font';
-  src: url('brand-font.woff2') format('woff2');
+  font-family: "Brand Font";
+  src: url("brand-font.woff2") format("woff2");
   font-display: fallback;
 }
 /* 100ms block period, then fallback */
@@ -54,6 +54,7 @@ Without `font-display`, browsers may hide text until custom fonts load (FOIT). T
 ```
 
 **font-display values:**
+
 - `swap`: Show fallback immediately, always swap (may cause CLS)
 - `optional`: No CLS, but font may not appear on first visit
 - `fallback`: Brief block, then swap window (balanced)

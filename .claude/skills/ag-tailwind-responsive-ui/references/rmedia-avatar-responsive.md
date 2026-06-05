@@ -16,7 +16,11 @@ Avatars at a single fixed size create visual imbalance — a `w-12 h-12` (48px) 
 <div class="mx-auto max-w-2xl space-y-8 px-4 py-6">
   <!-- Profile header — avatar feels undersized next to the large heading -->
   <div class="flex items-center gap-4 border-b border-gray-200 pb-6">
-    <img src="/avatars/sarah.jpg" alt="Sarah Chen" class="w-12 h-12 rounded-full" />
+    <img
+      src="/avatars/sarah.jpg"
+      alt="Sarah Chen"
+      class="w-12 h-12 rounded-full"
+    />
     <div>
       <h1 class="text-2xl font-bold text-gray-900">Sarah Chen</h1>
       <p class="text-gray-500">Senior Product Designer</p>
@@ -25,14 +29,22 @@ Avatars at a single fixed size create visual imbalance — a `w-12 h-12` (48px) 
   <!-- Team member list — avatars crowd the compact rows -->
   <ul class="divide-y divide-gray-100">
     <li class="flex items-center gap-3 py-3">
-      <img src="/avatars/james.jpg" alt="James Park" class="w-12 h-12 rounded-full" />
+      <img
+        src="/avatars/james.jpg"
+        alt="James Park"
+        class="w-12 h-12 rounded-full"
+      />
       <div>
         <p class="text-sm font-medium text-gray-900">James Park</p>
         <p class="text-xs text-gray-500">Engineering</p>
       </div>
     </li>
     <li class="flex items-center gap-3 py-3">
-      <img src="/avatars/maria.jpg" alt="Maria Lopez" class="w-12 h-12 rounded-full" />
+      <img
+        src="/avatars/maria.jpg"
+        alt="Maria Lopez"
+        class="w-12 h-12 rounded-full"
+      />
       <div>
         <p class="text-sm font-medium text-gray-900">Maria Lopez</p>
         <p class="text-xs text-gray-500">Marketing</p>
@@ -49,7 +61,11 @@ Avatars at a single fixed size create visual imbalance — a `w-12 h-12` (48px) 
 <div class="mx-auto max-w-2xl space-y-8 px-4 py-6">
   <!-- Profile header — w-16 on mobile, w-24 on desktop to match heading prominence -->
   <div class="flex items-center gap-4 border-b border-gray-200 pb-6 md:gap-6">
-    <img src="/avatars/sarah.jpg" alt="Sarah Chen" class="w-16 h-16 md:w-24 md:h-24 rounded-full object-cover ring-2 ring-gray-100" />
+    <img
+      src="/avatars/sarah.jpg"
+      alt="Sarah Chen"
+      class="w-16 h-16 md:w-24 md:h-24 rounded-full object-cover ring-2 ring-gray-100"
+    />
     <div>
       <h1 class="text-2xl font-bold text-gray-900">Sarah Chen</h1>
       <p class="text-gray-500">Senior Product Designer</p>
@@ -58,14 +74,22 @@ Avatars at a single fixed size create visual imbalance — a `w-12 h-12` (48px) 
   <!-- Team member list — w-8 on mobile, w-10 on desktop for compact rows -->
   <ul class="divide-y divide-gray-100">
     <li class="flex items-center gap-3 py-3">
-      <img src="/avatars/james.jpg" alt="James Park" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover" />
+      <img
+        src="/avatars/james.jpg"
+        alt="James Park"
+        class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
+      />
       <div>
         <p class="text-sm font-medium text-gray-900">James Park</p>
         <p class="text-xs text-gray-500">Engineering</p>
       </div>
     </li>
     <li class="flex items-center gap-3 py-3">
-      <img src="/avatars/maria.jpg" alt="Maria Lopez" class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover" />
+      <img
+        src="/avatars/maria.jpg"
+        alt="Maria Lopez"
+        class="w-8 h-8 md:w-10 md:h-10 rounded-full object-cover"
+      />
       <div>
         <p class="text-sm font-medium text-gray-900">Maria Lopez</p>
         <p class="text-xs text-gray-500">Marketing</p>

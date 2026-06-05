@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 const root = process.cwd();
 const failures = [];
 const warnings = [];
-const ignoredSkillFrontmatter = new Set(["sync-from-riper5", "sync-to-riper5"]);
+const ignoredSkillFrontmatter = new Set(['sync-from-riper5', 'sync-to-riper5']);
 
 function fail(message) {
   failures.push(message);
@@ -20,7 +20,7 @@ function exists(relPath) {
 }
 
 function read(relPath) {
-  return fs.readFileSync(path.join(root, relPath), "utf8");
+  return fs.readFileSync(path.join(root, relPath), 'utf8');
 }
 
 function walk(dir, predicate, out = []) {
@@ -60,7 +60,7 @@ function listFiles(relPath, extension) {
   return fs
     .readdirSync(abs, { withFileTypes: true })
     .filter((entry) => entry.isFile() && entry.name.endsWith(extension))
-    .map((entry) => entry.name.replace(new RegExp(`${extension}$`), ""))
+    .map((entry) => entry.name.replace(new RegExp(`${extension}$`), ''))
     .sort();
 }
 
@@ -70,10 +70,10 @@ function getGroupEntrypoint(group) {
 }
 
 const legacyEntrypoints = [
-  "process/context/README.md",
-  "process/context/tests.md",
+  'process/context/README.md',
+  'process/context/tests.md',
   ...walk(
-    "process/context",
+    'process/context',
     (rel) => /\/README\.md$/.test(rel) || /\/[^/]+-README\.md$/.test(rel),
   ),
 ];
@@ -84,35 +84,35 @@ function parseFrontmatter(file) {
   if (!match) return {};
   return Object.fromEntries(
     match[1]
-      .split("\n")
+      .split('\n')
       .map((line) => line.match(/^([A-Za-z0-9_-]+):\s*(.*)$/))
       .filter(Boolean)
-      .map((match) => [match[1], match[2].replace(/^["']|["']$/g, "")]),
+      .map((match) => [match[1], match[2].replace(/^["']|["']$/g, '')]),
   );
 }
 
 function normalizeForParity(text) {
   return text
-    .replace(/\r\n/g, "\n")
-    .replace(/[ \t]+$/gm, "")
+    .replace(/\r\n/g, '\n')
+    .replace(/[ \t]+$/gm, '')
     .trim();
 }
 
-const agentsSkills = path.join(root, ".agents/skills");
+const agentsSkills = path.join(root, '.agents/skills');
 if (!fs.existsSync(agentsSkills)) {
-  fail(".agents/skills missing");
+  fail('.agents/skills missing');
 } else {
   const real = fs.realpathSync(agentsSkills);
-  const expected = fs.realpathSync(path.join(root, ".claude/skills"));
+  const expected = fs.realpathSync(path.join(root, '.claude/skills'));
   if (real !== expected)
-    fail(".agents/skills does not resolve to .claude/skills");
+    fail('.agents/skills does not resolve to .claude/skills');
 }
 
 for (const skill of [
-  "ag-audit-context",
-  "ag-audit-plans",
-  "ag-generate-context",
-  "ag-generate-plan",
+  'ag-audit-context',
+  'ag-audit-plans',
+  'ag-generate-context',
+  'ag-generate-plan',
 ]) {
   const file = `.claude/skills/${skill}/SKILL.md`;
   const codexPath = `.agents/skills/${skill}/SKILL.md`;
@@ -123,13 +123,13 @@ for (const skill of [
     // YAML name and folder name must match exactly (e.g. ag-audit-context)
     if (fm.name !== skill)
       fail(
-        `${file} frontmatter name is ${fm.name || "missing"}, expected ${skill}`,
+        `${file} frontmatter name is ${fm.name || 'missing'}, expected ${skill}`,
       );
     if (!fm.description) fail(`${file} frontmatter description missing`);
   }
 }
 
-const skillDirs = listDirs(".claude/skills");
+const skillDirs = listDirs('.claude/skills');
 let checkedSkills = 0;
 for (const skill of skillDirs) {
   const file = `.claude/skills/${skill}/SKILL.md`;
@@ -150,8 +150,8 @@ for (const skill of skillDirs) {
   }
 }
 
-const claudeAgents = listFiles(".claude/agents", ".md");
-const codexAgents = listFiles(".codex/agents", ".toml");
+const claudeAgents = listFiles('.claude/agents', '.md');
+const codexAgents = listFiles('.codex/agents', '.toml');
 for (const agent of claudeAgents) {
   if (!codexAgents.includes(agent)) fail(`.codex/agents/${agent}.toml missing`);
 }
@@ -159,24 +159,24 @@ for (const agent of codexAgents) {
   if (!claudeAgents.includes(agent)) fail(`.claude/agents/${agent}.md missing`);
 }
 
-const router = "process/context/all-context.md";
+const router = 'process/context/all-context.md';
 if (!exists(router)) fail(`${router} missing`);
-const routerText = exists(router) ? read(router) : "";
+const routerText = exists(router) ? read(router) : '';
 
-const contextDocs = walk("process/context", (rel) =>
-  rel.endsWith(".md"),
+const contextDocs = walk('process/context', (rel) =>
+  rel.endsWith('.md'),
 ).sort();
 for (const doc of contextDocs) {
   if (doc === router) continue;
-  const relFromContext = doc.replace(/^process\/context\//, "");
-  const group = relFromContext.split("/")[0];
+  const relFromContext = doc.replace(/^process\/context\//, '');
+  const group = relFromContext.split('/')[0];
   const groupEntrypoint = getGroupEntrypoint(group);
   const indexedByRouter =
     routerText.includes(relFromContext) || routerText.includes(doc);
   const indexedByGroup =
     groupEntrypoint && read(groupEntrypoint).includes(path.basename(doc));
 
-  if (relFromContext.includes("/") && !groupEntrypoint) {
+  if (relFromContext.includes('/') && !groupEntrypoint) {
     fail(`context group ${group} is missing all-${group}.md`);
   }
   if (!indexedByRouter && !indexedByGroup) {
@@ -186,7 +186,7 @@ for (const doc of contextDocs) {
   }
 }
 
-for (const dir of fs.readdirSync(path.join(root, "process/context"), {
+for (const dir of fs.readdirSync(path.join(root, 'process/context'), {
   withFileTypes: true,
 })) {
   if (dir.isDirectory() && !getGroupEntrypoint(dir.name)) {
@@ -201,22 +201,22 @@ for (const legacy of legacyEntrypoints) {
 }
 
 for (const file of [
-  "AGENTS.md",
-  "CLAUDE.md",
-  ".claude/agents/ag-update-process-agent.md",
-  ".codex/agents/ag-update-process-agent.toml",
-  ".claude/agents/ag-research-agent.md",
-  ".codex/agents/ag-research-agent.toml",
-  ".claude/skills/ag-generate-context/SKILL.md",
-  ".claude/skills/ag-generate-context/references/generate-context.md",
+  'AGENTS.md',
+  'CLAUDE.md',
+  '.claude/agents/ag-update-process-agent.md',
+  '.codex/agents/ag-update-process-agent.toml',
+  '.claude/agents/ag-research-agent.md',
+  '.codex/agents/ag-research-agent.toml',
+  '.claude/skills/ag-generate-context/SKILL.md',
+  '.claude/skills/ag-generate-context/references/generate-context.md',
 ]) {
-  assertContains(file, "process/context/all-context.md");
+  assertContains(file, 'process/context/all-context.md');
 }
 
 const criticalHookParityPairs = [
   [
-    ".claude/hooks/scout-block/broad-pattern-detector.cjs",
-    ".codex/hooks/scout-block/broad-pattern-detector.cjs",
+    '.claude/hooks/scout-block/broad-pattern-detector.cjs',
+    '.codex/hooks/scout-block/broad-pattern-detector.cjs',
   ],
 ];
 
@@ -231,101 +231,101 @@ for (const [claudeFile, codexFile] of criticalHookParityPairs) {
 
 const staleWorkflowPatterns = [
   {
-    pattern: "docs-manager",
-    reason: "use update-process-agent for project context/process docs",
+    pattern: 'docs-manager',
+    reason: 'use update-process-agent for project context/process docs',
   },
   {
-    pattern: "project-manager",
-    reason: "use update-process-agent for plan/process sync",
+    pattern: 'project-manager',
+    reason: 'use update-process-agent for plan/process sync',
   },
   {
-    pattern: "docs/codebase-summary",
-    reason: "use process/context/all-context.md routing",
+    pattern: 'docs/codebase-summary',
+    reason: 'use process/context/all-context.md routing',
   },
   {
-    pattern: "docs/design-guidelines",
-    reason: "use process/context/uxui/uiux.md or feature references",
+    pattern: 'docs/design-guidelines',
+    reason: 'use process/context/uxui/uiux.md or feature references',
   },
-  { pattern: "validate-docs", reason: "use audit-context validator" },
+  { pattern: 'validate-docs', reason: 'use audit-context validator' },
   {
-    pattern: "process/context/<group>",
-    reason: "placeholder should not look like a concrete ref",
+    pattern: 'process/context/<group>',
+    reason: 'placeholder should not look like a concrete ref',
   },
   {
-    pattern: ".claude/commands/",
+    pattern: '.claude/commands/',
     reason:
-      "Claude command aliases are retired from the active shared workflow surface",
+      'Claude command aliases are retired from the active shared workflow surface',
   },
   {
-    pattern: "ag:plan",
+    pattern: 'ag:plan',
     reason:
-      "planning ownership was absorbed into ag-generate-plan + plan-agent",
+      'planning ownership was absorbed into ag-generate-plan + plan-agent',
   },
   {
-    pattern: "ag:research",
-    reason: "research ownership was absorbed into research-agent",
+    pattern: 'ag:research',
+    reason: 'research ownership was absorbed into research-agent',
   },
   {
-    pattern: "ag:cook",
-    reason: "execution ownership was absorbed into execute-agent",
+    pattern: 'ag:cook',
+    reason: 'execution ownership was absorbed into execute-agent',
   },
   {
-    pattern: "ag:fix",
-    reason: "bug-fix ownership was absorbed into debugger + execute-agent",
+    pattern: 'ag:fix',
+    reason: 'bug-fix ownership was absorbed into debugger + execute-agent',
   },
   {
-    pattern: "ag:code-review",
-    reason: "review ownership was absorbed into code-reviewer",
+    pattern: 'ag:code-review',
+    reason: 'review ownership was absorbed into code-reviewer',
   },
   {
-    pattern: "/ag:journal",
+    pattern: '/ag:journal',
     reason:
-      "journal handoff is not part of the surviving default workflow surface",
+      'journal handoff is not part of the surviving default workflow surface',
   },
 ];
 const staleWorkflowFiles = [
-  "AGENTS.md",
-  "CLAUDE.md",
-  ...walk(".claude/agents", (rel) => rel.endsWith(".md")),
-  ...walk(".codex/agents", (rel) => rel.endsWith(".toml")),
+  'AGENTS.md',
+  'CLAUDE.md',
+  ...walk('.claude/agents', (rel) => rel.endsWith('.md')),
+  ...walk('.codex/agents', (rel) => rel.endsWith('.toml')),
   ...walk(
-    ".claude/skills",
-    (rel) => rel.endsWith(".md") && !rel.includes("/scripts/"),
+    '.claude/skills',
+    (rel) => rel.endsWith('.md') && !rel.includes('/scripts/'),
   ),
   ...walk(
-    ".claude/hooks",
-    (rel) => rel.endsWith(".cjs") || rel.endsWith(".json"),
+    '.claude/hooks',
+    (rel) => rel.endsWith('.cjs') || rel.endsWith('.json'),
   ),
   ...walk(
-    ".codex/hooks",
-    (rel) => rel.endsWith(".cjs") || rel.endsWith(".json"),
+    '.codex/hooks',
+    (rel) => rel.endsWith('.cjs') || rel.endsWith('.json'),
   ),
-  ...walk("process/context", (rel) => rel.endsWith(".md")),
+  ...walk('process/context', (rel) => rel.endsWith('.md')),
 ];
 
 for (const file of staleWorkflowFiles) {
   if (!exists(file)) continue;
-  const lines = read(file).split("\n");
+  const lines = read(file).split('\n');
   for (const [index, line] of lines.entries()) {
     for (const { pattern, reason } of staleWorkflowPatterns) {
       if (!line.includes(pattern)) continue;
       if (
-        line.includes("formerly taught") ||
-        line.includes("previously taught") ||
-        line.includes("previously spread across") ||
-        line.includes("previously split across") ||
-        line.includes("migration sources only") ||
-        line.includes("absorbed into") ||
-        line.includes("absorbed here")
+        line.includes('formerly taught') ||
+        line.includes('previously taught') ||
+        line.includes('previously spread across') ||
+        line.includes('previously split across') ||
+        line.includes('migration sources only') ||
+        line.includes('absorbed into') ||
+        line.includes('absorbed here')
       ) {
         continue;
       }
-      if (pattern === "docs-manager" && line.includes("not `./docs`")) continue;
+      if (pattern === 'docs-manager' && line.includes('not `./docs`')) continue;
       fail(
         `${file}:${index + 1} contains stale ${pattern} reference (${reason})`,
       );
     }
-    if (line.includes("`./docs`") && !line.includes("not `./docs`")) {
+    if (line.includes('`./docs`') && !line.includes('not `./docs`')) {
       fail(
         `${file}:${index + 1} references legacy ./docs path (use process/context/all-context.md)`,
       );
@@ -334,10 +334,10 @@ for (const file of staleWorkflowFiles) {
 }
 
 const filesWithRefs = [
-  "AGENTS.md",
-  ...walk(".claude", (rel) => rel.endsWith(".md") || rel.endsWith(".json")),
-  ...walk(".codex", (rel) => rel.endsWith(".toml") || rel.endsWith(".json")),
-  ...walk("process/context", (rel) => rel.endsWith(".md")),
+  'AGENTS.md',
+  ...walk('.claude', (rel) => rel.endsWith('.md') || rel.endsWith('.json')),
+  ...walk('.codex', (rel) => rel.endsWith('.toml') || rel.endsWith('.json')),
+  ...walk('process/context', (rel) => rel.endsWith('.md')),
 ];
 
 const concreteRefs = [];
@@ -345,7 +345,7 @@ for (const file of filesWithRefs) {
   if (!exists(file)) continue;
   const text = read(file);
   for (const match of text.matchAll(/`(process\/context\/[^`\s]+)`/g)) {
-    const ref = match[1].replace(/[.,;:]$/, "");
+    const ref = match[1].replace(/[.,;:]$/, '');
     if (/[{}[*\]]/.test(ref)) continue;
     concreteRefs.push({ file, ref });
   }
@@ -355,12 +355,12 @@ for (const { file, ref } of concreteRefs) {
   if (!exists(ref)) fail(`${file} references missing ${ref}`);
 }
 
-if (contextDocs.length > 0 && !routerText.includes("Context Group Lifecycle")) {
+if (contextDocs.length > 0 && !routerText.includes('Context Group Lifecycle')) {
   fail(`${router} missing Context Group Lifecycle section`);
 }
 
-if (routerText.includes("Suggested future groups")) {
-  warn("context group migration is planned but not fully executed yet");
+if (routerText.includes('Suggested future groups')) {
+  warn('context group migration is planned but not fully executed yet');
 }
 
 const result = {

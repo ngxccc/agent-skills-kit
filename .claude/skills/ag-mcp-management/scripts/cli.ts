@@ -102,7 +102,9 @@ async function listTools(manager: MCPClientManager) {
     console.log(`📦 ${tool.serverName} / ${tool.name}`);
     console.log(`   ${tool.description}`);
     if (tool.inputSchema?.properties) {
-      console.log(`   Parameters: ${Object.keys(tool.inputSchema.properties).join(', ')}`);
+      console.log(
+        `   Parameters: ${Object.keys(tool.inputSchema.properties).join(', ')}`,
+      );
     }
     console.log('');
   }
@@ -128,7 +130,9 @@ async function listPrompts(manager: MCPClientManager) {
     console.log(`💬 ${prompt.serverName} / ${prompt.name}`);
     console.log(`   ${prompt.description}`);
     if (prompt.arguments && prompt.arguments.length > 0) {
-      console.log(`   Arguments: ${prompt.arguments.map((a: any) => a.name).join(', ')}`);
+      console.log(
+        `   Arguments: ${prompt.arguments.map((a: any) => a.name).join(', ')}`,
+      );
     }
     console.log('');
   }
@@ -155,7 +159,7 @@ async function callTool(
   manager: MCPClientManager,
   serverName: string,
   toolName: string,
-  argsJson: string
+  argsJson: string,
 ) {
   if (!serverName || !toolName || !argsJson) {
     console.error('Usage: cli.ts call-tool <server> <tool> <json-args>');

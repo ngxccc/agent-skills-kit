@@ -66,6 +66,7 @@ body {
 ```
 
 **Dark mode considerations:**
+
 - Avoid pure black (#000); use dark gray (#1a1a2e)
 - Reduce contrast slightly (white text on black is harsh)
 - Desaturate bright colors to avoid vibration

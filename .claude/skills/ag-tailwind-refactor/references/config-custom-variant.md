@@ -13,13 +13,16 @@ Tailwind CSS v4 replaces the JavaScript `addVariant` plugin API with a CSS-nativ
 
 ```js
 // tailwind.config.js
-const plugin = require('tailwindcss/plugin');
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   plugins: [
     plugin(function ({ addVariant }) {
-      addVariant('hocus', ['&:hover', '&:focus']);
-      addVariant('group-hocus', [':merge(.group):hover &', ':merge(.group):focus &']);
+      addVariant("hocus", ["&:hover", "&:focus"]);
+      addVariant("group-hocus", [
+        ":merge(.group):hover &",
+        ":merge(.group):focus &",
+      ]);
     }),
   ],
 };

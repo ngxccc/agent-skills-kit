@@ -17,10 +17,26 @@ Sidebars consume 200-300px of horizontal space that simply does not exist on a 3
   <aside class="w-[250px] shrink-0 border-r bg-gray-50 p-4">
     <nav>
       <h2 class="mb-4 font-semibold">Dashboard</h2>
-      <a href="/overview" class="block rounded px-3 py-2 text-sm hover:bg-gray-200">Overview</a>
-      <a href="/analytics" class="block rounded px-3 py-2 text-sm hover:bg-gray-200">Analytics</a>
-      <a href="/reports" class="block rounded px-3 py-2 text-sm hover:bg-gray-200">Reports</a>
-      <a href="/settings" class="block rounded px-3 py-2 text-sm hover:bg-gray-200">Settings</a>
+      <a
+        href="/overview"
+        class="block rounded px-3 py-2 text-sm hover:bg-gray-200"
+        >Overview</a
+      >
+      <a
+        href="/analytics"
+        class="block rounded px-3 py-2 text-sm hover:bg-gray-200"
+        >Analytics</a
+      >
+      <a
+        href="/reports"
+        class="block rounded px-3 py-2 text-sm hover:bg-gray-200"
+        >Reports</a
+      >
+      <a
+        href="/settings"
+        class="block rounded px-3 py-2 text-sm hover:bg-gray-200"
+        >Settings</a
+      >
     </nav>
   </aside>
   <main class="flex-1 p-6">
@@ -35,15 +51,33 @@ Sidebars consume 200-300px of horizontal space that simply does not exist on a 3
 ```html
 <!-- Sidebar stacks above content on mobile, sits beside it on lg screens -->
 <div class="flex flex-col lg:flex-row">
-  <aside class="w-full border-b bg-gray-50 p-4 lg:w-[250px] lg:shrink-0 lg:border-b-0 lg:border-r">
+  <aside
+    class="w-full border-b bg-gray-50 p-4 lg:w-[250px] lg:shrink-0 lg:border-b-0 lg:border-r"
+  >
     <nav>
       <h2 class="mb-3 font-semibold lg:mb-4">Dashboard</h2>
       <!-- Horizontal scroll on mobile, vertical list on desktop -->
       <div class="flex gap-2 overflow-x-auto lg:flex-col lg:gap-0">
-        <a href="/overview" class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200">Overview</a>
-        <a href="/analytics" class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200">Analytics</a>
-        <a href="/reports" class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200">Reports</a>
-        <a href="/settings" class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200">Settings</a>
+        <a
+          href="/overview"
+          class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200"
+          >Overview</a
+        >
+        <a
+          href="/analytics"
+          class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200"
+          >Analytics</a
+        >
+        <a
+          href="/reports"
+          class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200"
+          >Reports</a
+        >
+        <a
+          href="/settings"
+          class="shrink-0 rounded px-3 py-2 text-sm hover:bg-gray-200"
+          >Settings</a
+        >
       </div>
     </nav>
   </aside>

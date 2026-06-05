@@ -13,16 +13,12 @@ Tailwind v4 moves the `!important` modifier from a prefix to a suffix position. 
 
 ```html
 <!-- v3 prefix ! syntax (deprecated) -->
-<div class="!flex !bg-red-500 !text-white">
-  Prefix important
-</div>
+<div class="!flex !bg-red-500 !text-white">Prefix important</div>
 ```
 
 **Correct (what's right):**
 
 ```html
 <!-- v4 suffix ! syntax -->
-<div class="flex! bg-red-500! text-white!">
-  Suffix important
-</div>
+<div class="flex! bg-red-500! text-white!">Suffix important</div>
 ```

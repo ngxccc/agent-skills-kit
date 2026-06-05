@@ -14,16 +14,16 @@ Wait until code appears three times before extracting a helper. The first duplic
 ```typescript
 // Two similar validation calls - someone extracts immediately
 function validateUser(user: User) {
-  if (!user.email.includes('@')) throw new Error('Invalid email');
+  if (!user.email.includes("@")) throw new Error("Invalid email");
 }
 
 function validateContact(contact: Contact) {
-  if (!contact.email.includes('@')) throw new Error('Invalid email');
+  if (!contact.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Over-engineered "solution" after seeing just 2 occurrences
 function validateEmail(entity: { email: string }, entityName: string) {
-  if (!entity.email.includes('@')) {
+  if (!entity.email.includes("@")) {
     throw new Error(`Invalid ${entityName} email`);
   }
 }
@@ -36,22 +36,22 @@ function validateEmail(entity: { email: string }, entityName: string) {
 ```typescript
 // First occurrence
 function validateUser(user: User) {
-  if (!user.email.includes('@')) throw new Error('Invalid email');
+  if (!user.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Second occurrence - note it, don't extract yet
 function validateContact(contact: Contact) {
-  if (!contact.email.includes('@')) throw new Error('Invalid email');
+  if (!contact.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Third occurrence - NOW extract with confidence
 function validateOrder(order: Order) {
-  if (!order.customerEmail.includes('@')) throw new Error('Invalid email');
+  if (!order.customerEmail.includes("@")) throw new Error("Invalid email");
 }
 
 // After third occurrence, extract with full understanding of the pattern
 function isValidEmail(email: string): boolean {
-  return email.includes('@');
+  return email.includes("@");
 }
 ```
 

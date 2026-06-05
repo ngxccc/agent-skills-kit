@@ -8,7 +8,7 @@ tags: prefix, concept
 Name the wrong default this rule corrects and its concrete consequence, in 1-3
 sentences. For this skill that usually means: what a model defaulting to Next.js
 14/15 does here, and why it breaks (or silently misbehaves) under Next.js 16
-Cache Components. Explain the *why* — the model generalizes from the reason, not
+Cache Components. Explain the _why_ — the model generalizes from the reason, not
 the instruction. Don't restate something the model already does correctly.
 
 ```tsx
@@ -18,7 +18,7 @@ export default async function CheckoutPage() {
     <Suspense fallback={<CartSkeleton />}>
       <Cart />
     </Suspense>
-  )
+  );
 }
 ```
 

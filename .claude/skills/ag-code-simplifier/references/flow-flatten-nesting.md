@@ -16,11 +16,11 @@ function processTransactions(accounts: Account[]) {
   for (const account of accounts) {
     if (account.isActive) {
       for (const transaction of account.transactions) {
-        if (transaction.status === 'pending') {
+        if (transaction.status === "pending") {
           if (transaction.amount > 0) {
             for (const rule of account.rules) {
               if (rule.applies(transaction)) {
-                if (rule.action === 'flag') {
+                if (rule.action === "flag") {
                   if (transaction.amount > rule.threshold) {
                     transaction.flagged = true;
                     transaction.flagReason = rule.reason;
@@ -41,7 +41,7 @@ function processTransactions(accounts: Account[]) {
 
 ```typescript
 function processTransactions(accounts: Account[]) {
-  const activeAccounts = accounts.filter(a => a.isActive);
+  const activeAccounts = accounts.filter((a) => a.isActive);
 
   for (const account of activeAccounts) {
     processPendingTransactions(account);
@@ -50,7 +50,7 @@ function processTransactions(accounts: Account[]) {
 
 function processPendingTransactions(account: Account) {
   const pendingTransactions = account.transactions.filter(
-    t => t.status === 'pending' && t.amount > 0
+    (t) => t.status === "pending" && t.amount > 0,
   );
 
   for (const transaction of pendingTransactions) {
@@ -63,7 +63,7 @@ function applyRules(account: Account, transaction: Transaction) {
     if (!rule.applies(transaction)) {
       continue;
     }
-    if (rule.action !== 'flag') {
+    if (rule.action !== "flag") {
       continue;
     }
     if (transaction.amount <= rule.threshold) {
@@ -89,22 +89,22 @@ function validateForm(form: FormData): ValidationResult {
             if (form.acceptedTerms) {
               return { valid: true };
             } else {
-              return { valid: false, error: 'Must accept terms' };
+              return { valid: false, error: "Must accept terms" };
             }
           } else {
-            return { valid: false, error: 'Passwords do not match' };
+            return { valid: false, error: "Passwords do not match" };
           }
         } else {
-          return { valid: false, error: 'Password too short' };
+          return { valid: false, error: "Password too short" };
         }
       } else {
-        return { valid: false, error: 'Password required' };
+        return { valid: false, error: "Password required" };
       }
     } else {
-      return { valid: false, error: 'Invalid email' };
+      return { valid: false, error: "Invalid email" };
     }
   } else {
-    return { valid: false, error: 'Email required' };
+    return { valid: false, error: "Email required" };
   }
 }
 ```
@@ -114,22 +114,22 @@ function validateForm(form: FormData): ValidationResult {
 ```typescript
 function validateForm(form: FormData): ValidationResult {
   if (!form.email) {
-    return { valid: false, error: 'Email required' };
+    return { valid: false, error: "Email required" };
   }
   if (!isValidEmail(form.email)) {
-    return { valid: false, error: 'Invalid email' };
+    return { valid: false, error: "Invalid email" };
   }
   if (!form.password) {
-    return { valid: false, error: 'Password required' };
+    return { valid: false, error: "Password required" };
   }
   if (form.password.length < 8) {
-    return { valid: false, error: 'Password too short' };
+    return { valid: false, error: "Password too short" };
   }
   if (form.password !== form.confirmPassword) {
-    return { valid: false, error: 'Passwords do not match' };
+    return { valid: false, error: "Passwords do not match" };
   }
   if (!form.acceptedTerms) {
-    return { valid: false, error: 'Must accept terms' };
+    return { valid: false, error: "Must accept terms" };
   }
 
   return { valid: true };

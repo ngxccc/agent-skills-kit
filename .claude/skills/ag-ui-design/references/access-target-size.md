@@ -48,6 +48,7 @@ Small tap targets cause frustration and errors for users with motor impairments,
 ```
 
 **Target size requirements:**
+
 - WCAG 2.2 AA: Minimum 24×24 CSS pixels
 - WCAG 2.2 AAA: Minimum 44×44 CSS pixels (recommended)
 - Spacing: At least 8px between adjacent targets

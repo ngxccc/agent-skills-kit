@@ -13,11 +13,11 @@ Linting and formatting tools enforce project-wide code standards automatically. 
 
 ```javascript
 // Simplified code uses single quotes, but project's .prettierrc specifies double quotes
-const message = 'Hello, world';
-const items = ['one', 'two', 'three'];
+const message = "Hello, world";
+const items = ["one", "two", "three"];
 
 function greet(name) {
-  return 'Hello, ' + name;
+  return "Hello, " + name;
 }
 ```
 

@@ -13,28 +13,28 @@ The TypeScript 5.2 `using` keyword (and `await using` for async disposers) is mo
 
 ```typescript
 async function importBatch(file: string) {
-  const log = openSpan('importBatch')
+  const log = openSpan("importBatch");
   try {
-    const conn = await db.connect()
+    const conn = await db.connect();
     try {
-      const tx = await conn.begin()
+      const tx = await conn.begin();
       try {
-        const reader = fs.createReadStream(file)
+        const reader = fs.createReadStream(file);
         try {
-          await processStream(reader, tx)
-          await tx.commit()
+          await processStream(reader, tx);
+          await tx.commit();
         } finally {
-          reader.close()
+          reader.close();
         }
       } catch (e) {
-        await tx.rollback()  // easy to forget; may run after tx already closed
-        throw e
+        await tx.rollback(); // easy to forget; may run after tx already closed
+        throw e;
       }
     } finally {
-      conn.release()
+      conn.release();
     }
   } finally {
-    log.end()
+    log.end();
   }
 }
 ```
@@ -43,13 +43,13 @@ async function importBatch(file: string) {
 
 ```typescript
 async function importBatch(file: string) {
-  await using log    = openSpan('importBatch')         // disposed last
-  await using conn   = await db.connect()
-  await using tx     = await conn.begin()              // commit or rollback in [Symbol.asyncDispose]
-  using       reader = fs.createReadStream(file)        // sync disposer; closes file handle
+  await using log = openSpan("importBatch"); // disposed last
+  await using conn = await db.connect();
+  await using tx = await conn.begin(); // commit or rollback in [Symbol.asyncDispose]
+  using reader = fs.createReadStream(file); // sync disposer; closes file handle
 
-  await processStream(reader, tx)
-  await tx.commit()
+  await processStream(reader, tx);
+  await tx.commit();
   // Disposal on scope exit: reader → tx → conn → log (LIFO).
   // If processStream throws: same LIFO disposal, and tx's disposer can detect
   // it never committed and roll back.
@@ -60,25 +60,32 @@ To make a resource composable with `using`, implement the `Disposable` or `Async
 
 ```typescript
 class Transaction implements AsyncDisposable {
-  private committed = false
-  async commit() { /* … */ this.committed = true }
-  async rollback() { /* … */ }
+  private committed = false;
+  async commit() {
+    /* … */ this.committed = true;
+  }
+  async rollback() {
+    /* … */
+  }
   async [Symbol.asyncDispose]() {
-    if (!this.committed) await this.rollback()
+    if (!this.committed) await this.rollback();
   }
 }
 ```
 
 Rules for clean composition:
+
 1. **Acquire in dependency order** (transaction depends on connection ⇒ declare connection first). LIFO disposal then unwinds the dependency graph correctly.
 2. **Disposers must not throw under normal use** — they're called from a finally-like context, and thrown errors become suppressed errors that complicate debugging. If cleanup can fail, log and swallow.
 3. **Mix `using` and `await using` freely** — disposers run synchronously or asynchronously based on declaration. The compiler enforces `await using` only at the call site.
 
 **When NOT to apply:**
+
 - Single-resource scopes where `try/finally` is just as clear and doesn't require the runtime polyfill on older targets.
 - Disposables whose lifetime exceeds a single function (request-scoped caches, app-wide connection pools) — `using` is for stack-shaped lifetimes.
 
 **Scope delta:**
+
 - `typescript-refactor`'s `modern-using-keyword` introduces the `using` keyword at the surface. This rule covers what happens when you compose two or three — the LIFO contract, the dependency-order discipline, and the interaction with thrown errors and suppressed errors.
 
 Reference: [TypeScript 5.2 Release Notes — Using Declarations and Explicit Resource Management](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html#using-declarations-and-explicit-resource-management)

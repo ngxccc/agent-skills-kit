@@ -4,12 +4,12 @@ Per-detector reference: what each rule catches, the pattern it looks for, known 
 
 ## Severity Legend
 
-| Severity | Meaning | CI effect |
-|----------|---------|-----------|
+| Severity | Meaning                                                    | CI effect                |
+| -------- | ---------------------------------------------------------- | ------------------------ |
 | CRITICAL | Correctness or major performance bug — likely user-visible | Fails the audit (exit 1) |
-| HIGH | Anti-pattern with concrete consequence — should be fixed | Fails the audit (exit 1) |
-| MEDIUM | Discouraged pattern; may be deliberate | Reported, doesn't fail |
-| LOW | Informational — review and confirm | Reported, doesn't fail |
+| HIGH     | Anti-pattern with concrete consequence — should be fixed   | Fails the audit (exit 1) |
+| MEDIUM   | Discouraged pattern; may be deliberate                     | Reported, doesn't fail   |
+| LOW      | Informational — review and confirm                         | Reported, doesn't fail   |
 
 ---
 
@@ -20,6 +20,7 @@ Per-detector reference: what each rule catches, the pattern it looks for, known 
 **What it catches:** A call to `watch(...)` inside the same function body as `useForm()`. This is the canonical performance footgun — every watched-value change re-renders the entire form component.
 
 **AST shape:**
+
 ```
 FunctionDeclaration / ArrowFunction
 ├── CallExpression { useForm }
@@ -39,6 +40,7 @@ FunctionDeclaration / ArrowFunction
 **What it catches:** `watch()` called with zero arguments, which subscribes to every field in the form. Strictly worse than Rule 01.
 
 **AST shape:**
+
 ```
 CallExpression { watch } with arguments.length === 0
 ```
@@ -58,6 +60,7 @@ CallExpression { watch } with arguments.length === 0
 **Why CRITICAL:** without `defaultValues`, fields are uncontrolled until first interaction, `reset()` has nothing to reset to, and TypeScript can't infer the form's shape correctly.
 
 **AST shape:**
+
 ```
 CallExpression { useForm }
 ├── arguments.length === 0  ← flagged
@@ -109,6 +112,7 @@ CallExpression { useForm }
 **What it catches:** The function passed to `handleSubmit(fn)` is async (or contains `await`) but does not contain a `try { ... } catch { ... }`. If the handler throws, `isSubmitting` stays `true` forever and the form is stuck.
 
 **AST shape:**
+
 ```
 CallExpression { handleSubmit }
 └── arguments[0] is async ArrowFunction / FunctionExpression

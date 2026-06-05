@@ -7,7 +7,7 @@ tags: impl, feature-flags, phantom-types, capabilities, type-safety
 
 ## Gate Feature-Dependent Code with Phantom Capability Types
 
-Feature flags are usually a `boolean` checked inline (`if (flags.newCheckout) {...}`). The boolean is fine, but the *consumers* of the new feature have no type-level proof the check ran — a refactor that drops the `if` compiles silently, and dead code paths that "couldn't happen with the flag off" sometimes do. Tagging the flag's truth with a phantom type, and requiring downstream functions to take that phantom-tagged value, makes the gate part of the type contract. This combines `[[mod-phantom-capability-tracking]]` with the specific feature-flag use case so the gate cannot be forgotten.
+Feature flags are usually a `boolean` checked inline (`if (flags.newCheckout) {...}`). The boolean is fine, but the _consumers_ of the new feature have no type-level proof the check ran — a refactor that drops the `if` compiles silently, and dead code paths that "couldn't happen with the flag off" sometimes do. Tagging the flag's truth with a phantom type, and requiring downstream functions to take that phantom-tagged value, makes the gate part of the type contract. This combines `[[mod-phantom-capability-tracking]]` with the specific feature-flag use case so the gate cannot be forgotten.
 
 **Incorrect (boolean checked in some places, forgotten in others):**
 
@@ -70,11 +70,13 @@ applyDiscount(cart, 'PROMO')  // Error: missing FlagOn<'newCheckout'>.
 The phantom type adds zero runtime cost — the returned object is `{}` typed as `FlagOn<F>`. The only way to manufacture one is to call `check`, which encapsulates the actual boolean test. Forgetting the check becomes a compile error at the gated call site, with a useful message pointing at the missing capability.
 
 **When NOT to apply:**
+
 - Flags that gate UI rendering only (show/hide a button). The boolean is enough; the cost of phantom typing exceeds the benefit.
 - Flags whose state changes mid-render or mid-request (kill switches that flip during a session). The phantom proof becomes stale; rely on runtime checks at each use.
 - Internal kill-switch infrastructure where the type discipline doesn't propagate to consumers (binary-flag feature systems).
 
 **Scope delta:**
-- Applies `[[mod-phantom-capability-tracking]]` to the feature-flag domain specifically. The general capability rule explains the mechanism; this rule explains *which* capabilities feature flags benefit from encoding and where the boundary functions live.
+
+- Applies `[[mod-phantom-capability-tracking]]` to the feature-flag domain specifically. The general capability rule explains the mechanism; this rule explains _which_ capabilities feature flags benefit from encoding and where the boundary functions live.
 
 Reference: [Martin Fowler — Feature Toggles](https://martinfowler.com/articles/feature-toggles.html)

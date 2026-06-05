@@ -23,27 +23,23 @@ Generic error messages like "Invalid input" don't help users fix problems. Effec
 
 ```html
 <!-- Explain format requirements -->
-<div class="error">
-  Enter your email address (example: name@company.com)
-</div>
+<div class="error">Enter your email address (example: name@company.com)</div>
 
 <!-- Explain constraints -->
-<div class="error">
-  Password must be at least 8 characters with one number
-</div>
+<div class="error">Password must be at least 8 characters with one number</div>
 
 <!-- Explain what happened -->
 <div class="error">
-  This email is already registered. <a href="/login">Log in</a> or use a different email.
+  This email is already registered. <a href="/login">Log in</a> or use a
+  different email.
 </div>
 
 <!-- Explain required context -->
-<div class="error">
-  Enter your phone number so we can send delivery updates
-</div>
+<div class="error">Enter your phone number so we can send delivery updates</div>
 ```
 
 **Error message guidelines:**
+
 - State what's wrong specifically
 - Explain how to fix it
 - Use positive language ("Enter..." not "You must...")
@@ -52,6 +48,7 @@ Generic error messages like "Invalid input" don't help users fix problems. Effec
 - Use appropriate tone (helpful, not blaming)
 
 **Error message anatomy:**
+
 ```text
 [What's wrong] + [How to fix it]
 "Password too short" + "Use at least 8 characters"

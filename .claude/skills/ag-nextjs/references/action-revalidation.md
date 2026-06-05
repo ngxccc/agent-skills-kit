@@ -15,19 +15,19 @@ tags: action, revalidation, post-mutation-invalidate, cache-pair
 - A bug report of the form "Created the thing — refresh, still not there" — almost always a missing invalidation in the action.
 - An action that calls `revalidatePath('/foo')` but the data also surfaces on `/bar` and `/baz` — under-invalidation.
 - An action that calls `revalidatePath('/', 'layout')` for a small mutation — nukes everyone's cache; should be more targeted.
-- An action that returns `{ success: true }` and the *client* triggers `router.refresh()` afterward — works but loses the server-driven invalidation guarantee.
-- A `redirect()` called *before* `revalidatePath` — `redirect` throws internally; the invalidation never runs.
+- An action that returns `{ success: true }` and the _client_ triggers `router.refresh()` afterward — works but loses the server-driven invalidation guarantee.
+- A `redirect()` called _before_ `revalidatePath` — `redirect` throws internally; the invalidation never runs.
 
-The canonical resolution: after the write succeeds, call `revalidateTag(tag, cacheLife)` (preferred for granular control) or `revalidatePath(path)` (coarser), *then* `redirect(...)`. Pair every action with one or more invalidation calls.
+The canonical resolution: after the write succeeds, call `revalidateTag(tag, cacheLife)` (preferred for granular control) or `revalidatePath(path)` (coarser), _then_ `redirect(...)`. Pair every action with one or more invalidation calls.
 
 **Incorrect (stale cache after mutation):**
 
 ```typescript
-'use server'
+"use server";
 
 export async function deletePost(postId: string) {
-  await db.posts.delete({ where: { id: postId } })
-  redirect('/posts')
+  await db.posts.delete({ where: { id: postId } });
+  redirect("/posts");
   // Posts list still shows deleted post from cache!
 }
 ```
@@ -35,32 +35,32 @@ export async function deletePost(postId: string) {
 **Correct (invalidating cache):**
 
 ```typescript
-'use server'
+"use server";
 
-import { revalidatePath, revalidateTag } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { revalidatePath, revalidateTag } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function deletePost(postId: string) {
-  await db.posts.delete({ where: { id: postId } })
+  await db.posts.delete({ where: { id: postId } });
 
   // Option 1: Revalidate specific path
-  revalidatePath('/posts')
+  revalidatePath("/posts");
 
   // Option 2: Revalidate by tag (more granular)
-  revalidateTag('posts')
+  revalidateTag("posts");
 
-  redirect('/posts')
+  redirect("/posts");
 }
 
 export async function updatePost(postId: string, formData: FormData) {
   await db.posts.update({
     where: { id: postId },
-    data: { title: formData.get('title') }
-  })
+    data: { title: formData.get("title") },
+  });
 
   // Revalidate both the list and detail pages
-  revalidatePath('/posts')
-  revalidatePath(`/posts/${postId}`)
+  revalidatePath("/posts");
+  revalidatePath(`/posts/${postId}`);
 }
 ```
 
@@ -68,18 +68,18 @@ export async function updatePost(postId: string, formData: FormData) {
 
 ```typescript
 // Specific route
-revalidatePath('/posts')
+revalidatePath("/posts");
 
 // Dynamic route with specific ID
-revalidatePath(`/posts/${postId}`)
+revalidatePath(`/posts/${postId}`);
 
 // All routes using a layout
-revalidatePath('/dashboard', 'layout')
+revalidatePath("/dashboard", "layout");
 
 // By cache tag
-revalidateTag('posts')
+revalidateTag("posts");
 
 // Multiple tags
-revalidateTag('posts')
-revalidateTag(`post-${postId}`)
+revalidateTag("posts");
+revalidateTag(`post-${postId}`);
 ```

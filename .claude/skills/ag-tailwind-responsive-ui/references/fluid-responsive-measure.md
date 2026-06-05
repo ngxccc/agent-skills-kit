@@ -14,13 +14,16 @@ Optimal reading measure is 45-75 characters per line (roughly 20-35em). On wide 
 ```html
 <!-- At 1440px wide, this paragraph runs ~130 characters per line -->
 <div class="px-8 py-12">
-  <h2 class="text-2xl font-bold text-gray-900">Why Responsive Design Matters</h2>
+  <h2 class="text-2xl font-bold text-gray-900">
+    Why Responsive Design Matters
+  </h2>
   <p class="mt-4 text-lg text-gray-600">
-    Responsive design is not just about making things fit on smaller screens. It is about
-    creating an experience that feels intentional at every width. When text stretches across
-    the full width of a wide monitor, readers lose their place between lines and comprehension
-    drops significantly. Studies show that reading speed and retention both decrease when line
-    length exceeds 75 characters, making measure one of the most impactful typographic choices.
+    Responsive design is not just about making things fit on smaller screens. It
+    is about creating an experience that feels intentional at every width. When
+    text stretches across the full width of a wide monitor, readers lose their
+    place between lines and comprehension drops significantly. Studies show that
+    reading speed and retention both decrease when line length exceeds 75
+    characters, making measure one of the most impactful typographic choices.
   </p>
 </div>
 ```
@@ -31,13 +34,17 @@ Optimal reading measure is 45-75 characters per line (roughly 20-35em). On wide 
 <!-- max-w-prose caps width at 65ch — comfortable reading on any screen -->
 <div class="px-8 py-12">
   <div class="mx-auto max-w-prose">
-    <h2 class="text-2xl font-bold text-gray-900">Why Responsive Design Matters</h2>
+    <h2 class="text-2xl font-bold text-gray-900">
+      Why Responsive Design Matters
+    </h2>
     <p class="mt-4 text-lg text-gray-600">
-      Responsive design is not just about making things fit on smaller screens. It is about
-      creating an experience that feels intentional at every width. When text stretches across
-      the full width of a wide monitor, readers lose their place between lines and comprehension
-      drops significantly. Studies show that reading speed and retention both decrease when line
-      length exceeds 75 characters, making measure one of the most impactful typographic choices.
+      Responsive design is not just about making things fit on smaller screens.
+      It is about creating an experience that feels intentional at every width.
+      When text stretches across the full width of a wide monitor, readers lose
+      their place between lines and comprehension drops significantly. Studies
+      show that reading speed and retention both decrease when line length
+      exceeds 75 characters, making measure one of the most impactful
+      typographic choices.
     </p>
   </div>
 </div>

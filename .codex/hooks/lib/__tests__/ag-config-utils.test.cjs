@@ -1,6 +1,6 @@
 /**
  * Tests for ag-config-utils edge case handling
- * Run: node .claude/hooks/lib/__tests__/ag-config-utils.test.cjs
+ * Run: node .codex/hooks/lib/__tests__/ag-config-utils.test.cjs
  */
 
 const path = require('path');
@@ -21,7 +21,7 @@ const {
   resolvePlanPath,
   writeSessionState,
   readSessionState,
-  getSessionTempPath
+  getSessionTempPath,
 } = require('../ag-config-utils.cjs');
 
 let passed = 0;
@@ -41,7 +41,9 @@ function test(name, fn) {
 
 function assertEquals(actual, expected, msg = '') {
   if (actual !== expected) {
-    throw new Error(`${msg}\n  Expected: ${JSON.stringify(expected)}\n  Actual: ${JSON.stringify(actual)}`);
+    throw new Error(
+      `${msg}\n  Expected: ${JSON.stringify(expected)}\n  Actual: ${JSON.stringify(actual)}`,
+    );
   }
 }
 
@@ -211,7 +213,13 @@ test('getReportsPath uses plan path for session-resolved plans', () => {
   const pathsConfig = { plans: 'plans' };
   const baseDir = '/home/user/project';
 
-  const result = getReportsPath('plans/my-plan', 'session', planConfig, pathsConfig, baseDir);
+  const result = getReportsPath(
+    'plans/my-plan',
+    'session',
+    planConfig,
+    pathsConfig,
+    baseDir,
+  );
   assertEquals(result, '/home/user/project/plans/my-plan/reports');
 });
 
@@ -220,11 +228,19 @@ test('getReportsPath ignores plan path for branch-resolved plans', () => {
   const pathsConfig = { plans: 'plans' };
   const baseDir = '/home/user/project';
 
-  const result = getReportsPath('plans/my-plan', 'branch', planConfig, pathsConfig, baseDir);
+  const result = getReportsPath(
+    'plans/my-plan',
+    'branch',
+    planConfig,
+    pathsConfig,
+    baseDir,
+  );
   assertEquals(result, '/home/user/project/reports');
 });
 
-console.log('\n=== getGitRoot/getGitBranch with cwd parameter (Issue #291) ===\n');
+console.log(
+  '\n=== getGitRoot/getGitBranch with cwd parameter (Issue #291) ===\n',
+);
 
 test('getGitRoot accepts cwd parameter', () => {
   const gitRoot = getGitRoot();
@@ -315,7 +331,13 @@ test('getReportsPath does not double-join when planPath is already absolute (Iss
   // Issue #335 made planPath absolute in session state
   const absolutePlanPath = '/home/user/project/plans/my-plan';
 
-  const result = getReportsPath(absolutePlanPath, 'session', planConfig, pathsConfig, baseDir);
+  const result = getReportsPath(
+    absolutePlanPath,
+    'session',
+    planConfig,
+    pathsConfig,
+    baseDir,
+  );
   // Should NOT produce /home/user/project/home/user/project/plans/my-plan/reports
   assertEquals(result, '/home/user/project/plans/my-plan/reports');
 });
@@ -363,7 +385,7 @@ console.log('\n=== sanitizeConfig tests ===\n');
 test('absolute path in config preserved through sanitization', () => {
   const config = {
     plan: { reportsDir: 'reports' },
-    paths: { docs: 'docs', plans: '/tmp/all-plans' }
+    paths: { docs: 'docs', plans: '/tmp/all-plans' },
   };
   const result = sanitizeConfig(config, '/home/user/project');
   assertEquals(result.paths.plans, '/tmp/all-plans');
@@ -372,7 +394,7 @@ test('absolute path in config preserved through sanitization', () => {
 test('mixed absolute/relative paths preserved independently', () => {
   const config = {
     plan: { reportsDir: 'reports' },
-    paths: { docs: 'docs', plans: '/tmp/all-plans' }
+    paths: { docs: 'docs', plans: '/tmp/all-plans' },
   };
   const result = sanitizeConfig(config, '/home/user/project');
   assertEquals(result.paths.docs, 'docs');
@@ -409,7 +431,10 @@ test('getGitBranch returns null or empty in detached HEAD state', () => {
     execSync('git commit -q -m "initial"', { cwd: tempDir });
 
     // Get commit hash and checkout detached HEAD
-    const commitHash = execSync('git rev-parse HEAD', { cwd: tempDir, encoding: 'utf8' }).trim();
+    const commitHash = execSync('git rev-parse HEAD', {
+      cwd: tempDir,
+      encoding: 'utf8',
+    }).trim();
     execSync(`git checkout -q ${commitHash}`, { cwd: tempDir });
 
     // getGitBranch returns empty string or null in detached HEAD
@@ -432,7 +457,10 @@ test('getGitRoot works in detached HEAD state', () => {
     execSync('git add .', { cwd: tempDir });
     execSync('git commit -q -m "initial"', { cwd: tempDir });
 
-    const commitHash = execSync('git rev-parse HEAD', { cwd: tempDir, encoding: 'utf8' }).trim();
+    const commitHash = execSync('git rev-parse HEAD', {
+      cwd: tempDir,
+      encoding: 'utf8',
+    }).trim();
     execSync(`git checkout -q ${commitHash}`, { cwd: tempDir });
 
     // getGitRoot should still work
@@ -470,7 +498,10 @@ test('getGitBranch returns null for bare repository (no HEAD ref)', () => {
     const result = getGitBranch(tempDir);
     // Bare repos with no commits return null (no HEAD target)
     // This is expected behavior
-    assertEquals(result === null || result === 'main' || result === 'master', true);
+    assertEquals(
+      result === null || result === 'main' || result === 'master',
+      true,
+    );
   } finally {
     fs.rmSync(tempDir, { recursive: true, force: true });
   }
@@ -539,7 +570,9 @@ test('getGitRoot resolves through symlink to git repo', () => {
       assertEquals(fs.realpathSync(result), fs.realpathSync(realDir));
     }
   } finally {
-    try { fs.unlinkSync(linkDir); } catch (e) {}
+    try {
+      fs.unlinkSync(linkDir);
+    } catch (e) {}
     fs.rmSync(realDir, { recursive: true, force: true });
   }
 });
@@ -561,7 +594,9 @@ test('getGitRoot with symlinked subdirectory', () => {
       assertEquals(fs.realpathSync(result), fs.realpathSync(realDir));
     }
   } finally {
-    try { fs.unlinkSync(linkToSub); } catch (e) {}
+    try {
+      fs.unlinkSync(linkToSub);
+    } catch (e) {}
     fs.rmSync(realDir, { recursive: true, force: true });
   }
 });
@@ -582,7 +617,9 @@ test('getGitRoot works with git worktree', () => {
     execSync('git commit -q -m "initial"', { cwd: mainDir });
 
     // Create worktree
-    execSync(`git worktree add -q "${worktreeDir}" -b worktree-branch`, { cwd: mainDir });
+    execSync(`git worktree add -q "${worktreeDir}" -b worktree-branch`, {
+      cwd: mainDir,
+    });
 
     // getGitRoot from worktree should return worktree path
     const result = getGitRoot(worktreeDir);
@@ -591,7 +628,9 @@ test('getGitRoot works with git worktree', () => {
     // Cleanup worktree
     execSync(`git worktree remove -f "${worktreeDir}"`, { cwd: mainDir });
   } finally {
-    try { fs.rmSync(worktreeDir, { recursive: true, force: true }); } catch (e) {}
+    try {
+      fs.rmSync(worktreeDir, { recursive: true, force: true });
+    } catch (e) {}
     fs.rmSync(mainDir, { recursive: true, force: true });
   }
 });
@@ -599,7 +638,10 @@ test('getGitRoot works with git worktree', () => {
 console.log('\n=== Unicode path tests ===\n');
 
 test('getGitRoot works with unicode characters in path', () => {
-  const tempDir = path.join(os.tmpdir(), 'ag-test-日本語-émoji-🔥-' + Date.now());
+  const tempDir = path.join(
+    os.tmpdir(),
+    'ag-test-日本語-émoji-🔥-' + Date.now(),
+  );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync('git init -q', { cwd: tempDir });
@@ -612,7 +654,10 @@ test('getGitRoot works with unicode characters in path', () => {
 });
 
 test('getGitBranch works with unicode branch name', () => {
-  const tempDir = path.join(os.tmpdir(), 'ag-test-unicode-branch-' + Date.now());
+  const tempDir = path.join(
+    os.tmpdir(),
+    'ag-test-unicode-branch-' + Date.now(),
+  );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync('git init -q', { cwd: tempDir });
@@ -636,7 +681,10 @@ console.log('\n=== Special character path tests ===\n');
 
 test('getGitRoot works with special shell characters in path', () => {
   // Test paths with characters that need escaping in shell
-  const tempDir = path.join(os.tmpdir(), "ag-test-special-$var-'quote'-" + Date.now());
+  const tempDir = path.join(
+    os.tmpdir(),
+    "ag-test-special-$var-'quote'-" + Date.now(),
+  );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync('git init -q', { cwd: tempDir });
@@ -665,7 +713,10 @@ test('getGitRoot works on new repo with no commits', () => {
 });
 
 test('getGitBranch on new repo returns default branch', () => {
-  const tempDir = path.join(os.tmpdir(), 'ag-test-new-repo-branch-' + Date.now());
+  const tempDir = path.join(
+    os.tmpdir(),
+    'ag-test-new-repo-branch-' + Date.now(),
+  );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync('git init -q', { cwd: tempDir });
@@ -678,7 +729,9 @@ test('getGitBranch on new repo returns default branch', () => {
   }
 });
 
-console.log('\n=== resolvePlanPath with sessionOrigin tests (Issue #335) ===\n');
+console.log(
+  '\n=== resolvePlanPath with sessionOrigin tests (Issue #335) ===\n',
+);
 
 // Helper to generate unique session IDs for isolation
 function generateTestSessionId() {
@@ -688,7 +741,9 @@ function generateTestSessionId() {
 // Cleanup helper
 function cleanupSession(sessionId) {
   const tempPath = getSessionTempPath(sessionId);
-  try { fs.unlinkSync(tempPath); } catch (e) {}
+  try {
+    fs.unlinkSync(tempPath);
+  } catch (e) {}
 }
 
 test('resolvePlanPath returns absolute path as-is (Issue #335)', () => {
@@ -698,10 +753,13 @@ test('resolvePlanPath returns absolute path as-is (Issue #335)', () => {
     writeSessionState(sessionId, {
       sessionOrigin: '/project/subfolder',
       activePlan: '/project/subfolder/plans/260111-feature',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
-    const config = { paths: { plans: 'plans' }, plan: { resolution: { order: ['session'] } } };
+    const config = {
+      paths: { plans: 'plans' },
+      plan: { resolution: { order: ['session'] } },
+    };
     const result = resolvePlanPath(sessionId, config);
 
     assertEquals(result.resolvedBy, 'session');
@@ -717,11 +775,14 @@ test('resolvePlanPath resolves relative path using sessionOrigin (Issue #335)', 
     // Store relative path (legacy behavior)
     writeSessionState(sessionId, {
       sessionOrigin: '/project/subfolder',
-      activePlan: 'plans/260111-feature',  // Relative
-      timestamp: Date.now()
+      activePlan: 'plans/260111-feature', // Relative
+      timestamp: Date.now(),
     });
 
-    const config = { paths: { plans: 'plans' }, plan: { resolution: { order: ['session'] } } };
+    const config = {
+      paths: { plans: 'plans' },
+      plan: { resolution: { order: ['session'] } },
+    };
     const result = resolvePlanPath(sessionId, config);
 
     assertEquals(result.resolvedBy, 'session');
@@ -738,10 +799,13 @@ test('resolvePlanPath without sessionOrigin uses relative path as-is', () => {
     // No sessionOrigin (edge case)
     writeSessionState(sessionId, {
       activePlan: 'plans/260111-feature',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
-    const config = { paths: { plans: 'plans' }, plan: { resolution: { order: ['session'] } } };
+    const config = {
+      paths: { plans: 'plans' },
+      plan: { resolution: { order: ['session'] } },
+    };
     const result = resolvePlanPath(sessionId, config);
 
     assertEquals(result.resolvedBy, 'session');
@@ -762,10 +826,13 @@ test('resolvePlanPath handles Windows-style paths on Windows', () => {
     writeSessionState(sessionId, {
       sessionOrigin: 'C:\\Users\\test\\project',
       activePlan: 'C:\\Users\\test\\project\\plans\\feature',
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
 
-    const config = { paths: { plans: 'plans' }, plan: { resolution: { order: ['session'] } } };
+    const config = {
+      paths: { plans: 'plans' },
+      plan: { resolution: { order: ['session'] } },
+    };
     const result = resolvePlanPath(sessionId, config);
 
     assertEquals(result.resolvedBy, 'session');
@@ -779,11 +846,17 @@ test('resolvePlanPath falls back to branch if no session state', () => {
   const sessionId = generateTestSessionId();
   // Don't write any session state
 
-  const config = { paths: { plans: 'plans' }, plan: { resolution: { order: ['session', 'branch'] } } };
+  const config = {
+    paths: { plans: 'plans' },
+    plan: { resolution: { order: ['session', 'branch'] } },
+  };
   const result = resolvePlanPath(sessionId, config);
 
   // Should fall through to branch or return null
-  assertEquals(result.resolvedBy === 'branch' || result.resolvedBy === null, true);
+  assertEquals(
+    result.resolvedBy === 'branch' || result.resolvedBy === null,
+    true,
+  );
 });
 
 // Summary

@@ -25,7 +25,7 @@ function summarise(orders: Order[]): Summary {
 
   for (const order of orders) {
     totalAmount += order.amount;
-    if (order.status === 'open') openCount++;
+    if (order.status === "open") openCount++;
     if (!byCustomer[order.customerId]) byCustomer[order.customerId] = [];
     byCustomer[order.customerId].push(order);
   }
@@ -40,8 +40,8 @@ function summarise(orders: Order[]): Summary {
 function summarise(orders: Order[]): Summary {
   return {
     totalAmount: orders.reduce((sum, o) => sum + o.amount, 0),
-    openCount:   orders.filter((o) => o.status === 'open').length,
-    byCustomer:  Object.groupBy(orders, (o) => o.customerId),
+    openCount: orders.filter((o) => o.status === "open").length,
+    byCustomer: Object.groupBy(orders, (o) => o.customerId),
   };
 }
 ```
@@ -58,7 +58,7 @@ const byCustomer = orders.reduce<Record<string, Order[]>>((acc, o) => {
 ### Common pitfalls
 
 - **String concat via reduce is O(n²).** `arr.reduce((s, x) => s + x.name, '')` allocates a new string at every step. Use `.map(x => x.name).join('')` (or a single join when the input is already strings) which is O(n). The model-default reduce here silently quadratics on long inputs.
-- **`acc.push(x); return acc` is a loop in disguise.** That's a mutated accumulator, not a fold. It's *acceptable* (and faster than `acc.concat(x)` which is O(n²)) — but if you find yourself mutating, an explicit `for-of` is honest. Don't dress up a loop in `reduce` clothing for style points.
+- **`acc.push(x); return acc` is a loop in disguise.** That's a mutated accumulator, not a fold. It's _acceptable_ (and faster than `acc.concat(x)` which is O(n²)) — but if you find yourself mutating, an explicit `for-of` is honest. Don't dress up a loop in `reduce` clothing for style points.
 - **`reduce` with `concat` is the bait.** `arr.reduce((acc, x) => acc.concat(f(x)), [])` is O(n²) — `concat` allocates a new array each step. Use `flatMap` for one-to-many, or push-mutating reduce for general accumulation.
 - **`Object.groupBy` keys coerce to strings.** Grouping by an object key won't disambiguate two distinct objects with the same `toString`; use `Map.groupBy` (also Stage 4) when keys are non-primitive.
 

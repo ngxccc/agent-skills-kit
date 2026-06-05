@@ -42,6 +42,7 @@ npx @tailwindcss/upgrade
 ```
 
 **Benefits:**
+
 - Full compatibility with Tailwind v4 tooling
 - Better performance from V8 engine improvements
 - Access to modern JavaScript features

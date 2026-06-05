@@ -44,12 +44,12 @@ Comprehensive rate limiting guide using `@upstash/ratelimit` for serverless and 
 
 This document was compiled from individual reference files. For detailed editing or extension:
 
-| File | Description |
-|------|-------------|
-| [references/setup-lazy-initialization.md](references/setup-lazy-initialization.md) | Lazy initialization guidelines |
-| [references/setup-await-pending-promises.md](references/setup-await-pending-promises.md) | Awaiting pending promises in serverless |
+| File                                                                                         | Description                               |
+| -------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| [references/setup-lazy-initialization.md](references/setup-lazy-initialization.md)           | Lazy initialization guidelines            |
+| [references/setup-await-pending-promises.md](references/setup-await-pending-promises.md)     | Awaiting pending promises in serverless   |
 | [references/algo-sliding-window-over-fixed.md](references/algo-sliding-window-over-fixed.md) | Sliding window vs fixed window algorithms |
-| [references/feat-ephemeral-cache.md](references/feat-ephemeral-cache.md) | Ephemeral cache optimization |
-| [references/feat-graceful-timeout.md](references/feat-graceful-timeout.md) | Timeout fallback settings |
-| [references/feat-deny-list-protection.md](references/feat-deny-list-protection.md) | Traffic protection and blocklists |
-| [SKILL.md](SKILL.md) | Quick reference entry point |
+| [references/feat-ephemeral-cache.md](references/feat-ephemeral-cache.md)                     | Ephemeral cache optimization              |
+| [references/feat-graceful-timeout.md](references/feat-graceful-timeout.md)                   | Timeout fallback settings                 |
+| [references/feat-deny-list-protection.md](references/feat-deny-list-protection.md)           | Traffic protection and blocklists         |
+| [SKILL.md](SKILL.md)                                                                         | Quick reference entry point               |

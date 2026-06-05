@@ -32,11 +32,13 @@ Tailwind CSS v4 automatically detects template files without manual configuratio
 ```
 
 **When to use @source:**
+
 - External UI libraries in node_modules
 - Files outside the project root
 - Paths excluded by .gitignore that you need to include
 
 **Auto-ignored paths:**
+
 - Files listed in .gitignore
 - Binary files (images, videos, zips)
 - node_modules (unless explicitly sourced)

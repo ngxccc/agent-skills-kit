@@ -5,7 +5,7 @@ impactDescription: replaces workaround patterns with single variant
 tags: adopt, variants, pseudo-classes, conditional
 ---
 
-## Use not-* Variant for Negated Conditions
+## Use not-\* Variant for Negated Conditions
 
 Tailwind v4 introduces the `not-*` variant to express negated conditions directly — "apply this style when the condition is NOT met." This is most valuable for pseudo-classes like `:disabled`, `:focus`, and `:empty` where the base-override pattern is awkward or verbose. For simple hover interactions, the standard `base hover:override` pattern remains idiomatic and often clearer.
 
@@ -13,16 +13,20 @@ Tailwind v4 introduces the `not-*` variant to express negated conditions directl
 
 ```html
 <!-- Must set disabled base styles, then override for enabled state -->
-<button class="opacity-50 cursor-not-allowed enabled:opacity-100 enabled:cursor-pointer">
+<button
+  class="opacity-50 cursor-not-allowed enabled:opacity-100 enabled:cursor-pointer"
+>
   Submit
 </button>
 ```
 
-**Correct (concise — not-* expresses intent directly):**
+**Correct (concise — not-\* expresses intent directly):**
 
 ```html
 <!-- Direct negation: style only when NOT disabled -->
-<button class="not-disabled:opacity-100 not-disabled:cursor-pointer opacity-50 cursor-not-allowed">
+<button
+  class="not-disabled:opacity-100 not-disabled:cursor-pointer opacity-50 cursor-not-allowed"
+>
   Submit
 </button>
 ```
@@ -36,5 +40,6 @@ The `not-*` variant works with pseudo-classes, media queries, and supports queri
 ```
 
 **When NOT to use this pattern:**
+
 - The standard `base hover:override` pattern (e.g., `opacity-75 hover:opacity-100`) remains valid and preferred for simple hover interactions — do not rewrite it with `not-hover:`
 - Avoid `not-*` when the base-override approach is already clear and well-understood

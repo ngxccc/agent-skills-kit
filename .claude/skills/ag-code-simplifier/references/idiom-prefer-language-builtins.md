@@ -41,7 +41,7 @@ function groupBy<T>(arr: T[], key: keyof T): Record<string, T[]> {
 ```typescript
 // TypeScript: Use Set and Object.groupBy (ES2024)
 const uniqueItems = [...new Set(arr)];
-const grouped = Object.groupBy(arr, item => item.category);
+const grouped = Object.groupBy(arr, (item) => item.category);
 ```
 
 **Incorrect (Python manual operations):**
@@ -151,13 +151,13 @@ let counts: HashMap<_, _> = items.iter().fold(HashMap::new(), |mut acc, x| {
 
 ### Common Builtins to Know
 
-| Operation | TypeScript | Python | Go | Rust |
-|-----------|------------|--------|-----|------|
-| Unique | `new Set()` | `set()` | `slices.Compact` | `.dedup()` |
-| Sort | `.sort()` | `sorted()` | `slices.Sort` | `.sort()` |
-| Find | `.find()` | `next(x for...)` | `slices.Index` | `.find()` |
-| Group | `Object.groupBy` | `itertools.groupby` | manual/lo | `.group_by()` |
-| Flatten | `.flat()` | `chain.from_iterable` | manual | `.flatten()` |
+| Operation | TypeScript       | Python                | Go               | Rust          |
+| --------- | ---------------- | --------------------- | ---------------- | ------------- |
+| Unique    | `new Set()`      | `set()`               | `slices.Compact` | `.dedup()`    |
+| Sort      | `.sort()`        | `sorted()`            | `slices.Sort`    | `.sort()`     |
+| Find      | `.find()`        | `next(x for...)`      | `slices.Index`   | `.find()`     |
+| Group     | `Object.groupBy` | `itertools.groupby`   | manual/lo        | `.group_by()` |
+| Flatten   | `.flat()`        | `chain.from_iterable` | manual           | `.flatten()`  |
 
 ### Benefits
 

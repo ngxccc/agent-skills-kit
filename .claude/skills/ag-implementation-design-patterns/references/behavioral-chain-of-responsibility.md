@@ -28,11 +28,11 @@ Extract each check into a standalone handler object with a single method. Link h
 
 ```typescript
 function handleOrder(request: OrderRequest) {
-  if (!authenticate(request))     return error('unauth');
-  if (!checkPermission(request))  return error('forbidden');
-  if (!validatePayload(request))  return error('bad request');
-  if (rateLimited(request))       return error('throttled');
-  if (cache.has(request.key))     return cache.get(request.key);
+  if (!authenticate(request)) return error("unauth");
+  if (!checkPermission(request)) return error("forbidden");
+  if (!validatePayload(request)) return error("bad request");
+  if (rateLimited(request)) return error("throttled");
+  if (cache.has(request.key)) return cache.get(request.key);
   // Add a new check? Insert another branch. Reorder them? Risky.
   return process(request);
 }
@@ -46,33 +46,32 @@ function handleOrder(request: OrderRequest) {
  * It also declares a method for executing a request.
  */
 interface Handler<Request = string, Result = string> {
-    setNext(handler: Handler<Request, Result>): Handler<Request, Result>;
+  setNext(handler: Handler<Request, Result>): Handler<Request, Result>;
 
-    handle(request: Request): Result;
+  handle(request: Request): Result;
 }
 
 /**
  * The default chaining behavior can be implemented inside a base handler class.
  */
-abstract class AbstractHandler implements Handler
-{
-    private nextHandler?: Handler;
+abstract class AbstractHandler implements Handler {
+  private nextHandler?: Handler;
 
-    public setNext(handler: Handler): Handler {
-        this.nextHandler = handler;
-        // Returning a handler from here will let us link handlers in a
-        // convenient way like this:
-        // monkey.setNext(squirrel).setNext(dog);
-        return handler;
+  public setNext(handler: Handler): Handler {
+    this.nextHandler = handler;
+    // Returning a handler from here will let us link handlers in a
+    // convenient way like this:
+    // monkey.setNext(squirrel).setNext(dog);
+    return handler;
+  }
+
+  public handle(request: string): string {
+    if (this.nextHandler) {
+      return this.nextHandler.handle(request);
     }
 
-    public handle(request: string): string {
-        if (this.nextHandler) {
-            return this.nextHandler.handle(request);
-        }
-
-        return '';
-    }
+    return "";
+  }
 }
 
 /**
@@ -80,30 +79,30 @@ abstract class AbstractHandler implements Handler
  * in the chain.
  */
 class MonkeyHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'Banana') {
-            return `Monkey: I'll eat the ${request}.`;
-        }
-        return super.handle(request);
+  public handle(request: string): string {
+    if (request === "Banana") {
+      return `Monkey: I'll eat the ${request}.`;
     }
+    return super.handle(request);
+  }
 }
 
 class SquirrelHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'Nut') {
-            return `Squirrel: I'll eat the ${request}.`;
-        }
-        return super.handle(request);
+  public handle(request: string): string {
+    if (request === "Nut") {
+      return `Squirrel: I'll eat the ${request}.`;
     }
+    return super.handle(request);
+  }
 }
 
 class DogHandler extends AbstractHandler {
-    public handle(request: string): string {
-        if (request === 'MeatBall') {
-            return `Dog: I'll eat the ${request}.`;
-        }
-        return super.handle(request);
+  public handle(request: string): string {
+    if (request === "MeatBall") {
+      return `Dog: I'll eat the ${request}.`;
     }
+    return super.handle(request);
+  }
 }
 
 /**
@@ -111,18 +110,18 @@ class DogHandler extends AbstractHandler {
  * cases, it is not even aware that the handler is part of a chain.
  */
 function clientCode(handler: Handler) {
-    const foods = ['Nut', 'Banana', 'Cup of coffee'];
+  const foods = ["Nut", "Banana", "Cup of coffee"];
 
-    for (const food of foods) {
-        console.log(`Client: Who wants a ${food}?`);
+  for (const food of foods) {
+    console.log(`Client: Who wants a ${food}?`);
 
-        const result = handler.handle(food);
-        if (result) {
-            console.log(`  ${result}`);
-        } else {
-            console.log(`  ${food} was left untouched.`);
-        }
+    const result = handler.handle(food);
+    if (result) {
+      console.log(`  ${result}`);
+    } else {
+      console.log(`  ${food} was left untouched.`);
     }
+  }
 }
 
 const monkey = new MonkeyHandler();
@@ -131,11 +130,11 @@ const dog = new DogHandler();
 
 monkey.setNext(squirrel).setNext(dog);
 
-console.log('Chain: Monkey > Squirrel > Dog\n');
+console.log("Chain: Monkey > Squirrel > Dog\n");
 clientCode(monkey);
-console.log('');
+console.log("");
 
-console.log('Subchain: Squirrel > Dog\n');
+console.log("Subchain: Squirrel > Dog\n");
 clientCode(squirrel);
 ```
 

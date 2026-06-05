@@ -50,25 +50,26 @@ The `will-change` property hints that an element will animate, allowing the brow
 
 ```javascript
 // Apply will-change just before animation
-element.addEventListener('mouseenter', () => {
-  element.style.willChange = 'transform';
+element.addEventListener("mouseenter", () => {
+  element.style.willChange = "transform";
 });
 
-element.addEventListener('animationend', () => {
-  element.style.willChange = 'auto'; // Release GPU layer
+element.addEventListener("animationend", () => {
+  element.style.willChange = "auto"; // Release GPU layer
 });
 
 // Or for scroll-triggered animations
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     entry.target.style.willChange = entry.isIntersecting
-      ? 'transform, opacity'
-      : 'auto';
+      ? "transform, opacity"
+      : "auto";
   });
 });
 ```
 
 **will-change guidelines:**
+
 - Never use `will-change: *` globally
 - Apply just before animation starts
 - Remove after animation completes

@@ -20,7 +20,9 @@ Don't choose breakpoints based on popular device widths. Instead, resize your co
     <!-- At 700px: 3 columns still active, cards are 190px wide,
          text wraps badly, price overflows -->
     <p class="text-3xl font-bold">$199/year</p>
-    <p class="text-gray-600">Best for teams that need unlimited access to all features</p>
+    <p class="text-gray-600">
+      Best for teams that need unlimited access to all features
+    </p>
   </div>
   <!-- ...two more cards -->
 </div>
@@ -37,11 +39,15 @@ Don't choose breakpoints based on popular device widths. Instead, resize your co
 
 ```html
 <!-- Custom breakpoint matches where the content stops working -->
-<div class="grid grid-cols-1 gap-6 px-4 cards:grid-cols-3 cards:gap-6 cards:px-8">
+<div
+  class="grid grid-cols-1 gap-6 px-4 cards:grid-cols-3 cards:gap-6 cards:px-8"
+>
   <div class="rounded-lg border border-gray-200 p-6">
     <h3 class="text-lg font-semibold">Annual Plan</h3>
     <p class="text-3xl font-bold">$199/year</p>
-    <p class="text-gray-600">Best for teams that need unlimited access to all features</p>
+    <p class="text-gray-600">
+      Best for teams that need unlimited access to all features
+    </p>
   </div>
   <!-- ...two more cards — columns kick in exactly when cards have room -->
 </div>

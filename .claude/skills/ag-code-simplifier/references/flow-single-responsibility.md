@@ -32,10 +32,10 @@ function processOrders(orders: Order[]) {
     customerOrderCounts.set(order.customerId, count + 1);
 
     // Prepare confirmation emails
-    if (order.status === 'completed') {
+    if (order.status === "completed") {
       emailsToSend.push({
         to: order.customerEmail,
-        subject: 'Order Confirmed',
+        subject: "Order Confirmed",
         body: generateOrderEmail(order),
       });
     }
@@ -68,7 +68,7 @@ function calculateTotalRevenue(orders: Order[]): number {
 
 function findSuspiciousOrders(orders: Order[]): Order[] {
   return orders.filter(
-    order => order.total > 10000 || order.items.length > 50
+    (order) => order.total > 10000 || order.items.length > 50,
   );
 }
 
@@ -83,10 +83,10 @@ function countOrdersByCustomer(orders: Order[]): Map<string, number> {
 
 function prepareConfirmationEmails(orders: Order[]): Email[] {
   return orders
-    .filter(order => order.status === 'completed')
-    .map(order => ({
+    .filter((order) => order.status === "completed")
+    .map((order) => ({
       to: order.customerEmail,
-      subject: 'Order Confirmed',
+      subject: "Order Confirmed",
       body: generateOrderEmail(order),
     }));
 }
@@ -106,16 +106,16 @@ function updateInventory(orders: Order[]): void {
 async function handleUserSignup(data: SignupData) {
   // Validate
   if (!data.email || !isValidEmail(data.email)) {
-    throw new Error('Invalid email');
+    throw new Error("Invalid email");
   }
   if (!data.password || data.password.length < 8) {
-    throw new Error('Password too short');
+    throw new Error("Password too short");
   }
 
   // Check existing
   const existing = await db.users.findByEmail(data.email);
   if (existing) {
-    throw new Error('Email already registered');
+    throw new Error("Email already registered");
   }
 
   // Hash password
@@ -132,13 +132,13 @@ async function handleUserSignup(data: SignupData) {
   // Send welcome email
   await emailService.send({
     to: user.email,
-    template: 'welcome',
+    template: "welcome",
     data: { name: user.name },
   });
 
   // Create audit log
   await auditLog.record({
-    action: 'user_signup',
+    action: "user_signup",
     userId: user.id,
     timestamp: new Date(),
   });
@@ -146,7 +146,7 @@ async function handleUserSignup(data: SignupData) {
   // Initialize settings
   await db.userSettings.create({
     userId: user.id,
-    theme: 'light',
+    theme: "light",
     notifications: true,
   });
 
@@ -172,17 +172,17 @@ async function handleUserSignup(data: SignupData): Promise<User> {
 
 function validateSignupData(data: SignupData): void {
   if (!data.email || !isValidEmail(data.email)) {
-    throw new ValidationError('Invalid email');
+    throw new ValidationError("Invalid email");
   }
   if (!data.password || data.password.length < 8) {
-    throw new ValidationError('Password must be at least 8 characters');
+    throw new ValidationError("Password must be at least 8 characters");
   }
 }
 
 async function ensureEmailNotTaken(email: string): Promise<void> {
   const existing = await db.users.findByEmail(email);
   if (existing) {
-    throw new ConflictError('Email already registered');
+    throw new ConflictError("Email already registered");
   }
 }
 

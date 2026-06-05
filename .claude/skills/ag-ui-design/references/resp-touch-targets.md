@@ -59,6 +59,7 @@ Desktop hover states and small click targets don't work on touch devices. Mobile
 ```
 
 **Touch target guidelines:**
+
 - Minimum 44×44px (Apple HIG) or 48×48px (Material Design)
 - Minimum 8px spacing between adjacent targets
 - Padding counts toward target size, not just visible element

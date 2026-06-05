@@ -28,11 +28,11 @@ Create a Facade class with a simple interface exposing only what clients need. T
 
 ```typescript
 // Every caller of "play a video" has to know this whole dance:
-const codec   = CodecFactory.extract(filename);
-const buffer  = new VideoBufferReader(filename, codec);
+const codec = CodecFactory.extract(filename);
+const buffer = new VideoBufferReader(filename, codec);
 const bitrate = BitrateReader.read(buffer, codec);
-const audio   = AudioMixer.process(buffer);
-const player  = new VideoPlayer();
+const audio = AudioMixer.process(buffer);
+const player = new VideoPlayer();
 player.init(codec, audio);
 player.play(bitrate);
 player.teardown();
@@ -49,34 +49,34 @@ player.teardown();
  * complexity of the subsystem.
  */
 class Facade {
-    protected subsystem1: Subsystem1;
+  protected subsystem1: Subsystem1;
 
-    protected subsystem2: Subsystem2;
+  protected subsystem2: Subsystem2;
 
-    /**
-     * Depending on your application's needs, you can provide the Facade with
-     * existing subsystem objects or force the Facade to create them on its own.
-     */
-    constructor(subsystem1?: Subsystem1, subsystem2?: Subsystem2) {
-        this.subsystem1 = subsystem1 || new Subsystem1();
-        this.subsystem2 = subsystem2 || new Subsystem2();
-    }
+  /**
+   * Depending on your application's needs, you can provide the Facade with
+   * existing subsystem objects or force the Facade to create them on its own.
+   */
+  constructor(subsystem1?: Subsystem1, subsystem2?: Subsystem2) {
+    this.subsystem1 = subsystem1 || new Subsystem1();
+    this.subsystem2 = subsystem2 || new Subsystem2();
+  }
 
-    /**
-     * The Facade's methods are convenient shortcuts to the sophisticated
-     * functionality of the subsystems. However, clients get only to a fraction
-     * of a subsystem's capabilities.
-     */
-    public operation(): string {
-        let result = 'Facade initializes subsystems:\n';
-        result += this.subsystem1.operation1();
-        result += this.subsystem2.operation1();
-        result += 'Facade orders subsystems to perform the action:\n';
-        result += this.subsystem1.operationN();
-        result += this.subsystem2.operationZ();
+  /**
+   * The Facade's methods are convenient shortcuts to the sophisticated
+   * functionality of the subsystems. However, clients get only to a fraction
+   * of a subsystem's capabilities.
+   */
+  public operation(): string {
+    let result = "Facade initializes subsystems:\n";
+    result += this.subsystem1.operation1();
+    result += this.subsystem2.operation1();
+    result += "Facade orders subsystems to perform the action:\n";
+    result += this.subsystem1.operationN();
+    result += this.subsystem2.operationZ();
 
-        return result;
-    }
+    return result;
+  }
 }
 
 /**
@@ -85,30 +85,30 @@ class Facade {
  * a part of the Subsystem.
  */
 class Subsystem1 {
-    public operation1(): string {
-        return 'Subsystem1: Ready!\n';
-    }
+  public operation1(): string {
+    return "Subsystem1: Ready!\n";
+  }
 
-    public operationN(): string {
-        return 'Subsystem1: Go!\n';
-    }
+  public operationN(): string {
+    return "Subsystem1: Go!\n";
+  }
 }
 
 /**
  * Some facades can work with multiple subsystems at the same time.
  */
 class Subsystem2 {
-    public operation1(): string {
-        return 'Subsystem2: Get ready!\n';
-    }
+  public operation1(): string {
+    return "Subsystem2: Get ready!\n";
+  }
 
-    public operationZ(): string {
-        return 'Subsystem2: Fire!';
-    }
+  public operationZ(): string {
+    return "Subsystem2: Fire!";
+  }
 }
 
 function clientCode(facade: Facade) {
-    console.log(facade.operation());
+  console.log(facade.operation());
 }
 
 const subsystem1 = new Subsystem1();
@@ -158,7 +158,7 @@ Subsystem2: Fire!
 
 ### Related Patterns
 
-- **Adapter** — Facade defines a *new* interface for an existing subsystem; Adapter makes one object match an *existing* interface
+- **Adapter** — Facade defines a _new_ interface for an existing subsystem; Adapter makes one object match an _existing_ interface
 - **Abstract Factory** — can hide subsystem object creation from clients (alternative to Facade for the creation aspect)
 - **Mediator** — Mediator centralizes communication among components; Facade just simplifies access without removing functionality
 - **Singleton** — a Facade is often a Singleton because one is usually enough

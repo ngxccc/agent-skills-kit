@@ -17,7 +17,7 @@ tags: action, optimistic-ui, useOptimistic, instant-feedback
 - A shopping-cart "add" button that disables itself for ~500ms post-click — uses `useTransition` for pending state but doesn't update the cart count optimistically.
 - A workaround using SWR's `mutate(...)` with optimistic data — works in client-data-fetching contexts; `useOptimistic` is the React-native equivalent that pairs cleanly with Server Actions.
 
-The canonical resolution: `const [optimistic, addOptimistic] = useOptimistic(real, reducer)`. Call `addOptimistic(value)` inside the form action *before* `await`-ing the server call. React reverts automatically when the action settles, regardless of outcome.
+The canonical resolution: `const [optimistic, addOptimistic] = useOptimistic(real, reducer)`. Call `addOptimistic(value)` inside the form action _before_ `await`-ing the server call. React reverts automatically when the action settles, regardless of outcome.
 
 **Incorrect (waiting for server response):**
 
@@ -78,6 +78,7 @@ export function LikeButton({ postId, initialLikes }: { postId: string; initialLi
 ```
 
 **When to use:**
+
 - Like/vote buttons
 - Adding items to cart
 - Toggling favorites

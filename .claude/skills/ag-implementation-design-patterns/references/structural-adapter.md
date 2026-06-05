@@ -34,13 +34,15 @@ class XmlStockFeed {
 }
 
 class JsonAnalytics {
-  analyze(payload: { symbol: string; price: number }) { /* ... */ }
+  analyze(payload: { symbol: string; price: number }) {
+    /* ... */
+  }
 }
 
 // Every caller has to know about both shapes and do its own conversion:
 const feed = new XmlStockFeed();
 const analytics = new JsonAnalytics();
-const xml = feed.getQuoteXml('ACME');
+const xml = feed.getQuoteXml("ACME");
 const symbolMatch = xml.match(/symbol="([^"]+)"/);
 const priceMatch = xml.match(/<price>(\d+)<\/price>/);
 analytics.analyze({
@@ -56,9 +58,9 @@ analytics.analyze({
  * The Target defines the domain-specific interface used by the client code.
  */
 class Target {
-    public request(): string {
-        return 'Target: The default target\'s behavior.';
-    }
+  public request(): string {
+    return "Target: The default target's behavior.";
+  }
 }
 
 /**
@@ -67,9 +69,9 @@ class Target {
  * client code can use it.
  */
 class Adaptee {
-    public specificRequest(): string {
-        return '.eetpadA eht fo roivaheb laicepS';
-    }
+  public specificRequest(): string {
+    return ".eetpadA eht fo roivaheb laicepS";
+  }
 }
 
 /**
@@ -77,39 +79,41 @@ class Adaptee {
  * interface.
  */
 class Adapter extends Target {
-    private adaptee: Adaptee;
+  private adaptee: Adaptee;
 
-    constructor(adaptee: Adaptee) {
-        super();
-        this.adaptee = adaptee;
-    }
+  constructor(adaptee: Adaptee) {
+    super();
+    this.adaptee = adaptee;
+  }
 
-    public request(): string {
-        const result = this.adaptee.specificRequest().split('').reverse().join('');
-        return `Adapter: (TRANSLATED) ${result}`;
-    }
+  public request(): string {
+    const result = this.adaptee.specificRequest().split("").reverse().join("");
+    return `Adapter: (TRANSLATED) ${result}`;
+  }
 }
 
 /**
  * The client code supports all classes that follow the Target interface.
  */
 function clientCode(target: Target) {
-    console.log(target.request());
+  console.log(target.request());
 }
 
-console.log('Client: I can work just fine with the Target objects:');
+console.log("Client: I can work just fine with the Target objects:");
 const target = new Target();
 clientCode(target);
 
-console.log('');
+console.log("");
 
 const adaptee = new Adaptee();
-console.log('Client: The Adaptee class has a weird interface. See, I don\'t understand it:');
+console.log(
+  "Client: The Adaptee class has a weird interface. See, I don't understand it:",
+);
 console.log(`Adaptee: ${adaptee.specificRequest()}`);
 
-console.log('');
+console.log("");
 
-console.log('Client: But I can work with it via the Adapter:');
+console.log("Client: But I can work with it via the Adapter:");
 const adapter = new Adapter(adaptee);
 clientCode(adapter);
 ```
@@ -164,6 +168,6 @@ Adapter: (TRANSLATED) Special behavior of the Adaptee.
 - **Bridge** — designed upfront to split abstraction from implementation; Adapter is typically retrofitted to existing classes
 - **Decorator** — same wrapping shape, but Decorator keeps the same interface and adds behavior, while Adapter changes the interface
 - **Proxy** — keeps the same interface and controls access; Adapter changes the interface
-- **Facade** — defines a *new* interface over a *subsystem*; Adapter wraps a *single object* to match an *existing* interface
+- **Facade** — defines a _new_ interface over a _subsystem_; Adapter wraps a _single object_ to match an _existing_ interface
 
 Reference: [refactoring.guru/design-patterns/adapter](https://refactoring.guru/design-patterns/adapter)

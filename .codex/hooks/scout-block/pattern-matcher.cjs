@@ -39,10 +39,11 @@ function readPatternsFromFile(filePath) {
   }
 
   try {
-    return fs.readFileSync(filePath, 'utf-8')
+    return fs
+      .readFileSync(filePath, 'utf-8')
       .split('\n')
-      .map(line => line.trim())
-      .filter(line => line && !line.startsWith('#'));
+      .map((line) => line.trim())
+      .filter((line) => line && !line.startsWith('#'));
   } catch (error) {
     console.error('WARN: Failed to read .vcignore:', error.message);
     return [];
@@ -60,7 +61,8 @@ function readPatternsFromFile(filePath) {
 function loadPatterns(ckignorePath, projectCkignorePath) {
   const shippedPatterns = readPatternsFromFile(ckignorePath);
   const projectPatterns = readPatternsFromFile(projectCkignorePath);
-  const basePatterns = shippedPatterns.length > 0 ? shippedPatterns : DEFAULT_PATTERNS;
+  const basePatterns =
+    shippedPatterns.length > 0 ? shippedPatterns : DEFAULT_PATTERNS;
   return [...basePatterns, ...projectPatterns];
 }
 
@@ -111,7 +113,7 @@ function createMatcher(patterns) {
   return {
     ig,
     patterns: normalizedPatterns,
-    original: patterns
+    original: patterns,
   };
 }
 
@@ -192,7 +194,7 @@ function findMatchingPattern(originalPatterns, path) {
     }
   }
 
-  return originalPatterns.find(p => !p.startsWith('!')) || 'unknown';
+  return originalPatterns.find((p) => !p.startsWith('!')) || 'unknown';
 }
 
 module.exports = {
@@ -200,5 +202,5 @@ module.exports = {
   createMatcher,
   matchPath,
   findMatchingPattern,
-  DEFAULT_PATTERNS
+  DEFAULT_PATTERNS,
 };

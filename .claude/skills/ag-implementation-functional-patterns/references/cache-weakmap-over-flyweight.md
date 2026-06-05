@@ -36,7 +36,7 @@ class TreeTypeFactory {
 const factory = new TreeTypeFactory();
 const trees = positions.map((pos) => ({
   pos,
-  type: factory.getType('pine', pineBitmap),
+  type: factory.getType("pine", pineBitmap),
 }));
 ```
 
@@ -48,11 +48,12 @@ type TreeType = { name: string; bitmap: Bitmap };
 const treeTypes = new Map<string, TreeType>();
 
 const getTreeType = (name: string, bitmap: Bitmap): TreeType =>
-  treeTypes.get(name) ?? (treeTypes.set(name, { name, bitmap }), treeTypes.get(name)!);
+  treeTypes.get(name) ??
+  (treeTypes.set(name, { name, bitmap }), treeTypes.get(name)!);
 
 const trees = positions.map((pos) => ({
   pos,
-  type: getTreeType('pine', pineBitmap),
+  type: getTreeType("pine", pineBitmap),
 }));
 ```
 
@@ -61,7 +62,7 @@ Eight lines of class becomes three — the Map IS the pool, the function IS the 
 ```typescript
 const getTreeType = (name: string, bitmap: Bitmap): TreeType => {
   let t = treeTypes.get(name);
-  if (!t) treeTypes.set(name, t = { name, bitmap });
+  if (!t) treeTypes.set(name, (t = { name, bitmap }));
   return t;
 };
 ```
@@ -74,7 +75,7 @@ const renderCache = new WeakMap<AstNode, RenderedOutput>();
 const render = (node: AstNode): RenderedOutput => {
   let out = renderCache.get(node);
   if (!out) {
-    out = computeRender(node);  // expensive
+    out = computeRender(node); // expensive
     renderCache.set(node, out);
   }
   return out;
@@ -87,14 +88,14 @@ When an `AstNode` becomes unreachable elsewhere, its `RenderedOutput` entry is g
 
 - **`Map` cache leaks when keys are never removed.** Long-lived `Map<string, T>` caches accumulate entries forever unless you cap their size (LRU eviction) or explicitly `delete`. For per-request caches that should be scoped to the request, attach them to the request object, not module scope.
 - **`WeakMap` keys must be objects.** `weakMap.set('some-string', value)` is a TypeError. For string keys, `Map` is the choice; pair with eviction policy.
-- **Sharing a mutable cached value defeats Flyweight's invariant.** The whole point is that the cached intrinsic state doesn't change per consumer. If a caller does `getTreeType('pine', …).bitmap = newBitmap`, *every* tree of type 'pine' now uses the new bitmap. Freeze cached values (`Object.freeze(...)`) or document the immutability contract.
+- **Sharing a mutable cached value defeats Flyweight's invariant.** The whole point is that the cached intrinsic state doesn't change per consumer. If a caller does `getTreeType('pine', …).bitmap = newBitmap`, _every_ tree of type 'pine' now uses the new bitmap. Freeze cached values (`Object.freeze(...)`) or document the immutability contract.
 - **Cache key collisions.** `getTreeType('pine', oakBitmap)` returns the existing 'pine' entry (with `pineBitmap`) and silently ignores the second argument. The factory function should either reject mismatched calls or include the bitmap (or its hash) in the key.
-- **Premature memoization.** Caching takes memory and adds lookup cost. If the keyed values are cheap to create and infrequently reused, caching makes things slower *and* eats more memory. Benchmark before memoizing.
+- **Premature memoization.** Caching takes memory and adds lookup cost. If the keyed values are cheap to create and infrequently reused, caching makes things slower _and_ eats more memory. Benchmark before memoizing.
 
 ### Performance trade-offs
 
 - **Time:** `Map.get` is O(1) amortized; `WeakMap.get` is too. The factory function call plus a lookup is comparable to a class method's overhead.
-- **Memory:** the *win* is in cached values vs duplicated values. Sharing one `TreeType` across 1M trees saves `1M * sizeof(TreeType)` minus the cache's own overhead. Worth it when the intrinsic state is meaningfully large (bitmaps, parsed ASTs, compiled regexes).
+- **Memory:** the _win_ is in cached values vs duplicated values. Sharing one `TreeType` across 1M trees saves `1M * sizeof(TreeType)` minus the cache's own overhead. Worth it when the intrinsic state is meaningfully large (bitmaps, parsed ASTs, compiled regexes).
 - **GC behavior:** `WeakMap` entries are collected when keys are unreachable. `Map` entries persist until manually removed. Choose based on the value's lifecycle.
 - **Cache replacement policy matters at scale.** For unbounded `Map` caches with a hot working set, an LRU implementation (e.g., `lru-cache` package) prevents memory growth. For small finite key sets, plain `Map` is fine.
 

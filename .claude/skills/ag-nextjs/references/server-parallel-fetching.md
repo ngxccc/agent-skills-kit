@@ -17,7 +17,7 @@ tags: server, parallel-fetch, waterfall, concurrent-await
 - A layout that awaits one fetch, then renders a Server Component child that awaits another — the layout's render is in the critical path; if neither fetch depends on the other, both should fire in parallel.
 - Workaround: a `useEffect` in a client component that orchestrates two `fetch` calls in parallel because the server version was "too hard" — defeats the SSR benefit.
 
-The canonical resolution: `const [a, b, c] = await Promise.all([fetchA(), fetchB(), fetchC()])` for hard dependencies; `Promise.allSettled` when each branch should tolerate others' failures. When *some* fetches depend on a result (the user ID), serialize only the dependency boundary, then parallelize the rest.
+The canonical resolution: `const [a, b, c] = await Promise.all([fetchA(), fetchB(), fetchC()])` for hard dependencies; `Promise.allSettled` when each branch should tolerate others' failures. When _some_ fetches depend on a result (the user ID), serialize only the dependency boundary, then parallelize the rest.
 
 **Incorrect (sequential fetches, 3 round trips):**
 
@@ -82,7 +82,7 @@ export default async function DashboardPage() {
 
 ### In disguise — sequential fetches hidden across parent/child Server Components
 
-The grep-friendly anti-pattern is N `await` statements in one function. The disguise is the *same* sequential pattern split across a parent and a child Server Component — the parent awaits A and renders the child; the child awaits B. The waterfall is invisible at the file level but causes the same TTFB regression.
+The grep-friendly anti-pattern is N `await` statements in one function. The disguise is the _same_ sequential pattern split across a parent and a child Server Component — the parent awaits A and renders the child; the child awaits B. The waterfall is invisible at the file level but causes the same TTFB regression.
 
 **Incorrect — in disguise (parent awaits A, child awaits B, no overlap):**
 
@@ -106,7 +106,7 @@ export async function OrdersSection() {
 // Total: 350ms (sequential), even though orders doesn't depend on user
 ```
 
-The page-level `Promise.all` is missing because the two fetches don't live in the same file. The audit needs to see the *route* as a whole, not just the page.
+The page-level `Promise.all` is missing because the two fetches don't live in the same file. The audit needs to see the _route_ as a whole, not just the page.
 
 **Correct — preload pattern triggers both in parallel:**
 

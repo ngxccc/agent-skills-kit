@@ -7,7 +7,7 @@ tags: stream, skeleton-dimensions, cls, no-layout-shift
 
 ## Loading skeletons match the dimensions of the content they replace — never collapse the layout while loading
 
-**Pattern intent:** a skeleton's job is to *occupy the same space* the real content will fill. If it doesn't, the page jumps when the real content arrives — that's CLS, hurts Core Web Vitals, and feels unprofessional.
+**Pattern intent:** a skeleton's job is to _occupy the same space_ the real content will fill. If it doesn't, the page jumps when the real content arrives — that's CLS, hurts Core Web Vitals, and feels unprofessional.
 
 ### Shapes to recognize
 
@@ -78,6 +78,7 @@ export default async function Page() {
 ```
 
 **Tips:**
+
 - Use the same CSS classes for skeleton and content containers
 - Set explicit heights on dynamic content
 - Use `aspect-ratio` for images and videos

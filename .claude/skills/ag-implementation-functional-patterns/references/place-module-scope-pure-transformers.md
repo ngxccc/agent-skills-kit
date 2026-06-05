@@ -54,8 +54,8 @@ function InvoiceRow({ amount, currency, onSelect }: Props) {
 
 ### Common pitfalls
 
-- **Inline arrows inside `.map(...)` in JSX rendering a list.** `arr.map(item => <Row onClick={() => handle(item.id)} />)` allocates `arr.length` closures *per parent render*. For a list of 1000 rows re-rendering on parent state change, that's 1000 closures per render. Either rely on React Compiler v1.0 (which auto-memoizes), or define `Row` to take `itemId` and pass `handle` as a stable prop: `<Row itemId={item.id} onClick={handle} />` with `Row` calling `onClick(itemId)` internally.
-- **`useCallback` on a function that doesn't capture anything.** `const fmt = useCallback((n: number) => n.toFixed(2), [])` — empty deps array means the function never changes, but `useCallback` still allocates a Memo cell each render. The honest fix is module-scope: `const fmt = (n: number) => n.toFixed(2)` at the top of the file. `useCallback` is for *captured* closures whose identity you need stable, not for hand-holding pure functions.
+- **Inline arrows inside `.map(...)` in JSX rendering a list.** `arr.map(item => <Row onClick={() => handle(item.id)} />)` allocates `arr.length` closures _per parent render_. For a list of 1000 rows re-rendering on parent state change, that's 1000 closures per render. Either rely on React Compiler v1.0 (which auto-memoizes), or define `Row` to take `itemId` and pass `handle` as a stable prop: `<Row itemId={item.id} onClick={handle} />` with `Row` calling `onClick(itemId)` internally.
+- **`useCallback` on a function that doesn't capture anything.** `const fmt = useCallback((n: number) => n.toFixed(2), [])` — empty deps array means the function never changes, but `useCallback` still allocates a Memo cell each render. The honest fix is module-scope: `const fmt = (n: number) => n.toFixed(2)` at the top of the file. `useCallback` is for _captured_ closures whose identity you need stable, not for hand-holding pure functions.
 - **`useMemo` returning a function.** `const fn = useMemo(() => () => doThing(x), [x])` is a roundabout `useCallback`. Use `useCallback(() => doThing(x), [x])` directly — same meaning, less noise.
 - **Module scope vs hook scope for "config-like" helpers.** If the helper depends on a runtime config that's the same for the whole app (theme, locale, feature flags loaded at boot), module scope is still right. If the config genuinely varies per render (per-user, per-route), capture it in the hook or pass it as an argument.
 
@@ -68,13 +68,13 @@ function InvoiceRow({ amount, currency, onSelect }: Props) {
 
 ### When NOT to apply (keep it nested)
 
-- The lambda *does* capture something from the component's render (a state value, a prop, a ref's current, a hook return) — hoisting breaks correctness. Pass the captured value as an argument and the rest of the rule still applies
+- The lambda _does_ capture something from the component's render (a state value, a prop, a ref's current, a hook return) — hoisting breaks correctness. Pass the captured value as an argument and the rest of the rule still applies
 - The transformer is genuinely one-of-a-kind to this component and would never be reused or tested separately — module-scoping it is fine but not mandatory; pick the placement that matches the lifetime of the concept, not just the mechanical stability win
-- The function is inside a generator/iterator/closure factory that *intentionally* produces a new function per call — that's the whole point of the factory; module scope would defeat the design
+- The function is inside a generator/iterator/closure factory that _intentionally_ produces a new function per call — that's the whole point of the factory; module scope would defeat the design
 
 ### Related
 
 - React skill rules for the consumer side: [`memo-use-callback`](../../../.curated/react/references/memo-use-callback.md), [`memo-react-memo`](../../../.curated/react/references/memo-react-memo.md)
-- Placement of *capturing* lambdas (the inverse case) is a planned sibling rule
+- Placement of _capturing_ lambdas (the inverse case) is a planned sibling rule
 
 Reference: [MDN — Closures: Creating closures in loops, common mistake](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures#creating_closures_in_loops_a_common_mistake)

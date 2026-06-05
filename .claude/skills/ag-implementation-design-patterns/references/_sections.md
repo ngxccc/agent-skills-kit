@@ -3,7 +3,7 @@
 This file defines all sections, their ordering, impact levels, and descriptions.
 The section ID (in parentheses) is the filename prefix used to group pattern references.
 
-The 22 patterns are the original Gang of Four (GoF) catalog grouped by purpose: Creational (object instantiation), Structural (class/object composition), and Behavioral (object collaboration and responsibility assignment). All three categories are foundational — the impact label reflects the impact of *applying the right pattern when the situation fits*, not a global ranking between categories.
+The 22 patterns are the original Gang of Four (GoF) catalog grouped by purpose: Creational (object instantiation), Structural (class/object composition), and Behavioral (object collaboration and responsibility assignment). All three categories are foundational — the impact label reflects the impact of _applying the right pattern when the situation fits_, not a global ranking between categories.
 
 ---
 

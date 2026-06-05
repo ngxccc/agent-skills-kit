@@ -5,7 +5,7 @@ tags: create, builder, fluent-immutable, partial-type, type-state
 
 ## Use an object literal with optional fields, or a fluent immutable builder, instead of a mutable Builder class
 
-A model trained on Effective Java's Builder pattern writes `new PizzaBuilder().size(L).addTopping('cheese').setSauce('tomato').build()` — a mutable builder with chained setters returning `this`. In TypeScript, two simpler alternatives almost always apply: (1) an **object literal with optional fields** — `createPizza({ size: 'L', toppings: ['cheese'], sauce: 'tomato' })` — which handles the constructor-with-many-parameters problem in one line; (2) a **fluent immutable builder** — each method returns a *new* builder with the field set — which enables compile-time type-state tracking ("you must call `.size()` before `.build()`"). Reach for the mutable-setters class form only when the builder genuinely needs to be shared between threads / async chains, or when the construction is so step-heavy that the object literal becomes unreadable.
+A model trained on Effective Java's Builder pattern writes `new PizzaBuilder().size(L).addTopping('cheese').setSauce('tomato').build()` — a mutable builder with chained setters returning `this`. In TypeScript, two simpler alternatives almost always apply: (1) an **object literal with optional fields** — `createPizza({ size: 'L', toppings: ['cheese'], sauce: 'tomato' })` — which handles the constructor-with-many-parameters problem in one line; (2) a **fluent immutable builder** — each method returns a _new_ builder with the field set — which enables compile-time type-state tracking ("you must call `.size()` before `.build()`"). Reach for the mutable-setters class form only when the builder genuinely needs to be shared between threads / async chains, or when the construction is so step-heavy that the object literal becomes unreadable.
 
 ### Shapes to recognize
 
@@ -18,25 +18,43 @@ A model trained on Effective Java's Builder pattern writes `new PizzaBuilder().s
 
 ```typescript
 class PizzaBuilder {
-  private _size: Size = 'M';
+  private _size: Size = "M";
   private _toppings: string[] = [];
-  private _sauce: Sauce = 'tomato';
-  private _crust: Crust = 'regular';
+  private _sauce: Sauce = "tomato";
+  private _crust: Crust = "regular";
 
-  size(s: Size): this        { this._size = s; return this; }
-  addTopping(t: string): this { this._toppings.push(t); return this; }
-  sauce(s: Sauce): this      { this._sauce = s; return this; }
-  crust(c: Crust): this      { this._crust = c; return this; }
+  size(s: Size): this {
+    this._size = s;
+    return this;
+  }
+  addTopping(t: string): this {
+    this._toppings.push(t);
+    return this;
+  }
+  sauce(s: Sauce): this {
+    this._sauce = s;
+    return this;
+  }
+  crust(c: Crust): this {
+    this._crust = c;
+    return this;
+  }
 
   build(): Pizza {
-    return { size: this._size, toppings: this._toppings, sauce: this._sauce, crust: this._crust };
+    return {
+      size: this._size,
+      toppings: this._toppings,
+      sauce: this._sauce,
+      crust: this._crust,
+    };
   }
 }
 
 const p = new PizzaBuilder()
-  .size('L')
-  .addTopping('cheese').addTopping('mushroom')
-  .sauce('tomato')
+  .size("L")
+  .addTopping("cheese")
+  .addTopping("mushroom")
+  .sauce("tomato")
   .build();
 ```
 
@@ -47,15 +65,15 @@ type Pizza = { size: Size; toppings: string[]; sauce: Sauce; crust: Crust };
 
 function createPizza(opts: Partial<Pizza>): Pizza {
   return {
-    size: 'M',
+    size: "M",
     toppings: [],
-    sauce: 'tomato',
-    crust: 'regular',
+    sauce: "tomato",
+    crust: "regular",
     ...opts,
   };
 }
 
-const p = createPizza({ size: 'L', toppings: ['cheese', 'mushroom'] });
+const p = createPizza({ size: "L", toppings: ["cheese", "mushroom"] });
 ```
 
 Five lines, no class, no `build()` ceremony. Adding a new field is one `?:` in the type and one default in the factory — the same diff as adding a setter, with less code.
@@ -64,13 +82,16 @@ Five lines, no class, no `build()` ceremony. Adding a new field is one `?:` in t
 
 ```typescript
 type QuerySelect<T> = { select: (keyof T)[] };
-type QueryFrom<T>   = QuerySelect<T> & { from: string };
-type QueryWhere<T>  = QueryFrom<T>   & { where?: Filter<T> };
+type QueryFrom<T> = QuerySelect<T> & { from: string };
+type QueryWhere<T> = QueryFrom<T> & { where?: Filter<T> };
 
 class Query<S extends Partial<QueryWhere<any>>> {
   constructor(private readonly state: S) {}
 
-  select<T, K extends keyof T>(this: Query<{}>, fields: K[]): Query<QuerySelect<T>> {
+  select<T, K extends keyof T>(
+    this: Query<{}>,
+    fields: K[],
+  ): Query<QuerySelect<T>> {
     return new Query({ select: fields });
   }
   from<T>(this: Query<QuerySelect<T>>, table: string): Query<QueryFrom<T>> {
@@ -80,13 +101,13 @@ class Query<S extends Partial<QueryWhere<any>>> {
     return new Query({ ...this.state, where: filter });
   }
   build(this: Query<QueryFrom<any>>): string {
-    return `SELECT ${this.state.select.join(', ')} FROM ${this.state.from}`;
+    return `SELECT ${this.state.select.join(", ")} FROM ${this.state.from}`;
   }
 }
 
 const sql = new Query({})
-  .select<User, 'id' | 'name'>(['id', 'name'])
-  .from('users')
+  .select<User, "id" | "name">(["id", "name"])
+  .from("users")
   .where({ active: true })
   .build();
 // Compile error if you call .where() before .from(), or .build() before .from().
@@ -96,17 +117,17 @@ Each `this:` constraint enforces that the previous step ran. `new Query(...)` pe
 
 ### Common pitfalls
 
-- **Forgetting `...opts` LAST.** `{ ...opts, size: 'M' }` always sets `size: 'M'` no matter what the caller passes. The `...opts` must come *after* defaults to allow override. (TypeScript will warn if `opts` is `Required<Pizza>`, but with `Partial<Pizza>` it's silent.)
+- **Forgetting `...opts` LAST.** `{ ...opts, size: 'M' }` always sets `size: 'M'` no matter what the caller passes. The `...opts` must come _after_ defaults to allow override. (TypeScript will warn if `opts` is `Required<Pizza>`, but with `Partial<Pizza>` it's silent.)
 - **Mutable arrays inside defaults.** `function createPizza(opts: Partial<Pizza>): Pizza { return { toppings: [], ...opts } }` — every default pizza shares the same `[]` reference if you forget to spread `opts.toppings`. Use `toppings: [...(opts.toppings ?? [])]` if subsequent mutation is allowed, or freeze the defaults.
 - **Spreading discards undefined-but-present.** `{ ...defaults, size: undefined }` keeps the spread default's `size`. `{ ...defaults, ...opts }` with `opts.size = undefined` ALSO keeps the spread default's `size` only if you use `??` rather than `||`. Subtle but bites.
 - **Fluent immutable that mutates `this`.** If a fluent method does `this.state.x = ...; return new Query(this.state)`, you've leaked the mutation back to the previous builder. Always copy the state when constructing the next builder.
-- **Builder pattern when nothing demands it.** Adding a builder when a 4-field record with 1 optional field would do is over-engineering. The rule of thumb: if there are <5 fields and order doesn't matter, the object literal wins; if there are >5 fields *and* construction has type-state, the fluent immutable wins.
+- **Builder pattern when nothing demands it.** Adding a builder when a 4-field record with 1 optional field would do is over-engineering. The rule of thumb: if there are <5 fields and order doesn't matter, the object literal wins; if there are >5 fields _and_ construction has type-state, the fluent immutable wins.
 
 ### Performance trade-offs
 
 - **Object literal + spread:** one allocation per `createPizza` call. Defaults are merged via shallow spread (cheap).
 - **Mutable class builder:** one allocation for the builder plus one for the result. Two objects per build. The cheaper-looking method-chained syntax hides this.
-- **Fluent immutable builder:** one allocation *per step*. For a 4-step build, four builder instances + the final result. Each is a shallow copy of the previous state. In hot paths (per-render, per-request) this can matter; for app-code one-time-per-something it's negligible.
+- **Fluent immutable builder:** one allocation _per step_. For a 4-step build, four builder instances + the final result. Each is a shallow copy of the previous state. In hot paths (per-render, per-request) this can matter; for app-code one-time-per-something it's negligible.
 - **The fluent immutable form is what enables type-state tracking** — every method has a different `this` type because each step returns a different `Query<S>`. That can't be done with a single mutable `this`-returning class. The allocations are paying for the compile-time guarantee.
 
 ### When NOT to apply (keep the mutable builder class)

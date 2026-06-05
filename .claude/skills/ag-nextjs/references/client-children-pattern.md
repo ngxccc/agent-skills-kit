@@ -80,6 +80,7 @@ export default async function ProductPage({ params }) {
 ```
 
 **Benefits:**
+
 - `ProductDetails` remains a Server Component
 - Data fetching happens on server
 - Only Modal interactivity ships to client

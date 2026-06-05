@@ -7,7 +7,7 @@ tags: impl, state, discriminated-unions, modeling
 
 ## Model Workflow State as a Discriminated Union of State Records
 
-The classic "loading / error / data" state object is almost always wrong: each field is independently nullable, so the type permits illegal combinations (loading and error true at the same time, data present while still loading). Modelling state as a discriminated *union of records* — one record per legal state, each carrying exactly the data that state has — makes illegal combinations un-typable. Components and reducers narrow on the tag and access only the fields valid for that tag. This is the structural-typing answer to "make impossible states impossible."
+The classic "loading / error / data" state object is almost always wrong: each field is independently nullable, so the type permits illegal combinations (loading and error true at the same time, data present while still loading). Modelling state as a discriminated _union of records_ — one record per legal state, each carrying exactly the data that state has — makes illegal combinations un-typable. Components and reducers narrow on the tag and access only the fields valid for that tag. This is the structural-typing answer to "make impossible states impossible."
 
 **Incorrect (independently nullable fields — combinatorial illegal states):**
 
@@ -59,10 +59,12 @@ Three implementation rules that pay off in practice:
 3. **Persist by serialising the union directly** — the discriminant goes to JSON cleanly, and a Zod/Valibot schema can re-parse it on load (`[[dsl-schema-first-inference]]`).
 
 **When NOT to apply:**
+
 - Forms with many independent fields where each field is genuinely optional — modeling every combination is combinatorial. Use a flat shape with field-level validity instead.
 - States with very few distinguishing fields — `{ status: 'open' | 'closed'; closedAt?: Date }` is fine; promoting it to a full union is over-engineering.
 
 **Scope delta:**
-- `typescript-refactor`'s `arch-discriminated-unions` covers the syntactic pattern. This rule covers the *modeling discipline* — when to choose a union over a flat record, how to handle transitions, and how illegal-state-prevention compounds across a component tree.
+
+- `typescript-refactor`'s `arch-discriminated-unions` covers the syntactic pattern. This rule covers the _modeling discipline_ — when to choose a union over a flat record, how to handle transitions, and how illegal-state-prevention compounds across a component tree.
 
 Reference: [TypeScript Handbook — Discriminated Unions](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)

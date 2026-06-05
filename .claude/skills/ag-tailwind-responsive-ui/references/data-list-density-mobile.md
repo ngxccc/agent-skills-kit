@@ -57,12 +57,20 @@ Desktop list items can afford generous padding and full secondary details becaus
 ```html
 <ul class="divide-y divide-gray-200">
   <li class="flex items-center gap-3 p-3 md:gap-4 md:p-6">
-    <img src="/avatars/sarah.jpg" alt="" class="h-9 w-9 rounded-full md:h-12 md:w-12" />
+    <img
+      src="/avatars/sarah.jpg"
+      alt=""
+      class="h-9 w-9 rounded-full md:h-12 md:w-12"
+    />
     <div class="min-w-0 flex-1">
-      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">Sarah Chen</h3>
+      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">
+        Sarah Chen
+      </h3>
       <p class="truncate text-xs text-gray-500 md:text-sm">Engineering Lead</p>
       <!-- Secondary info hidden on mobile -->
-      <p class="mt-1 hidden text-sm text-gray-400 md:block">Last active 2 hours ago</p>
+      <p class="mt-1 hidden text-sm text-gray-400 md:block">
+        Last active 2 hours ago
+      </p>
     </div>
     <div class="hidden text-right md:block">
       <p class="text-sm font-medium text-gray-900">12 projects</p>
@@ -72,11 +80,19 @@ Desktop list items can afford generous padding and full secondary details becaus
     <span class="text-xs text-gray-400 md:hidden">12</span>
   </li>
   <li class="flex items-center gap-3 p-3 md:gap-4 md:p-6">
-    <img src="/avatars/marcus.jpg" alt="" class="h-9 w-9 rounded-full md:h-12 md:w-12" />
+    <img
+      src="/avatars/marcus.jpg"
+      alt=""
+      class="h-9 w-9 rounded-full md:h-12 md:w-12"
+    />
     <div class="min-w-0 flex-1">
-      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">Marcus Johnson</h3>
+      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">
+        Marcus Johnson
+      </h3>
       <p class="truncate text-xs text-gray-500 md:text-sm">Product Manager</p>
-      <p class="mt-1 hidden text-sm text-gray-400 md:block">Last active 5 minutes ago</p>
+      <p class="mt-1 hidden text-sm text-gray-400 md:block">
+        Last active 5 minutes ago
+      </p>
     </div>
     <div class="hidden text-right md:block">
       <p class="text-sm font-medium text-gray-900">8 projects</p>
@@ -85,11 +101,19 @@ Desktop list items can afford generous padding and full secondary details becaus
     <span class="text-xs text-gray-400 md:hidden">8</span>
   </li>
   <li class="flex items-center gap-3 p-3 md:gap-4 md:p-6">
-    <img src="/avatars/priya.jpg" alt="" class="h-9 w-9 rounded-full md:h-12 md:w-12" />
+    <img
+      src="/avatars/priya.jpg"
+      alt=""
+      class="h-9 w-9 rounded-full md:h-12 md:w-12"
+    />
     <div class="min-w-0 flex-1">
-      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">Priya Patel</h3>
+      <h3 class="truncate text-sm font-semibold text-gray-900 md:text-base">
+        Priya Patel
+      </h3>
       <p class="truncate text-xs text-gray-500 md:text-sm">Design Director</p>
-      <p class="mt-1 hidden text-sm text-gray-400 md:block">Last active yesterday</p>
+      <p class="mt-1 hidden text-sm text-gray-400 md:block">
+        Last active yesterday
+      </p>
     </div>
     <div class="hidden text-right md:block">
       <p class="text-sm font-medium text-gray-900">15 projects</p>

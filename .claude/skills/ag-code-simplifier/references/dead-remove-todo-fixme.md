@@ -50,11 +50,13 @@ export class UserService {
 
   async updateUser(id: string, data: Partial<User>): Promise<void> {
     // Security: parameterized query prevents SQL injection
-    const setClauses = Object.keys(data).map(k => `${k} = ?`).join(', ');
-    await this.db.query(
-      `UPDATE users SET ${setClauses} WHERE id = ?`,
-      [...Object.values(data), id]
-    );
+    const setClauses = Object.keys(data)
+      .map((k) => `${k} = ?`)
+      .join(", ");
+    await this.db.query(`UPDATE users SET ${setClauses} WHERE id = ?`, [
+      ...Object.values(data),
+      id,
+    ]);
   }
 }
 
@@ -116,6 +118,7 @@ const result = workaroundFunction();
 ### TODO Triage Process
 
 When you find a TODO, decide:
+
 1. **Fix it now** - If it takes < 5 minutes, just do it
 2. **Create issue** - If it's real work, track it properly
 3. **Delete it** - If it's vague, stale, or no longer relevant

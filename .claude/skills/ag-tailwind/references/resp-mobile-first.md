@@ -29,6 +29,7 @@ Write base styles for mobile, then add complexity with breakpoint prefixes. This
 ```
 
 **Why mobile-first works better:**
+
 1. Base styles apply to all screen sizes
 2. Breakpoints add complexity progressively
 3. Smaller CSS output (fewer overrides)
@@ -36,13 +37,13 @@ Write base styles for mobile, then add complexity with breakpoint prefixes. This
 
 **Breakpoint reference:**
 
-| Prefix | Min-width | Target |
-|--------|-----------|--------|
-| (none) | 0px | Mobile |
-| `sm:` | 640px | Large phones |
-| `md:` | 768px | Tablets |
-| `lg:` | 1024px | Laptops |
-| `xl:` | 1280px | Desktops |
-| `2xl:` | 1536px | Large screens |
+| Prefix | Min-width | Target        |
+| ------ | --------- | ------------- |
+| (none) | 0px       | Mobile        |
+| `sm:`  | 640px     | Large phones  |
+| `md:`  | 768px     | Tablets       |
+| `lg:`  | 1024px    | Laptops       |
+| `xl:`  | 1280px    | Desktops      |
+| `2xl:` | 1536px    | Large screens |
 
 Reference: [Tailwind CSS Responsive Design](https://tailwindcss.com/docs/responsive-design)

@@ -67,10 +67,12 @@ Renaming `fullName` to `displayName` in the schema produces type errors at every
 Compose this with `[[impl-schema-derived-api-client]]` and the same schema (or a transform of it) becomes the API payload, closing the loop from input field → validated state → request body → server side.
 
 **When NOT to apply:**
+
 - Highly dynamic forms where the field list changes at runtime (admin tools, configurable surveys). The static schema cannot represent variable shapes — use a registry pattern with `Record<string, FieldDef>` and accept that field-name safety is local rather than end-to-end.
 - Forms with one or two fields where the schema overhead exceeds the benefit. `useState<string>` is fine for a search box.
 
 **Scope delta:**
+
 - Companion to `[[dsl-schema-first-inference]]`. The schema-first rule says "derive types from schemas"; this rule applies that discipline to forms, where the consequence is field-name autocomplete and end-to-end submit safety, not just type narrowing.
 
 Reference: [React Hook Form — Zod Resolver](https://react-hook-form.com/get-started#SchemaValidation)

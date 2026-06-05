@@ -13,17 +13,34 @@ String concatenation scatters the output format across operators and quotes, mak
 
 ```typescript
 function formatUserGreeting(user: User): string {
-  return 'Hello, ' + user.firstName + ' ' + user.lastName +
-    '! You have ' + user.unreadCount + ' unread messages.';
+  return (
+    "Hello, " +
+    user.firstName +
+    " " +
+    user.lastName +
+    "! You have " +
+    user.unreadCount +
+    " unread messages."
+  );
 }
 
-function buildApiUrl(baseUrl: string, version: number, resource: string): string {
-  return baseUrl + '/api/v' + version + '/' + resource;
+function buildApiUrl(
+  baseUrl: string,
+  version: number,
+  resource: string,
+): string {
+  return baseUrl + "/api/v" + version + "/" + resource;
 }
 
 function logOrderEvent(orderId: string, status: string, timestamp: Date): void {
-  console.log('[' + timestamp.toISOString() + '] Order ' + orderId +
-    ' changed to ' + status);
+  console.log(
+    "[" +
+      timestamp.toISOString() +
+      "] Order " +
+      orderId +
+      " changed to " +
+      status,
+  );
 }
 ```
 
@@ -34,12 +51,18 @@ function formatUserGreeting(user: User): string {
   return `Hello, ${user.firstName} ${user.lastName}! You have ${user.unreadCount} unread messages.`;
 }
 
-function buildApiUrl(baseUrl: string, version: number, resource: string): string {
+function buildApiUrl(
+  baseUrl: string,
+  version: number,
+  resource: string,
+): string {
   return `${baseUrl}/api/v${version}/${resource}`;
 }
 
 function logOrderEvent(orderId: string, status: string, timestamp: Date): void {
-  console.log(`[${timestamp.toISOString()}] Order ${orderId} changed to ${status}`);
+  console.log(
+    `[${timestamp.toISOString()}] Order ${orderId} changed to ${status}`,
+  );
 }
 ```
 

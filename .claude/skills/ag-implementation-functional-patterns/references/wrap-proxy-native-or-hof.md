@@ -9,13 +9,13 @@ The Proxy pattern substitutes one object for another while preserving the origin
 
 ### When to reach for native `Proxy` vs an HOF
 
-| Use case | Reach for |
-|---|---|
-| Lazy-load on first property access of an object whose shape you know | **HOF wrapper** (typed, no `Proxy` runtime cost) |
-| Intercept every property read/write (debugging, observable state, ORM model proxies) | **Native `Proxy`** (uniform interception across all keys) |
-| Dynamic property names you can't statically know (config from JSON, dynamic ORM) | **Native `Proxy`** |
-| Cache method results, retry on failure, add logging around known methods | **HOF wrapper** or [`pipe-compose-over-decorator`](pipe-compose-over-decorator.md) |
-| Implement reactive state where any field change fires a callback | **Native `Proxy`** (or use a signal library) |
+| Use case                                                                             | Reach for                                                                          |
+| ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Lazy-load on first property access of an object whose shape you know                 | **HOF wrapper** (typed, no `Proxy` runtime cost)                                   |
+| Intercept every property read/write (debugging, observable state, ORM model proxies) | **Native `Proxy`** (uniform interception across all keys)                          |
+| Dynamic property names you can't statically know (config from JSON, dynamic ORM)     | **Native `Proxy`**                                                                 |
+| Cache method results, retry on failure, add logging around known methods             | **HOF wrapper** or [`pipe-compose-over-decorator`](pipe-compose-over-decorator.md) |
+| Implement reactive state where any field change fires a callback                     | **Native `Proxy`** (or use a signal library)                                       |
 
 ### Shapes to recognize
 
@@ -34,23 +34,37 @@ interface Image {
 }
 
 class RealImage implements Image {
-  constructor(private filename: string) { this.load(); }
+  constructor(private filename: string) {
+    this.load();
+  }
   private bytes!: Uint8Array;
-  private load() { this.bytes = readFileSync(this.filename); }
-  display() { canvas.draw(this.bytes); }
-  size()    { return this.bytes.length; }
+  private load() {
+    this.bytes = readFileSync(this.filename);
+  }
+  display() {
+    canvas.draw(this.bytes);
+  }
+  size() {
+    return this.bytes.length;
+  }
 }
 
 class LazyImageProxy implements Image {
   private real: RealImage | null = null;
   constructor(private filename: string) {}
-  private get realImage() { return this.real ??= new RealImage(this.filename); }
-  display() { this.realImage.display(); }
-  size()    { return this.realImage.size(); }
+  private get realImage() {
+    return (this.real ??= new RealImage(this.filename));
+  }
+  display() {
+    this.realImage.display();
+  }
+  size() {
+    return this.realImage.size();
+  }
 }
 
-const img: Image = new LazyImageProxy('large.png');
-img.display();  // loads on first display
+const img: Image = new LazyImageProxy("large.png");
+img.display(); // loads on first display
 ```
 
 **Correct (HOF wrapper returning a lazy version):**
@@ -58,20 +72,20 @@ img.display();  // loads on first display
 ```typescript
 type Image = {
   display: () => void;
-  size:    () => number;
+  size: () => number;
 };
 
 function lazyImage(filename: string): Image {
   let real: Image | null = null;
-  const get = () => real ??= loadImage(filename);
+  const get = () => (real ??= loadImage(filename));
   return {
     display: () => get().display(),
-    size:    () => get().size(),
+    size: () => get().size(),
   };
 }
 
-const img = lazyImage('large.png');
-img.display();  // loads on first display
+const img = lazyImage("large.png");
+img.display(); // loads on first display
 ```
 
 Six lines of orchestration vs ~15 of class boilerplate. The closure carries the cached `real`; the returned object literal binds each method to the lazy getter.
@@ -85,16 +99,21 @@ function readonlyConfig(source: object): DeepGet {
   return new Proxy(source, {
     get(target, key, receiver) {
       const value = Reflect.get(target, key, receiver);
-      if (value && typeof value === 'object') return readonlyConfig(value);
+      if (value && typeof value === "object") return readonlyConfig(value);
       return value;
     },
-    set() { throw new Error('config is readonly'); },
+    set() {
+      throw new Error("config is readonly");
+    },
   }) as DeepGet;
 }
 
-const config = readonlyConfig({ db: { host: 'localhost', port: 5432 }, cache: { ttl: 60 } });
-console.log(config.db.host);   // 'localhost'
-config.db.host = 'other';      // throws — readonly
+const config = readonlyConfig({
+  db: { host: "localhost", port: 5432 },
+  cache: { ttl: 60 },
+});
+console.log(config.db.host); // 'localhost'
+config.db.host = "other"; // throws — readonly
 ```
 
 The native `Proxy` handles arbitrary property names without a class declaring each one. The trade-off: TypeScript can't track the dynamic types past the `as DeepGet` cast — you give up some type safety in exchange for shape flexibility.

@@ -31,7 +31,7 @@ class Particle {
   constructor(
     public x: number,
     public y: number,
-    public sprite: ImageBitmap,   // big — duplicated across millions of bullets
+    public sprite: ImageBitmap, // big — duplicated across millions of bullets
     public color: string,
     public mesh: Float32Array,
   ) {}
@@ -49,17 +49,17 @@ class Particle {
  * method parameters.
  */
 class Flyweight {
-    private sharedState: any;
+  private sharedState: any;
 
-    constructor(sharedState: any) {
-        this.sharedState = sharedState;
-    }
+  constructor(sharedState: any) {
+    this.sharedState = sharedState;
+  }
 
-    public operation(uniqueState: string[]): void {
-        const s = JSON.stringify(this.sharedState);
-        const u = JSON.stringify(uniqueState);
-        console.log(`Flyweight: Displaying shared (${s}) and unique (${u}) state.`);
-    }
+  public operation(uniqueState: string[]): void {
+    const s = JSON.stringify(this.sharedState);
+    const u = JSON.stringify(uniqueState);
+    console.log(`Flyweight: Displaying shared (${s}) and unique (${u}) state.`);
+  }
 }
 
 /**
@@ -69,63 +69,69 @@ class Flyweight {
  * doesn't exist yet.
  */
 class FlyweightFactory {
-    private flyweights: {[key: string]: Flyweight} = <any>{};
+  private flyweights: { [key: string]: Flyweight } = <any>{};
 
-    constructor(initialFlyweights: string[][]) {
-        for (const state of initialFlyweights) {
-            this.flyweights[this.getKey(state)] = new Flyweight(state);
-        }
+  constructor(initialFlyweights: string[][]) {
+    for (const state of initialFlyweights) {
+      this.flyweights[this.getKey(state)] = new Flyweight(state);
+    }
+  }
+
+  private getKey(state: string[]): string {
+    return state.join("_");
+  }
+
+  public getFlyweight(sharedState: string[]): Flyweight {
+    const key = this.getKey(sharedState);
+
+    if (!(key in this.flyweights)) {
+      console.log(
+        "FlyweightFactory: Can't find a flyweight, creating new one.",
+      );
+      this.flyweights[key] = new Flyweight(sharedState);
+    } else {
+      console.log("FlyweightFactory: Reusing existing flyweight.");
     }
 
-    private getKey(state: string[]): string {
-        return state.join('_');
+    return this.flyweights[key];
+  }
+
+  public listFlyweights(): void {
+    const count = Object.keys(this.flyweights).length;
+    console.log(`\nFlyweightFactory: I have ${count} flyweights:`);
+    for (const key in this.flyweights) {
+      console.log(key);
     }
-
-    public getFlyweight(sharedState: string[]): Flyweight {
-        const key = this.getKey(sharedState);
-
-        if (!(key in this.flyweights)) {
-            console.log('FlyweightFactory: Can\'t find a flyweight, creating new one.');
-            this.flyweights[key] = new Flyweight(sharedState);
-        } else {
-            console.log('FlyweightFactory: Reusing existing flyweight.');
-        }
-
-        return this.flyweights[key];
-    }
-
-    public listFlyweights(): void {
-        const count = Object.keys(this.flyweights).length;
-        console.log(`\nFlyweightFactory: I have ${count} flyweights:`);
-        for (const key in this.flyweights) {
-            console.log(key);
-        }
-    }
+  }
 }
 
 const factory = new FlyweightFactory([
-    ['Chevrolet', 'Camaro2018', 'pink'],
-    ['Mercedes Benz', 'C300', 'black'],
-    ['Mercedes Benz', 'C500', 'red'],
-    ['BMW', 'M5', 'red'],
-    ['BMW', 'X6', 'white'],
+  ["Chevrolet", "Camaro2018", "pink"],
+  ["Mercedes Benz", "C300", "black"],
+  ["Mercedes Benz", "C500", "red"],
+  ["BMW", "M5", "red"],
+  ["BMW", "X6", "white"],
 ]);
 factory.listFlyweights();
 
 function addCarToPoliceDatabase(
-    ff: FlyweightFactory, plates: string, owner: string,
-    brand: string, model: string, color: string,
+  ff: FlyweightFactory,
+  plates: string,
+  owner: string,
+  brand: string,
+  model: string,
+  color: string,
 ) {
-    console.log('\nClient: Adding a car to database.');
-    const flyweight = ff.getFlyweight([brand, model, color]);
+  console.log("\nClient: Adding a car to database.");
+  const flyweight = ff.getFlyweight([brand, model, color]);
 
-    // The client code either stores or calculates extrinsic state and passes it
-    // to the flyweight's methods.
-    flyweight.operation([plates, owner]);
+  // The client code either stores or calculates extrinsic state and passes it
+  // to the flyweight's methods.
+  flyweight.operation([plates, owner]);
 }
 
-addCarToPoliceDatabase(factory, 'CL234IR', 'James Doe', 'BMW', 'M5', 'red');
-addCarToPoliceDatabase(factory, 'CL234IR', 'James Doe', 'BMW', 'X1', 'red');
+addCarToPoliceDatabase(factory, "CL234IR", "James Doe", "BMW", "M5", "red");
+addCarToPoliceDatabase(factory, "CL234IR", "James Doe", "BMW", "X1", "red");
 
 factory.listFlyweights();
 ```

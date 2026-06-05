@@ -22,7 +22,10 @@ A single high-resolution hero background loaded on all devices wastes bandwidth 
       <p class="mt-4 text-lg text-white/90 md:text-xl">
         Handpicked destinations, curated experiences, unforgettable memories.
       </p>
-      <a href="/explore" class="mt-8 inline-block rounded-lg bg-white px-6 py-3 font-semibold text-gray-900 shadow-lg hover:bg-gray-100">
+      <a
+        href="/explore"
+        class="mt-8 inline-block rounded-lg bg-white px-6 py-3 font-semibold text-gray-900 shadow-lg hover:bg-gray-100"
+      >
         Start Exploring
       </a>
     </div>
@@ -34,7 +37,9 @@ A single high-resolution hero background loaded on all devices wastes bandwidth 
 
 ```html
 <!-- Mobile gets 640px (~80KB), tablet 1200px (~200KB), desktop 2400px (~500KB) -->
-<section class="relative bg-[url('/hero-640.jpg')] md:bg-[url('/hero-1200.jpg')] lg:bg-[url('/hero-2400.jpg')] bg-cover bg-center">
+<section
+  class="relative bg-[url('/hero-640.jpg')] md:bg-[url('/hero-1200.jpg')] lg:bg-[url('/hero-2400.jpg')] bg-cover bg-center"
+>
   <div class="bg-black/40 px-4 py-24 md:py-32 lg:py-40">
     <div class="mx-auto max-w-4xl text-center">
       <h1 class="text-3xl font-bold text-white md:text-5xl">
@@ -43,7 +48,10 @@ A single high-resolution hero background loaded on all devices wastes bandwidth 
       <p class="mt-4 text-lg text-white/90 md:text-xl">
         Handpicked destinations, curated experiences, unforgettable memories.
       </p>
-      <a href="/explore" class="mt-8 inline-block rounded-lg bg-white px-6 py-3 font-semibold text-gray-900 shadow-lg hover:bg-gray-100">
+      <a
+        href="/explore"
+        class="mt-8 inline-block rounded-lg bg-white px-6 py-3 font-semibold text-gray-900 shadow-lg hover:bg-gray-100"
+      >
         Start Exploring
       </a>
     </div>

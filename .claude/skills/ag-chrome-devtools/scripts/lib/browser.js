@@ -32,7 +32,12 @@ export function resolveHeadless(value) {
   if (value === true || value === 'true') return true;
 
   // Auto-detect: CI → headless
-  if (process.env.CI || process.env.GITHUB_ACTIONS || process.env.GITLAB_CI || process.env.JENKINS_URL) {
+  if (
+    process.env.CI ||
+    process.env.GITHUB_ACTIONS ||
+    process.env.GITLAB_CI ||
+    process.env.JENKINS_URL
+  ) {
     log('Auto-detected CI environment → headless');
     return true;
   }
@@ -86,10 +91,13 @@ function readSession() {
  */
 function writeSession(wsEndpoint) {
   try {
-    fs.writeFileSync(SESSION_FILE, JSON.stringify({
-      wsEndpoint,
-      timestamp: Date.now()
-    }));
+    fs.writeFileSync(
+      SESSION_FILE,
+      JSON.stringify({
+        wsEndpoint,
+        timestamp: Date.now(),
+      }),
+    );
   } catch (e) {
     log('Failed to write session:', e.message);
   }
@@ -176,20 +184,32 @@ export async function applyAuthSession(page, url) {
     }
 
     // Apply localStorage (requires navigation first)
-    if (authData.localStorage && Object.keys(authData.localStorage).length > 0) {
+    if (
+      authData.localStorage &&
+      Object.keys(authData.localStorage).length > 0
+    ) {
       await page.evaluate((data) => {
         Object.entries(data).forEach(([key, value]) => {
-          localStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+          localStorage.setItem(
+            key,
+            typeof value === 'string' ? value : JSON.stringify(value),
+          );
         });
       }, authData.localStorage);
       log('Applied localStorage data');
     }
 
     // Apply sessionStorage
-    if (authData.sessionStorage && Object.keys(authData.sessionStorage).length > 0) {
+    if (
+      authData.sessionStorage &&
+      Object.keys(authData.sessionStorage).length > 0
+    ) {
       await page.evaluate((data) => {
         Object.entries(data).forEach(([key, value]) => {
-          sessionStorage.setItem(key, typeof value === 'string' ? value : JSON.stringify(value));
+          sessionStorage.setItem(
+            key,
+            typeof value === 'string' ? value : JSON.stringify(value),
+          );
         });
       }, authData.sessionStorage);
       log('Applied sessionStorage data');
@@ -227,7 +247,7 @@ export async function getBrowser(options = {}) {
       log('Attempting to connect to existing browser session');
       browserInstance = await puppeteer.connect({
         browserWSEndpoint: session.wsEndpoint,
-        defaultViewport: null
+        defaultViewport: null,
       });
       log('Connected to existing browser');
       return browserInstance;
@@ -243,7 +263,7 @@ export async function getBrowser(options = {}) {
     browserInstance = await puppeteer.connect({
       browserWSEndpoint: options.wsEndpoint,
       browserURL: options.browserUrl,
-      defaultViewport: null
+      defaultViewport: null,
     });
     return browserInstance;
   }
@@ -255,7 +275,7 @@ export async function getBrowser(options = {}) {
       log('Trying chrome-debug at localhost:9222');
       browserInstance = await puppeteer.connect({
         browserURL: 'http://localhost:9222',
-        defaultViewport: null
+        defaultViewport: null,
       });
       // Save endpoint for future reconnects
       writeSession(browserInstance.wsEndpoint());
@@ -274,7 +294,17 @@ export async function getBrowser(options = {}) {
   }
 
   // Destructure known properties — only pass Puppeteer-valid options to launch()
-  const { headless, args: extraArgs, viewport, useDefaultProfile, profile, browserUrl, wsEndpoint: _ws, userDataDir: _udd, ...restOptions } = options;
+  const {
+    headless,
+    args: extraArgs,
+    viewport,
+    useDefaultProfile,
+    profile,
+    browserUrl,
+    wsEndpoint: _ws,
+    userDataDir: _udd,
+    ...restOptions
+  } = options;
 
   // Launch new browser
   const launchOptions = {
@@ -283,14 +313,14 @@ export async function getBrowser(options = {}) {
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
-      ...(extraArgs || [])
+      ...(extraArgs || []),
     ],
     defaultViewport: viewport || {
       width: 1920,
-      height: 1080
+      height: 1080,
     },
     ...(userDataDir && { userDataDir }),
-    ...restOptions
+    ...restOptions,
   };
 
   log('Launching new browser');
@@ -385,10 +415,16 @@ export function outputJSON(data) {
  * Output error
  */
 export function outputError(error) {
-  console.error(JSON.stringify({
-    success: false,
-    error: error.message,
-    stack: error.stack
-  }, null, 2));
+  console.error(
+    JSON.stringify(
+      {
+        success: false,
+        error: error.message,
+        stack: error.stack,
+      },
+      null,
+      2,
+    ),
+  );
   process.exit(1);
 }

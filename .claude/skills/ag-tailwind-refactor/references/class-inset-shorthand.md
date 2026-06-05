@@ -5,7 +5,7 @@ impactDescription: reduces 4 classes to 1 for positioned elements
 tags: class, inset, position, shorthand
 ---
 
-## Replace top/right/bottom/left with inset-*
+## Replace top/right/bottom/left with inset-\*
 
 When a positioned element sets all four sides to the same value, the `inset-*` utility replaces four separate classes with one. Similarly, `inset-x-*` replaces `left-*` and `right-*`, and `inset-y-*` replaces `top-*` and `bottom-*`. This reduces class noise significantly on overlay, modal, and full-bleed elements.
 

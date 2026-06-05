@@ -25,10 +25,10 @@ The canonical resolution: list the offenders in `serverExternalPackages` in `nex
 // next.config.ts
 const nextConfig = {
   // No external packages configured
-}
+};
 
 // lib/pdf.ts
-import puppeteer from 'puppeteer'
+import puppeteer from "puppeteer";
 // Build fails or produces oversized bundles
 ```
 
@@ -38,20 +38,21 @@ import puppeteer from 'puppeteer'
 // next.config.ts
 const nextConfig = {
   serverExternalPackages: [
-    'puppeteer',
-    'sharp',
-    'canvas',
-    '@prisma/client',
-    'bcrypt'
-  ]
-}
+    "puppeteer",
+    "sharp",
+    "canvas",
+    "@prisma/client",
+    "bcrypt",
+  ],
+};
 
 // lib/pdf.ts
-import puppeteer from 'puppeteer'
+import puppeteer from "puppeteer";
 // Loaded at runtime from node_modules
 ```
 
 **Common packages to externalize:**
+
 - Database drivers: `@prisma/client`, `pg`, `mysql2`
 - Image processing: `sharp`, `canvas`
 - Native bindings: `bcrypt`, `argon2`

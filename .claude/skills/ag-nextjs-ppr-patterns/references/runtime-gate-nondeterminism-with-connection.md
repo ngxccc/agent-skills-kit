@@ -8,12 +8,12 @@ tags: runtime, connection, non-determinism, suspense
 The model freely calls `Math.random()`, `Date.now()`, or `crypto.randomUUID()` inside a component. Under Cache Components these can't run during prerender — their value would be frozen into the static HTML — so they error. Choose intent: defer to request time by awaiting `connection()` before the call (and wrap the component in `<Suspense>`), or `'use cache'` the value so every visitor deliberately sees the same one until revalidation.
 
 ```tsx
-import { connection } from 'next/server'
-import { Suspense } from 'react'
+import { connection } from "next/server";
+import { Suspense } from "react";
 
 async function RequestId() {
-  await connection() // opt into request time; nothing before this runs during prerender
-  return <p>Request ID: {crypto.randomUUID()}</p>
+  await connection(); // opt into request time; nothing before this runs during prerender
+  return <p>Request ID: {crypto.randomUUID()}</p>;
 }
 
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
     <Suspense fallback={<p>Loading…</p>}>
       <RequestId />
     </Suspense>
-  )
+  );
 }
 ```
 

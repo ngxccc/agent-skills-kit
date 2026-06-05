@@ -9,12 +9,12 @@ tags: rename, blur, backdrop-blur, scale
 
 Tailwind CSS v4 shifted the blur scale down by one step, mirroring the same pattern as shadow utilities. Keeping the v3 class names results in a stronger blur than intended, which can make text unreadable or backgrounds overly obscured.
 
-| v3 class | v4 class |
-|---|---|
-| `blur-sm` | `blur-xs` |
-| `blur` | `blur-sm` |
+| v3 class           | v4 class           |
+| ------------------ | ------------------ |
+| `blur-sm`          | `blur-xs`          |
+| `blur`             | `blur-sm`          |
 | `backdrop-blur-sm` | `backdrop-blur-xs` |
-| `backdrop-blur` | `backdrop-blur-sm` |
+| `backdrop-blur`    | `backdrop-blur-sm` |
 
 **Incorrect (what's wrong):**
 

@@ -37,7 +37,9 @@ While `@apply` extracts utility patterns into custom classes, overuse defeats th
 // Card.tsx - Component handles abstraction
 function Card({ children, className }) {
   return (
-    <div className={`bg-white rounded-lg shadow-md p-6 border border-gray-200 ${className}`}>
+    <div
+      className={`bg-white rounded-lg shadow-md p-6 border border-gray-200 ${className}`}
+    >
       {children}
     </div>
   );
@@ -47,10 +49,11 @@ function Card({ children, className }) {
 <Card className="hover:shadow-lg">
   <h2 className="text-xl font-bold text-gray-900 mb-4">Title</h2>
   <p className="text-gray-600 leading-relaxed">Content</p>
-</Card>
+</Card>;
 ```
 
 **When @apply is appropriate:**
+
 - Tiny, repeated patterns (buttons, badges)
 - Third-party component styling you can't control
 - Base form element resets

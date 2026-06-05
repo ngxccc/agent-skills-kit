@@ -68,9 +68,9 @@ Partial Prerendering (PPR) patterns for the Next.js 16 App Router under the Cach
 
 This document was compiled from individual reference files. For detailed editing or extension:
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for creating new rules |
-| [SKILL.md](SKILL.md) | Quick reference entry point |
-| [metadata.json](metadata.json) | Version and reference URLs |
+| File                                                            | Description                       |
+| --------------------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for creating new rules   |
+| [SKILL.md](SKILL.md)                                            | Quick reference entry point       |
+| [metadata.json](metadata.json)                                  | Version and reference URLs        |

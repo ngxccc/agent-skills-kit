@@ -34,6 +34,7 @@ Tailwind CSS v4 changes variant stacking from right-to-left to left-to-right. Up
 ```
 
 **Reading order:**
+
 - Read variants left-to-right
 - Outer context first, inner context last
 - Matches natural language order: "in dark mode, on group hover, make background black"

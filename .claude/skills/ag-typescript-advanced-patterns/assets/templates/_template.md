@@ -24,10 +24,12 @@ dictate the rule. For "advanced" rules, also state plainly when it's overkill.}
 ```
 
 **When NOT to apply:**
+
 - {Realistic exception 1}
 - {Realistic exception 2}
 
 **Scope delta** (if rule overlaps with `typescript-refactor` or `.curated/typescript`):
+
 - Existing rule: `[[other-rule-slug]]` covers {what they cover}.
 - This rule extends to {what this rule adds beyond that}.
 

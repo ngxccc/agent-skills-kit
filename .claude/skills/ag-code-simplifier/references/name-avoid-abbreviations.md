@@ -16,7 +16,7 @@ Abbreviations save a few keystrokes but cost readers significant mental effort t
 const usrMgr = new UserManager();
 const cfg = loadConfig();
 const txn = db.beginTransaction();
-const btn = document.getElementById('submit');
+const btn = document.getElementById("submit");
 const req = new HttpRequest();
 const res = await fetch(url);
 const err = validate(input);
@@ -25,7 +25,7 @@ const cnt = items.length;
 const idx = findPosition(target);
 const ctx = createContext();
 const val = getValue();
-const cb = () => console.log('done');
+const cb = () => console.log("done");
 ```
 
 **Correct (full words):**
@@ -35,7 +35,7 @@ const cb = () => console.log('done');
 const userManager = new UserManager();
 const configuration = loadConfig();
 const transaction = db.beginTransaction();
-const submitButton = document.getElementById('submit');
+const submitButton = document.getElementById("submit");
 const httpRequest = new HttpRequest();
 const response = await fetch(url);
 const validationError = validate(input);
@@ -44,7 +44,7 @@ const itemCount = items.length;
 const targetIndex = findPosition(target);
 const requestContext = createContext();
 const currentValue = getValue();
-const onComplete = () => console.log('done');
+const onComplete = () => console.log("done");
 ```
 
 **Incorrect (Python - domain abbreviations):**
@@ -104,17 +104,17 @@ func processRequest(request *http.Request, writer http.ResponseWriter) {
 
 Some abbreviations are so universally understood they are acceptable:
 
-| Abbreviation | Meaning | Context |
-|--------------|---------|---------|
-| `id` | identifier | Universal |
-| `url` | uniform resource locator | Web development |
-| `api` | application programming interface | Programming |
-| `http` | hypertext transfer protocol | Web development |
-| `db` | database | When context is obvious |
-| `io` | input/output | Systems programming |
-| `i`, `j`, `k` | loop indices | Small loop scopes |
-| `e`, `err` | error | Go convention, catch blocks |
-| `ctx` | context | Go convention only |
+| Abbreviation  | Meaning                           | Context                     |
+| ------------- | --------------------------------- | --------------------------- |
+| `id`          | identifier                        | Universal                   |
+| `url`         | uniform resource locator          | Web development             |
+| `api`         | application programming interface | Programming                 |
+| `http`        | hypertext transfer protocol       | Web development             |
+| `db`          | database                          | When context is obvious     |
+| `io`          | input/output                      | Systems programming         |
+| `i`, `j`, `k` | loop indices                      | Small loop scopes           |
+| `e`, `err`    | error                             | Go convention, catch blocks |
+| `ctx`         | context                           | Go convention only          |
 
 ### When NOT to Apply
 

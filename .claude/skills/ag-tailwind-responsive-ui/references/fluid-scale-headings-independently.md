@@ -15,11 +15,15 @@ Don't scale all headings by the same ratio across breakpoints. An h1 that is 3x 
 <!-- Every heading doubles at md: — h1 dominates mobile, h3 barely differs from body on desktop -->
 <div class="mx-auto max-w-4xl px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-900 md:text-6xl">Product Features</h1>
-  <h2 class="mt-8 text-2xl font-semibold text-gray-800 md:text-4xl">Performance</h2>
+  <h2 class="mt-8 text-2xl font-semibold text-gray-800 md:text-4xl">
+    Performance
+  </h2>
   <p class="mt-2 text-base text-gray-600 md:text-lg">
     Optimized for speed with sub-100ms response times.
   </p>
-  <h3 class="mt-6 text-xl font-medium text-gray-700 md:text-2xl">Caching Layer</h3>
+  <h3 class="mt-6 text-xl font-medium text-gray-700 md:text-2xl">
+    Caching Layer
+  </h3>
   <p class="mt-2 text-base text-gray-600 md:text-lg">
     Intelligent edge caching reduces server load by 80%.
   </p>
@@ -32,11 +36,15 @@ Don't scale all headings by the same ratio across breakpoints. An h1 that is 3x 
 <!-- h1: 1.67× jump, h2: 1.33× jump, h3: 1.14× jump — hierarchy preserved at both sizes -->
 <div class="mx-auto max-w-4xl px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-900 md:text-5xl">Product Features</h1>
-  <h2 class="mt-8 text-2xl font-semibold text-gray-800 md:text-3xl">Performance</h2>
+  <h2 class="mt-8 text-2xl font-semibold text-gray-800 md:text-3xl">
+    Performance
+  </h2>
   <p class="mt-2 text-base text-gray-600 md:text-lg">
     Optimized for speed with sub-100ms response times.
   </p>
-  <h3 class="mt-6 text-xl font-medium text-gray-700 md:text-[1.375rem]">Caching Layer</h3>
+  <h3 class="mt-6 text-xl font-medium text-gray-700 md:text-[1.375rem]">
+    Caching Layer
+  </h3>
   <p class="mt-2 text-base text-gray-600 md:text-lg">
     Intelligent edge caching reduces server load by 80%.
   </p>

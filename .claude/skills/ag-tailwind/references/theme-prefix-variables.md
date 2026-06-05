@@ -42,12 +42,11 @@ When integrating Tailwind into existing projects or component libraries, use a p
 
 ```html
 <!-- Utility classes are also prefixed -->
-<div class="tw:bg-primary tw:font-display">
-  Content
-</div>
+<div class="tw:bg-primary tw:font-display">Content</div>
 ```
 
 **When to use prefixes:**
+
 - Migrating existing projects with CSS variables
 - Building embeddable widgets
 - Creating component libraries

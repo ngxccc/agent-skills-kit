@@ -44,6 +44,7 @@ All interactive elements must be reachable and operable via keyboard. Many users
 ```
 
 **Keyboard requirements:**
+
 - Tab: Move between interactive elements
 - Enter/Space: Activate buttons and links
 - Arrow keys: Navigate within components (menus, tabs, sliders)

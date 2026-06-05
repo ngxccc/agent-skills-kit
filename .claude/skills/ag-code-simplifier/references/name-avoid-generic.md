@@ -33,7 +33,9 @@ function handleItems(items: any[]) {
 
 ```typescript
 // Good: Names describe actual content
-async function processOrder(orderRequest: OrderRequest): Promise<OrderConfirmation> {
+async function processOrder(
+  orderRequest: OrderRequest,
+): Promise<OrderConfirmation> {
   const inventoryStatus = await fetchInventoryStatus(orderRequest.productId);
   const pricedOrder = applyPricing(inventoryStatus);
   const validatedOrder = validateOrder(pricedOrder);
@@ -113,18 +115,18 @@ func handleUserProfileRequest(w http.ResponseWriter, r *http.Request) {
 
 ### Worst Offenders
 
-| Generic Name | What to Ask | Better Alternative |
-|--------------|-------------|-------------------|
-| `data` | Data about what? | `userData`, `sensorReadings`, `configPayload` |
-| `info` | Information about what? | `userInfo`, `connectionInfo`, `errorDetails` |
-| `temp` | Temporary what? | `pendingChanges`, `intermediateSum`, `bufferContent` |
-| `item` | Item from what collection? | `cartItem`, `menuOption`, `searchResult` |
-| `result` | Result of what operation? | `queryResult`, `validationResult`, `calculatedTotal` |
-| `value` | Value of what? | `inputValue`, `configValue`, `computedScore` |
-| `list` | List of what? | `userList`, `errorMessages`, `availableOptions` |
-| `obj` / `object` | Object representing what? | `userProfile`, `paymentRecord`, `configSettings` |
-| `str` / `string` | String containing what? | `userName`, `errorMessage`, `formattedDate` |
-| `num` / `number` | Number representing what? | `retryCount`, `totalPrice`, `userAge` |
+| Generic Name     | What to Ask                | Better Alternative                                   |
+| ---------------- | -------------------------- | ---------------------------------------------------- |
+| `data`           | Data about what?           | `userData`, `sensorReadings`, `configPayload`        |
+| `info`           | Information about what?    | `userInfo`, `connectionInfo`, `errorDetails`         |
+| `temp`           | Temporary what?            | `pendingChanges`, `intermediateSum`, `bufferContent` |
+| `item`           | Item from what collection? | `cartItem`, `menuOption`, `searchResult`             |
+| `result`         | Result of what operation?  | `queryResult`, `validationResult`, `calculatedTotal` |
+| `value`          | Value of what?             | `inputValue`, `configValue`, `computedScore`         |
+| `list`           | List of what?              | `userList`, `errorMessages`, `availableOptions`      |
+| `obj` / `object` | Object representing what?  | `userProfile`, `paymentRecord`, `configSettings`     |
+| `str` / `string` | String containing what?    | `userName`, `errorMessage`, `formattedDate`          |
+| `num` / `number` | Number representing what?  | `retryCount`, `totalPrice`, `userAge`                |
 
 ### When NOT to Apply
 

@@ -76,6 +76,7 @@ export default function RootLayout({ children }) {
 ```
 
 **Strategy guide:**
+
 - `beforeInteractive` - Critical scripts (rare)
 - `afterInteractive` - Analytics, tracking (default)
 - `lazyOnload` - Chat widgets, social buttons

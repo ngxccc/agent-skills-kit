@@ -58,8 +58,8 @@ Implementation guide for the 22 Gang of Four design patterns with TypeScript exa
 
 This document was compiled from individual reference files. For detailed editing or extension:
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and impact ordering |
-| [SKILL.md](SKILL.md) | Quick reference entry point |
-| [metadata.json](metadata.json) | Version and reference URLs |
+| File                                                | Description                              |
+| --------------------------------------------------- | ---------------------------------------- |
+| [references/\_sections.md](references/_sections.md) | Category definitions and impact ordering |
+| [SKILL.md](SKILL.md)                                | Quick reference entry point              |
+| [metadata.json](metadata.json)                      | Version and reference URLs               |

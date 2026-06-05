@@ -51,6 +51,7 @@ Every `@theme` variable becomes available as a utility class and adds to IDE aut
 ```
 
 **Benefits:**
+
 - Cleaner IDE autocomplete with only relevant tokens
 - Fewer CSS variable declarations in output
 - Clearer design system constraints

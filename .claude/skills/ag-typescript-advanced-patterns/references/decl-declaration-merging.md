@@ -14,18 +14,23 @@ TypeScript merges declarations with the same name in the same scope according to
 ```typescript
 // src/lib.ts
 export class Logger {
-  log(msg: string) { console.log(msg) }
+  log(msg: string) {
+    console.log(msg);
+  }
 }
 
 // src/extensions.ts
-import { Logger } from './lib'
+import { Logger } from "./lib";
 
-class Logger {                   // shadows the import in this file only
-  static configure(opts: object) { /* … */ }
+class Logger {
+  // shadows the import in this file only
+  static configure(opts: object) {
+    /* … */
+  }
 }
 
-Logger.configure({})             // works here
-import('./lib').then(({ Logger }) => Logger.configure({}))  // fails — original Logger has no `configure`
+Logger.configure({}); // works here
+import("./lib").then(({ Logger }) => Logger.configure({})); // fails — original Logger has no `configure`
 ```
 
 **Correct (merge a namespace into a class to add static members; merge interfaces to extend records):**
@@ -33,57 +38,72 @@ import('./lib').then(({ Logger }) => Logger.configure({}))  // fails — origina
 ```typescript
 // 1. Class + namespace merge — adds static-side members and nested types
 export class Logger {
-  log(msg: string) { console.log(msg) }
+  log(msg: string) {
+    console.log(msg);
+  }
 }
 
 export namespace Logger {
-  export interface Options { level: 'debug' | 'info' | 'warn' | 'error' }
-  export function configure(opts: Options): void { /* … */ }
+  export interface Options {
+    level: "debug" | "info" | "warn" | "error";
+  }
+  export function configure(opts: Options): void {
+    /* … */
+  }
 }
 
-Logger.configure({ level: 'info' })   // OK
-const opts: Logger.Options = { level: 'debug' }  // nested type accessible
+Logger.configure({ level: "info" }); // OK
+const opts: Logger.Options = { level: "debug" }; // nested type accessible
 
 // 2. Interface + interface merge — adds members to an existing record
-interface UserContext { id: string }
-interface UserContext { roles: string[] }
-const u: UserContext = { id: 'u_1', roles: ['admin'] }  // both fields required
+interface UserContext {
+  id: string;
+}
+interface UserContext {
+  roles: string[];
+}
+const u: UserContext = { id: "u_1", roles: ["admin"] }; // both fields required
 
 // 3. Namespace + namespace merge — adds exports to an existing namespace
 namespace Routes {
-  export const list = '/users'
+  export const list = "/users";
 }
 namespace Routes {
-  export const create = '/users'  // adds to the same namespace
+  export const create = "/users"; // adds to the same namespace
 }
 
 // 4. Open-extension registry (the HKT pattern, see `[[tlp-hkt-emulation]]`)
-interface PluginRegistry {}        // open for extension
-declare module './registry' {
-  interface PluginRegistry { auth: AuthPlugin; cache: CachePlugin }
+interface PluginRegistry {} // open for extension
+declare module "./registry" {
+  interface PluginRegistry {
+    auth: AuthPlugin;
+    cache: CachePlugin;
+  }
 }
 ```
 
 **What merges, what doesn't:**
 
-| Left | Right | Result |
-|------|-------|--------|
-| `interface` | `interface` | Single merged interface (members combined) |
-| `namespace` | `namespace` | Single merged namespace (exports combined) |
-| `class` | `namespace` (same name) | Class + static members from namespace |
-| `function` | `namespace` (same name) | Function + properties from namespace |
-| `enum` | `namespace` (same name) | Enum + helper members from namespace |
-| `class` | `class` | Error — duplicate identifier |
-| `interface` | `type` alias | Error — `type` aliases can't merge |
-| `class` | `interface` | Only at declaration site — class implements interface, no member merge |
+| Left        | Right                   | Result                                                                 |
+| ----------- | ----------------------- | ---------------------------------------------------------------------- |
+| `interface` | `interface`             | Single merged interface (members combined)                             |
+| `namespace` | `namespace`             | Single merged namespace (exports combined)                             |
+| `class`     | `namespace` (same name) | Class + static members from namespace                                  |
+| `function`  | `namespace` (same name) | Function + properties from namespace                                   |
+| `enum`      | `namespace` (same name) | Enum + helper members from namespace                                   |
+| `class`     | `class`                 | Error — duplicate identifier                                           |
+| `interface` | `type` alias            | Error — `type` aliases can't merge                                     |
+| `class`     | `interface`             | Only at declaration site — class implements interface, no member merge |
 
-Merging applies *per scope*. Two interfaces in different modules with the same name do not merge unless you augment via `declare module`.
+Merging applies _per scope_. Two interfaces in different modules with the same name do not merge unless you augment via `declare module`.
 
 **When NOT to apply:**
+
 - Cases where a clear naming distinction would do — `Logger` plus a `LoggerOptions` type is often clearer than `Logger.Options`. Reserve merging for genuine extension points and registry patterns.
 - When the team is unfamiliar with merge semantics — debugging "where did this property come from" across a merged surface is hard. Document every intentional merge.
 
 **Scope delta:**
-- Companion to `[[decl-module-augmentation]]`. Module augmentation *uses* declaration merging across module boundaries; this rule covers the same-scope merge semantics and what shapes are mergeable.
+
+- Companion to `[[decl-module-augmentation]]`. Module augmentation _uses_ declaration merging across module boundaries; this rule covers the same-scope merge semantics and what shapes are mergeable.
 
 Reference: [TypeScript Handbook — Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)

@@ -13,12 +13,12 @@ tags: category-prefix, technique, related-concept
 
 ```html
 <!-- Bad code example with comment explaining the problem -->
-<div class="old-pattern-here">
+<div class="old-pattern-here"></div>
 ```
 
 **Correct (what's right):**
 
 ```html
 <!-- Good code example with minimal diff from incorrect -->
-<div class="new-pattern-here">
+<div class="new-pattern-here"></div>
 ```

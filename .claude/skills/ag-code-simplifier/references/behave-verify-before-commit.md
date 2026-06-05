@@ -37,10 +37,10 @@ function isValid(x: number): boolean {
 // $ npm test -- --grep "isValid"
 
 // 2. Check edge cases manually
-console.log(isValid(NaN));     // Before: false, After: false ✓
-console.log(isValid(0));       // Before: false, After: false ✓
-console.log(isValid(100));     // Before: false, After: false ✓
-console.log(isValid(50));      // Before: true,  After: true  ✓
+console.log(isValid(NaN)); // Before: false, After: false ✓
+console.log(isValid(0)); // Before: false, After: false ✓
+console.log(isValid(100)); // Before: false, After: false ✓
+console.log(isValid(50)); // Before: true,  After: true  ✓
 
 // 3. Review diff for semantic changes
 // git diff --word-diff

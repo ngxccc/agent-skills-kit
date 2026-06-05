@@ -12,9 +12,15 @@ const fs = require('fs');
 const path = require('path');
 
 // Import scout-block modules
-const { loadPatterns, createMatcher, matchPath } = require('../scout-block/pattern-matcher.cjs');
+const {
+  loadPatterns,
+  createMatcher,
+  matchPath,
+} = require('../scout-block/pattern-matcher.cjs');
 const { extractFromToolInput } = require('../scout-block/path-extractor.cjs');
-const { detectBroadPatternIssue } = require('../scout-block/broad-pattern-detector.cjs');
+const {
+  detectBroadPatternIssue,
+} = require('../scout-block/broad-pattern-detector.cjs');
 
 // ═══════════════════════════════════════════════════════════════════════════
 // COMMAND PATTERNS
@@ -22,10 +28,12 @@ const { detectBroadPatternIssue } = require('../scout-block/broad-pattern-detect
 
 // Build command allowlist - these are allowed even if they contain blocked paths
 // Handles flags and filters: npm build, pnpm --filter web run build, yarn workspace app build
-const BUILD_COMMAND_PATTERN = /^(npm|pnpm|yarn|bun)\s+([^\s]+\s+)*(run\s+)?(build|test|lint|dev|start|install|ci|add|remove|update|publish|pack|init|create|exec)/;
+const BUILD_COMMAND_PATTERN =
+  /^(npm|pnpm|yarn|bun)\s+([^\s]+\s+)*(run\s+)?(build|test|lint|dev|start|install|ci|add|remove|update|publish|pack|init|create|exec)/;
 
 // Tool commands - JS/TS, Go, Rust, Java, .NET, containers, IaC, Python, Ruby, PHP, Deno, Elixir
-const TOOL_COMMAND_PATTERN = /^(\.\/)?(npx|pnpx|bunx|tsc|esbuild|vite|webpack|rollup|turbo|nx|jest|vitest|mocha|eslint|prettier|go|cargo|make|mvn|mvnw|gradle|gradlew|dotnet|docker|podman|kubectl|helm|terraform|ansible|bazel|cmake|sbt|flutter|swift|ant|ninja|meson|python3?|pip|uv|deno|bundle|rake|gem|php|composer|ruby|mix|elixir)/;
+const TOOL_COMMAND_PATTERN =
+  /^(\.\/)?(npx|pnpx|bunx|tsc|esbuild|vite|webpack|rollup|turbo|nx|jest|vitest|mocha|eslint|prettier|go|cargo|make|mvn|mvnw|gradle|gradlew|dotnet|docker|podman|kubectl|helm|terraform|ansible|bazel|cmake|sbt|flutter|swift|ant|ninja|meson|python3?|pip|uv|deno|bundle|rake|gem|php|composer|ruby|mix|elixir)/;
 
 // Allow execution from .venv/bin/ or venv/bin/ (Unix) and .venv/Scripts/ or venv/Scripts/ (Windows)
 const VENV_EXECUTABLE_PATTERN = /(^|[\/\\])\.?venv[\/\\](bin|Scripts)[\/\\]/;
@@ -35,7 +43,8 @@ const VENV_EXECUTABLE_PATTERN = /(^|[\/\\])\.?venv[\/\\](bin|Scripts)[\/\\]/;
 // - py -m venv (Windows py launcher, supports -3, -3.11, etc.)
 // - uv venv (fast Rust-based Python package manager)
 // - virtualenv (legacy but still widely used)
-const VENV_CREATION_PATTERN = /^(python3?|py)\s+(-[\w.]+\s+)*-m\s+venv\s+|^uv\s+venv(\s|$)|^virtualenv\s+/;
+const VENV_CREATION_PATTERN =
+  /^(python3?|py)\s+(-[\w.]+\s+)*-m\s+venv\s+|^uv\s+venv(\s|$)|^virtualenv\s+/;
 
 // ═══════════════════════════════════════════════════════════════════════════
 // HELPER FUNCTIONS
@@ -67,7 +76,9 @@ function stripCommandPrefix(command) {
 function isBuildCommand(command) {
   if (!command || typeof command !== 'string') return false;
   const trimmed = command.trim();
-  return BUILD_COMMAND_PATTERN.test(trimmed) || TOOL_COMMAND_PATTERN.test(trimmed);
+  return (
+    BUILD_COMMAND_PATTERN.test(trimmed) || TOOL_COMMAND_PATTERN.test(trimmed)
+  );
 }
 
 /**
@@ -81,7 +92,9 @@ function isBuildCommand(command) {
  */
 function splitCompoundCommand(command) {
   if (!command || typeof command !== 'string') return [];
-  return command.split(/\s*(?:&&|\|\||;)\s*/).filter(cmd => cmd && cmd.trim().length > 0);
+  return command
+    .split(/\s*(?:&&|\|\||;)\s*/)
+    .filter((cmd) => cmd && cmd.trim().length > 0);
 }
 
 /**
@@ -92,9 +105,9 @@ function splitCompoundCommand(command) {
  */
 function unwrapShellExecutor(command) {
   if (!command || typeof command !== 'string') return command;
-  const match = command.trim().match(
-    /^(?:(?:bash|sh|zsh)\s+-c|eval)\s+["'](.+)["']\s*$/
-  );
+  const match = command
+    .trim()
+    .match(/^(?:(?:bash|sh|zsh)\s+-c|eval)\s+["'](.+)["']\s*$/);
   return match ? match[1] : command;
 }
 
@@ -126,7 +139,11 @@ function isVenvCreationCommand(command) {
  */
 function isAllowedCommand(command) {
   const stripped = stripCommandPrefix(command);
-  return isBuildCommand(stripped) || isVenvExecutable(stripped) || isVenvCreationCommand(stripped);
+  return (
+    isBuildCommand(stripped) ||
+    isVenvExecutable(stripped) ||
+    isVenvCreationCommand(stripped)
+  );
 }
 
 function findGitRoot(startDir) {
@@ -182,13 +199,13 @@ function findProjectCkignore(startDir, configDirName) {
  * @param {boolean} [params.options.checkBroadPatterns] - Check for overly broad glob patterns (default: true)
  * @returns {{
  *   blocked: boolean,
-  *   path?: string,
-  *   pattern?: string,
-  *   reason?: string,
+ *   path?: string,
+ *   pattern?: string,
+ *   reason?: string,
  *   configPath?: string,
-  *   isBroadPattern?: boolean,
-  *   suggestions?: string[],
-  *   isAllowedCommand?: boolean
+ *   isBroadPattern?: boolean,
+ *   suggestions?: string[],
+ *   isAllowedCommand?: boolean
  * }}
  */
 function checkScoutBlock({ toolName, toolInput, options = {} }) {
@@ -198,7 +215,7 @@ function checkScoutBlock({ toolName, toolInput, options = {} }) {
     claudeDir = path.join(process.cwd(), '.claude'),
     cwd = process.cwd(),
     projectConfigDirName,
-    checkBroadPatterns = true
+    checkBroadPatterns = true,
   } = options;
 
   // Unwrap shell executor wrappers (bash -c "...", eval "...")
@@ -217,7 +234,9 @@ function checkScoutBlock({ toolName, toolInput, options = {} }) {
   // anchor and would match the prefix of "npm run build && cat dist/file.js".
   if (toolInput.command) {
     const subCommands = splitCompoundCommand(toolInput.command);
-    const nonAllowed = subCommands.filter(cmd => !isAllowedCommand(cmd.trim()));
+    const nonAllowed = subCommands.filter(
+      (cmd) => !isAllowedCommand(cmd.trim()),
+    );
     if (nonAllowed.length === 0) {
       return { blocked: false, isAllowedCommand: true };
     }
@@ -235,29 +254,37 @@ function checkScoutBlock({ toolName, toolInput, options = {} }) {
         blocked: true,
         isBroadPattern: true,
         pattern: toolInput.pattern,
-        reason: broadResult.reason || 'Pattern too broad - may fill context with too many files',
-        suggestions: broadResult.suggestions || []
+        reason:
+          broadResult.reason ||
+          'Pattern too broad - may fill context with too many files',
+        suggestions: broadResult.suggestions || [],
       };
     }
   }
 
   // Resolve .vcignore path (new-first, legacy .ckignore fallback)
-  const resolvedCkignorePath = ckignorePath || (
-    fs.existsSync(path.join(claudeDir, '.vcignore'))
+  const resolvedCkignorePath =
+    ckignorePath ||
+    (fs.existsSync(path.join(claudeDir, '.vcignore'))
       ? path.join(claudeDir, '.vcignore')
-      : (fs.existsSync(path.join(claudeDir, '.ckignore'))
+      : fs.existsSync(path.join(claudeDir, '.ckignore'))
         ? path.join(claudeDir, '.ckignore')
-        : path.join(claudeDir, '.vcignore'))
-  );
-  const discoveredProjectCkignorePath = projectCkignorePath || findProjectCkignore(cwd, projectConfigDirName);
-  const resolvedProjectCkignorePath = discoveredProjectCkignorePath
-    && path.resolve(discoveredProjectCkignorePath) !== path.resolve(resolvedCkignorePath)
+        : path.join(claudeDir, '.vcignore'));
+  const discoveredProjectCkignorePath =
+    projectCkignorePath || findProjectCkignore(cwd, projectConfigDirName);
+  const resolvedProjectCkignorePath =
+    discoveredProjectCkignorePath &&
+    path.resolve(discoveredProjectCkignorePath) !==
+      path.resolve(resolvedCkignorePath)
       ? discoveredProjectCkignorePath
       : null;
   const configPath = resolvedProjectCkignorePath || resolvedCkignorePath;
 
   // Load patterns and create matcher
-  const patterns = loadPatterns(resolvedCkignorePath, resolvedProjectCkignorePath);
+  const patterns = loadPatterns(
+    resolvedCkignorePath,
+    resolvedProjectCkignorePath,
+  );
   const matcher = createMatcher(patterns);
 
   // Extract paths from tool input
@@ -277,7 +304,7 @@ function checkScoutBlock({ toolName, toolInput, options = {} }) {
         path: extractedPath,
         pattern: result.pattern,
         configPath,
-        reason: `Path matches blocked pattern: ${result.pattern}`
+        reason: `Path matches blocked pattern: ${result.pattern}`,
       };
     }
   }
@@ -316,5 +343,5 @@ module.exports = {
   BUILD_COMMAND_PATTERN,
   TOOL_COMMAND_PATTERN,
   VENV_EXECUTABLE_PATTERN,
-  VENV_CREATION_PATTERN
+  VENV_CREATION_PATTERN,
 };

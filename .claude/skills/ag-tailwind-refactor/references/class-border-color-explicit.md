@@ -12,15 +12,11 @@ In Tailwind CSS v3, the `border` utility implicitly set the border color to `gra
 **Incorrect (what's wrong):**
 
 ```html
-<div class="border p-4">
-  Card with assumed gray border
-</div>
+<div class="border p-4">Card with assumed gray border</div>
 ```
 
 **Correct (what's right):**
 
 ```html
-<div class="border border-gray-200 p-4">
-  Card with explicit gray border
-</div>
+<div class="border border-gray-200 p-4">Card with explicit gray border</div>
 ```

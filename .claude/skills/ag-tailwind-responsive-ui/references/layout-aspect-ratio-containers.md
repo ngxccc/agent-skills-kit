@@ -19,7 +19,11 @@ Containers that rely on their content to determine height cause Cumulative Layou
   </div>
   <!-- Embed has no reserved space — page jumps when iframe renders -->
   <div class="overflow-hidden rounded-lg">
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" class="w-full" title="Product demo"></iframe>
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      class="w-full"
+      title="Product demo"
+    ></iframe>
   </div>
 </div>
 
@@ -46,11 +50,20 @@ Containers that rely on their content to determine height cause Cumulative Layou
 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
   <!-- 16:9 space reserved immediately — no reflow when image loads -->
   <div class="aspect-video overflow-hidden rounded-lg">
-    <img src="/hero-banner.jpg" alt="Summer collection" class="h-full w-full object-cover" />
+    <img
+      src="/hero-banner.jpg"
+      alt="Summer collection"
+      class="h-full w-full object-cover"
+    />
   </div>
   <!-- iframe fills the reserved 16:9 container -->
   <div class="aspect-video overflow-hidden rounded-lg">
-    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" class="h-full w-full" title="Product demo" allowfullscreen></iframe>
+    <iframe
+      src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+      class="h-full w-full"
+      title="Product demo"
+      allowfullscreen
+    ></iframe>
   </div>
 </div>
 
@@ -58,7 +71,11 @@ Containers that rely on their content to determine height cause Cumulative Layou
 <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
   <div class="rounded-lg border">
     <div class="aspect-square overflow-hidden rounded-t-lg">
-      <img src="/product-a.jpg" alt="Product A" class="h-full w-full object-cover" />
+      <img
+        src="/product-a.jpg"
+        alt="Product A"
+        class="h-full w-full object-cover"
+      />
     </div>
     <div class="p-4">
       <h3 class="font-medium">Product A</h3>
@@ -66,7 +83,11 @@ Containers that rely on their content to determine height cause Cumulative Layou
   </div>
   <div class="rounded-lg border">
     <div class="aspect-square overflow-hidden rounded-t-lg">
-      <img src="/product-b.jpg" alt="Product B" class="h-full w-full object-cover" />
+      <img
+        src="/product-b.jpg"
+        alt="Product B"
+        class="h-full w-full object-cover"
+      />
     </div>
     <div class="p-4">
       <h3 class="font-medium">Product B</h3>
@@ -76,6 +97,7 @@ Containers that rely on their content to determine height cause Cumulative Layou
 ```
 
 **Common aspect ratio utilities:**
+
 - `aspect-video` -- 16:9, ideal for video embeds and hero banners
 - `aspect-square` -- 1:1, ideal for product images and avatars
 - `aspect-[4/3]` -- 4:3, good for photos and thumbnails

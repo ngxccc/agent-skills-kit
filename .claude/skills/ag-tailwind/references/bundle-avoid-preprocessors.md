@@ -49,6 +49,7 @@ Tailwind CSS v4 is incompatible with Sass, Less, and Stylus preprocessors. Moder
 ```
 
 **Native CSS alternatives:**
+
 - CSS nesting (built into v4)
 - CSS custom properties (replace Sass variables)
 - `@theme` directive (replace Sass maps)

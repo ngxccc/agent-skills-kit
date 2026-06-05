@@ -10,6 +10,7 @@ Comprehensive UI/UX and frontend design best practices guide. Contains 42 rules 
 ## When to Apply
 
 Reference these guidelines when:
+
 - Structuring HTML for accessibility and semantics
 - Writing CSS for responsive layouts and visual hierarchy
 - Optimizing images and fonts for Core Web Vitals
@@ -18,16 +19,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Accessibility & WCAG Compliance | CRITICAL | `access-` |
-| 2 | Core Web Vitals Optimization | CRITICAL | `cwv-` |
-| 3 | Visual Hierarchy & Layout | HIGH | `layout-` |
-| 4 | Responsive & Mobile-First Design | HIGH | `resp-` |
-| 5 | Typography & Font Loading | MEDIUM-HIGH | `typo-` |
-| 6 | Color & Contrast | MEDIUM | `color-` |
-| 7 | Forms & Validation UX | MEDIUM | `form-` |
-| 8 | Animation & Performance | LOW-MEDIUM | `anim-` |
+| Priority | Category                         | Impact      | Prefix    |
+| -------- | -------------------------------- | ----------- | --------- |
+| 1        | Accessibility & WCAG Compliance  | CRITICAL    | `access-` |
+| 2        | Core Web Vitals Optimization     | CRITICAL    | `cwv-`    |
+| 3        | Visual Hierarchy & Layout        | HIGH        | `layout-` |
+| 4        | Responsive & Mobile-First Design | HIGH        | `resp-`   |
+| 5        | Typography & Font Loading        | MEDIUM-HIGH | `typo-`   |
+| 6        | Color & Contrast                 | MEDIUM      | `color-`  |
+| 7        | Forms & Validation UX            | MEDIUM      | `form-`   |
+| 8        | Animation & Performance          | LOW-MEDIUM  | `anim-`   |
 
 ## Quick Reference
 

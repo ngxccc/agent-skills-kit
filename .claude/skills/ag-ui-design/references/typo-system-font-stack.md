@@ -13,12 +13,18 @@ System fonts are already installed on user devices. They render instantly with n
 
 ```css
 body {
-  font-family: 'Custom Sans', sans-serif;
+  font-family: "Custom Sans", sans-serif;
 }
 
-.navigation { font-family: 'Custom Sans', sans-serif; }
-.button { font-family: 'Custom Sans', sans-serif; }
-.form-label { font-family: 'Custom Sans', sans-serif; }
+.navigation {
+  font-family: "Custom Sans", sans-serif;
+}
+.button {
+  font-family: "Custom Sans", sans-serif;
+}
+.form-label {
+  font-family: "Custom Sans", sans-serif;
+}
 /* Every element waits for 50KB+ font download */
 /* UI feels slow until fonts load */
 ```
@@ -28,26 +34,41 @@ body {
 ```css
 /* System font stack for UI elements */
 :root {
-  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans',
-    'Helvetica Neue', sans-serif;
+  --font-system:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
-  --font-brand: 'Brand Font', var(--font-system);
+  --font-brand: "Brand Font", var(--font-system);
 }
 
 /* System fonts for instant UI rendering */
-body { font-family: var(--font-system); }
-.navigation { font-family: var(--font-system); }
-.button { font-family: var(--font-system); }
-.form-label { font-family: var(--font-system); }
+body {
+  font-family: var(--font-system);
+}
+.navigation {
+  font-family: var(--font-system);
+}
+.button {
+  font-family: var(--font-system);
+}
+.form-label {
+  font-family: var(--font-system);
+}
 
 /* Custom font only for brand-critical elements */
-h1, h2, .hero-title { font-family: var(--font-brand); }
-.logo { font-family: var(--font-brand); }
+h1,
+h2,
+.hero-title {
+  font-family: var(--font-brand);
+}
+.logo {
+  font-family: var(--font-brand);
+}
 /* UI renders instantly, headings get branding */
 ```
 
 **System font stack order:**
+
 1. `-apple-system` (iOS/macOS San Francisco)
 2. `BlinkMacSystemFont` (macOS Chrome)
 3. `Segoe UI` (Windows)

@@ -10,6 +10,7 @@ Comprehensive responsive transformation guide for Tailwind CSS applications, bas
 ## When to Apply
 
 Reference these guidelines when:
+
 - Making an existing UI responsive across screen sizes
 - Building new responsive layouts with Tailwind CSS
 - Refactoring desktop-only interfaces for mobile support
@@ -18,16 +19,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix |
-|----------|----------|--------|--------|
-| 1 | Breakpoint Strategy | CRITICAL | `bp-` |
-| 2 | Layout Transformation | CRITICAL | `layout-` |
-| 3 | Responsive Spacing | HIGH | `rspac-` |
-| 4 | Fluid Typography | HIGH | `fluid-` |
-| 5 | Navigation Patterns | MEDIUM-HIGH | `nav-` |
-| 6 | Touch & Interaction | MEDIUM | `touch-` |
-| 7 | Responsive Media | MEDIUM | `rmedia-` |
-| 8 | Data Adaptation | LOW-MEDIUM | `data-` |
+| Priority | Category              | Impact      | Prefix    |
+| -------- | --------------------- | ----------- | --------- |
+| 1        | Breakpoint Strategy   | CRITICAL    | `bp-`     |
+| 2        | Layout Transformation | CRITICAL    | `layout-` |
+| 3        | Responsive Spacing    | HIGH        | `rspac-`  |
+| 4        | Fluid Typography      | HIGH        | `fluid-`  |
+| 5        | Navigation Patterns   | MEDIUM-HIGH | `nav-`    |
+| 6        | Touch & Interaction   | MEDIUM      | `touch-`  |
+| 7        | Responsive Media      | MEDIUM      | `rmedia-` |
+| 8        | Data Adaptation       | LOW-MEDIUM  | `data-`   |
 
 ## Quick Reference
 
@@ -113,8 +114,8 @@ Read individual reference files for detailed explanations and code examples:
 
 ## Reference Files
 
-| File | Description |
-|------|-------------|
-| [references/_sections.md](references/_sections.md) | Category definitions and ordering |
-| [assets/templates/_template.md](assets/templates/_template.md) | Template for new rules |
-| [metadata.json](metadata.json) | Version and reference information |
+| File                                                            | Description                       |
+| --------------------------------------------------------------- | --------------------------------- |
+| [references/\_sections.md](references/_sections.md)             | Category definitions and ordering |
+| [assets/templates/\_template.md](assets/templates/_template.md) | Template for new rules            |
+| [metadata.json](metadata.json)                                  | Version and reference information |

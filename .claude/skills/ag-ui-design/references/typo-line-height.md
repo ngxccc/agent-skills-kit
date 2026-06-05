@@ -16,7 +16,9 @@ body {
   line-height: 1; /* Lines touch, hard to track */
 }
 
-p { line-height: 18px; } /* Fixed px breaks with font-size changes */
+p {
+  line-height: 18px;
+} /* Fixed px breaks with font-size changes */
 
 .content {
   line-height: 2.5; /* Too loose, disconnects lines */
@@ -57,6 +59,7 @@ h2 {
 ```
 
 **Line height guidelines by context:**
+
 - Body text (40-60ch): 1.5-1.6
 - Wide body text (60-80ch): 1.6-1.8
 - Large headings (32px+): 1.1-1.2

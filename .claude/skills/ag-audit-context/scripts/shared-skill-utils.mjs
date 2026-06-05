@@ -1,5 +1,5 @@
-import fs from "node:fs";
-import path from "node:path";
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const root = process.cwd();
 
@@ -12,7 +12,7 @@ export function exists(relPath) {
 }
 
 export function read(relPath) {
-  return fs.readFileSync(abs(relPath), "utf8");
+  return fs.readFileSync(abs(relPath), 'utf8');
 }
 
 export function parseFrontmatterText(text) {
@@ -20,26 +20,26 @@ export function parseFrontmatterText(text) {
   if (!match) return null;
   const fields = {};
   const keys = [];
-  const lines = match[1].split("\n");
+  const lines = match[1].split('\n');
   for (let index = 0; index < lines.length; index += 1) {
     const item = lines[index].match(/^([A-Za-z0-9_-]+):\s*(.*)$/);
     if (!item) continue;
     const [, key, rawValue] = item;
     keys.push(key);
 
-    if (rawValue === ">-" || rawValue === "|" || rawValue === ">") {
+    if (rawValue === '>-' || rawValue === '|' || rawValue === '>') {
       const blockLines = [];
       let cursor = index + 1;
       while (cursor < lines.length && /^  /.test(lines[cursor])) {
-        blockLines.push(lines[cursor].replace(/^  /, ""));
+        blockLines.push(lines[cursor].replace(/^  /, ''));
         cursor += 1;
       }
-      fields[key] = blockLines.join(" ").trim();
+      fields[key] = blockLines.join(' ').trim();
       index = cursor - 1;
       continue;
     }
 
-    fields[key] = rawValue.replace(/^["']|["']$/g, "");
+    fields[key] = rawValue.replace(/^["']|["']$/g, '');
   }
   return { fields, keys };
 }
@@ -49,7 +49,8 @@ export function parseFrontmatter(file) {
 }
 
 export function loadRoutingPolicy() {
-  const policyPath = ".claude/skills/ag-audit-context/references/skill-routing-policy.json";
+  const policyPath =
+    '.claude/skills/ag-audit-context/references/skill-routing-policy.json';
   if (!exists(policyPath)) {
     return {
       path: policyPath,
@@ -63,16 +64,18 @@ export function loadRoutingPolicy() {
     canonicalRoutingSurfaces: Array.isArray(parsed.canonicalRoutingSurfaces)
       ? parsed.canonicalRoutingSurfaces
       : [],
-    allowlistedSkills: parsed.allowlistedSkills && typeof parsed.allowlistedSkills === "object"
-      ? parsed.allowlistedSkills
-      : {},
+    allowlistedSkills:
+      parsed.allowlistedSkills && typeof parsed.allowlistedSkills === 'object'
+        ? parsed.allowlistedSkills
+        : {},
   };
 }
 
 export function listSkillDirs() {
-  const skillsDir = abs(".claude/skills");
+  const skillsDir = abs('.claude/skills');
   if (!fs.existsSync(skillsDir)) return [];
-  return fs.readdirSync(skillsDir, { withFileTypes: true })
+  return fs
+    .readdirSync(skillsDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
@@ -87,16 +90,21 @@ export function loadSkillInventory() {
 
   return listSkillDirs().map((skill) => {
     const skillPath = `.claude/skills/${skill}/SKILL.md`;
-    const text = exists(skillPath) ? read(skillPath) : "";
+    const text = exists(skillPath) ? read(skillPath) : '';
     const parsed = exists(skillPath) ? parseFrontmatter(skillPath) : null;
     const fields = parsed?.fields || {};
     const aliases = new Set([skill]);
     if (fields.name) aliases.add(fields.name);
-    if (fields.name?.startsWith("ck:")) aliases.add(fields.name.slice(3));
+    if (fields.name?.startsWith('ck:')) aliases.add(fields.name.slice(3));
 
     const routedFrom = [];
     for (const [surface, content] of surfaceTexts.entries()) {
-      if ([...aliases].some((alias) => content.includes(`\`${alias}\``) || content.includes(alias))) {
+      if (
+        [...aliases].some(
+          (alias) =>
+            content.includes(`\`${alias}\``) || content.includes(alias),
+        )
+      ) {
         routedFrom.push(surface);
       }
     }
@@ -108,7 +116,10 @@ export function loadSkillInventory() {
       frontmatter: fields,
       frontmatterKeys: parsed?.keys || [],
       aliases: [...aliases],
-      allowlisted: Object.prototype.hasOwnProperty.call(policy.allowlistedSkills, skill),
+      allowlisted: Object.prototype.hasOwnProperty.call(
+        policy.allowlistedSkills,
+        skill,
+      ),
       allowlistReason: policy.allowlistedSkills[skill] || null,
       routedFrom,
     };
@@ -118,12 +129,14 @@ export function loadSkillInventory() {
 export function normalizeSkillName(name) {
   return name
     .toLowerCase()
-    .replace(/^ck:/, "")
-    .replace(/[^a-z0-9]+/g, "");
+    .replace(/^ck:/, '')
+    .replace(/[^a-z0-9]+/g, '');
 }
 
 export function levenshtein(a, b) {
-  const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+  const matrix = Array.from({ length: a.length + 1 }, () =>
+    Array(b.length + 1).fill(0),
+  );
   for (let row = 0; row <= a.length; row += 1) matrix[row][0] = row;
   for (let col = 0; col <= b.length; col += 1) matrix[0][col] = col;
   for (let row = 1; row <= a.length; row += 1) {

@@ -15,15 +15,15 @@ Nested ternary operators create write-only code. The human brain processes branc
 function getStatusBadge(user: User): string {
   return user.isAdmin
     ? user.isActive
-      ? 'admin-active'
-      : 'admin-inactive'
+      ? "admin-active"
+      : "admin-inactive"
     : user.isPremium
       ? user.isActive
-        ? 'premium-active'
-        : 'premium-inactive'
+        ? "premium-active"
+        : "premium-inactive"
       : user.isActive
-        ? 'basic-active'
-        : 'basic-inactive';
+        ? "basic-active"
+        : "basic-inactive";
 }
 ```
 
@@ -31,7 +31,7 @@ function getStatusBadge(user: User): string {
 
 ```typescript
 function getStatusBadge(user: User): string {
-  const status = user.isActive ? 'active' : 'inactive';
+  const status = user.isActive ? "active" : "inactive";
 
   if (user.isAdmin) {
     return `admin-${status}`;
@@ -59,14 +59,14 @@ const priority = task.isUrgent
 
 ```typescript
 const priorityMatrix = {
-  'urgent-important': 1,
-  'urgent-normal': 2,
-  'normal-important': 3,
-  'normal-normal': 4,
+  "urgent-important": 1,
+  "urgent-normal": 2,
+  "normal-important": 3,
+  "normal-normal": 4,
 };
 
-const urgency = task.isUrgent ? 'urgent' : 'normal';
-const importance = task.isImportant ? 'important' : 'normal';
+const urgency = task.isUrgent ? "urgent" : "normal";
+const importance = task.isImportant ? "important" : "normal";
 const priority = priorityMatrix[`${urgency}-${importance}`];
 ```
 
@@ -75,15 +75,17 @@ const priority = priorityMatrix[`${urgency}-${importance}`];
 ```tsx
 function UserAvatar({ user }: Props) {
   return (
-    <div className={
-      user.status === 'online'
-        ? user.isPremium
-          ? 'avatar-premium-online'
-          : 'avatar-online'
-        : user.status === 'away'
-          ? 'avatar-away'
-          : 'avatar-offline'
-    }>
+    <div
+      className={
+        user.status === "online"
+          ? user.isPremium
+            ? "avatar-premium-online"
+            : "avatar-online"
+          : user.status === "away"
+            ? "avatar-away"
+            : "avatar-offline"
+      }
+    >
       {user.name}
     </div>
   );
@@ -94,21 +96,17 @@ function UserAvatar({ user }: Props) {
 
 ```tsx
 function getAvatarClass(user: User): string {
-  if (user.status === 'online') {
-    return user.isPremium ? 'avatar-premium-online' : 'avatar-online';
+  if (user.status === "online") {
+    return user.isPremium ? "avatar-premium-online" : "avatar-online";
   }
-  if (user.status === 'away') {
-    return 'avatar-away';
+  if (user.status === "away") {
+    return "avatar-away";
   }
-  return 'avatar-offline';
+  return "avatar-offline";
 }
 
 function UserAvatar({ user }: Props) {
-  return (
-    <div className={getAvatarClass(user)}>
-      {user.name}
-    </div>
-  );
+  return <div className={getAvatarClass(user)}>{user.name}</div>;
 }
 ```
 
@@ -116,13 +114,13 @@ function UserAvatar({ user }: Props) {
 
 ```typescript
 // OK: Single ternary for simple binary choice
-const label = isLoading ? 'Loading...' : 'Submit';
+const label = isLoading ? "Loading..." : "Submit";
 
 // OK: Nullish coalescing or optional chaining
-const name = user?.name ?? 'Anonymous';
+const name = user?.name ?? "Anonymous";
 
 // NOT OK: Even two levels is too much
-const label = isLoading ? 'Loading...' : isDisabled ? 'Disabled' : 'Submit';
+const label = isLoading ? "Loading..." : isDisabled ? "Disabled" : "Submit";
 ```
 
 ### Benefits

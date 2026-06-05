@@ -13,14 +13,12 @@ In Tailwind CSS v3, display utilities like `block` or `flex` overrode the HTML `
 
 ```html
 <!-- v3 pattern: JS must toggle both hidden and display class -->
-<div id="panel" hidden class="hidden">
-  Panel content
-</div>
+<div id="panel" hidden class="hidden">Panel content</div>
 <script>
   function showPanel() {
-    panel.removeAttribute('hidden');
-    panel.classList.remove('hidden');
-    panel.classList.add('flex');
+    panel.removeAttribute("hidden");
+    panel.classList.remove("hidden");
+    panel.classList.add("flex");
   }
 </script>
 ```
@@ -29,12 +27,10 @@ In Tailwind CSS v3, display utilities like `block` or `flex` overrode the HTML `
 
 ```html
 <!-- v4 pattern: hidden attribute alone controls visibility -->
-<div id="panel" hidden class="flex">
-  Panel content
-</div>
+<div id="panel" hidden class="flex">Panel content</div>
 <script>
   function showPanel() {
-    panel.removeAttribute('hidden');
+    panel.removeAttribute("hidden");
   }
 </script>
 ```

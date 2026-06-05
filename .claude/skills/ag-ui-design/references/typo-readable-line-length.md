@@ -45,12 +45,14 @@ Lines that are too long or too short reduce reading comprehension. Optimal line 
 ```
 
 **Line length by context:**
+
 - Body text: 45-75 characters (65ch ideal)
 - Headings: Can be wider (up to 85ch)
 - Captions/notes: Shorter (35-50ch)
 - Mobile: Full width is acceptable at small viewports
 
 **Why `ch` unit:**
+
 - 1ch = width of the "0" character in current font
 - Adapts to font-size changes automatically
 - More accurate than pixel-based max-width

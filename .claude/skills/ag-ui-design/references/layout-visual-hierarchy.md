@@ -12,9 +12,18 @@ Visual hierarchy guides users through content in order of importance. Without it
 **Incorrect (flat hierarchy, nothing stands out):**
 
 ```css
-.page-content h1 { font-size: 18px; color: #333; }
-.page-content h2 { font-size: 16px; color: #333; }
-.page-content p { font-size: 16px; color: #333; }
+.page-content h1 {
+  font-size: 18px;
+  color: #333;
+}
+.page-content h2 {
+  font-size: 16px;
+  color: #333;
+}
+.page-content p {
+  font-size: 16px;
+  color: #333;
+}
 .page-content .cta-button {
   font-size: 14px;
   background: #eee;
@@ -60,6 +69,7 @@ Visual hierarchy guides users through content in order of importance. Without it
 ```
 
 **Hierarchy tools (in order of impact):**
+
 - Size: Larger elements draw attention first
 - Color/Contrast: High contrast creates focal points
 - Weight: Bold text stands out from regular

@@ -20,12 +20,19 @@ Long breadcrumb trails (Home > Category > Subcategory > Product > Details) overf
       <a href="/electronics" class="hover:text-gray-900">Electronics</a>
     </li>
     <li class="before:mr-2 before:content-['/']">
-      <a href="/electronics/computers" class="hover:text-gray-900">Computers & Tablets</a>
+      <a href="/electronics/computers" class="hover:text-gray-900"
+        >Computers & Tablets</a
+      >
     </li>
     <li class="before:mr-2 before:content-['/']">
-      <a href="/electronics/computers/laptops" class="hover:text-gray-900">Laptops</a>
+      <a href="/electronics/computers/laptops" class="hover:text-gray-900"
+        >Laptops</a
+      >
     </li>
-    <li class="before:mr-2 before:content-['/'] font-medium text-gray-900" aria-current="page">
+    <li
+      class="before:mr-2 before:content-['/'] font-medium text-gray-900"
+      aria-current="page"
+    >
       MacBook Pro 16-inch
     </li>
   </ol>
@@ -48,21 +55,30 @@ Long breadcrumb trails (Home > Category > Subcategory > Product > Details) overf
       <a href="/electronics" class="hover:text-gray-900">Electronics</a>
     </li>
     <li class="hidden before:mr-2 before:content-['/'] md:list-item">
-      <a href="/electronics/computers" class="hover:text-gray-900">Computers & Tablets</a>
+      <a href="/electronics/computers" class="hover:text-gray-900"
+        >Computers & Tablets</a
+      >
     </li>
 
     <!-- Ellipsis — shown only on mobile to indicate collapsed items -->
     <li class="before:mr-2 before:content-['/'] md:hidden">
-      <span class="text-gray-400" aria-label="collapsed breadcrumb items">...</span>
+      <span class="text-gray-400" aria-label="collapsed breadcrumb items"
+        >...</span
+      >
     </li>
 
     <!-- Last parent — always visible for one-tap back navigation -->
     <li class="before:mr-2 before:content-['/']">
-      <a href="/electronics/computers/laptops" class="hover:text-gray-900">Laptops</a>
+      <a href="/electronics/computers/laptops" class="hover:text-gray-900"
+        >Laptops</a
+      >
     </li>
 
     <!-- Current page — always visible -->
-    <li class="before:mr-2 before:content-['/'] font-medium text-gray-900" aria-current="page">
+    <li
+      class="before:mr-2 before:content-['/'] font-medium text-gray-900"
+      aria-current="page"
+    >
       MacBook Pro 16-inch
     </li>
   </ol>

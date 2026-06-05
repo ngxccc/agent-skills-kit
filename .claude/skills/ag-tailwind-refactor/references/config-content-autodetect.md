@@ -14,7 +14,7 @@ Tailwind CSS v4 automatically detects your template files by scanning the projec
 ```js
 // tailwind.config.js
 module.exports = {
-  content: ['./src/**/*.{html,js,tsx}', './public/index.html'],
+  content: ["./src/**/*.{html,js,tsx}", "./public/index.html"],
 };
 ```
 

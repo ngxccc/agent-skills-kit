@@ -17,7 +17,7 @@ Every PR should have exactly one purpose. When simplifying code, resist the urge
 
 // Change 1: The actual task (correct)
 function calculateDiscount(price: number, tier: string): number {
-  const rates = { bronze: 0.05, silver: 0.10, gold: 0.15 };
+  const rates = { bronze: 0.05, silver: 0.1, gold: 0.15 };
   return price * (rates[tier] ?? 0);
 }
 
@@ -45,11 +45,11 @@ function getOrderTotal(order: Order): number {
 // Before
 function calculateDiscount(price: number, tier: string): number {
   let discount = 0;
-  if (tier === 'bronze') {
+  if (tier === "bronze") {
     discount = price * 0.05;
-  } else if (tier === 'silver') {
-    discount = price * 0.10;
-  } else if (tier === 'gold') {
+  } else if (tier === "silver") {
+    discount = price * 0.1;
+  } else if (tier === "gold") {
     discount = price * 0.15;
   }
   return discount;
@@ -57,7 +57,7 @@ function calculateDiscount(price: number, tier: string): number {
 
 // After - ONLY this function changes
 function calculateDiscount(price: number, tier: string): number {
-  const rates = { bronze: 0.05, silver: 0.10, gold: 0.15 };
+  const rates = { bronze: 0.05, silver: 0.1, gold: 0.15 };
   return price * (rates[tier] ?? 0);
 }
 
@@ -70,6 +70,7 @@ function calculateDiscount(price: number, tier: string): number {
 ### The "While You're In There" Anti-Pattern
 
 Common temptations to resist:
+
 - "I'll just update these imports too"
 - "This variable name is misleading, quick fix"
 - "Found some dead code, might as well delete it"

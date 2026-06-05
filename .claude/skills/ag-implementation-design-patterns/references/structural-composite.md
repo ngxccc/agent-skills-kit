@@ -27,8 +27,12 @@ Declare a common Component interface for leaves and containers. Leaves do the ac
 **Incorrect (separate APIs, type-checks everywhere):**
 
 ```typescript
-class Product { constructor(public price: number) {} }
-class Box     { public items: (Product | Box)[] = []; }
+class Product {
+  constructor(public price: number) {}
+}
+class Box {
+  public items: (Product | Box)[] = [];
+}
 
 function totalPrice(node: Product | Box): number {
   // Every traversal must discriminate — instanceof leaks the structure
@@ -45,34 +49,34 @@ function totalPrice(node: Product | Box): number {
  * complex objects of a composition.
  */
 abstract class Component {
-    protected parent!: Component | null;
+  protected parent!: Component | null;
 
-    public setParent(parent: Component | null) {
-        this.parent = parent;
-    }
+  public setParent(parent: Component | null) {
+    this.parent = parent;
+  }
 
-    public getParent(): Component | null {
-        return this.parent;
-    }
+  public getParent(): Component | null {
+    return this.parent;
+  }
 
-    /**
-     * Defining child-management operations on the base Component class lets the
-     * client code stay structure-agnostic during tree assembly. The trade-off
-     * is that these methods are empty for leaf components.
-     */
-    public add(component: Component): void { }
+  /**
+   * Defining child-management operations on the base Component class lets the
+   * client code stay structure-agnostic during tree assembly. The trade-off
+   * is that these methods are empty for leaf components.
+   */
+  public add(component: Component): void {}
 
-    public remove(component: Component): void { }
+  public remove(component: Component): void {}
 
-    /**
-     * You can provide a method that lets the client code figure out whether a
-     * component can bear children.
-     */
-    public isComposite(): boolean {
-        return false;
-    }
+  /**
+   * You can provide a method that lets the client code figure out whether a
+   * component can bear children.
+   */
+  public isComposite(): boolean {
+    return false;
+  }
 
-    public abstract operation(): string;
+  public abstract operation(): string;
 }
 
 /**
@@ -80,55 +84,55 @@ abstract class Component {
  * any children.
  */
 class Leaf extends Component {
-    public operation(): string {
-        return 'Leaf';
-    }
+  public operation(): string {
+    return "Leaf";
+  }
 }
 
 /**
  * The Composite class represents the complex components that may have children.
  */
 class Composite extends Component {
-    protected children: Component[] = [];
+  protected children: Component[] = [];
 
-    public add(component: Component): void {
-        this.children.push(component);
-        component.setParent(this);
+  public add(component: Component): void {
+    this.children.push(component);
+    component.setParent(this);
+  }
+
+  public remove(component: Component): void {
+    const componentIndex = this.children.indexOf(component);
+    this.children.splice(componentIndex, 1);
+    component.setParent(null);
+  }
+
+  public isComposite(): boolean {
+    return true;
+  }
+
+  /**
+   * The Composite executes its primary logic in a particular way. It
+   * traverses recursively through all its children, collecting and summing
+   * their results.
+   */
+  public operation(): string {
+    const results = [];
+    for (const child of this.children) {
+      results.push(child.operation());
     }
 
-    public remove(component: Component): void {
-        const componentIndex = this.children.indexOf(component);
-        this.children.splice(componentIndex, 1);
-        component.setParent(null);
-    }
-
-    public isComposite(): boolean {
-        return true;
-    }
-
-    /**
-     * The Composite executes its primary logic in a particular way. It
-     * traverses recursively through all its children, collecting and summing
-     * their results.
-     */
-    public operation(): string {
-        const results = [];
-        for (const child of this.children) {
-            results.push(child.operation());
-        }
-
-        return `Branch(${results.join('+')})`;
-    }
+    return `Branch(${results.join("+")})`;
+  }
 }
 
 function clientCode(component: Component) {
-    console.log(`RESULT: ${component.operation()}`);
+  console.log(`RESULT: ${component.operation()}`);
 }
 
 const simple = new Leaf();
-console.log('Client: I\'ve got a simple component:');
+console.log("Client: I've got a simple component:");
 clientCode(simple);
-console.log('');
+console.log("");
 
 const tree = new Composite();
 const branch1 = new Composite();
@@ -138,18 +142,20 @@ const branch2 = new Composite();
 branch2.add(new Leaf());
 tree.add(branch1);
 tree.add(branch2);
-console.log('Client: Now I\'ve got a composite tree:');
+console.log("Client: Now I've got a composite tree:");
 clientCode(tree);
-console.log('');
+console.log("");
 
 function clientCode2(component1: Component, component2: Component) {
-    if (component1.isComposite()) {
-        component1.add(component2);
-    }
-    console.log(`RESULT: ${component1.operation()}`);
+  if (component1.isComposite()) {
+    component1.add(component2);
+  }
+  console.log(`RESULT: ${component1.operation()}`);
 }
 
-console.log('Client: I don\'t need to check the components classes even when managing the tree:');
+console.log(
+  "Client: I don't need to check the components classes even when managing the tree:",
+);
 clientCode2(tree, simple);
 ```
 

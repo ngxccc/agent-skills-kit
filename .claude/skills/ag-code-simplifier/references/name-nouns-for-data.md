@@ -13,7 +13,7 @@ Variables, constants, and properties represent data - name them with nouns or no
 
 ```typescript
 // Bad: verb name for data
-const getUser = { id: 1, name: 'Alice' };
+const getUser = { id: 1, name: "Alice" };
 
 // Bad: noun name for function
 function user(id: number): User {
@@ -33,7 +33,7 @@ const result = user(getUser.id); // Which is the function?
 
 ```typescript
 // Good: noun for data
-const currentUser = { id: 1, name: 'Alice' };
+const currentUser = { id: 1, name: "Alice" };
 
 // Good: verb for function
 function fetchUser(id: number): User {
@@ -105,13 +105,13 @@ var apiResponse = Response{Status: 200}
 
 ### Common Patterns
 
-| Entity Type | Convention | Examples |
-|-------------|------------|----------|
-| Variables | Noun/noun phrase | `user`, `orderItems`, `totalPrice` |
-| Constants | Noun (often UPPER_CASE) | `MAX_RETRIES`, `DefaultTimeout` |
-| Functions | Verb/verb phrase | `fetchUser`, `calculateTotal`, `validateInput` |
-| Boolean functions | `is`, `has`, `can`, `should` | `isValid`, `hasPermission`, `canEdit` |
-| Properties | Noun | `user.name`, `order.total` |
+| Entity Type       | Convention                   | Examples                                       |
+| ----------------- | ---------------------------- | ---------------------------------------------- |
+| Variables         | Noun/noun phrase             | `user`, `orderItems`, `totalPrice`             |
+| Constants         | Noun (often UPPER_CASE)      | `MAX_RETRIES`, `DefaultTimeout`                |
+| Functions         | Verb/verb phrase             | `fetchUser`, `calculateTotal`, `validateInput` |
+| Boolean functions | `is`, `has`, `can`, `should` | `isValid`, `hasPermission`, `canEdit`          |
+| Properties        | Noun                         | `user.name`, `order.total`                     |
 
 ### When NOT to Apply
 

@@ -22,22 +22,35 @@ interface Command {
 }
 
 class SendEmailCommand implements Command {
-  constructor(private to: string, private subject: string, private body: string) {}
+  constructor(
+    private to: string,
+    private subject: string,
+    private body: string,
+  ) {}
   execute() {
     emailClient.send(this.to, this.subject, this.body);
   }
 }
 
 class LogAuditCommand implements Command {
-  constructor(private userId: string, private action: string) {}
+  constructor(
+    private userId: string,
+    private action: string,
+  ) {}
   execute() {
-    auditLog.write({ userId: this.userId, action: this.action, at: Date.now() });
+    auditLog.write({
+      userId: this.userId,
+      action: this.action,
+      at: Date.now(),
+    });
   }
 }
 
 const afterCommit: Command[] = [];
-afterCommit.push(new SendEmailCommand(user.email, 'Welcome', renderWelcome(user)));
-afterCommit.push(new LogAuditCommand(user.id, 'signup'));
+afterCommit.push(
+  new SendEmailCommand(user.email, "Welcome", renderWelcome(user)),
+);
+afterCommit.push(new LogAuditCommand(user.id, "signup"));
 // later, on commit:
 for (const c of afterCommit) c.execute();
 ```
@@ -48,8 +61,12 @@ for (const c of afterCommit) c.execute();
 type DeferredAction = () => void;
 
 const afterCommit: DeferredAction[] = [];
-afterCommit.push(() => emailClient.send(user.email, 'Welcome', renderWelcome(user)));
-afterCommit.push(() => auditLog.write({ userId: user.id, action: 'signup', at: Date.now() }));
+afterCommit.push(() =>
+  emailClient.send(user.email, "Welcome", renderWelcome(user)),
+);
+afterCommit.push(() =>
+  auditLog.write({ userId: user.id, action: "signup", at: Date.now() }),
+);
 // later, on commit:
 for (const run of afterCommit) run();
 ```
@@ -58,9 +75,9 @@ The captured `user.email`, `user.id`, etc. are closed over at the time of `push`
 
 ### Common pitfalls
 
-- **Capturing a mutable reference, not a value.** `for (const u of newUsers) afterCommit.push(() => welcome(u))` — with `const` of `for-of`, each iteration has its own `u` binding, so the closures capture distinct users. With `var` (or a reused `let` outside the loop), every closure captures the *same* reference, which by call time has moved to the last user. Always use `const` in `for-of` or `forEach`; never `var` for the loop variable.
+- **Capturing a mutable reference, not a value.** `for (const u of newUsers) afterCommit.push(() => welcome(u))` — with `const` of `for-of`, each iteration has its own `u` binding, so the closures capture distinct users. With `var` (or a reused `let` outside the loop), every closure captures the _same_ reference, which by call time has moved to the last user. Always use `const` in `for-of` or `forEach`; never `var` for the loop variable.
 - **Lost stack traces on async failures.** If the closure throws asynchronously (`() => fetch(url).then(...)`) and you never `await` it, the rejection is unhandled and the originating call site is lost. The class form keeps the construction call site somewhere in its constructor — closures don't. Either `await` each closure or `Promise.allSettled` the lot and log failures.
-- **Memory: closures keep their entire enclosing scope alive.** A closure pushed onto `afterCommit` that uses `user.email` keeps the *entire* `user` object reachable (and anything the user object references) until the closure runs and is released. For long-lived queues (background jobs, deferred-until-shutdown), this can leak. Pull out the small set of fields you actually need: `() => emailClient.send(email, subject, body)` not `() => emailClient.send(user.email, ...)`.
+- **Memory: closures keep their entire enclosing scope alive.** A closure pushed onto `afterCommit` that uses `user.email` keeps the _entire_ `user` object reachable (and anything the user object references) until the closure runs and is released. For long-lived queues (background jobs, deferred-until-shutdown), this can leak. Pull out the small set of fields you actually need: `() => emailClient.send(email, subject, body)` not `() => emailClient.send(user.email, ...)`.
 - **The closure name is empty.** A stack trace through `afterCommit[2]()` shows an anonymous function; debugging is harder than with a named class. Use named function expressions when the queue is long-lived: `afterCommit.push(function sendWelcomeEmail() { … })`.
 
 ### Performance trade-offs

@@ -8,6 +8,7 @@ tags: feature, traffic-protection, deny-list, security
 ## Enable Protection Deny Lists
 
 To prevent known malicious actors from abusing your endpoints, Upstash Ratelimit supports **Deny Lists** (blocking by IP, user agent, country, or custom ID) and **Auto IP Deny List** (blocking aggregate malicious IPs automatically, refreshed daily from GitHub IPSUM aggregation).
+
 - Enable this feature by setting `enableProtection: true` on client configuration.
 - To execute checks, you must pass IP, user agent, or country headers into the `limit()` invocation.
 
@@ -41,11 +42,14 @@ export async function POST(req: Request) {
   const userAgent = req.headers.get("user-agent") || "";
   const country = req.headers.get("cf-ipcountry") || ""; // Geolocation country header
 
-  const { success, reason, deniedValue, pending } = await ratelimit.limit("user_123", {
-    ip,
-    userAgent,
-    country,
-  });
+  const { success, reason, deniedValue, pending } = await ratelimit.limit(
+    "user_123",
+    {
+      ip,
+      userAgent,
+      country,
+    },
+  );
 
   if (pending) {
     waitUntil(pending); // Await async daily IP deny list synchronization
@@ -65,6 +69,7 @@ export async function POST(req: Request) {
 ```
 
 **When NOT to use this pattern:**
+
 - Internal microservices, private VPC routes, or trusted admin dashboards where deny list checking is redundant and incurs unnecessary command overhead (+2 commands).
 
 Reference: [Upstash Ratelimit - Traffic Protection](https://upstash.com/docs/redis/sdks/ratelimit-ts/traffic-protection)

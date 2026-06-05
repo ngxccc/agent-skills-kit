@@ -16,7 +16,7 @@ tags: stream, error-tsx, route-level-error, reset-retry
 - An `error.tsx` that's a server component (missing `'use client'`) — won't work; error components must be client components.
 - An `error.tsx` that logs the error to `console.error` but never reports it to a real monitoring service — silent in production.
 - An `error.tsx` that resets state but doesn't include the `reset` button as a recovery affordance — user has to navigate away to retry.
-- An `error.tsx` placed in the wrong segment level — it doesn't catch errors in *its own* `layout.tsx` (place it in the parent for that).
+- An `error.tsx` placed in the wrong segment level — it doesn't catch errors in _its own_ `layout.tsx` (place it in the parent for that).
 
 The canonical resolution: `'use client'` `error.tsx` next to each route segment with retry/recovery UI; `global-error.tsx` at the root for root-layout failures; client `useEffect` to log to monitoring.
 

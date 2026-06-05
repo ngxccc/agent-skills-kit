@@ -22,6 +22,7 @@ Comprehensive guide for rate limiting in stateless, serverless, and edge environ
 ## When to Apply
 
 Reference these guidelines when:
+
 - Enforcing rate limits on public or sensitive API routes and Server Actions.
 - Configuring Upstash Redis connection clients.
 - Implementing IP-based deny lists or traffic protection.
@@ -29,11 +30,11 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category | Impact | Prefix | Rules |
-|----------|----------|--------|--------|-------|
-| 1 | Connection & Setup | CRITICAL | `setup-` | 2 |
-| 2 | Algorithm Selection | HIGH | `algo-` | 1 |
-| 3 | Features & Optimization | HIGH | `feat-` | 3 |
+| Priority | Category                | Impact   | Prefix   | Rules |
+| -------- | ----------------------- | -------- | -------- | ----- |
+| 1        | Connection & Setup      | CRITICAL | `setup-` | 2     |
+| 2        | Algorithm Selection     | HIGH     | `algo-`  | 1     |
+| 3        | Features & Optimization | HIGH     | `feat-`  | 3     |
 
 ## Quick Reference
 

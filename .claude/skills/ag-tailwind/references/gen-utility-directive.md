@@ -44,6 +44,7 @@ Define custom utilities with `@utility` instead of `@layer utilities`. This enab
 ```
 
 **Benefits:**
+
 - Automatic variant support (hover, focus, responsive)
 - Proper cascade layer ordering
 - Smart specificity sorting

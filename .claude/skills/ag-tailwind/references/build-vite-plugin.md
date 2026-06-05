@@ -31,6 +31,7 @@ export default defineConfig({
 ```
 
 **When NOT to use this pattern:**
+
 - Projects not using Vite as their build tool
 - Projects using webpack, Parcel, or other bundlers (use `@tailwindcss/postcss` instead)
 

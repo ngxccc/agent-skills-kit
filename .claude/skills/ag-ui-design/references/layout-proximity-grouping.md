@@ -12,10 +12,18 @@ Elements close together are perceived as related (Gestalt principle). Use proxim
 **Incorrect (equal spacing obscures relationships):**
 
 ```css
-.form-field { margin-bottom: 24px; }
-.form-label { margin-bottom: 24px; }
-.form-input { margin-bottom: 24px; }
-.form-hint { margin-bottom: 24px; }
+.form-field {
+  margin-bottom: 24px;
+}
+.form-label {
+  margin-bottom: 24px;
+}
+.form-input {
+  margin-bottom: 24px;
+}
+.form-hint {
+  margin-bottom: 24px;
+}
 /* Label appears equidistant from field above and below */
 /* Unclear which label belongs to which input */
 ```
@@ -49,6 +57,7 @@ Elements close together are perceived as related (Gestalt principle). Use proxim
 ```
 
 **Proximity guidelines:**
+
 - 1:3 ratio minimum between intra-group and inter-group spacing
 - Labels closer to their fields than to adjacent fields
 - Card content padded more from edges than between items

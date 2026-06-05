@@ -9,10 +9,10 @@ tags: rename, rounded, border-radius, scale
 
 Tailwind CSS v4 shifted the border radius scale down by one step, just like shadow and blur utilities. The bare `rounded` class now maps to a smaller radius value, and `rounded-sm` becomes the new smallest step. Without updating, all rounded corners in your project render larger than designed.
 
-| v3 class | v4 class |
-|---|---|
+| v3 class     | v4 class     |
+| ------------ | ------------ |
 | `rounded-sm` | `rounded-xs` |
-| `rounded` | `rounded-sm` |
+| `rounded`    | `rounded-sm` |
 
 **Incorrect (what's wrong):**
 

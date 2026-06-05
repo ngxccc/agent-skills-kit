@@ -33,24 +33,45 @@ Tailwind CSS v4 includes native 3D transform utilities. Use them instead of arbi
 
 ```html
 <!-- Perspective on container -->
-<div class="perspective-dramatic">  <!-- 100px -->
-<div class="perspective-near">      <!-- 300px -->
-<div class="perspective-normal">    <!-- 500px -->
-<div class="perspective-midrange">  <!-- 800px -->
-<div class="perspective-distant">   <!-- 1200px -->
+<div class="perspective-dramatic">
+  <!-- 100px -->
+  <div class="perspective-near">
+    <!-- 300px -->
+    <div class="perspective-normal">
+      <!-- 500px -->
+      <div class="perspective-midrange">
+        <!-- 800px -->
+        <div class="perspective-distant">
+          <!-- 1200px -->
 
-<!-- 3D transform style -->
-<div class="transform-3d">          <!-- preserve-3d -->
-<div class="transform-flat">        <!-- flat -->
+          <!-- 3D transform style -->
+          <div class="transform-3d">
+            <!-- preserve-3d -->
+            <div class="transform-flat">
+              <!-- flat -->
 
-<!-- 3D rotations -->
-<div class="rotate-x-45">           <!-- rotateX(45deg) -->
-<div class="rotate-y-90">           <!-- rotateY(90deg) -->
-<div class="rotate-z-180">          <!-- rotateZ(180deg) -->
+              <!-- 3D rotations -->
+              <div class="rotate-x-45">
+                <!-- rotateX(45deg) -->
+                <div class="rotate-y-90">
+                  <!-- rotateY(90deg) -->
+                  <div class="rotate-z-180">
+                    <!-- rotateZ(180deg) -->
 
-<!-- Backface visibility -->
-<div class="backface-visible">
-<div class="backface-hidden">
+                    <!-- Backface visibility -->
+                    <div class="backface-visible">
+                      <div class="backface-hidden"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 ```
 
 Reference: [Tailwind CSS v4.0 Release](https://tailwindcss.com/blog/tailwindcss-v4)

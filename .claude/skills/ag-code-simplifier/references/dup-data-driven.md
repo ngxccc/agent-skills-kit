@@ -13,20 +13,20 @@ When you have repetitive if/else or switch statements that map inputs to outputs
 
 ```typescript
 function getStatusColor(status: string): string {
-  if (status === 'pending') {
-    return '#FFA500';
-  } else if (status === 'approved') {
-    return '#00FF00';
-  } else if (status === 'rejected') {
-    return '#FF0000';
-  } else if (status === 'cancelled') {
-    return '#808080';
-  } else if (status === 'processing') {
-    return '#0000FF';
-  } else if (status === 'completed') {
-    return '#00AA00';
+  if (status === "pending") {
+    return "#FFA500";
+  } else if (status === "approved") {
+    return "#00FF00";
+  } else if (status === "rejected") {
+    return "#FF0000";
+  } else if (status === "cancelled") {
+    return "#808080";
+  } else if (status === "processing") {
+    return "#0000FF";
+  } else if (status === "completed") {
+    return "#00AA00";
   } else {
-    return '#000000';
+    return "#000000";
   }
 }
 // Adding a new status = new branch + risk of typo
@@ -36,16 +36,16 @@ function getStatusColor(status: string): string {
 
 ```typescript
 const STATUS_COLORS: Record<string, string> = {
-  pending: '#FFA500',
-  approved: '#00FF00',
-  rejected: '#FF0000',
-  cancelled: '#808080',
-  processing: '#0000FF',
-  completed: '#00AA00',
+  pending: "#FFA500",
+  approved: "#00FF00",
+  rejected: "#FF0000",
+  cancelled: "#808080",
+  processing: "#0000FF",
+  completed: "#00AA00",
 };
 
 function getStatusColor(status: string): string {
-  return STATUS_COLORS[status] ?? '#000000';
+  return STATUS_COLORS[status] ?? "#000000";
 }
 // Adding a new status = one line in the map
 ```
@@ -145,14 +145,14 @@ func CreateHandler(handlerType string) Handler {
 
 ```javascript
 function calculateShipping(country) {
-  if (country === 'US') return 5.99;
-  if (country === 'CA') return 9.99;
-  if (country === 'MX') return 12.99;
-  if (country === 'UK') return 15.99;
-  if (country === 'DE') return 15.99;
-  if (country === 'FR') return 15.99;
-  if (country === 'JP') return 25.99;
-  if (country === 'AU') return 29.99;
+  if (country === "US") return 5.99;
+  if (country === "CA") return 9.99;
+  if (country === "MX") return 12.99;
+  if (country === "UK") return 15.99;
+  if (country === "DE") return 15.99;
+  if (country === "FR") return 15.99;
+  if (country === "JP") return 25.99;
+  if (country === "AU") return 29.99;
   return 35.99; // International
 }
 // Europe has same price but requires 3 lines
@@ -171,7 +171,7 @@ const SHIPPING_RATES = {
 
 function calculateShipping(country) {
   for (const region of Object.values(SHIPPING_RATES)) {
-    if (typeof region === 'object' && country in region) {
+    if (typeof region === "object" && country in region) {
       return region[country];
     }
   }

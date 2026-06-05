@@ -3,7 +3,7 @@
 This file defines all sections, their ordering, impact levels, and descriptions.
 The section ID (in parentheses) is the filename prefix used to group rules.
 
-**Note:** Section impact levels indicate the *maximum* severity for that category. Individual rules within a section may have lower impact levels when the specific change is less urgent than the category's primary concern.
+**Note:** Section impact levels indicate the _maximum_ severity for that category. Individual rules within a section may have lower impact levels when the specific change is less urgent than the category's primary concern.
 
 ---
 

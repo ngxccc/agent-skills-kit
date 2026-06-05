@@ -17,12 +17,22 @@ Whitespace (negative space) reduces cognitive load and groups related content. C
   margin: 4px;
 }
 
-.card-title { margin-bottom: 2px; }
-.card-description { margin-bottom: 4px; }
-.card-actions { margin-top: 4px; }
+.card-title {
+  margin-bottom: 2px;
+}
+.card-description {
+  margin-bottom: 4px;
+}
+.card-actions {
+  margin-top: 4px;
+}
 
-.section { padding: 10px 0; }
-.section-title { margin-bottom: 8px; }
+.section {
+  padding: 10px 0;
+}
+.section-title {
+  margin-bottom: 8px;
+}
 /* Content feels cluttered and hard to scan */
 /* No visual separation between elements */
 ```
@@ -62,6 +72,7 @@ Whitespace (negative space) reduces cognitive load and groups related content. C
 ```
 
 **Whitespace principles:**
+
 - Use consistent spacing scale (8px base: 8, 16, 24, 32, 48, 64)
 - More whitespace around important elements draws attention
 - Group related items with less space; separate sections with more

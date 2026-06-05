@@ -12,16 +12,16 @@ Using `type="text"` for all inputs forces mobile users to switch keyboards manua
 **Incorrect (generic text input for everything):**
 
 ```html
-<input type="text" name="email" placeholder="Email">
+<input type="text" name="email" placeholder="Email" />
 <!-- Shows full QWERTY, user must find @ symbol -->
 
-<input type="text" name="phone" placeholder="Phone">
+<input type="text" name="phone" placeholder="Phone" />
 <!-- Shows full QWERTY, user must switch to number keyboard -->
 
-<input type="text" name="search" placeholder="Search...">
+<input type="text" name="search" placeholder="Search..." />
 <!-- No "Search" or "Go" button on mobile keyboard -->
 
-<input type="text" name="url" placeholder="Website URL">
+<input type="text" name="url" placeholder="Website URL" />
 <!-- No ".com" shortcut or "/" key prominent -->
 ```
 
@@ -29,16 +29,16 @@ Using `type="text"` for all inputs forces mobile users to switch keyboards manua
 
 ```html
 <!-- Email: shows @ and .com on keyboard -->
-<input type="email" name="email" placeholder="Email" autocomplete="email">
+<input type="email" name="email" placeholder="Email" autocomplete="email" />
 
 <!-- Phone: shows numeric keypad -->
-<input type="tel" name="phone" placeholder="Phone" autocomplete="tel">
+<input type="tel" name="phone" placeholder="Phone" autocomplete="tel" />
 
 <!-- Search: shows Search/Go button instead of Enter -->
-<input type="search" name="query" placeholder="Search...">
+<input type="search" name="query" placeholder="Search..." />
 
 <!-- URL: shows "/" and ".com" shortcuts -->
-<input type="url" name="website" placeholder="Website URL" autocomplete="url">
+<input type="url" name="website" placeholder="Website URL" autocomplete="url" />
 
 <!-- Number: shows numeric keypad -->
 <input
@@ -47,7 +47,7 @@ Using `type="text"` for all inputs forces mobile users to switch keyboards manua
   pattern="[0-9]*"
   name="zipcode"
   placeholder="ZIP Code"
->
+/>
 ```
 
 **Input types and their keyboards:**

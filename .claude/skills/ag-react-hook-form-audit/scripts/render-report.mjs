@@ -7,7 +7,9 @@ import { resolve } from 'node:path';
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.findings || !args.project) {
-  process.stderr.write('Usage: render-report.mjs --findings <findings.json> --project <root> [--rule-link-base <url-or-path>]\n');
+  process.stderr.write(
+    'Usage: render-report.mjs --findings <findings.json> --project <root> [--rule-link-base <url-or-path>]\n',
+  );
   process.exit(2);
 }
 

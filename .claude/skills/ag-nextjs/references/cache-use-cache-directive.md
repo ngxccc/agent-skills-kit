@@ -53,38 +53,40 @@ export default async function ProductsPage() {
 
 ```typescript
 // lib/data.ts
-import { unstable_cache } from 'next/cache'
+import { unstable_cache } from "next/cache";
 
 export const getProducts = unstable_cache(
   async () => {
-    const res = await fetch('https://api.store.com/products')
-    return res.json()
+    const res = await fetch("https://api.store.com/products");
+    return res.json();
   },
-  ['products'],
-  { revalidate: 3600 }  // Cache for 1 hour
-)
+  ["products"],
+  { revalidate: 3600 }, // Cache for 1 hour
+);
 ```
 
 ---
 
 ### In disguise — a hand-rolled module-level cache mimicking `'use cache'`
 
-The grep-friendly anti-pattern is a `fetch(...)` with no cache annotation in a Server Component. The disguise is a *custom* caching layer (module-level `Map`, in-memory dictionary, ad-hoc TTL) introduced "to fix" the per-request fetching. It works for one request lifecycle but doesn't integrate with `revalidateTag`, can't survive a server restart cleanly, and competes with the platform's caching primitive.
+The grep-friendly anti-pattern is a `fetch(...)` with no cache annotation in a Server Component. The disguise is a _custom_ caching layer (module-level `Map`, in-memory dictionary, ad-hoc TTL) introduced "to fix" the per-request fetching. It works for one request lifecycle but doesn't integrate with `revalidateTag`, can't survive a server restart cleanly, and competes with the platform's caching primitive.
 
 **Incorrect — in disguise (hand-rolled cache layer):**
 
 ```typescript
 // lib/cache.ts — homemade caching
-const productsCache = new Map<string, { data: Product[]; expires: number }>()
+const productsCache = new Map<string, { data: Product[]; expires: number }>();
 
 export async function getProducts(category: string): Promise<Product[]> {
-  const cached = productsCache.get(category)
-  if (cached && cached.expires > Date.now()) return cached.data
+  const cached = productsCache.get(category);
+  if (cached && cached.expires > Date.now()) return cached.data;
 
-  const res = await fetch(`https://api.store.com/products?category=${category}`)
-  const data = await res.json()
-  productsCache.set(category, { data, expires: Date.now() + 1000 * 60 * 5 })
-  return data
+  const res = await fetch(
+    `https://api.store.com/products?category=${category}`,
+  );
+  const data = await res.json();
+  productsCache.set(category, { data, expires: Date.now() + 1000 * 60 * 5 });
+  return data;
 }
 ```
 
@@ -94,16 +96,18 @@ Works locally, breaks in production: no shared state across server instances, no
 
 ```typescript
 // lib/products.ts
-import { unstable_cache } from 'next/cache'
+import { unstable_cache } from "next/cache";
 
 export const getProducts = unstable_cache(
   async (category: string) => {
-    const res = await fetch(`https://api.store.com/products?category=${category}`)
-    return res.json() as Promise<Product[]>
+    const res = await fetch(
+      `https://api.store.com/products?category=${category}`,
+    );
+    return res.json() as Promise<Product[]>;
   },
-  ['products-by-category'],
-  { tags: ['products'], revalidate: 300 }
-)
+  ["products-by-category"],
+  { tags: ["products"], revalidate: 300 },
+);
 ```
 
 Now `revalidateTag('products', 'max')` invalidates across all server instances. The audit can find this and the framework knows about it.

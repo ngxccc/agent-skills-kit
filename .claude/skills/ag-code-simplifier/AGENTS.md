@@ -122,11 +122,11 @@ Linting and formatting tools enforce project-wide code standards automatically. 
 
 ```javascript
 // Simplified code uses single quotes, but project's .prettierrc specifies double quotes
-const message = 'Hello, world';
-const items = ['one', 'two', 'three'];
+const message = "Hello, world";
+const items = ["one", "two", "three"];
 
 function greet(name) {
-  return 'Hello, ' + name;
+  return "Hello, " + name;
 }
 ```
 
@@ -360,7 +360,7 @@ Code simplification must never alter what a function returns. Even "equivalent" 
 ```typescript
 // Before: returns null for missing users
 function findUser(id: string): User | null {
-  const user = users.find(u => u.id === id);
+  const user = users.find((u) => u.id === id);
   if (!user) {
     return null;
   }
@@ -369,7 +369,7 @@ function findUser(id: string): User | null {
 
 // After "simplification": now returns undefined
 function findUser(id: string): User | undefined {
-  return users.find(u => u.id === id);
+  return users.find((u) => u.id === id);
 }
 // Breaks: if (findUser(id) === null) { ... }
 ```
@@ -378,7 +378,7 @@ function findUser(id: string): User | undefined {
 
 ```typescript
 function findUser(id: string): User | null {
-  return users.find(u => u.id === id) ?? null;
+  return users.find((u) => u.id === id) ?? null;
 }
 ```
 
@@ -507,7 +507,7 @@ function formatDate(format: string, date: Date, locale?: string): string {
 
 ```typescript
 function formatDate(date: Date, format: string, locale?: string): string {
-  const loc = locale ?? 'en-US';
+  const loc = locale ?? "en-US";
   return new Intl.DateTimeFormat(loc, parseFormat(format)).format(date);
 }
 ```
@@ -618,14 +618,14 @@ The most dangerous simplifications are those that look equivalent but have diffe
 // Before: explicitly checks for null
 function getDisplayName(user: User | null): string {
   if (user === null) {
-    return 'Anonymous';
+    return "Anonymous";
   }
   return user.name;
 }
 
 // After "simplification": truthy check
 function getDisplayName(user: User | null): string {
-  return user ? user.name : 'Anonymous';
+  return user ? user.name : "Anonymous";
 }
 // Breaks: user with name = '' or name = 0 (if polymorphic)
 ```
@@ -634,7 +634,7 @@ function getDisplayName(user: User | null): string {
 
 ```typescript
 function getDisplayName(user: User | null): string {
-  return user === null ? 'Anonymous' : user.name;
+  return user === null ? "Anonymous" : user.name;
 }
 ```
 
@@ -706,10 +706,10 @@ function isValid(x: number): boolean {
 // $ npm test -- --grep "isValid"
 
 // 2. Check edge cases manually
-console.log(isValid(NaN));     // Before: false, After: false ✓
-console.log(isValid(0));       // Before: false, After: false ✓
-console.log(isValid(100));     // Before: false, After: false ✓
-console.log(isValid(50));      // Before: true,  After: true  ✓
+console.log(isValid(NaN)); // Before: false, After: false ✓
+console.log(isValid(0)); // Before: false, After: false ✓
+console.log(isValid(100)); // Before: false, After: false ✓
+console.log(isValid(50)); // Before: true,  After: true  ✓
 
 // 3. Review diff for semantic changes
 // git diff --word-diff
@@ -789,7 +789,7 @@ function validateSession(token: string): boolean {
 
 // 3. Old utility last touched 18 months ago (wrong!)
 // "This helper was verbose, made it more functional..."
-const formatDate = (d: Date) => d.toISOString().split('T')[0];
+const formatDate = (d: Date) => d.toISOString().split("T")[0];
 ```
 
 **Correct (focused on recent code only):**
@@ -924,7 +924,7 @@ Every PR should have exactly one purpose. When simplifying code, resist the urge
 
 // Change 1: The actual task (correct)
 function calculateDiscount(price: number, tier: string): number {
-  const rates = { bronze: 0.05, silver: 0.10, gold: 0.15 };
+  const rates = { bronze: 0.05, silver: 0.1, gold: 0.15 };
   return price * (rates[tier] ?? 0);
 }
 
@@ -952,11 +952,11 @@ function getOrderTotal(order: Order): number {
 // Before
 function calculateDiscount(price: number, tier: string): number {
   let discount = 0;
-  if (tier === 'bronze') {
+  if (tier === "bronze") {
     discount = price * 0.05;
-  } else if (tier === 'silver') {
-    discount = price * 0.10;
-  } else if (tier === 'gold') {
+  } else if (tier === "silver") {
+    discount = price * 0.1;
+  } else if (tier === "gold") {
     discount = price * 0.15;
   }
   return discount;
@@ -964,7 +964,7 @@ function calculateDiscount(price: number, tier: string): number {
 
 // After - ONLY this function changes
 function calculateDiscount(price: number, tier: string): number {
-  const rates = { bronze: 0.05, silver: 0.10, gold: 0.15 };
+  const rates = { bronze: 0.05, silver: 0.1, gold: 0.15 };
   return price * (rates[tier] ?? 0);
 }
 
@@ -977,6 +977,7 @@ function calculateDiscount(price: number, tier: string): number {
 ### The "While You're In There" Anti-Pattern
 
 Common temptations to resist:
+
 - "I'll just update these imports too"
 - "This variable name is misleading, quick fix"
 - "Found some dead code, might as well delete it"
@@ -1063,13 +1064,13 @@ export async function processOrder(cart: Cart, payment: Payment) {
 
 ### Changes That Require Separate Planning
 
-| Change Type | Why It's Not Simplification |
-|-------------|---------------------------|
-| Global renames | Touches every file, massive merge conflicts |
-| Dependency upgrades | Requires compatibility testing |
-| Architecture changes | Needs design review and migration plan |
-| Pattern migrations | (callbacks->promises, classes->hooks) Need incremental rollout |
-| Directory restructuring | Breaks imports across entire codebase |
+| Change Type             | Why It's Not Simplification                                    |
+| ----------------------- | -------------------------------------------------------------- |
+| Global renames          | Touches every file, massive merge conflicts                    |
+| Dependency upgrades     | Requires compatibility testing                                 |
+| Architecture changes    | Needs design review and migration plan                         |
+| Pattern migrations      | (callbacks->promises, classes->hooks) Need incremental rollout |
+| Directory restructuring | Breaks imports across entire codebase                          |
 
 ### When NOT to Apply
 
@@ -1095,15 +1096,15 @@ When simplifying code, stay within the current module or component boundary. Rea
 // "I can simplify this by directly accessing the user database"
 
 // orders/OrderService.ts
-import { db } from '../users/database';        // Crossing into users module!
-import { UserCache } from '../users/cache';    // Crossing into users module!
-import { formatAddress } from '../shipping/utils'; // Crossing into shipping!
+import { db } from "../users/database"; // Crossing into users module!
+import { UserCache } from "../users/cache"; // Crossing into users module!
+import { formatAddress } from "../shipping/utils"; // Crossing into shipping!
 
 class OrderService {
   async createOrder(userId: string, items: Item[]) {
     // "Simplified" by bypassing UserService
-    const user = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-    const cached = UserCache.get(userId);  // Direct cache access
+    const user = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
+    const cached = UserCache.get(userId); // Direct cache access
 
     // "Simplified" by inlining shipping logic
     const address = formatAddress(user.address); // Using internal util
@@ -1125,23 +1126,23 @@ class OrderService {
 // Stays within orders module, uses public APIs
 
 // orders/OrderService.ts
-import { UserService } from '../users';      // Public API only
-import { ShippingService } from '../shipping'; // Public API only
+import { UserService } from "../users"; // Public API only
+import { ShippingService } from "../shipping"; // Public API only
 
 class OrderService {
   constructor(
     private users: UserService,
     private shipping: ShippingService,
-    private repo: OrderRepository
+    private repo: OrderRepository,
   ) {}
 
   async createOrder(userId: string, items: Item[]) {
     // Before: verbose null checking
     const user = await this.users.getById(userId);
-    if (!user) throw new NotFoundError('User not found');
+    if (!user) throw new NotFoundError("User not found");
 
     const address = await this.shipping.formatAddress(user.addressId);
-    if (!address) throw new NotFoundError('Address not found');
+    if (!address) throw new NotFoundError("Address not found");
 
     return this.repo.create({ userId, items, shippingAddress: address });
   }
@@ -1150,7 +1151,7 @@ class OrderService {
   async createOrder(userId: string, items: Item[]) {
     const [user, address] = await Promise.all([
       this.users.getByIdOrThrow(userId),
-      this.shipping.getFormattedAddress(userId)
+      this.shipping.getFormattedAddress(userId),
     ]);
 
     return this.repo.create({ userId, items, shippingAddress: address });
@@ -1163,13 +1164,13 @@ class OrderService {
 
 ### Boundary Violations to Avoid
 
-| Violation | Why It's Harmful |
-|-----------|-----------------|
+| Violation                             | Why It's Harmful                              |
+| ------------------------------------- | --------------------------------------------- |
 | Direct database access across modules | Bypasses business logic, breaks encapsulation |
-| Importing internal utilities | Creates hidden dependencies |
-| Accessing private/internal APIs | Will break on internal refactors |
-| Copying code from other modules | Creates drift and duplication |
-| Modifying other modules "to simplify" | Requires other team's review/approval |
+| Importing internal utilities          | Creates hidden dependencies                   |
+| Accessing private/internal APIs       | Will break on internal refactors              |
+| Copying code from other modules       | Creates drift and duplication                 |
+| Modifying other modules "to simplify" | Requires other team's review/approval         |
 
 ### When NOT to Apply
 
@@ -1210,22 +1211,22 @@ function processOrder(order: Order): Result {
               const finalTotal = total - discount;
               return chargeCustomer(order.customer, finalTotal);
             } else {
-              return { error: 'Invalid total' };
+              return { error: "Invalid total" };
             }
           } else {
-            return { error: 'No payment method' };
+            return { error: "No payment method" };
           }
         } else {
-          return { error: 'Customer inactive' };
+          return { error: "Customer inactive" };
         }
       } else {
-        return { error: 'No customer' };
+        return { error: "No customer" };
       }
     } else {
-      return { error: 'No items' };
+      return { error: "No items" };
     }
   } else {
-    return { error: 'No order' };
+    return { error: "No order" };
   }
 }
 ```
@@ -1235,24 +1236,24 @@ function processOrder(order: Order): Result {
 ```typescript
 function processOrder(order: Order): Result {
   if (!order) {
-    return { error: 'No order' };
+    return { error: "No order" };
   }
   if (order.items.length === 0) {
-    return { error: 'No items' };
+    return { error: "No items" };
   }
   if (!order.customer) {
-    return { error: 'No customer' };
+    return { error: "No customer" };
   }
   if (!order.customer.isActive) {
-    return { error: 'Customer inactive' };
+    return { error: "Customer inactive" };
   }
   if (!order.paymentMethod) {
-    return { error: 'No payment method' };
+    return { error: "No payment method" };
   }
 
   const total = calculateTotal(order.items);
   if (total <= 0) {
-    return { error: 'Invalid total' };
+    return { error: "Invalid total" };
   }
 
   const discount = getDiscount(order.customer);
@@ -1289,28 +1290,28 @@ function sendNotification(user: User, message: string, channel: Channel): void {
     if (message && message.trim().length > 0) {
       const sanitized = sanitizeMessage(message);
 
-      if (channel === 'email') {
+      if (channel === "email") {
         if (user.emailVerified) {
           result = emailService.send(user.email, sanitized);
         } else {
-          console.log('Email not verified');
+          console.log("Email not verified");
         }
-      } else if (channel === 'sms') {
+      } else if (channel === "sms") {
         if (user.phone) {
           if (user.phoneVerified) {
             result = smsService.send(user.phone, sanitized);
           } else {
-            console.log('Phone not verified');
+            console.log("Phone not verified");
           }
         } else {
-          console.log('No phone number');
+          console.log("No phone number");
         }
       }
     } else {
-      console.log('Empty message');
+      console.log("Empty message");
     }
   } else {
-    console.log('Invalid user');
+    console.log("Invalid user");
   }
 
   return result;
@@ -1323,31 +1324,31 @@ function sendNotification(user: User, message: string, channel: Channel): void {
 function sendNotification(user: User, message: string, channel: Channel): void {
   // Guard clauses - all preconditions checked upfront
   if (!user?.email) {
-    throw new ValidationError('User must have an email address');
+    throw new ValidationError("User must have an email address");
   }
   if (!message?.trim()) {
-    throw new ValidationError('Message cannot be empty');
+    throw new ValidationError("Message cannot be empty");
   }
-  if (!['email', 'sms'].includes(channel)) {
+  if (!["email", "sms"].includes(channel)) {
     throw new ValidationError(`Invalid channel: ${channel}`);
   }
 
   const sanitized = sanitizeMessage(message);
 
   // Channel-specific guards
-  if (channel === 'email') {
+  if (channel === "email") {
     if (!user.emailVerified) {
-      throw new ValidationError('Email address not verified');
+      throw new ValidationError("Email address not verified");
     }
     return emailService.send(user.email, sanitized);
   }
 
-  if (channel === 'sms') {
+  if (channel === "sms") {
     if (!user.phone) {
-      throw new ValidationError('User must have a phone number for SMS');
+      throw new ValidationError("User must have a phone number for SMS");
     }
     if (!user.phoneVerified) {
-      throw new ValidationError('Phone number not verified');
+      throw new ValidationError("Phone number not verified");
     }
     return smsService.send(user.phone, sanitized);
   }
@@ -1378,15 +1379,15 @@ Nested ternary operators create write-only code. The human brain processes branc
 function getStatusBadge(user: User): string {
   return user.isAdmin
     ? user.isActive
-      ? 'admin-active'
-      : 'admin-inactive'
+      ? "admin-active"
+      : "admin-inactive"
     : user.isPremium
       ? user.isActive
-        ? 'premium-active'
-        : 'premium-inactive'
+        ? "premium-active"
+        : "premium-inactive"
       : user.isActive
-        ? 'basic-active'
-        : 'basic-inactive';
+        ? "basic-active"
+        : "basic-inactive";
 }
 ```
 
@@ -1394,7 +1395,7 @@ function getStatusBadge(user: User): string {
 
 ```typescript
 function getStatusBadge(user: User): string {
-  const status = user.isActive ? 'active' : 'inactive';
+  const status = user.isActive ? "active" : "inactive";
 
   if (user.isAdmin) {
     return `admin-${status}`;
@@ -1422,14 +1423,14 @@ const priority = task.isUrgent
 
 ```typescript
 const priorityMatrix = {
-  'urgent-important': 1,
-  'urgent-normal': 2,
-  'normal-important': 3,
-  'normal-normal': 4,
+  "urgent-important": 1,
+  "urgent-normal": 2,
+  "normal-important": 3,
+  "normal-normal": 4,
 };
 
-const urgency = task.isUrgent ? 'urgent' : 'normal';
-const importance = task.isImportant ? 'important' : 'normal';
+const urgency = task.isUrgent ? "urgent" : "normal";
+const importance = task.isImportant ? "important" : "normal";
 const priority = priorityMatrix[`${urgency}-${importance}`];
 ```
 
@@ -1437,13 +1438,13 @@ const priority = priorityMatrix[`${urgency}-${importance}`];
 
 ```typescript
 // OK: Single ternary for simple binary choice
-const label = isLoading ? 'Loading...' : 'Submit';
+const label = isLoading ? "Loading..." : "Submit";
 
 // OK: Nullish coalescing or optional chaining
-const name = user?.name ?? 'Anonymous';
+const name = user?.name ?? "Anonymous";
 
 // NOT OK: Even two levels is too much
-const label = isLoading ? 'Loading...' : isDisabled ? 'Disabled' : 'Submit';
+const label = isLoading ? "Loading..." : isDisabled ? "Disabled" : "Submit";
 ```
 
 ### Benefits
@@ -1465,14 +1466,18 @@ Dense one-liners optimize for code golf, not comprehension. When multiple operat
 **Incorrect (dense chained operations):**
 
 ```typescript
-const result = data.filter(x => x.active).map(x => x.value).reduce((a, b) => a + b, 0) / data.filter(x => x.active).length || 0;
+const result =
+  data
+    .filter((x) => x.active)
+    .map((x) => x.value)
+    .reduce((a, b) => a + b, 0) / data.filter((x) => x.active).length || 0;
 ```
 
 **Correct (explicit steps with meaningful names):**
 
 ```typescript
-const activeItems = data.filter(item => item.active);
-const values = activeItems.map(item => item.value);
+const activeItems = data.filter((item) => item.active);
+const values = activeItems.map((item) => item.value);
 const sum = values.reduce((total, value) => total + value, 0);
 const average = activeItems.length > 0 ? sum / activeItems.length : 0;
 ```
@@ -1480,16 +1485,23 @@ const average = activeItems.length > 0 ? sum / activeItems.length : 0;
 **Incorrect (boolean logic golfing):**
 
 ```typescript
-const canProceed = !!(user && user.verified && (user.role === 'admin' || (user.role === 'member' && user.subscription?.active && new Date(user.subscription.expiresAt) > new Date())));
+const canProceed = !!(
+  user &&
+  user.verified &&
+  (user.role === "admin" ||
+    (user.role === "member" &&
+      user.subscription?.active &&
+      new Date(user.subscription.expiresAt) > new Date()))
+);
 ```
 
 **Correct (readable boolean expression):**
 
 ```typescript
 const isVerifiedUser = user?.verified ?? false;
-const isAdmin = user?.role === 'admin';
+const isAdmin = user?.role === "admin";
 const hasActiveSubscription =
-  user?.role === 'member' &&
+  user?.role === "member" &&
   user?.subscription?.active &&
   new Date(user.subscription.expiresAt) > new Date();
 
@@ -1521,11 +1533,11 @@ function processTransactions(accounts: Account[]) {
   for (const account of accounts) {
     if (account.isActive) {
       for (const transaction of account.transactions) {
-        if (transaction.status === 'pending') {
+        if (transaction.status === "pending") {
           if (transaction.amount > 0) {
             for (const rule of account.rules) {
               if (rule.applies(transaction)) {
-                if (rule.action === 'flag') {
+                if (rule.action === "flag") {
                   if (transaction.amount > rule.threshold) {
                     transaction.flagged = true;
                     transaction.flagReason = rule.reason;
@@ -1546,7 +1558,7 @@ function processTransactions(accounts: Account[]) {
 
 ```typescript
 function processTransactions(accounts: Account[]) {
-  const activeAccounts = accounts.filter(a => a.isActive);
+  const activeAccounts = accounts.filter((a) => a.isActive);
 
   for (const account of activeAccounts) {
     processPendingTransactions(account);
@@ -1555,7 +1567,7 @@ function processTransactions(accounts: Account[]) {
 
 function processPendingTransactions(account: Account) {
   const pendingTransactions = account.transactions.filter(
-    t => t.status === 'pending' && t.amount > 0
+    (t) => t.status === "pending" && t.amount > 0,
   );
 
   for (const transaction of pendingTransactions) {
@@ -1568,7 +1580,7 @@ function applyRules(account: Account, transaction: Transaction) {
     if (!rule.applies(transaction)) {
       continue;
     }
-    if (rule.action !== 'flag') {
+    if (rule.action !== "flag") {
       continue;
     }
     if (transaction.amount <= rule.threshold) {
@@ -1630,10 +1642,10 @@ function processOrders(orders: Order[]) {
     customerOrderCounts.set(order.customerId, count + 1);
 
     // Prepare confirmation emails
-    if (order.status === 'completed') {
+    if (order.status === "completed") {
       emailsToSend.push({
         to: order.customerEmail,
-        subject: 'Order Confirmed',
+        subject: "Order Confirmed",
         body: generateOrderEmail(order),
       });
     }
@@ -1666,7 +1678,7 @@ function calculateTotalRevenue(orders: Order[]): number {
 
 function findSuspiciousOrders(orders: Order[]): Order[] {
   return orders.filter(
-    order => order.total > 10000 || order.items.length > 50
+    (order) => order.total > 10000 || order.items.length > 50,
   );
 }
 
@@ -1681,10 +1693,10 @@ function countOrdersByCustomer(orders: Order[]): Map<string, number> {
 
 function prepareConfirmationEmails(orders: Order[]): Email[] {
   return orders
-    .filter(order => order.status === 'completed')
-    .map(order => ({
+    .filter((order) => order.status === "completed")
+    .map((order) => ({
       to: order.customerEmail,
-      subject: 'Order Confirmed',
+      subject: "Order Confirmed",
       body: generateOrderEmail(order),
     }));
 }
@@ -1726,7 +1738,7 @@ if (!user.isNotVerified) {
 }
 
 if (!isNotEmpty(list)) {
-  return 'No items';
+  return "No items";
 }
 
 if (!config.disableCache !== false) {
@@ -1747,7 +1759,7 @@ if (user.isVerified) {
 }
 
 if (isEmpty(list)) {
-  return 'No items';
+  return "No items";
 }
 
 if (config.enableCache) {
@@ -1764,7 +1776,7 @@ if (canProceed) {
 
 ```typescript
 function isNotAdmin(user: User): boolean {
-  return user.role !== 'admin';
+  return user.role !== "admin";
 }
 
 function hasNoErrors(result: Result): boolean {
@@ -1785,7 +1797,7 @@ if (!isNotAdmin(user) && !isDisabled(feature)) {
 
 ```typescript
 function isAdmin(user: User): boolean {
-  return user.role === 'admin';
+  return user.role === "admin";
 }
 
 function isValid(result: Result): boolean {
@@ -1804,14 +1816,14 @@ if (isAdmin(user) && isEnabled(feature)) {
 
 ### Refactoring Patterns
 
-| Negative Form | Positive Form |
-|--------------|---------------|
-| `!isNotValid` | `isValid` |
-| `!isEmpty` | `hasItems` |
-| `!isDisabled` | `isEnabled` |
-| `notFound === false` | `found === true` or just `found` |
-| `!user.inactive` | `user.isActive` (may need data change) |
-| `errors.length === 0` | `isValid` or `hasNoErrors` |
+| Negative Form         | Positive Form                          |
+| --------------------- | -------------------------------------- |
+| `!isNotValid`         | `isValid`                              |
+| `!isEmpty`            | `hasItems`                             |
+| `!isDisabled`         | `isEnabled`                            |
+| `notFound === false`  | `found === true` or just `found`       |
+| `!user.inactive`      | `user.isActive` (may need data change) |
+| `errors.length === 0` | `isValid` or `hasNoErrors`             |
 
 ### Benefits
 
@@ -1846,7 +1858,7 @@ const d = 86400000; // milliseconds in a day
 
 function calc(a: number[], f: number): number {
   // Bad: What is being calculated? What are a and f?
-  return a.filter(x => x > f).length;
+  return a.filter((x) => x > f).length;
 }
 
 // Bad: What does this list contain?
@@ -1859,7 +1871,7 @@ const list = getUsers();
 const MILLISECONDS_PER_DAY = 86400000;
 
 function countItemsAboveThreshold(items: number[], threshold: number): number {
-  return items.filter(item => item > threshold).length;
+  return items.filter((item) => item > threshold).length;
 }
 
 const activeUsers = getActiveUsers();
@@ -1910,7 +1922,7 @@ Variables, constants, and properties represent data - name them with nouns or no
 
 ```typescript
 // Bad: verb name for data
-const getUser = { id: 1, name: 'Alice' };
+const getUser = { id: 1, name: "Alice" };
 
 // Bad: noun name for function
 function user(id: number): User {
@@ -1930,7 +1942,7 @@ const result = user(getUser.id); // Which is the function?
 
 ```typescript
 // Good: noun for data
-const currentUser = { id: 1, name: 'Alice' };
+const currentUser = { id: 1, name: "Alice" };
 
 // Good: verb for function
 function fetchUser(id: number): User {
@@ -1948,13 +1960,13 @@ const result = fetchUser(currentUser.id);
 
 ### Common Patterns
 
-| Entity Type | Convention | Examples |
-|-------------|------------|----------|
-| Variables | Noun/noun phrase | `user`, `orderItems`, `totalPrice` |
-| Constants | Noun (often UPPER_CASE) | `MAX_RETRIES`, `DefaultTimeout` |
-| Functions | Verb/verb phrase | `fetchUser`, `calculateTotal`, `validateInput` |
-| Boolean functions | `is`, `has`, `can`, `should` | `isValid`, `hasPermission`, `canEdit` |
-| Properties | Noun | `user.name`, `order.total` |
+| Entity Type       | Convention                   | Examples                                       |
+| ----------------- | ---------------------------- | ---------------------------------------------- |
+| Variables         | Noun/noun phrase             | `user`, `orderItems`, `totalPrice`             |
+| Constants         | Noun (often UPPER_CASE)      | `MAX_RETRIES`, `DefaultTimeout`                |
+| Functions         | Verb/verb phrase             | `fetchUser`, `calculateTotal`, `validateInput` |
+| Boolean functions | `is`, `has`, `can`, `should` | `isValid`, `hasPermission`, `canEdit`          |
+| Properties        | Noun                         | `user.name`, `order.total`                     |
 
 ### When NOT to Apply
 
@@ -1980,7 +1992,7 @@ Abbreviations save a few keystrokes but cost readers significant mental effort t
 const usrMgr = new UserManager();
 const cfg = loadConfig();
 const txn = db.beginTransaction();
-const btn = document.getElementById('submit');
+const btn = document.getElementById("submit");
 const req = new HttpRequest();
 const res = await fetch(url);
 const err = validate(input);
@@ -1989,7 +2001,7 @@ const cnt = items.length;
 const idx = findPosition(target);
 const ctx = createContext();
 const val = getValue();
-const cb = () => console.log('done');
+const cb = () => console.log("done");
 ```
 
 **Correct (full words):**
@@ -1999,7 +2011,7 @@ const cb = () => console.log('done');
 const userManager = new UserManager();
 const configuration = loadConfig();
 const transaction = db.beginTransaction();
-const submitButton = document.getElementById('submit');
+const submitButton = document.getElementById("submit");
 const httpRequest = new HttpRequest();
 const response = await fetch(url);
 const validationError = validate(input);
@@ -2008,24 +2020,24 @@ const itemCount = items.length;
 const targetIndex = findPosition(target);
 const requestContext = createContext();
 const currentValue = getValue();
-const onComplete = () => console.log('done');
+const onComplete = () => console.log("done");
 ```
 
 ### Acceptable Abbreviations
 
 Some abbreviations are so universally understood they are acceptable:
 
-| Abbreviation | Meaning | Context |
-|--------------|---------|---------|
-| `id` | identifier | Universal |
-| `url` | uniform resource locator | Web development |
-| `api` | application programming interface | Programming |
-| `http` | hypertext transfer protocol | Web development |
-| `db` | database | When context is obvious |
-| `io` | input/output | Systems programming |
-| `i`, `j`, `k` | loop indices | Small loop scopes |
-| `e`, `err` | error | Go convention, catch blocks |
-| `ctx` | context | Go convention only |
+| Abbreviation  | Meaning                           | Context                     |
+| ------------- | --------------------------------- | --------------------------- |
+| `id`          | identifier                        | Universal                   |
+| `url`         | uniform resource locator          | Web development             |
+| `api`         | application programming interface | Programming                 |
+| `http`        | hypertext transfer protocol       | Web development             |
+| `db`          | database                          | When context is obvious     |
+| `io`          | input/output                      | Systems programming         |
+| `i`, `j`, `k` | loop indices                      | Small loop scopes           |
+| `e`, `err`    | error                             | Go convention, catch blocks |
+| `ctx`         | context                           | Go convention only          |
 
 ### When NOT to Apply
 
@@ -2084,13 +2096,13 @@ const editors = service.getUsersByRole('editor');
 
 Document your chosen terms:
 
-| Concept | Use This | NOT These |
-|---------|----------|-----------|
-| Retrieve data | `get` | fetch, retrieve, load, find, obtain |
-| Create entity | `create` | add, insert, new, make, build |
-| Remove entity | `delete` | remove, destroy, clear, erase |
-| Modify entity | `update` | modify, change, edit, patch |
-| Person using app | `user` | customer, client, account, member |
+| Concept          | Use This | NOT These                           |
+| ---------------- | -------- | ----------------------------------- |
+| Retrieve data    | `get`    | fetch, retrieve, load, find, obtain |
+| Create entity    | `create` | add, insert, new, make, build       |
+| Remove entity    | `delete` | remove, destroy, clear, erase       |
+| Modify entity    | `update` | modify, change, edit, patch         |
+| Person using app | `user`   | customer, client, account, member   |
 
 ### When NOT to Apply
 
@@ -2139,7 +2151,9 @@ function handleItems(items: any[]) {
 
 ```typescript
 // Good: Names describe actual content
-async function processOrder(orderRequest: OrderRequest): Promise<OrderConfirmation> {
+async function processOrder(
+  orderRequest: OrderRequest,
+): Promise<OrderConfirmation> {
   const inventoryStatus = await fetchInventoryStatus(orderRequest.productId);
   const pricedOrder = applyPricing(inventoryStatus);
   const validatedOrder = validateOrder(pricedOrder);
@@ -2157,18 +2171,18 @@ function applyDiscounts(lineItems: LineItem[]) {
 
 ### Worst Offenders
 
-| Generic Name | What to Ask | Better Alternative |
-|--------------|-------------|-------------------|
-| `data` | Data about what? | `userData`, `sensorReadings`, `configPayload` |
-| `info` | Information about what? | `userInfo`, `connectionInfo`, `errorDetails` |
-| `temp` | Temporary what? | `pendingChanges`, `intermediateSum`, `bufferContent` |
-| `item` | Item from what collection? | `cartItem`, `menuOption`, `searchResult` |
-| `result` | Result of what operation? | `queryResult`, `validationResult`, `calculatedTotal` |
-| `value` | Value of what? | `inputValue`, `configValue`, `computedScore` |
-| `list` | List of what? | `userList`, `errorMessages`, `availableOptions` |
-| `obj` / `object` | Object representing what? | `userProfile`, `paymentRecord`, `configSettings` |
-| `str` / `string` | String containing what? | `userName`, `errorMessage`, `formattedDate` |
-| `num` / `number` | Number representing what? | `retryCount`, `totalPrice`, `userAge` |
+| Generic Name     | What to Ask                | Better Alternative                                   |
+| ---------------- | -------------------------- | ---------------------------------------------------- |
+| `data`           | Data about what?           | `userData`, `sensorReadings`, `configPayload`        |
+| `info`           | Information about what?    | `userInfo`, `connectionInfo`, `errorDetails`         |
+| `temp`           | Temporary what?            | `pendingChanges`, `intermediateSum`, `bufferContent` |
+| `item`           | Item from what collection? | `cartItem`, `menuOption`, `searchResult`             |
+| `result`         | Result of what operation?  | `queryResult`, `validationResult`, `calculatedTotal` |
+| `value`          | Value of what?             | `inputValue`, `configValue`, `computedScore`         |
+| `list`           | List of what?              | `userList`, `errorMessages`, `availableOptions`      |
+| `obj` / `object` | Object representing what?  | `userProfile`, `paymentRecord`, `configSettings`     |
+| `str` / `string` | String containing what?    | `userName`, `errorMessage`, `formattedDate`          |
+| `num` / `number` | Number representing what?  | `retryCount`, `totalPrice`, `userAge`                |
 
 ### When NOT to Apply
 
@@ -2200,16 +2214,16 @@ Wait until code appears three times before extracting a helper. The first duplic
 ```typescript
 // Two similar validation calls - someone extracts immediately
 function validateUser(user: User) {
-  if (!user.email.includes('@')) throw new Error('Invalid email');
+  if (!user.email.includes("@")) throw new Error("Invalid email");
 }
 
 function validateContact(contact: Contact) {
-  if (!contact.email.includes('@')) throw new Error('Invalid email');
+  if (!contact.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Over-engineered "solution" after seeing just 2 occurrences
 function validateEmail(entity: { email: string }, entityName: string) {
-  if (!entity.email.includes('@')) {
+  if (!entity.email.includes("@")) {
     throw new Error(`Invalid ${entityName} email`);
   }
 }
@@ -2222,22 +2236,22 @@ function validateEmail(entity: { email: string }, entityName: string) {
 ```typescript
 // First occurrence
 function validateUser(user: User) {
-  if (!user.email.includes('@')) throw new Error('Invalid email');
+  if (!user.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Second occurrence - note it, don't extract yet
 function validateContact(contact: Contact) {
-  if (!contact.email.includes('@')) throw new Error('Invalid email');
+  if (!contact.email.includes("@")) throw new Error("Invalid email");
 }
 
 // Third occurrence - NOW extract with confidence
 function validateOrder(order: Order) {
-  if (!order.customerEmail.includes('@')) throw new Error('Invalid email');
+  if (!order.customerEmail.includes("@")) throw new Error("Invalid email");
 }
 
 // After third occurrence, extract with full understanding of the pattern
 function isValidEmail(email: string): boolean {
-  return email.includes('@');
+  return email.includes("@");
 }
 ```
 
@@ -2329,8 +2343,11 @@ async function checkout(cart: Cart): Promise<Order> {
 
 // What does this do? Must read implementation
 async function processCartData(cart: Cart): Promise<Order> {
-  const items = cart.items.filter(item => item.quantity > 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.items.filter((item) => item.quantity > 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const tax = subtotal * 0.08;
   return { items, subtotal, tax, total: subtotal + tax };
 }
@@ -2340,8 +2357,11 @@ async function processCartData(cart: Cart): Promise<Order> {
 
 ```typescript
 async function checkout(cart: Cart): Promise<Order> {
-  const items = cart.items.filter(item => item.quantity > 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.items.filter((item) => item.quantity > 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const tax = subtotal * 0.08;
 
   const order: Order = { items, subtotal, tax, total: subtotal + tax };
@@ -2382,10 +2402,13 @@ Three similar lines of code are often better than a premature abstraction. The w
 
 ```typescript
 // "Both format currency, let's make it generic!"
-function formatValue(value: number, type: 'price' | 'salary' | 'discount'): string {
-  const symbol = type === 'discount' ? '-$' : '$';
-  const decimals = type === 'salary' ? 0 : 2;
-  const prefix = type === 'price' ? '' : ' ';
+function formatValue(
+  value: number,
+  type: "price" | "salary" | "discount",
+): string {
+  const symbol = type === "discount" ? "-$" : "$";
+  const decimals = type === "salary" ? 0 : 2;
+  const prefix = type === "price" ? "" : " ";
 
   return `${prefix}${symbol}${value.toFixed(decimals)}`;
 }
@@ -2447,20 +2470,20 @@ When you have repetitive if/else or switch statements that map inputs to outputs
 
 ```typescript
 function getStatusColor(status: string): string {
-  if (status === 'pending') {
-    return '#FFA500';
-  } else if (status === 'approved') {
-    return '#00FF00';
-  } else if (status === 'rejected') {
-    return '#FF0000';
-  } else if (status === 'cancelled') {
-    return '#808080';
-  } else if (status === 'processing') {
-    return '#0000FF';
-  } else if (status === 'completed') {
-    return '#00AA00';
+  if (status === "pending") {
+    return "#FFA500";
+  } else if (status === "approved") {
+    return "#00FF00";
+  } else if (status === "rejected") {
+    return "#FF0000";
+  } else if (status === "cancelled") {
+    return "#808080";
+  } else if (status === "processing") {
+    return "#0000FF";
+  } else if (status === "completed") {
+    return "#00AA00";
   } else {
-    return '#000000';
+    return "#000000";
   }
 }
 // Adding a new status = new branch + risk of typo
@@ -2470,16 +2493,16 @@ function getStatusColor(status: string): string {
 
 ```typescript
 const STATUS_COLORS: Record<string, string> = {
-  pending: '#FFA500',
-  approved: '#00FF00',
-  rejected: '#FF0000',
-  cancelled: '#808080',
-  processing: '#0000FF',
-  completed: '#00AA00',
+  pending: "#FFA500",
+  approved: "#00FF00",
+  rejected: "#FF0000",
+  cancelled: "#808080",
+  processing: "#0000FF",
+  completed: "#00AA00",
 };
 
 function getStatusColor(status: string): string {
-  return STATUS_COLORS[status] ?? '#000000';
+  return STATUS_COLORS[status] ?? "#000000";
 }
 // Adding a new status = one line in the map
 ```
@@ -2645,6 +2668,7 @@ export async function fetchUserData(userId) {
 ### Recovery Workflow
 
 When you need old code back:
+
 1. `git log --oneline -20` - find the commit
 2. `git show <commit>:path/to/file` - view the old version
 3. `git checkout <commit> -- path/to/file` - restore if needed
@@ -2671,20 +2695,20 @@ Comments that repeat what the code says add noise without value. They double the
 
 ```typescript
 // Import React
-import React from 'react';
+import React from "react";
 
 // User interface
 interface User {
-  id: string;      // The user's ID
-  name: string;    // The user's name
-  email: string;   // The user's email
-  age: number;     // The user's age
+  id: string; // The user's ID
+  name: string; // The user's name
+  email: string; // The user's email
+  age: number; // The user's age
 }
 
 // Function to get user by ID
 function getUserById(id: string): User | null {
   // Find the user in the array
-  const user = users.find(u => u.id === id);
+  const user = users.find((u) => u.id === id);
 
   // If user is not found, return null
   if (!user) {
@@ -2711,7 +2735,7 @@ for (const item of items) {
 **Correct (self-documenting code, no redundant comments):**
 
 ```typescript
-import React from 'react';
+import React from "react";
 
 interface User {
   id: string;
@@ -2721,7 +2745,7 @@ interface User {
 }
 
 function getUserById(id: string): User | null {
-  return users.find(u => u.id === id) ?? null;
+  return users.find((u) => u.id === id) ?? null;
 }
 
 counter++;
@@ -2800,11 +2824,13 @@ export class UserService {
 
   async updateUser(id: string, data: Partial<User>): Promise<void> {
     // Security: parameterized query prevents SQL injection
-    const setClauses = Object.keys(data).map(k => `${k} = ?`).join(', ');
-    await this.db.query(
-      `UPDATE users SET ${setClauses} WHERE id = ?`,
-      [...Object.values(data), id]
-    );
+    const setClauses = Object.keys(data)
+      .map((k) => `${k} = ?`)
+      .join(", ");
+    await this.db.query(`UPDATE users SET ${setClauses} WHERE id = ?`, [
+      ...Object.values(data),
+      id,
+    ]);
   }
 }
 
@@ -2817,6 +2843,7 @@ export class UserService {
 ### TODO Triage Process
 
 When you find a TODO, decide:
+
 1. **Fix it now** - If it takes < 5 minutes, just do it
 2. **Create issue** - If it's real work, track it properly
 3. **Delete it** - If it's vague, stale, or no longer relevant
@@ -2976,18 +3003,18 @@ interface DataWithItems {
 
 function isDataWithItems(data: unknown): data is DataWithItems {
   return (
-    typeof data === 'object' &&
+    typeof data === "object" &&
     data !== null &&
-    'items' in data &&
+    "items" in data &&
     Array.isArray((data as DataWithItems).items)
   );
 }
 
 function processData(data: unknown): string[] {
   if (!isDataWithItems(data)) {
-    throw new Error('Invalid data structure');
+    throw new Error("Invalid data structure");
   }
-  return data.items.map(item => item.name.toUpperCase());
+  return data.items.map((item) => item.name.toUpperCase());
 }
 
 interface ApiResponse {
@@ -3040,14 +3067,14 @@ function processItems(items: string[]) {
 ```typescript
 // Type is readonly ["admin", "user", "guest"]
 const ROLES = ["admin", "user", "guest"] as const;
-type Role = typeof ROLES[number]; // "admin" | "user" | "guest"
+type Role = (typeof ROLES)[number]; // "admin" | "user" | "guest"
 
 // Type preserves literal values
 const ERROR_CODES = {
   NOT_FOUND: { status: "not_found", code: 404 },
   FORBIDDEN: { status: "forbidden", code: 403 },
 } as const;
-type ErrorStatus = typeof ERROR_CODES[keyof typeof ERROR_CODES]["status"];
+type ErrorStatus = (typeof ERROR_CODES)[keyof typeof ERROR_CODES]["status"];
 
 // Signals no mutation, creates new array
 function processItems(items: readonly string[]): string[] {
@@ -3214,12 +3241,12 @@ fn total_revenue(orders: &[Order]) -> Decimal {
 
 ### Guidelines
 
-| Use Iterators When | Use Loops When |
-|-------------------|----------------|
-| Simple filter/map/collect | Multiple related mutations |
-| No side effects needed | Early returns with context |
-| Each step is self-contained | Stateful iteration |
-| 2-3 combinators max | Complex branching logic |
+| Use Iterators When          | Use Loops When             |
+| --------------------------- | -------------------------- |
+| Simple filter/map/collect   | Multiple related mutations |
+| No side effects needed      | Early returns with context |
+| Each step is self-contained | Stateful iteration         |
+| 2-3 combinators max         | Complex branching logic    |
 
 ### Benefits of Knowing Both
 
@@ -3291,12 +3318,12 @@ for category in categories:
 
 ### Guidelines
 
-| Use Comprehensions | Use Loops |
-|-------------------|-----------|
-| Single filter + map | Multiple conditions |
-| One level of nesting | Side effects needed |
-| Fits on one line (~80 chars) | Complex transformations |
-| Pure data transformation | Exception handling required |
+| Use Comprehensions           | Use Loops                   |
+| ---------------------------- | --------------------------- |
+| Single filter + map          | Multiple conditions         |
+| One level of nesting         | Side effects needed         |
+| Fits on one line (~80 chars) | Complex transformations     |
+| Pure data transformation     | Exception handling required |
 
 ### Walrus Operator in Comprehensions (Python 3.8+)
 
@@ -3465,7 +3492,7 @@ function groupBy<T>(arr: T[], key: keyof T): Record<string, T[]> {
 ```typescript
 // TypeScript: Use Set and Object.groupBy (ES2024)
 const uniqueItems = [...new Set(arr)];
-const grouped = Object.groupBy(arr, item => item.category);
+const grouped = Object.groupBy(arr, (item) => item.category);
 ```
 
 **Incorrect (Python manual operations):**
@@ -3544,13 +3571,13 @@ sorted := slices.SortedFunc(items, func(a, b Item) int {
 
 ### Common Builtins to Know
 
-| Operation | TypeScript | Python | Go | Rust |
-|-----------|------------|--------|-----|------|
-| Unique | `new Set()` | `set()` | `slices.Compact` | `.dedup()` |
-| Sort | `.sort()` | `sorted()` | `slices.Sort` | `.sort()` |
-| Find | `.find()` | `next(x for...)` | `slices.Index` | `.find()` |
-| Group | `Object.groupBy` | `itertools.groupby` | manual/lo | `.group_by()` |
-| Flatten | `.flat()` | `chain.from_iterable` | manual | `.flatten()` |
+| Operation | TypeScript       | Python                | Go               | Rust          |
+| --------- | ---------------- | --------------------- | ---------------- | ------------- |
+| Unique    | `new Set()`      | `set()`               | `slices.Compact` | `.dedup()`    |
+| Sort      | `.sort()`        | `sorted()`            | `slices.Sort`    | `.sort()`     |
+| Find      | `.find()`        | `next(x for...)`      | `slices.Index`   | `.find()`     |
+| Group     | `Object.groupBy` | `itertools.groupby`   | manual/lo        | `.group_by()` |
+| Flatten   | `.flat()`        | `chain.from_iterable` | manual           | `.flatten()`  |
 
 ### Benefits
 

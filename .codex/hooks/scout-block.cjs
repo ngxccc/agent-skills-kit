@@ -34,7 +34,7 @@ try {
     checkScoutBlock,
     isBuildCommand,
     isVenvExecutable,
-    isAllowedCommand
+    isAllowedCommand,
   } = require('./lib/scout-checker.cjs');
   const { isHookEnabled } = require('./lib/ag-config-utils.cjs');
 
@@ -45,7 +45,9 @@ try {
 
   // Import formatters (kept local as they're Claude-specific output)
   const { formatBlockedError } = require('./scout-block/error-formatter.cjs');
-  const { formatBroadPatternError } = require('./scout-block/broad-pattern-detector.cjs');
+  const {
+    formatBroadPatternError,
+  } = require('./scout-block/broad-pattern-detector.cjs');
 
   const { createHookTimer, logHookCrash } = require('./lib/hook-logger.cjs');
 
@@ -68,7 +70,12 @@ try {
     } catch (parseError) {
       // Fail-open for unparseable input
       console.error('WARN: JSON parse failed, allowing operation');
-      timer.end({ status: 'warn', exit: 0, note: 'json-parse-failed', error: parseError.message });
+      timer.end({
+        status: 'warn',
+        exit: 0,
+        note: 'json-parse-failed',
+        error: parseError.message,
+      });
       process.exit(0);
     }
 
@@ -83,9 +90,10 @@ try {
     const toolInput = data.tool_input;
     const toolName = data.tool_name || 'unknown';
     const claudeDir = path.dirname(__dirname); // Go up from hooks/ to .claude/
-    const payloadCwd = typeof data.cwd === 'string' && data.cwd.trim()
-      ? data.cwd
-      : process.cwd();
+    const payloadCwd =
+      typeof data.cwd === 'string' && data.cwd.trim()
+        ? data.cwd
+        : process.cwd();
 
     // Use shared scout checker
     const result = checkScoutBlock({
@@ -98,33 +106,41 @@ try {
         // New-first (.vcignore), legacy (.ckignore) fallback for backward compatibility.
         ckignorePath: fs.existsSync(path.join(claudeDir, '.vcignore'))
           ? path.join(claudeDir, '.vcignore')
-          : (fs.existsSync(path.join(claudeDir, '.ckignore'))
+          : fs.existsSync(path.join(claudeDir, '.ckignore'))
             ? path.join(claudeDir, '.ckignore')
-            : path.join(claudeDir, '.vcignore')),
-        checkBroadPatterns: true
-      }
+            : path.join(claudeDir, '.vcignore'),
+        checkBroadPatterns: true,
+      },
     });
 
     // Handle allowed commands
     if (result.isAllowedCommand) {
-      timer.end({ tool: toolName, status: 'ok', exit: 0, note: 'allowed-command' });
+      timer.end({
+        tool: toolName,
+        status: 'ok',
+        exit: 0,
+        note: 'allowed-command',
+      });
       process.exit(0);
     }
 
     // Handle broad pattern blocks
     if (result.blocked && result.isBroadPattern) {
-      const errorMsg = formatBroadPatternError({
-        blocked: true,
-        reason: result.reason,
-        suggestions: result.suggestions
-      }, claudeDir);
+      const errorMsg = formatBroadPatternError(
+        {
+          blocked: true,
+          reason: result.reason,
+          suggestions: result.suggestions,
+        },
+        claudeDir,
+      );
       console.error(errorMsg);
       timer.end({
         tool: toolName,
         status: 'block',
         exit: 2,
         target: result.pattern || toolInput.path || toolInput.file_path || '',
-        note: result.reason || 'broad-pattern'
+        note: result.reason || 'broad-pattern',
       });
       process.exit(2);
     }
@@ -136,7 +152,7 @@ try {
         pattern: result.pattern,
         tool: toolName,
         claudeDir: claudeDir,
-        configPath: result.configPath
+        configPath: result.configPath,
       });
       console.error(errorMsg);
       timer.end({
@@ -144,7 +160,7 @@ try {
         status: 'block',
         exit: 2,
         target: result.path || '',
-        note: result.pattern || 'blocked-path'
+        note: result.pattern || 'blocked-path',
       });
       process.exit(2);
     }
@@ -152,7 +168,6 @@ try {
     // All paths allowed
     timer.end({ tool: toolName, status: 'ok', exit: 0 });
     process.exit(0);
-
   } catch (error) {
     // Fail-open for unexpected errors
     console.error('WARN: Hook error, allowing operation -', error.message);

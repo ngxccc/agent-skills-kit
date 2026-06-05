@@ -13,7 +13,7 @@ Complex boolean expressions with double negations, redundant comparisons, and ta
 
 ```typescript
 function shouldShowBanner(user: User, settings: Settings): boolean {
-  if (!(!user.isSubscribed)) {
+  if (!!user.isSubscribed) {
     return false;
   }
   if (user.dismissed !== true && !settings.bannersDisabled) {
@@ -23,7 +23,7 @@ function shouldShowBanner(user: User, settings: Settings): boolean {
 }
 
 function canAccess(role: string, isActive: boolean): boolean {
-  if (!(role !== 'admin' && role !== 'moderator') === false) {
+  if (!(role !== "admin" && role !== "moderator") === false) {
     return false;
   }
   return isActive !== false;
@@ -41,7 +41,7 @@ function shouldShowBanner(user: User, settings: Settings): boolean {
 }
 
 function canAccess(role: string, isActive: boolean): boolean {
-  if (role !== 'admin' && role !== 'moderator') {
+  if (role !== "admin" && role !== "moderator") {
     return false;
   }
   return isActive;
@@ -98,15 +98,15 @@ func validateConfig(config *Config) error {
 
 ### Key Simplification Rules
 
-| Pattern | Simplifies To |
-|---------|---------------|
-| `!!x` | `x` |
-| `!(a && b)` | `!a \|\| !b` (De Morgan's) |
-| `!(a \|\| b)` | `!a && !b` (De Morgan's) |
-| `x === true` | `x` |
-| `x === false` | `!x` |
-| `x !== true` | `!x` |
-| `!(x !== y)` | `x === y` |
+| Pattern       | Simplifies To              |
+| ------------- | -------------------------- |
+| `!!x`         | `x`                        |
+| `!(a && b)`   | `!a \|\| !b` (De Morgan's) |
+| `!(a \|\| b)` | `!a && !b` (De Morgan's)   |
+| `x === true`  | `x`                        |
+| `x === false` | `!x`                       |
+| `x !== true`  | `!x`                       |
+| `!(x !== y)`  | `x === y`                  |
 
 ### When NOT to Apply
 

@@ -46,7 +46,9 @@ export class MCPClientManager {
   private clients: Map<string, Client> = new Map();
   private transports: Map<string, StdioClientTransport> = new Map();
 
-  async loadConfig(configPath: string = '.claude/.mcp.json'): Promise<MCPConfig> {
+  async loadConfig(
+    configPath: string = '.claude/.mcp.json',
+  ): Promise<MCPConfig> {
     const fullPath = resolve(process.cwd(), configPath);
     const content = await readFile(fullPath, 'utf-8');
     const config = JSON.parse(content) as MCPConfig;
@@ -63,13 +65,16 @@ export class MCPClientManager {
     const transport = new StdioClientTransport({
       command: serverConfig.command,
       args: serverConfig.args,
-      env: serverConfig.env
+      env: serverConfig.env,
     });
 
-    const client = new Client({
-      name: `mcp-manager-${serverName}`,
-      version: '1.0.0'
-    }, { capabilities: {} });
+    const client = new Client(
+      {
+        name: `mcp-manager-${serverName}`,
+        version: '1.0.0',
+      },
+      { capabilities: {} },
+    );
 
     await client.connect(transport);
     this.clients.set(serverName, client);
@@ -107,7 +112,7 @@ export class MCPClientManager {
             name: tool.name,
             description: tool.description || '',
             inputSchema: tool.inputSchema,
-            outputSchema: (tool as any).outputSchema
+            outputSchema: (tool as any).outputSchema,
           });
         }
       } catch (error: any) {
@@ -132,7 +137,7 @@ export class MCPClientManager {
             serverName,
             name: prompt.name,
             description: prompt.description || '',
-            arguments: prompt.arguments
+            arguments: prompt.arguments,
           });
         }
       } catch (error: any) {
@@ -158,7 +163,7 @@ export class MCPClientManager {
             uri: resource.uri,
             name: resource.name,
             description: resource.description,
-            mimeType: resource.mimeType
+            mimeType: resource.mimeType,
           });
         }
       } catch (error: any) {
@@ -173,20 +178,31 @@ export class MCPClientManager {
     return allResources;
   }
 
-  async callTool(serverName: string, toolName: string, args: any): Promise<any> {
+  async callTool(
+    serverName: string,
+    toolName: string,
+    args: any,
+  ): Promise<any> {
     const client = this.clients.get(serverName);
     if (!client) throw new Error(`Not connected to server: ${serverName}`);
     return await client.callTool(
       { name: toolName, arguments: args },
       undefined,
-      { timeout: 300000 }
+      { timeout: 300000 },
     );
   }
 
-  async getPrompt(serverName: string, promptName: string, args?: any): Promise<any> {
+  async getPrompt(
+    serverName: string,
+    promptName: string,
+    args?: any,
+  ): Promise<any> {
     const client = this.clients.get(serverName);
     if (!client) throw new Error(`Not connected to server: ${serverName}`);
-    return await client.getPrompt({ name: promptName, arguments: args }, { timeout: 300000 });
+    return await client.getPrompt(
+      { name: promptName, arguments: args },
+      { timeout: 300000 },
+    );
   }
 
   async readResource(serverName: string, uri: string): Promise<any> {
@@ -206,13 +222,13 @@ export class MCPClientManager {
           } catch (error) {
             console.warn(`Warning closing ${serverName}:`, error);
           }
-        })()
+        })(),
       );
     }
 
     await Promise.race([
       Promise.all(cleanupPromises),
-      new Promise<void>((resolve) => setTimeout(resolve, 5000))
+      new Promise<void>((resolve) => setTimeout(resolve, 5000)),
     ]);
 
     // CRITICAL: Close transports to kill subprocesses

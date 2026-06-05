@@ -57,6 +57,7 @@ Users scan web pages in an F-pattern: horizontally across the top, then down the
 ```
 
 **F-pattern guidelines:**
+
 - Place logo top-left, primary CTA top-right
 - Headlines should start at left margin
 - Use left-aligned bullet points for scannable content

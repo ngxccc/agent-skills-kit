@@ -13,7 +13,7 @@ tags: server, preload-pattern, fire-and-forget-fetch, early-trigger
 
 - A page that imports a deep `<ProductDetails>` Server Component which fetches in its body — the fetch starts only after parent renders complete.
 - A layout that's responsible for auth gating but doesn't preload the data its children need — wastes the parallelism window.
-- A "preload" function that uses `void getX(id)` but doesn't wrap `getX` with `cache()` — preload fires a *separate* fetch instead of seeding the cached promise.
+- A "preload" function that uses `void getX(id)` but doesn't wrap `getX` with `cache()` — preload fires a _separate_ fetch instead of seeding the cached promise.
 - A workaround `Promise.all` at the page top that explicitly awaits descendant data — works but pollutes the page with concerns that belong to descendants.
 - A page that does `preloadX(id); preloadY(id); preloadZ(id)` for unrelated data — preloading too much wastes server work; preload only the critical-path data.
 

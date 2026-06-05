@@ -52,6 +52,7 @@ module.exports = {
 ```
 
 **Benefits:**
+
 - Full CSS control over container behavior
 - Responsive customization without config
 - Consistent with CSS-first approach

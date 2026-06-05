@@ -19,7 +19,7 @@ tags: client, hydration-mismatch, post-mount-effect, ssr-safe
 - A workaround `suppressHydrationWarning` slapped on every component — masks the symptom, hides real bugs.
 - A "loading" state initialized to `false` on server, immediately set to `true` in a `useEffect` — causes a flash; should render placeholder until effect runs.
 
-The canonical resolution: render a placeholder (or nothing) on first render; populate the time/random/storage-dependent value in a `useEffect` after mount. Use `suppressHydrationWarning` only on the specific element (a `<time>` tag, not the whole subtree) when the mismatch is *intentional*.
+The canonical resolution: render a placeholder (or nothing) on first render; populate the time/random/storage-dependent value in a `useEffect` after mount. Use `suppressHydrationWarning` only on the specific element (a `<time>` tag, not the whole subtree) when the mismatch is _intentional_.
 
 **Incorrect (hydration mismatch):**
 
@@ -76,6 +76,7 @@ export function Timestamp() {
 ```
 
 **Common causes:**
+
 - `Date.now()`, `Math.random()`
 - `window.innerWidth`, `navigator.userAgent`
 - Browser extensions modifying HTML

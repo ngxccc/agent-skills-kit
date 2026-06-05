@@ -47,14 +47,14 @@ function execIn(cmd, cwd) {
         stdio: ['pipe', 'pipe', 'ignore'],
         windowsHide: true,
         cwd: cwd || undefined,
-        timeout: getExecTimeoutMs()
+        timeout: getExecTimeoutMs(),
       }).trim(),
-      timedOut: false
+      timedOut: false,
     };
   } catch (error) {
     return {
       output: '',
-      timedOut: isTimeoutError(error)
+      timedOut: isTimeoutError(error),
     };
   }
 }
@@ -97,7 +97,9 @@ function writeCache(cachePath, data) {
     fs.writeFileSync(tmpPath, JSON.stringify({ timestamp: Date.now(), data }));
     fs.renameSync(tmpPath, cachePath);
   } catch {
-    try { fs.unlinkSync(tmpPath); } catch {}
+    try {
+      fs.unlinkSync(tmpPath);
+    } catch {}
   }
 }
 
@@ -106,7 +108,7 @@ function writeCache(cachePath, data) {
  */
 function countLines(str) {
   if (!str) return 0;
-  return str.split('\n').filter(l => l.trim()).length;
+  return str.split('\n').filter((l) => l.trim()).length;
 }
 
 /**
@@ -127,7 +129,10 @@ function fetchGitInfo(cwd) {
   const branchFallback = execIn('git rev-parse --short HEAD', cwd);
   const unstagedResult = execIn('git diff --name-only', cwd);
   const stagedResult = execIn('git diff --cached --name-only', cwd);
-  const aheadBehindResult = execIn('git rev-list --left-right --count @{u}...HEAD', cwd);
+  const aheadBehindResult = execIn(
+    'git rev-list --left-right --count @{u}...HEAD',
+    cwd,
+  );
 
   if (
     branchPrimary.timedOut ||
@@ -185,7 +190,9 @@ function getGitInfo(cwd = process.cwd()) {
  * Invalidate cache for a directory (call after file changes to trigger fresh git query)
  */
 function invalidateCache(cwd = process.cwd()) {
-  try { fs.unlinkSync(getCachePath(cwd)); } catch {}
+  try {
+    fs.unlinkSync(getCachePath(cwd));
+  } catch {}
 }
 
 module.exports = { getGitInfo, invalidateCache };

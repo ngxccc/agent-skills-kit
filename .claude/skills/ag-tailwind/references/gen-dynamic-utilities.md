@@ -37,12 +37,19 @@ Tailwind CSS v4 supports dynamic values for many utilities without arbitrary val
 
 ```css
 /* Generated CSS */
-.mt-17 { margin-top: calc(var(--spacing) * 17); }
-.w-85 { width: calc(var(--spacing) * 85); }
-.grid-cols-15 { grid-template-columns: repeat(15, minmax(0, 1fr)); }
+.mt-17 {
+  margin-top: calc(var(--spacing) * 17);
+}
+.w-85 {
+  width: calc(var(--spacing) * 85);
+}
+.grid-cols-15 {
+  grid-template-columns: repeat(15, minmax(0, 1fr));
+}
 ```
 
 **Benefits:**
+
 - Cleaner class names
 - Consistent spacing scale
 - Better readability

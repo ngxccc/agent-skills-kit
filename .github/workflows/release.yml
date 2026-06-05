@@ -3,7 +3,7 @@ name: Release Kit
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 permissions:
   contents: write

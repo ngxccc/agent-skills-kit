@@ -47,6 +47,7 @@ Tailwind CSS v4 includes features that previously required separate plugins. Rem
 ```
 
 **Built-in features in v4:**
+
 - Container queries (`@container`, `@sm:`, `@lg:`)
 - Aspect ratio utilities
 - Logical properties

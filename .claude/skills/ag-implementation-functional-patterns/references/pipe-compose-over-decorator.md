@@ -11,8 +11,8 @@ A model trained on the Decorator pattern stacks three wrapper classes — `Loggi
 
 Both this rule and [`pipe-pipeline-over-chain-of-responsibility`](pipe-pipeline-over-chain-of-responsibility.md) use function composition, but they solve different problems:
 
-- **`pipe(stepA, stepB, stepC)(input)`** — pipeline of *data transforms*. Each step's output becomes the next step's input. The data flows forward; reading order matches execution order.
-- **`compose(wrapperA, wrapperB, wrapperC)(handler)`** — composition of *function wrappers*. Each wrapper takes a handler and returns a decorated handler. By convention right-to-left: `compose(f, g, h)(x) === f(g(h(x)))`, so the **outermost** wrapper is on the left. This matches how Decorator class stacking reads top-to-bottom from outermost to innermost.
+- **`pipe(stepA, stepB, stepC)(input)`** — pipeline of _data transforms_. Each step's output becomes the next step's input. The data flows forward; reading order matches execution order.
+- **`compose(wrapperA, wrapperB, wrapperC)(handler)`** — composition of _function wrappers_. Each wrapper takes a handler and returns a decorated handler. By convention right-to-left: `compose(f, g, h)(x) === f(g(h(x)))`, so the **outermost** wrapper is on the left. This matches how Decorator class stacking reads top-to-bottom from outermost to innermost.
 
 If you want decoration order to read left-to-right (innermost-first), use `pipe` — it just inverts the order.
 
@@ -35,8 +35,11 @@ abstract class HandlerDecorator {
 
 class WithAuth extends HandlerDecorator {
   async handle(req: Request) {
-    if (!req.headers.authorization) throw new Error('unauthenticated');
-    return this.wrapped({ ...req, userId: decodeToken(req.headers.authorization) });
+    if (!req.headers.authorization) throw new Error("unauthenticated");
+    return this.wrapped({
+      ...req,
+      userId: decodeToken(req.headers.authorization),
+    });
   }
 }
 
@@ -47,7 +50,7 @@ class WithCache extends HandlerDecorator {
     const hit = this.cache.get(key);
     if (hit) return hit;
     const res = await this.wrapped(req);
-    if (req.method === 'GET') this.cache.set(key, res);
+    if (req.method === "GET") this.cache.set(key, res);
     return res;
   }
 }
@@ -63,9 +66,12 @@ class WithLogging extends HandlerDecorator {
   }
 }
 
-const realHandler: RequestHandler = async (req) => fetch(req.url).then((r) => r as unknown as Response);
+const realHandler: RequestHandler = async (req) =>
+  fetch(req.url).then((r) => r as unknown as Response);
 
-const stack = new WithLogging(new WithCache(new WithAuth(realHandler)).handle.bind);
+const stack = new WithLogging(
+  new WithCache(new WithAuth(realHandler)).handle.bind,
+);
 // ...awkward: each Decorator's .handle must be bound; can't be passed as RequestHandler directly
 ```
 
@@ -78,7 +84,7 @@ type RequestHandler = (req: Request) => Promise<Response>;
 type Wrap = (handler: RequestHandler) => RequestHandler;
 
 const withAuth: Wrap = (handler) => async (req) => {
-  if (!req.headers.authorization) throw new Error('unauthenticated');
+  if (!req.headers.authorization) throw new Error("unauthenticated");
   return handler({ ...req, userId: decodeToken(req.headers.authorization) });
 };
 
@@ -89,7 +95,7 @@ const withCache = (): Wrap => {
     const hit = cache.get(key);
     if (hit) return hit;
     const res = await handler(req);
-    if (req.method === 'GET') cache.set(key, res);
+    if (req.method === "GET") cache.set(key, res);
     return res;
   };
 };
@@ -103,10 +109,13 @@ const withLogging: Wrap = (handler) => async (req) => {
   }
 };
 
-const compose = <T>(...wraps: ((x: T) => T)[]) => (base: T): T =>
-  wraps.reduceRight((acc, w) => w(acc), base);
+const compose =
+  <T>(...wraps: ((x: T) => T)[]) =>
+  (base: T): T =>
+    wraps.reduceRight((acc, w) => w(acc), base);
 
-const realHandler: RequestHandler = async (req) => fetch(req.url).then((r) => r as unknown as Response);
+const realHandler: RequestHandler = async (req) =>
+  fetch(req.url).then((r) => r as unknown as Response);
 
 const handle = compose(withLogging, withCache(), withAuth)(realHandler);
 // Reads top-down: log around cache around auth around realHandler — same as the class form.
@@ -119,12 +128,12 @@ Each wrapper is interchangeable with the base type (it returns a `RequestHandler
 - **`compose` vs `pipe` direction.** `compose(f, g, h)(x) === f(g(h(x)))` (right-to-left, math convention). `pipe(f, g, h)(x) === h(g(f(x)))` (left-to-right). Pick one convention per project — fp-ts, Effect, Ramda all use right-to-left `compose`. Mixing both in one file invites bugs.
 - **Wrapper state is per-instance.** If `withCache` is a top-level constant `Wrap`, every call site shares the same cache. Use a factory (`withCache()` returning a `Wrap`) when each composition needs its own state — the closure captures the state, the factory hands out fresh ones.
 - **Async wrappers must `await`.** Forgetting `await handler(req)` inside an async wrapper returns the unresolved Promise upstream — the wrapper around it sees a Promise<Promise<Response>>. `try/finally` for logging needs an actual `await` or you log before the wrapped handler resolves.
-- **Throwing in a wrapper crosses the abstraction.** If `withAuth` throws, every wrapper *outside* it must understand that exception. The same is true for the class form, but composition makes it visible — the outer wrappers are obviously the catch sites.
+- **Throwing in a wrapper crosses the abstraction.** If `withAuth` throws, every wrapper _outside_ it must understand that exception. The same is true for the class form, but composition makes it visible — the outer wrappers are obviously the catch sites.
 
 ### Performance trade-offs
 
 - **Time:** A composed chain calls n functions; a Decorator-class chain calls n methods. Modern V8 inlines both equally well. No measurable difference at the per-call level.
-- **Allocations:** The composed chain allocates one closure per `compose` step at composition time (once, at boot). The class chain allocates one class instance per step. Closures are typically *lighter* than class instances with a prototype chain — small win, not the reason to do this.
+- **Allocations:** The composed chain allocates one closure per `compose` step at composition time (once, at boot). The class chain allocates one class instance per step. Closures are typically _lighter_ than class instances with a prototype chain — small win, not the reason to do this.
 - **The real cost is in the boilerplate**, which the composed form deletes. Three wrapper classes ≈ 60 lines; three wrapper functions + `compose` ≈ 30 lines.
 
 ### When NOT to apply (keep the Decorator class)

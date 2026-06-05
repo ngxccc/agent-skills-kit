@@ -37,15 +37,15 @@ Use logical property utilities (`ms-`, `me-`, `ps-`, `pe-`) instead of physical 
 
 **Logical property mapping:**
 
-| Physical | Logical | LTR | RTL |
-|----------|---------|-----|-----|
-| `ml-*` | `ms-*` | left | right |
-| `mr-*` | `me-*` | right | left |
-| `pl-*` | `ps-*` | left | right |
-| `pr-*` | `pe-*` | right | left |
-| `left-*` | `start-*` | left | right |
-| `right-*` | `end-*` | right | left |
-| `text-left` | `text-start` | left | right |
-| `text-right` | `text-end` | right | left |
+| Physical     | Logical      | LTR   | RTL   |
+| ------------ | ------------ | ----- | ----- |
+| `ml-*`       | `ms-*`       | left  | right |
+| `mr-*`       | `me-*`       | right | left  |
+| `pl-*`       | `ps-*`       | left  | right |
+| `pr-*`       | `pe-*`       | right | left  |
+| `left-*`     | `start-*`    | left  | right |
+| `right-*`    | `end-*`      | right | left  |
+| `text-left`  | `text-start` | left  | right |
+| `text-right` | `text-end`   | right | left  |
 
 Reference: [Tailwind CSS v4.0 Release](https://tailwindcss.com/blog/tailwindcss-v4)

@@ -9,14 +9,14 @@ Two GoF patterns — Mediator (a central hub brokering many-to-many communicatio
 
 ### Pick the right tool for the topology
 
-| Topology | Reach for |
-|---|---|
-| One publisher, many subscribers, untyped events | `EventEmitter` / `mitt` / DOM `EventTarget` |
-| One publisher, many subscribers, typed events | Typed `EventEmitter` (e.g., `mitt<Events>()` with TS generics) |
-| Reactive state (UI re-renders when state changes) | **Signal** (Solid, Preact, Vue 3 `ref`, MobX), React `useState`, Zustand |
-| Stream of values over time with operators | RxJS Observable |
-| Many objects all need to consult a shared rulebook | Plain shared module-scope state + functions |
-| Cross-component event bus inside a React tree | React Context + `useReducer`, or a state library (Zustand, Jotai, Redux Toolkit) |
+| Topology                                           | Reach for                                                                        |
+| -------------------------------------------------- | -------------------------------------------------------------------------------- |
+| One publisher, many subscribers, untyped events    | `EventEmitter` / `mitt` / DOM `EventTarget`                                      |
+| One publisher, many subscribers, typed events      | Typed `EventEmitter` (e.g., `mitt<Events>()` with TS generics)                   |
+| Reactive state (UI re-renders when state changes)  | **Signal** (Solid, Preact, Vue 3 `ref`, MobX), React `useState`, Zustand         |
+| Stream of values over time with operators          | RxJS Observable                                                                  |
+| Many objects all need to consult a shared rulebook | Plain shared module-scope state + functions                                      |
+| Cross-component event bus inside a React tree      | React Context + `useReducer`, or a state library (Zustand, Jotai, Redux Toolkit) |
 
 ### Shapes to recognize
 
@@ -34,17 +34,27 @@ interface UserObserver {
 
 class UserSubject {
   private observers: UserObserver[] = [];
-  attach(o: UserObserver) { this.observers.push(o); }
-  detach(o: UserObserver) { this.observers = this.observers.filter((x) => x !== o); }
-  notify(user: User) { for (const o of this.observers) o.update(user); }
+  attach(o: UserObserver) {
+    this.observers.push(o);
+  }
+  detach(o: UserObserver) {
+    this.observers = this.observers.filter((x) => x !== o);
+  }
+  notify(user: User) {
+    for (const o of this.observers) o.update(user);
+  }
 }
 
 class HeaderObserver implements UserObserver {
-  update(user: User) { document.querySelector('#hdr')!.textContent = user.name; }
+  update(user: User) {
+    document.querySelector("#hdr")!.textContent = user.name;
+  }
 }
 
 class SidebarObserver implements UserObserver {
-  update(user: User) { document.querySelector('#side')!.textContent = `${user.points}pt`; }
+  update(user: User) {
+    document.querySelector("#side")!.textContent = `${user.points}pt`;
+  }
 }
 
 const userSubject = new UserSubject();
@@ -57,15 +67,19 @@ userSubject.notify(updatedUser);
 **Correct (typed event emitter):**
 
 ```typescript
-import mitt from 'mitt';
+import mitt from "mitt";
 
-type Events = { 'user-changed': User };
+type Events = { "user-changed": User };
 const bus = mitt<Events>();
 
-bus.on('user-changed', (user) => { document.querySelector('#hdr')!.textContent  = user.name; });
-bus.on('user-changed', (user) => { document.querySelector('#side')!.textContent = `${user.points}pt`; });
+bus.on("user-changed", (user) => {
+  document.querySelector("#hdr")!.textContent = user.name;
+});
+bus.on("user-changed", (user) => {
+  document.querySelector("#side")!.textContent = `${user.points}pt`;
+});
 
-bus.emit('user-changed', updatedUser);
+bus.emit("user-changed", updatedUser);
 ```
 
 Same semantics, no classes, types enforced on the event name and payload. Each subscriber is a closure — no `class XObserver` per UI region.
@@ -74,14 +88,19 @@ Same semantics, no classes, types enforced on the event name and payload. Each s
 
 ```typescript
 // With Preact signals
-import { signal, effect } from '@preact/signals-core';
+import { signal, effect } from "@preact/signals-core";
 
 const currentUser = signal<User>(initialUser);
 
-effect(() => { document.querySelector('#hdr')!.textContent  = currentUser.value.name; });
-effect(() => { document.querySelector('#side')!.textContent = `${currentUser.value.points}pt`; });
+effect(() => {
+  document.querySelector("#hdr")!.textContent = currentUser.value.name;
+});
+effect(() => {
+  document.querySelector("#side")!.textContent =
+    `${currentUser.value.points}pt`;
+});
 
-currentUser.value = updatedUser;  // both effects fire automatically
+currentUser.value = updatedUser; // both effects fire automatically
 ```
 
 The signal IS the publisher; effects ARE the observers. The "subscribe" relationship is inferred from which `.value` reads happen inside the effect closure.
@@ -90,21 +109,26 @@ The signal IS the publisher; effects ARE the observers. The "subscribe" relation
 
 ```typescript
 type FormEvents = {
-  'field:changed': { field: string; value: unknown };
-  'form:submit':   { values: Record<string, unknown> };
-  'form:reset':    void;
+  "field:changed": { field: string; value: unknown };
+  "form:submit": { values: Record<string, unknown> };
+  "form:reset": void;
 };
 const formBus = mitt<FormEvents>();
 
 // Field component reacts to other fields' changes:
-formBus.on('field:changed', ({ field, value }) => {
-  if (field === 'country') {
-    formBus.emit('field:changed', { field: 'currency', value: defaultCurrency(value as string) });
+formBus.on("field:changed", ({ field, value }) => {
+  if (field === "country") {
+    formBus.emit("field:changed", {
+      field: "currency",
+      value: defaultCurrency(value as string),
+    });
   }
 });
 
 // Submit button:
-formBus.on('form:submit', async ({ values }) => { await api.save(values); });
+formBus.on("form:submit", async ({ values }) => {
+  await api.save(values);
+});
 ```
 
 The bus is the mediator. No `class FormMediator { onCountryChanged() … onCurrencyChanged() … }` with N methods coupling every pairwise interaction.
@@ -129,7 +153,7 @@ The bus is the mediator. No `class FormMediator { onCountryChanged() … onCurre
 
 - **Typed roles with compiler-enforced contracts.** When the system has a fixed set of colleagues (`Pilot`, `Tower`, `GroundCrew`) with specific message types each can send/receive, a typed class-based Mediator can make role mismatches compile errors. A generic event bus can do this with discriminated event types, but the class form is sometimes clearer
 - **Framework expects classes.** Some component frameworks (Angular services, NestJS event emitters with decorators, RxJS subjects in class-based services) integrate naturally with class subjects. Match the surrounding style
-- **The publisher carries domain state.** A `Subject` that is *itself* a domain object (a `Stock` that notifies of price changes) and not just a pub-sub conduit may earn a class. Even then — the class can use an internal emitter; the public surface is what counts
+- **The publisher carries domain state.** A `Subject` that is _itself_ a domain object (a `Stock` that notifies of price changes) and not just a pub-sub conduit may earn a class. Even then — the class can use an internal emitter; the public surface is what counts
 
 ### Related
 

@@ -46,6 +46,7 @@ module.exports = {
 ```
 
 **Benefits:**
+
 - All design tokens in one CSS file
 - No JavaScript parsing overhead
 - CSS variables available at runtime

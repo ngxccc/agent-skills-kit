@@ -15,7 +15,7 @@ tags: action, server-action, form-action, no-api-route-mutation
 - A `route.ts` POST handler that exists only to receive form submissions from one specific page — should be a Server Action.
 - A custom hook (`useCreatePost`) that wraps `fetch` and `useState` to track submission — Server Action + `useActionState` does this declaratively.
 - A page that mutates state via fetch, then manually calls `router.refresh()` to reload data — the action should call `revalidatePath` server-side instead.
-- A workaround using TanStack Query / SWR mutations against a route handler — fine for some cases, but for *form-shaped* mutations the Server Action path is simpler and progressively enhanced.
+- A workaround using TanStack Query / SWR mutations against a route handler — fine for some cases, but for _form-shaped_ mutations the Server Action path is simpler and progressively enhanced.
 
 The canonical resolution: declare `async function createX(formData: FormData) { 'use server'; ... }`. Bind via `<form action={createX}>`. Call `revalidatePath`/`revalidateTag` then `redirect` server-side.
 
@@ -24,23 +24,23 @@ The canonical resolution: declare `async function createX(formData: FormData) { 
 ```typescript
 // app/api/posts/route.ts
 export async function POST(request: Request) {
-  const data = await request.json()
-  const post = await db.posts.create({ data })
-  return Response.json(post)
+  const data = await request.json();
+  const post = await db.posts.create({ data });
+  return Response.json(post);
 }
 
 // app/posts/new/page.tsx
-'use client'
+("use client");
 
 export default function NewPostPage() {
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const formData = new FormData(e.target)
-    await fetch('/api/posts', {
-      method: 'POST',
-      body: JSON.stringify(Object.fromEntries(formData))
-    })
-  }
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    await fetch("/api/posts", {
+      method: "POST",
+      body: JSON.stringify(Object.fromEntries(formData)),
+    });
+  };
   // Requires client component, manual fetch, no type safety
 }
 ```
@@ -79,6 +79,7 @@ export default function NewPostPage() {
 ```
 
 **Benefits:**
+
 - Progressive enhancement (works without JavaScript)
 - Type-safe with TypeScript
 - Direct cache invalidation
@@ -88,7 +89,7 @@ export default function NewPostPage() {
 
 ### In disguise — route handler POST + client `fetch` doing the work of a Server Action
 
-The grep-friendly anti-pattern is `onSubmit={(e) => { e.preventDefault(); fetch('/api/...') }}`. The disguise is more sophisticated: a `route.ts` POST handler that *exists only to receive form submissions*, paired with a Client Component that POSTs to it. This is "the Pages Router pattern, ported into App Router" and looks reasonable until you compare it to the Server Action equivalent.
+The grep-friendly anti-pattern is `onSubmit={(e) => { e.preventDefault(); fetch('/api/...') }}`. The disguise is more sophisticated: a `route.ts` POST handler that _exists only to receive form submissions_, paired with a Client Component that POSTs to it. This is "the Pages Router pattern, ported into App Router" and looks reasonable until you compare it to the Server Action equivalent.
 
 **Incorrect — in disguise (route handler + client POST + manual revalidation):**
 

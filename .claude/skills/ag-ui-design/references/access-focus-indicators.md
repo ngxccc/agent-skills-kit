@@ -45,6 +45,7 @@ button:focus-visible {
 ```
 
 **Focus indicator requirements (WCAG 2.2):**
+
 - Minimum 2px thickness
 - 3:1 contrast ratio against adjacent colors
 - Encloses or is adjacent to the focused element

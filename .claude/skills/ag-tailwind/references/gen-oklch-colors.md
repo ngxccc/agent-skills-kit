@@ -30,6 +30,7 @@ Tailwind CSS v4 defaults to OKLCH color space, providing wider P3 gamut colors a
 ```
 
 **Benefits:**
+
 - More vivid colors on P3 displays
 - Perceptually uniform lightness across hues
 - Better gradient interpolation

@@ -12,15 +12,11 @@ In Tailwind CSS v3, the bare `ring` utility generated a 3px ring. In v4, `ring` 
 **Incorrect (what's wrong):**
 
 ```html
-<button class="focus:ring ring-blue-500">
-  Submit
-</button>
+<button class="focus:ring ring-blue-500">Submit</button>
 ```
 
 **Correct (what's right):**
 
 ```html
-<button class="focus:ring-3 ring-blue-500">
-  Submit
-</button>
+<button class="focus:ring-3 ring-blue-500">Submit</button>
 ```

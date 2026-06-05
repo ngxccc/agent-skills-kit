@@ -95,20 +95,48 @@ function colorize(text, code) {
   return `${STABLE_PREFIX}${code}${text}${STABLE_SUFFIX}`;
 }
 
-function green(text) { return colorize(text, GREEN); }
-function yellow(text) { return colorize(text, YELLOW); }
-function red(text) { return colorize(text, RED); }
-function blue(text) { return colorize(text, BLUE); }
-function cyan(text) { return colorize(text, CYAN); }
-function magenta(text) { return colorize(text, MAGENTA); }
-function dim(text) { return colorize(text, DIM); }
-function brightRed(text) { return colorize(text, BRIGHT_RED); }
-function brightGreen(text) { return colorize(text, BRIGHT_GREEN); }
-function brightYellow(text) { return colorize(text, BRIGHT_YELLOW); }
-function brightBlue(text) { return colorize(text, BRIGHT_BLUE); }
-function brightMagenta(text) { return colorize(text, BRIGHT_MAGENTA); }
-function brightCyan(text) { return colorize(text, BRIGHT_CYAN); }
-function brightWhite(text) { return colorize(text, BRIGHT_WHITE); }
+function green(text) {
+  return colorize(text, GREEN);
+}
+function yellow(text) {
+  return colorize(text, YELLOW);
+}
+function red(text) {
+  return colorize(text, RED);
+}
+function blue(text) {
+  return colorize(text, BLUE);
+}
+function cyan(text) {
+  return colorize(text, CYAN);
+}
+function magenta(text) {
+  return colorize(text, MAGENTA);
+}
+function dim(text) {
+  return colorize(text, DIM);
+}
+function brightRed(text) {
+  return colorize(text, BRIGHT_RED);
+}
+function brightGreen(text) {
+  return colorize(text, BRIGHT_GREEN);
+}
+function brightYellow(text) {
+  return colorize(text, BRIGHT_YELLOW);
+}
+function brightBlue(text) {
+  return colorize(text, BRIGHT_BLUE);
+}
+function brightMagenta(text) {
+  return colorize(text, BRIGHT_MAGENTA);
+}
+function brightCyan(text) {
+  return colorize(text, BRIGHT_CYAN);
+}
+function brightWhite(text) {
+  return colorize(text, BRIGHT_WHITE);
+}
 
 /**
  * Get color code based on context percentage threshold
@@ -116,7 +144,8 @@ function brightWhite(text) { return colorize(text, BRIGHT_WHITE); }
  * @returns {string} ANSI color code
  */
 function resolveColorCode(colorName) {
-  if (colorName === 'white' || colorName === 'none' || colorName === 'default') return '';
+  if (colorName === 'white' || colorName === 'none' || colorName === 'default')
+    return '';
   return COLOR_CODES[colorName] || '';
 }
 

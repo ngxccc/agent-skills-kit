@@ -15,14 +15,14 @@ The most dangerous simplifications are those that look equivalent but have diffe
 // Before: explicitly checks for null
 function getDisplayName(user: User | null): string {
   if (user === null) {
-    return 'Anonymous';
+    return "Anonymous";
   }
   return user.name;
 }
 
 // After "simplification": truthy check
 function getDisplayName(user: User | null): string {
-  return user ? user.name : 'Anonymous';
+  return user ? user.name : "Anonymous";
 }
 // Breaks: user with name = '' or name = 0 (if polymorphic)
 ```
@@ -31,7 +31,7 @@ function getDisplayName(user: User | null): string {
 
 ```typescript
 function getDisplayName(user: User | null): string {
-  return user === null ? 'Anonymous' : user.name;
+  return user === null ? "Anonymous" : user.name;
 }
 ```
 

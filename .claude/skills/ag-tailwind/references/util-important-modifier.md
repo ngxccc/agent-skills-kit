@@ -26,6 +26,7 @@ Tailwind CSS v4 moves the important modifier (`!`) from the beginning to the end
 ```
 
 **Benefits of trailing modifier:**
+
 - Reads left-to-right naturally
 - Easier to spot important overrides
 - Consistent with other modifier patterns
@@ -35,9 +36,9 @@ Tailwind CSS v4 moves the important modifier (`!`) from the beginning to the end
 ```html
 <!-- v3 -->
 <div class="hover:!bg-blue-500">
-
-<!-- v4 -->
-<div class="hover:bg-blue-500!">
+  <!-- v4 -->
+  <div class="hover:bg-blue-500!"></div>
+</div>
 ```
 
 Reference: [Tailwind CSS Upgrade Guide](https://tailwindcss.com/docs/upgrade-guide)

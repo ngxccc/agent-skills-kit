@@ -15,6 +15,7 @@ This skill demonstrates how to use the `task` tool to spawn parallel subagents a
 ## When to Apply
 
 Refer to this demo when:
+
 - Configuring tasks that execute in parallel and require mutual coordination.
 - Implementing synchronous direct messaging (DMs) between subagents.
 - Designing an asymmetric handshake sequence to safely terminate temporary subagents.

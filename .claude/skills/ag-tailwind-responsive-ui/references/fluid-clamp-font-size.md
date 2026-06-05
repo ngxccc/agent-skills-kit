@@ -18,8 +18,8 @@ Fixed font sizes with breakpoint overrides create jarring text jumps — at exac
     Ship faster with fluid design
   </h1>
   <p class="mt-4 text-base text-gray-600 md:text-lg lg:text-xl">
-    Our platform helps teams deliver responsive interfaces that look polished
-    on every screen size — from phones to ultrawide monitors.
+    Our platform helps teams deliver responsive interfaces that look polished on
+    every screen size — from phones to ultrawide monitors.
   </p>
 </section>
 ```
@@ -33,8 +33,8 @@ Fixed font sizes with breakpoint overrides create jarring text jumps — at exac
     Ship faster with fluid design
   </h1>
   <p class="mt-4 text-[clamp(1rem,0.875rem+0.625vw,1.25rem)] text-gray-600">
-    Our platform helps teams deliver responsive interfaces that look polished
-    on every screen size — from phones to ultrawide monitors.
+    Our platform helps teams deliver responsive interfaces that look polished on
+    every screen size — from phones to ultrawide monitors.
   </p>
 </section>
 ```

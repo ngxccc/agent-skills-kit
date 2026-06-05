@@ -7,7 +7,7 @@ tags: stream, nested-suspense, progressive-disclosure, hierarchical-reveal
 
 ## Nest Suspense boundaries when content has a natural reveal order (critical → secondary → tertiary)
 
-**Pattern intent:** some pages have a natural priority order (product details → reviews → related products; main article → comments → suggested reading). Nesting Suspense boundaries — outer waits for inner *or* allows inner to refine — creates a guided reveal.
+**Pattern intent:** some pages have a natural priority order (product details → reviews → related products; main article → comments → suggested reading). Nesting Suspense boundaries — outer waits for inner _or_ allows inner to refine — creates a guided reveal.
 
 ### Shapes to recognize
 
@@ -17,7 +17,7 @@ tags: stream, nested-suspense, progressive-disclosure, hierarchical-reveal
 - Nested boundaries placed wrong: inner Suspense around fast content, outer around slow — the outer's fallback shows while inner is already done.
 - A workaround using `setTimeout` in `useEffect` to "stagger" the reveal — manual choreography that nested Suspense does declaratively.
 
-The canonical resolution: wrap the primary content's Suspense around the page; inside, nest a Suspense for secondary content; inside that, another for tertiary. Each level's fallback is a skeleton of *its* content; outer renders → inner fallback → inner content. The hierarchy is visible in the JSX.
+The canonical resolution: wrap the primary content's Suspense around the page; inside, nest a Suspense for secondary content; inside that, another for tertiary. Each level's fallback is a skeleton of _its_ content; outer renders → inner fallback → inner content. The hierarchy is visible in the JSX.
 
 **Incorrect (flat Suspense structure):**
 

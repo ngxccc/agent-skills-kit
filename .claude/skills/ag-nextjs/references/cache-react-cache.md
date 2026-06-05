@@ -19,7 +19,7 @@ tags: cache, react-cache, request-dedup, per-render
 
 The canonical resolution: `export const getX = cache(async (id) => { ... })` at module scope. Callers don't need to coordinate. React dedupes by argument identity within the request boundary.
 
-**Note on layering:** `react.cache` dedupes *within a request*. For *across requests*, layer it with `unstable_cache` or the `'use cache'` directive.
+**Note on layering:** `react.cache` dedupes _within a request_. For _across requests_, layer it with `unstable_cache` or the `'use cache'` directive.
 
 **Incorrect (duplicate fetches):**
 

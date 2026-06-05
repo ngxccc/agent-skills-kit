@@ -42,6 +42,7 @@ Tailwind CSS v4 removes the deprecated opacity utilities (`bg-opacity-*`, `text-
 ```
 
 **Benefits:**
+
 - Single class instead of two
 - Works with any color utility
 - Compatible with CSS variables

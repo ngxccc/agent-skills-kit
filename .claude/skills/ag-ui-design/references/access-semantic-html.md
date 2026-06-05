@@ -46,6 +46,7 @@ Semantic HTML provides meaning to assistive technologies and improves SEO. Scree
 ```
 
 **Key semantic elements:**
+
 - `<header>`, `<footer>`, `<nav>`, `<main>` for page landmarks
 - `<article>`, `<section>`, `<aside>` for content grouping
 - `<h1>`-`<h6>` for heading hierarchy (never skip levels)

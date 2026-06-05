@@ -51,6 +51,7 @@ When using `@apply` in Vue/Svelte component styles or CSS modules, use `@referen
 ```
 
 **Benefits:**
+
 - Access to theme variables and utilities
 - Zero CSS duplication in output
 - Works with scoped styles

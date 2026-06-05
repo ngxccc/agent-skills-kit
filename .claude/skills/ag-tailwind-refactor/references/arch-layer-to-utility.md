@@ -44,9 +44,12 @@ Styles defined in `@layer components` do not get automatic variant support in Ta
 
 ```html
 <!-- All variants work automatically -->
-<div class="hover:scrollbar-hidden overflow-y-auto">Show scrollbar, hide on hover</div>
+<div class="hover:scrollbar-hidden overflow-y-auto">
+  Show scrollbar, hide on hover
+</div>
 ```
 
 **When NOT to use this pattern:**
+
 - `@apply` cannot be used inside `@utility` blocks — use raw CSS properties only
 - Multi-property component compositions (cards, buttons, etc.) are better as framework components than as `@utility` definitions

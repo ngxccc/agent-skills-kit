@@ -8,8 +8,8 @@ tags: compose, suspense, static-shell, recipe
 Faced with a page that mixes static and personalized content, the model makes the whole page either static (stale personalization) or fully dynamic (no instant shell). The canonical PPR page is neither: static chrome renders into the shell and ships instantly, and exactly the personalized/uncached leaf sits behind one `<Suspense>`. This is the simplest case and the baseline every other recipe builds on.
 
 ```tsx
-import { Suspense } from 'react'
-import { cookies } from 'next/headers'
+import { Suspense } from "react";
+import { cookies } from "next/headers";
 
 export default function HomePage() {
   return (
@@ -23,12 +23,12 @@ export default function HomePage() {
         <PersonalGreeting />
       </Suspense>
     </main>
-  )
+  );
 }
 
 async function PersonalGreeting() {
-  const name = (await cookies()).get('name')?.value
-  return name ? <p>Welcome back, {name}</p> : <p>Welcome</p>
+  const name = (await cookies()).get("name")?.value;
+  return name ? <p>Welcome back, {name}</p> : <p>Welcome</p>;
 }
 ```
 

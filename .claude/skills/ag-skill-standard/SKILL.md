@@ -15,6 +15,7 @@ This skill establishes and enforces the canonical structural pattern for all ski
 ## When to Apply
 
 Reference and run these guidelines when:
+
 - Creating a new skill folder under `.claude/skills/` or `.omp/skills/`.
 - Updating the structure or frontmatter of existing skills.
 - Performing quality assurance audits on the skill catalog.
@@ -22,6 +23,7 @@ Reference and run these guidelines when:
 ## How to Use
 
 To verify if skills comply with this standard, run:
+
 ```bash
 bun run .claude/skills/ag-skill-standard/scripts/validate-skill-patterns.mjs
 ```

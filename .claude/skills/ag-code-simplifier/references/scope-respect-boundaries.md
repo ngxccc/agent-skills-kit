@@ -16,15 +16,15 @@ When simplifying code, stay within the current module or component boundary. Rea
 // "I can simplify this by directly accessing the user database"
 
 // orders/OrderService.ts
-import { db } from '../users/database';        // Crossing into users module!
-import { UserCache } from '../users/cache';    // Crossing into users module!
-import { formatAddress } from '../shipping/utils'; // Crossing into shipping!
+import { db } from "../users/database"; // Crossing into users module!
+import { UserCache } from "../users/cache"; // Crossing into users module!
+import { formatAddress } from "../shipping/utils"; // Crossing into shipping!
 
 class OrderService {
   async createOrder(userId: string, items: Item[]) {
     // "Simplified" by bypassing UserService
-    const user = await db.query('SELECT * FROM users WHERE id = ?', [userId]);
-    const cached = UserCache.get(userId);  // Direct cache access
+    const user = await db.query("SELECT * FROM users WHERE id = ?", [userId]);
+    const cached = UserCache.get(userId); // Direct cache access
 
     // "Simplified" by inlining shipping logic
     const address = formatAddress(user.address); // Using internal util
@@ -46,14 +46,14 @@ class OrderService {
 // Stays within orders module, uses public APIs
 
 // orders/OrderService.ts
-import { UserService } from '../users';      // Public API only
-import { ShippingService } from '../shipping'; // Public API only
+import { UserService } from "../users"; // Public API only
+import { ShippingService } from "../shipping"; // Public API only
 
 class OrderService {
   constructor(
     private users: UserService,
     private shipping: ShippingService,
-    private repo: OrderRepository
+    private repo: OrderRepository,
   ) {}
 
   async createOrder(userId: string, items: Item[]) {
@@ -70,13 +70,13 @@ class OrderService {
 
 ### Boundary Violations to Avoid
 
-| Violation | Why It's Harmful |
-|-----------|-----------------|
+| Violation                             | Why It's Harmful                              |
+| ------------------------------------- | --------------------------------------------- |
 | Direct database access across modules | Bypasses business logic, breaks encapsulation |
-| Importing internal utilities | Creates hidden dependencies |
-| Accessing private/internal APIs | Will break on internal refactors |
-| Copying code from other modules | Creates drift and duplication |
-| Modifying other modules "to simplify" | Requires other team's review/approval |
+| Importing internal utilities          | Creates hidden dependencies                   |
+| Accessing private/internal APIs       | Will break on internal refactors              |
+| Copying code from other modules       | Creates drift and duplication                 |
+| Modifying other modules "to simplify" | Requires other team's review/approval         |
 
 ### When NOT to Apply
 

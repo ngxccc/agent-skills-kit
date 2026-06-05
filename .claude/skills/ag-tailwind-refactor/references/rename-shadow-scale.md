@@ -9,12 +9,12 @@ tags: rename, shadow, drop-shadow, scale
 
 Tailwind CSS v4 shifted the entire shadow scale down by one step, inserting a new smallest size at each end. If you keep the v3 class names, every shadow in your project renders one size larger than intended. The same shift applies to both `shadow-*` and `drop-shadow-*` utilities.
 
-| v3 class | v4 class |
-|---|---|
-| `shadow-sm` | `shadow-xs` |
-| `shadow` | `shadow-sm` |
+| v3 class         | v4 class         |
+| ---------------- | ---------------- |
+| `shadow-sm`      | `shadow-xs`      |
+| `shadow`         | `shadow-sm`      |
 | `drop-shadow-sm` | `drop-shadow-xs` |
-| `drop-shadow` | `drop-shadow-sm` |
+| `drop-shadow`    | `drop-shadow-sm` |
 
 **Incorrect (what's wrong):**
 

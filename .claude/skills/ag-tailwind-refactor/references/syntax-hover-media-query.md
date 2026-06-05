@@ -34,6 +34,7 @@ If you genuinely need hover behavior on all devices (rare), restore v3 behavior 
 ```
 
 **When NOT to apply this rule:**
+
 - Standard `hover:` usage is NOT incorrect in v4 — the default behavior is correct for most cases
 - Only add `active:` variants when touch feedback is important for the interaction (buttons, links, interactive cards)
 - Do not blanket-add `active:` to every `hover:` class in a codebase

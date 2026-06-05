@@ -5,7 +5,7 @@ tags: wrap, adapter, facade, interface-translation, subsystem-simplification
 
 ## Translate or simplify an interface with a wrapper function instead of an Adapter or Facade class
 
-Two GoF patterns — Adapter (translate one interface to another) and Facade (expose a simple interface over a complex subsystem) — collapse to the same TypeScript shape: a **function (or small set of functions) that takes the awkward thing and returns a function in the shape you want**. The Adapter class form (`class StripeAdapter implements PaymentProvider { …forwards each call… }`) and the Facade class form (`class FileUploadFacade { … }`) both exist because their source languages can't return arbitrary objects with matching interfaces from a function. TypeScript can, so the class is ceremony. The distinction between the two patterns survives — Adapter translates *shape*, Facade hides *complexity* — but at the implementation level they're both "a function that wraps something else."
+Two GoF patterns — Adapter (translate one interface to another) and Facade (expose a simple interface over a complex subsystem) — collapse to the same TypeScript shape: a **function (or small set of functions) that takes the awkward thing and returns a function in the shape you want**. The Adapter class form (`class StripeAdapter implements PaymentProvider { …forwards each call… }`) and the Facade class form (`class FileUploadFacade { … }`) both exist because their source languages can't return arbitrary objects with matching interfaces from a function. TypeScript can, so the class is ceremony. The distinction between the two patterns survives — Adapter translates _shape_, Facade hides _complexity_ — but at the implementation level they're both "a function that wraps something else."
 
 ### Shapes to recognize
 
@@ -23,15 +23,23 @@ interface HttpClient {
 }
 
 class LegacyXhrAdapter implements HttpClient {
-  constructor(private xhr: { request: (cfg: { method: string; url: string; body?: unknown }) => Promise<{ data: unknown }> }) {}
+  constructor(
+    private xhr: {
+      request: (cfg: {
+        method: string;
+        url: string;
+        body?: unknown;
+      }) => Promise<{ data: unknown }>;
+    },
+  ) {}
 
   async get<T>(url: string): Promise<T> {
-    const res = await this.xhr.request({ method: 'GET', url });
+    const res = await this.xhr.request({ method: "GET", url });
     return res.data as T;
   }
 
   async post<T>(url: string, body: unknown): Promise<T> {
-    const res = await this.xhr.request({ method: 'POST', url, body });
+    const res = await this.xhr.request({ method: "POST", url, body });
     return res.data as T;
   }
 }
@@ -43,14 +51,16 @@ const client: HttpClient = new LegacyXhrAdapter(legacyXhr);
 
 ```typescript
 type HttpClient = {
-  get:  <T>(url: string)                  => Promise<T>;
-  post: <T>(url: string, body: unknown)   => Promise<T>;
+  get: <T>(url: string) => Promise<T>;
+  post: <T>(url: string, body: unknown) => Promise<T>;
 };
 
 function adaptLegacyXhr(xhr: LegacyXhr): HttpClient {
   return {
-    get:  async <T>(url)       => (await xhr.request({ method: 'GET',  url        })).data as T,
-    post: async <T>(url, body) => (await xhr.request({ method: 'POST', url, body  })).data as T,
+    get: async <T>(url) =>
+      (await xhr.request({ method: "GET", url })).data as T,
+    post: async <T>(url, body) =>
+      (await xhr.request({ method: "POST", url, body })).data as T,
   };
 }
 
@@ -64,11 +74,21 @@ Same surface, half the lines, no class, no `implements`. The contract is enforce
 ```typescript
 // Subsystem APIs: s3Client, imageProcessor, db, notifier — each with their own interface
 
-async function uploadAndProcessImage(file: File, userId: string): Promise<{ id: string; url: string }> {
+async function uploadAndProcessImage(
+  file: File,
+  userId: string,
+): Promise<{ id: string; url: string }> {
   const compressed = await imageProcessor.compress(file, { quality: 0.8 });
-  const { key, url } = await s3Client.put({ bucket: 'user-uploads', body: compressed });
-  const record = await db.images.insert({ ownerId: userId, key, contentType: file.type });
-  await notifier.send(userId, { type: 'upload-complete', imageId: record.id });
+  const { key, url } = await s3Client.put({
+    bucket: "user-uploads",
+    body: compressed,
+  });
+  const record = await db.images.insert({
+    ownerId: userId,
+    key,
+    contentType: file.type,
+  });
+  await notifier.send(userId, { type: "upload-complete", imageId: record.id });
   return { id: record.id, url };
 }
 ```
@@ -78,7 +98,12 @@ That's the Facade. One function, well-named, calls the four subsystems in order.
 When the facade needs configuration captured at construction:
 
 ```typescript
-function createImageUploader(deps: { s3: S3Client; images: ImageProcessor; db: Db; notifier: Notifier }) {
+function createImageUploader(deps: {
+  s3: S3Client;
+  images: ImageProcessor;
+  db: Db;
+  notifier: Notifier;
+}) {
   return {
     upload: async (file: File, userId: string) => {
       const compressed = await deps.images.compress(file, { quality: 0.8 });
@@ -96,7 +121,7 @@ A factory function returns an object of methods — same DI capability, no class
 - **Facade swallowing errors.** A facade hiding orchestration can also accidentally hide failure modes — caller doesn't know whether the s3 put failed or the db insert did. Propagate enough error info (typed errors, `Result` types) for callers to react meaningfully.
 - **Facade growing into a god-function.** A facade that started as "upload-and-process" and now also handles cropping, watermarking, virus scanning, and notification-fan-out is too big. Split into smaller facades or expose the lower-level steps for callers that need specificity.
 - **Returning a class instance from a factory function.** `function adaptLegacyXhr(xhr) { return new HttpClient(xhr) }` keeps the class. That's still a factory function but you've added a class. Only do this if `HttpClient` carries methods that genuinely deserve `this` binding (subclassing, framework integration) — most don't.
-- **Reaching for a "facade" when you mean an SDK.** Wrapping several public methods into a single entry point is a *facade*. Wrapping an entire third-party service with versioned, typed, documented endpoints is an *SDK* — bigger thing, more design needed.
+- **Reaching for a "facade" when you mean an SDK.** Wrapping several public methods into a single entry point is a _facade_. Wrapping an entire third-party service with versioned, typed, documented endpoints is an _SDK_ — bigger thing, more design needed.
 
 ### Performance trade-offs
 

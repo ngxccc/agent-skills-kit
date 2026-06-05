@@ -108,13 +108,13 @@ func (q *JobQueue) GetJobStatus(jobID string) JobStatus { ... }
 
 Document your chosen terms:
 
-| Concept | Use This | NOT These |
-|---------|----------|-----------|
-| Retrieve data | `get` | fetch, retrieve, load, find, obtain |
-| Create entity | `create` | add, insert, new, make, build |
-| Remove entity | `delete` | remove, destroy, clear, erase |
-| Modify entity | `update` | modify, change, edit, patch |
-| Person using app | `user` | customer, client, account, member |
+| Concept          | Use This | NOT These                           |
+| ---------------- | -------- | ----------------------------------- |
+| Retrieve data    | `get`    | fetch, retrieve, load, find, obtain |
+| Create entity    | `create` | add, insert, new, make, build       |
+| Remove entity    | `delete` | remove, destroy, clear, erase       |
+| Modify entity    | `update` | modify, change, edit, patch         |
+| Person using app | `user`   | customer, client, account, member   |
 
 ### When NOT to Apply
 

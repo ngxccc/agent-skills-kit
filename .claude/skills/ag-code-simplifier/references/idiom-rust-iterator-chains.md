@@ -80,12 +80,12 @@ fn total_revenue(orders: &[Order]) -> Decimal {
 
 ### Guidelines
 
-| Use Iterators When | Use Loops When |
-|-------------------|----------------|
-| Simple filter/map/collect | Multiple related mutations |
-| No side effects needed | Early returns with context |
-| Each step is self-contained | Stateful iteration |
-| 2-3 combinators max | Complex branching logic |
+| Use Iterators When          | Use Loops When             |
+| --------------------------- | -------------------------- |
+| Simple filter/map/collect   | Multiple related mutations |
+| No side effects needed      | Early returns with context |
+| Each step is self-contained | Stateful iteration         |
+| 2-3 combinators max         | Complex branching logic    |
 
 ### Benefits of Knowing Both
 

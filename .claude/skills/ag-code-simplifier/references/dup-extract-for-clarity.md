@@ -20,8 +20,11 @@ async function checkout(cart: Cart): Promise<Order> {
 
 // What does this do? Must read implementation
 async function processCartData(cart: Cart): Promise<Order> {
-  const items = cart.items.filter(item => item.quantity > 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.items.filter((item) => item.quantity > 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const tax = subtotal * 0.08;
   return { items, subtotal, tax, total: subtotal + tax };
 }
@@ -31,8 +34,11 @@ async function processCartData(cart: Cart): Promise<Order> {
 
 ```typescript
 async function checkout(cart: Cart): Promise<Order> {
-  const items = cart.items.filter(item => item.quantity > 0);
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const items = cart.items.filter((item) => item.quantity > 0);
+  const subtotal = items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0,
+  );
   const tax = subtotal * 0.08;
 
   const order: Order = { items, subtotal, tax, total: subtotal + tax };
@@ -125,15 +131,15 @@ function processItems(items, processor) {
 }
 
 // Callers now obscure their intent
-const prices = processItems(products, p => p.price);
-const names = processItems(users, u => u.name);
+const prices = processItems(products, (p) => p.price);
+const names = processItems(users, (u) => u.name);
 ```
 
 **Correct (use language features, keep intent clear):**
 
 ```javascript
-const prices = products.map(p => p.price);
-const names = users.map(u => u.name);
+const prices = products.map((p) => p.price);
+const names = users.map((u) => u.name);
 // Array.map is universally understood - no custom abstraction needed
 ```
 

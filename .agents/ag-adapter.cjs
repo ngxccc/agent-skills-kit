@@ -11,7 +11,7 @@ function sendResponse(obj) {
 
 try {
   const args = process.argv.slice(2);
-  const eventType = args[0]; 
+  const eventType = args[0];
   const targetScriptRel = args[1];
 
   if (!targetScriptRel) {
@@ -32,11 +32,11 @@ try {
   let input = '';
   try {
     input = fs.readFileSync(0, 'utf-8');
-  } catch(e) {}
+  } catch (e) {}
 
   let payload = {};
-  try { 
-    if (input.trim()) payload = JSON.parse(input); 
+  try {
+    if (input.trim()) payload = JSON.parse(input);
   } catch (e) {}
 
   let claudeInput = payload;
@@ -44,8 +44,16 @@ try {
     let mappedToolName = payload.toolCall?.name || '';
     if (mappedToolName === 'run_command') mappedToolName = 'Bash';
     else if (mappedToolName === 'write_to_file') mappedToolName = 'Write';
-    else if (mappedToolName === 'replace_file_content' || mappedToolName === 'multi_replace_file_content') mappedToolName = 'Edit';
-    else if (mappedToolName === 'view_file' || mappedToolName === 'read_url_content') mappedToolName = 'Read';
+    else if (
+      mappedToolName === 'replace_file_content' ||
+      mappedToolName === 'multi_replace_file_content'
+    )
+      mappedToolName = 'Edit';
+    else if (
+      mappedToolName === 'view_file' ||
+      mappedToolName === 'read_url_content'
+    )
+      mappedToolName = 'Read';
     else if (mappedToolName === 'find_by_name') mappedToolName = 'Glob';
     else if (mappedToolName === 'grep_search') mappedToolName = 'Grep';
 
@@ -62,21 +70,21 @@ try {
     claudeInput = {
       tool_name: mappedToolName,
       tool_input: mappedArgs,
-      cwd: payload.toolCall?.args?.Cwd || workspaceRoot
+      cwd: payload.toolCall?.args?.Cwd || workspaceRoot,
     };
   }
 
   let result = spawnSync('bun', ['run', targetScript], {
     input: JSON.stringify(claudeInput),
     stdio: ['pipe', 'pipe', 'pipe'],
-    cwd: workspaceRoot // Execute Claude hooks from workspace root
+    cwd: workspaceRoot, // Execute Claude hooks from workspace root
   });
 
   if (result.error && result.error.code === 'ENOENT') {
     result = spawnSync('node', [targetScript], {
       input: JSON.stringify(claudeInput),
       stdio: ['pipe', 'pipe', 'pipe'],
-      cwd: workspaceRoot
+      cwd: workspaceRoot,
     });
   }
 
@@ -85,10 +93,11 @@ try {
 
   if (eventType === 'PreToolUse') {
     if (result.status === 0) {
-      sendResponse({ decision: "allow" });
+      sendResponse({ decision: 'allow' });
     } else {
-      let reason = stderrStr || stdoutStr || `Blocked by ${path.basename(targetScript)}`;
-      sendResponse({ decision: "deny", reason: reason });
+      let reason =
+        stderrStr || stdoutStr || `Blocked by ${path.basename(targetScript)}`;
+      sendResponse({ decision: 'deny', reason: reason });
     }
   } else if (eventType === 'PostToolUse') {
     sendResponse({});
@@ -97,7 +106,6 @@ try {
   } else {
     sendResponse({});
   }
-
 } catch (err) {
   // Ultimate fallback: fail-open to prevent crashing the agent
   if (process.argv[2] === 'PreToolUse') {

@@ -10,17 +10,17 @@ The model assumes a dynamic-segment route like `app/blog/[slug]` can't be part o
 ```tsx
 // app/blog/[slug]/page.tsx
 export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs()
-  return slugs.map((slug) => ({ slug })) // these paths prerender into the shell
+  const slugs = await getAllPostSlugs();
+  return slugs.map((slug) => ({ slug })); // these paths prerender into the shell
 }
 
 export default async function PostPage({
   params,
 }: {
-  params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params // async in Next.js 16
-  return <Article post={await getPost(slug)} />
+  const { slug } = await params; // async in Next.js 16
+  return <Article post={await getPost(slug)} />;
 }
 ```
 

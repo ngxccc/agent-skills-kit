@@ -15,7 +15,9 @@ Third-party embeds — maps, forms, calendars, widgets — almost always ship wi
 <!-- 800px iframe overflows on mobile, creating horizontal scroll on the entire page -->
 <section class="mx-auto max-w-4xl px-4 py-8">
   <h2 class="text-2xl font-bold text-gray-900">Find Our Office</h2>
-  <p class="mt-2 text-gray-600">We're located in the heart of downtown, just steps from the central station.</p>
+  <p class="mt-2 text-gray-600">
+    We're located in the heart of downtown, just steps from the central station.
+  </p>
   <div class="mt-6">
     <iframe
       width="800"
@@ -38,7 +40,9 @@ Third-party embeds — maps, forms, calendars, widgets — almost always ship wi
 <!-- Embed fills container width with 4:3 aspect ratio, no overflow at any screen size -->
 <section class="mx-auto max-w-4xl px-4 py-8">
   <h2 class="text-2xl font-bold text-gray-900">Find Our Office</h2>
-  <p class="mt-2 text-gray-600">We're located in the heart of downtown, just steps from the central station.</p>
+  <p class="mt-2 text-gray-600">
+    We're located in the heart of downtown, just steps from the central station.
+  </p>
   <div class="mt-6 w-full overflow-hidden rounded-lg shadow-sm">
     <iframe
       class="w-full aspect-[4/3]"
