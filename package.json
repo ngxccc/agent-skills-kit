@@ -1,6 +1,6 @@
 {
   "name": "agent-skills-kit",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "description": "Meta development harness for AI coding agents",
   "main": "resolve-manifest.mjs",
   "type": "module",
