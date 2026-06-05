@@ -9,8 +9,8 @@
     "validate": "node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs && node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs && node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs && node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs && node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs && node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs && node .claude/skills/ag-generate-context/scripts/validate-all-context.mjs"
   },
   "devDependencies": {
-    "@types/node": "^22.19.19",
-    "typescript": "^5.4.5"
+    "@types/node": "^25",
+    "typescript": "^6"
   },
   "author": "ngxccc & withkynam",
   "license": "MIT"
