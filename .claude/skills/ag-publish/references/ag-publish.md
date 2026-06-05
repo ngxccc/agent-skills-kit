@@ -12,7 +12,7 @@ Create this file in the project root to tell ag-publish where the kit repo check
 }
 ```
 
-- The path must point to a git checkout of `github.com/withkynam/agent-skills-kit.git`
+- The path must point to a git checkout of `github.com/ngxccc/agent-skills-kit.git`
 - The checkout must have `ag-manifest.json` at its root
 - If missing, the skill asks the user for the path interactively
 - Add `.ag-publish-config` to `.gitignore` -- it contains a local machine path
@@ -207,7 +207,7 @@ Publish v2.2.0? (patch/minor/major to change, abort to cancel)
 ```
 ag-publish complete: v2.1.0 -> v2.2.0
 
-Published to: github.com/withkynam/agent-skills-kit.git
+Published to: github.com/ngxccc/agent-skills-kit.git
 Tag: v2.2.0
 Commit: abc1234
 

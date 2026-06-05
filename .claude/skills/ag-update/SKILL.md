@@ -38,7 +38,7 @@ Read the file `.ag-version` in the project root.
 
 ```bash
 TMPDIR="/tmp/ag-update-$(date +%s)"
-git clone --depth 1 https://github.com/withkynam/agent-skills-kit.git "$TMPDIR"
+git clone --depth 1 https://github.com/ngxccc/agent-skills-kit.git "$TMPDIR"
 ```
 
 If the clone fails (network error, auth error, repo not found):

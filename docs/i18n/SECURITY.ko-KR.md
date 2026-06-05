@@ -22,7 +22,7 @@
 
 대신 GitHub Security Advisories를 사용해서 비공개로 취약점을 신고해주세요:
 
-[취약점 신고하기](https://github.com/withkynam/agent-skills-kit/security/advisories/new)
+[취약점 신고하기](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)
 
 > **참고:** 레포지토리 설정에서 Private Vulnerability Reporting이 활성화되어 있어야 "Report a vulnerability" 버튼이 나타나요.
 

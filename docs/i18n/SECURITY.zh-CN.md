@@ -22,7 +22,7 @@
 
 请使用 GitHub Security Advisories 私密报告漏洞：
 
-[报告漏洞](https://github.com/withkynam/agent-skills-kit/security/advisories/new)
+[报告漏洞](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)
 
 > **注意：** 需要在仓库设置中启用 Private Vulnerability Reporting，"Report a vulnerability" 按钮才会出现。
 

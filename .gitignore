@@ -6,3 +6,13 @@ node_modules/
 .claude/hooks/.logs/
 .codex/hooks/.logs/
 .codex/statusline.cjs
+
+# Ignore local plans and feature directories
+/process/general-plans/**
+!/process/general-plans/active/.gitkeep
+!/process/general-plans/completed/.gitkeep
+!/process/general-plans/backlog/.gitkeep
+!/process/general-plans/reports/.gitkeep
+!/process/general-plans/references/.gitkeep
+/process/features/**
+!/process/features/.gitkeep

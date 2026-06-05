@@ -35,7 +35,7 @@ The `install.sh` script handles fetching and installing harness files before ag-
 
 **If harness files are NOT present**, tell the user to run the installer first:
 ```
-curl -fsSL https://raw.githubusercontent.com/withkynam/agent-skills-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/install.sh | bash
 ```
 
 Then re-run ag-setup.

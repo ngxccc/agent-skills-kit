@@ -22,7 +22,7 @@
 
 Em vez disso, use o GitHub Security Advisories pra reportar vulnerabilidades de forma privada:
 
-[Reportar uma vulnerabilidade](https://github.com/withkynam/agent-skills-kit/security/advisories/new)
+[Reportar uma vulnerabilidade](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)
 
 > **Nota:** O Private Vulnerability Reporting precisa estar habilitado nas configurações do repositório para o botão "Report a vulnerability" aparecer.
 

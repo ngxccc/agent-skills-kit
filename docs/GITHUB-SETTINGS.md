@@ -1,7 +1,7 @@
 # GitHub Repository Settings
 
 > Reference for maintainers. Apply these settings via the GitHub web UI at
-> **Settings** tab of https://github.com/withkynam/agent-skills-kit
+> **Settings** tab of https://github.com/ngxccc/agent-skills-kit
 
 ---
 
@@ -13,7 +13,7 @@ RIPER-5 agent harness for Claude Code & Codex — 12 specialist agents, 31 skill
 
 ## Website URL
 
-`https://github.com/withkynam/agent-skills-kit`
+`https://github.com/ngxccc/agent-skills-kit`
 
 ## Topics
 

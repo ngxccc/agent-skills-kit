@@ -42,12 +42,12 @@
 🤝 计划和规范是可共享的——开发、PM、stakeholder 都看同一份产物
 
 <p>
-  <a href="https://github.com/withkynam/agent-skills-kit/stargazers"><img src="https://img.shields.io/github/stars/withkynam/agent-skills-kit" alt="Stars"></a>
-  <a href="https://github.com/withkynam/agent-skills-kit/network/members"><img src="https://img.shields.io/github/forks/withkynam/agent-skills-kit" alt="Forks"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/withkynam/agent-skills-kit" alt="License"></a>
-  <a href="https://github.com/withkynam/agent-skills-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/withkynam/agent-skills-kit" alt="Contributors"></a>
-  <a href="https://github.com/withkynam/agent-skills-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/withkynam/agent-skills-kit/validate.yml" alt="CI"></a>
-  <a href="https://github.com/withkynam/agent-skills-kit/commits/main"><img src="https://img.shields.io/github/last-commit/withkynam/agent-skills-kit" alt="Last Commit"></a>
+  <a href="https://github.com/ngxccc/agent-skills-kit/stargazers"><img src="https://img.shields.io/github/stars/ngxccc/agent-skills-kit" alt="Stars"></a>
+  <a href="https://github.com/ngxccc/agent-skills-kit/network/members"><img src="https://img.shields.io/github/forks/ngxccc/agent-skills-kit" alt="Forks"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/ngxccc/agent-skills-kit" alt="License"></a>
+  <a href="https://github.com/ngxccc/agent-skills-kit/graphs/contributors"><img src="https://img.shields.io/github/contributors/ngxccc/agent-skills-kit" alt="Contributors"></a>
+  <a href="https://github.com/ngxccc/agent-skills-kit/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/ngxccc/agent-skills-kit/validate.yml" alt="CI"></a>
+  <a href="https://github.com/ngxccc/agent-skills-kit/commits/main"><img src="https://img.shields.io/github/last-commit/ngxccc/agent-skills-kit" alt="Last Commit"></a>
   <img src="https://img.shields.io/badge/agents-12-orange" alt="Agents">
   <img src="https://img.shields.io/badge/skills-32-purple" alt="Skills">
   <img src="https://img.shields.io/badge/tools-7_%E2%9C%93-38BDF8" alt="7 Tools">
@@ -101,7 +101,7 @@
 > 更喜欢让你的代理来执行？以该项目文件夹作为工作目录打开 Claude Code 或 Codex，然后粘贴下面的完整设置提示词。
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/withkynam/agent-skills-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/install.sh | bash
 ```
 
 然后打开 Claude Code 说：
@@ -158,7 +158,7 @@ your-project/
 ```
 First, install the agent-skills-kit agent harness by running this command:
 
-curl -fsSL https://raw.githubusercontent.com/withkynam/agent-skills-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/install.sh | bash
 
 After the install completes, run ag-setup to configure everything for this project.
 
@@ -1161,15 +1161,15 @@ Run ag-update
 
 **快速链接：**
 
-- 🐛 [报告 Bug](https://github.com/withkynam/agent-skills-kit/issues/new?template=1.bug_report.yml)
-- 💡 [功能请求](https://github.com/withkynam/agent-skills-kit/issues/new?template=2.feature_request.yml)
-- ⚡ [提交 Skill](https://github.com/withkynam/agent-skills-kit/issues/new?template=3.skill_submission.yml)
-- 🌐 [添加翻译](https://github.com/withkynam/agent-skills-kit/issues/new?template=5.translation.yml)
+- 🐛 [报告 Bug](https://github.com/ngxccc/agent-skills-kit/issues/new?template=1.bug_report.yml)
+- 💡 [功能请求](https://github.com/ngxccc/agent-skills-kit/issues/new?template=2.feature_request.yml)
+- ⚡ [提交 Skill](https://github.com/ngxccc/agent-skills-kit/issues/new?template=3.skill_submission.yml)
+- 🌐 [添加翻译](https://github.com/ngxccc/agent-skills-kit/issues/new?template=5.translation.yml)
 
 <br>
 
-<a href="https://github.com/withkynam/agent-skills-kit/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=withkynam/agent-skills-kit" alt="Contributors" />
+<a href="https://github.com/ngxccc/agent-skills-kit/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=ngxccc/agent-skills-kit" alt="Contributors" />
 </a>
 
 <br>
@@ -1184,11 +1184,11 @@ Run ag-update
 
 ## ⭐ Star 历史
 
-<a href="https://star-history.com/#withkynam/agent-skills-kit&Date">
+<a href="https://star-history.com/#ngxccc/agent-skills-kit&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=withkynam/agent-skills-kit&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=withkynam/agent-skills-kit&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=withkynam/agent-skills-kit&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=ngxccc/agent-skills-kit&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=ngxccc/agent-skills-kit&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=ngxccc/agent-skills-kit&type=Date" />
  </picture>
 </a>
 

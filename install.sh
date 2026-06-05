@@ -8,7 +8,7 @@ set -euo pipefail
 # After this script, run Claude Code and say "Run ag-setup" to
 # auto-detect your project, scaffold process/, and populate context.
 
-REPO="https://github.com/withkynam/agent-skills-kit.git"
+REPO="https://github.com/ngxccc/agent-skills-kit.git"
 TMPDIR="/tmp/ag-kit-install-$$"
 BACKUP_DIR=".agent-skills-backup"
 GREEN='\033[0;32m'
