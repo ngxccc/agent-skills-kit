@@ -15,50 +15,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 20
+          bun-version: latest
 
       - name: Validate agent parity
-        run: node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
+        run: bun .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
 
       - name: Validate skills
-        run: node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
+        run: bun .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
 
       - name: Validate guide sync
-        run: node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs
+        run: bun .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs
 
       - name: Validate protocol wiring
-        run: node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs
+        run: bun .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs
 
       - name: Validate seeds
-        run: node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs
+        run: bun .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs
 
       - name: Validate context discovery
-        run: node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
 
       - name: Validate skill routing
-        run: node .claude/skills/ag-audit-context/scripts/validate-skill-routing.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/validate-skill-routing.mjs
 
       - name: Validate skill cross-refs
-        run: node .claude/skills/ag-audit-context/scripts/validate-skill-cross-refs.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/validate-skill-cross-refs.mjs
 
       - name: Validate skill dependencies
-        run: node .claude/skills/ag-audit-context/scripts/validate-skill-dependencies.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/validate-skill-dependencies.mjs
 
       - name: Validate confusable skills
-        run: node .claude/skills/ag-audit-context/scripts/validate-confusable-skills.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/validate-confusable-skills.mjs
 
       - name: Generate skills catalog
-        run: node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs
+        run: bun .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs
 
       - name: Validate plan inventory
-        run: node .claude/skills/ag-audit-plans/scripts/validate-plan-inventory.mjs
+        run: bun .claude/skills/ag-audit-plans/scripts/validate-plan-inventory.mjs
 
       - name: Validate all context
-        run: node .claude/skills/ag-generate-context/scripts/validate-all-context.mjs
-
+        run: bun .claude/skills/ag-generate-context/scripts/validate-all-context.mjs
       - name: Check for personal path leaks
         run: |
           if grep -rn '/Users/\|/home/\|C:\\Users\\' \
