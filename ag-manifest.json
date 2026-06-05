@@ -16,7 +16,8 @@
     "process/_seeds/**",
     "process/_seeds/**/.gitkeep",
     "process/_seeds/**/.gitignore",
-    "process/_seeds/**/.env.example"
+    "process/_seeds/**/.env.example",
+    ".agents/**"
   ],
   "exclude": [
     "process/context/all-context.md",
@@ -25,7 +26,8 @@
     "**/.git/**",
     "**/.logs/**",
     ".codex/statusline.cjs",
-    ".claude/skills/ag-chrome-devtools/scripts/node_modules/**"
+    ".claude/skills/ag-chrome-devtools/scripts/node_modules/**",
+    ".agents/skills/**"
   ],
   "strip": [],
   "merge": [".claude/settings.json"],
