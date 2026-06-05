@@ -309,6 +309,83 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 
 ---
 
+## 4. Agent & Skill Catalog
+
+This catalog defines all existing agents and skills in the development environment. Whenever orchestrating workflows, the Conductor references this list to select the optimal actor or specialist skill.
+
+### Agents
+
+- **`ag-code-reviewer`**: Comprehensive code review with scout-based edge case detection. Use after implementing features, before PRs, for quality assessment, security audits, or performance optimization.
+- **`ag-code-simplifier`**: Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
+- **`ag-debugger`**: Use this agent when you need to investigate issues, analyze system behavior, diagnose performance problems, examine database structures, collect and analyze logs from servers or CI/CD pipelines, run tests for debugging purposes, or optimize system performance.
+- **`ag-execute-agent`**: EXECUTE MODE - Implementing EXACTLY what was planned. Full tool access. Can only be invoked after explicit user confirmation. Use after plan is approved.
+- **`ag-fast-mode-agent`**: FAST MODE - Execute compressed RIPER-5 workflow (RESEARCH + INNOVATE + PLAN) in one session, then pause for EXECUTE confirmation. Use when you want quick end-to-end solution.
+- **`ag-git-manager`**: Stage, commit, and push code changes with conventional commits. Use when user says "commit", "push", or finishes a feature/fix.
+- **`ag-innovate-agent`**: INNOVATE MODE - Brainstorming and exploring implementation approaches. Discusses possibilities without making decisions. Use after research is complete.
+- **`ag-plan-agent`**: PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to process/general-plans/active/ and process/features/*/active/ only. Use after approach is decided.
+- **`ag-research-agent`**: RESEARCH MODE - Information gathering only. Use for understanding existing code, architecture, and context. Never suggests implementations or modifications.
+- **`ag-tester`**: Use this agent when you need to validate code quality through testing, including running unit and integration tests, analyzing test coverage, validating error handling, checking performance requirements, or verifying build processes.
+- **`ag-ui-ux-designer`**: Use this agent when the user needs UI/UX execution support including interface implementation, design-system polish, responsive layouts, animations, accessibility review, or design documentation.
+- **`ag-update-process-agent`**: UPDATE PROCESS MODE - Analyze execution, generate rule improvements, update plan files and context. Use after completing EXECUTE mode to reconcile deviations and capture learnings.
+
+### Core Harness Skills
+
+- **`ag-agent-browser`**: AI-optimized browser automation CLI with context-efficient snapshots. Use for long autonomous sessions, self-verifying workflows, video recording, and cloud browser testing (Browserbase).
+- **`ag-audit-ag`**: Audit agent harness health: Claude/Codex agent parity, skill registry consistency, README.md sync, and protocol file wiring. Use when agents, skills, README.md, or development-protocol files move, split, or drift.
+- **`ag-audit-context`**: Audit project context routing, shared-skill discoverability, and Claude/Codex wiring. Use when context docs or skill surfaces move, split, or drift.
+- **`ag-audit-plans`**: Audit active project plan files for staleness, completion, and routing truth. Use when cleaning up plans, reconciling active work, or archiving completed artifacts.
+- **`ag-autoresearch`**: Autonomous iterative optimization loop for measurable metrics like coverage, performance, or bundle size. Use when repeated experiments can be judged by a mechanical score.
+- **`ag-chrome-devtools`**: Automate browsers with Puppeteer CLI scripts and persistent sessions. Use for screenshots, performance analysis, network monitoring, web scraping, form automation, JavaScript debugging.
+- **`ag-context-engineering`**: Check context limits, optimize token usage, and debug context failures. Use when asking about rate limits, usage warnings, memory systems, or context-aware agent design.
+- **`ag-debug`**: Debug systematically with root-cause analysis before fixes. Use for bugs, test failures, unexpected behavior, performance issues, CI failures, or system investigation.
+- **`ag-docs`**: Use when you need to analyze a codebase and initialize, update, or summarize project documentation.
+- **`ag-docs-seeker`**: Search library/framework documentation via llms.txt (context7.com). Use for API docs, GitHub repository analysis, technical documentation lookup, latest library features.
+- **`ag-frontend-design`**: Create polished frontend interfaces from designs/screenshots/videos. Use for web components, 3D experiences, replicating UI designs, quick prototypes, immersive interfaces, avoiding AI slop.
+- **`ag-generate-context`**: Generate or update the project's authoritative repository context at process/context/all-context.md. Use when repo context is missing, stale, or contradicted by code.
+- **`ag-generate-plan`**: Create or update implementation plans in the repo's SIMPLE or COMPLEX format. Use when turning an idea, PRD, or approved direction into a saved plan artifact.
+- **`ag-mcp-management`**: Manage MCP servers - discover, analyze, execute tools/prompts/resources. Use for MCP integrations, intelligent tool selection, multi-server management, context-efficient capability discovery.
+- **`ag-merge-worktree`**: Merge a git worktree branch back into the main checkout and clean up the worktree. Use when the user asks to merge, archive, or clean up a completed worktree.
+- **`ag-predict`**: 5 expert personas debate proposed changes before implementation. Catches architectural, security, performance, and UX issues early. Use before major features or risky changes.
+- **`ag-preview`**: Use when you need to inspect files or generate visual explanations, slides, diagrams, or HTML recaps.
+- **`ag-problem-solving`**: Apply systematic problem-solving techniques when stuck. Use for complexity spirals, innovation blocks, recurring patterns, assumption constraints, simplification cascades, scale uncertainty.
+- **`ag-publish`**: Push agent harness improvements from the current development repo to the remote kit repository. Use when you want to publish local harness changes back to the shared kit. Diffs managed files, shows what changed, bumps version, and pushes.
+- **`ag-repomix`**: Use when you need to pack a local or remote repository into an AI-friendly reference artifact for research, audits, feature-porting prep, context review, or security-oriented repo analysis.
+- **`ag-scenario`**: Generate comprehensive edge cases and test scenarios by decomposing features across 12 dimensions. Use before implementation or testing to catch issues early.
+- **`ag-scout`**: Fast codebase scouting using shell search and optional parallel research agents. Use for file discovery, task context gathering, and quick scoped searches across directories.
+- **`ag-security`**: STRIDE + OWASP-based security audit with optional auto-fix. Scans code for vulnerabilities, categorizes by severity, and can iteratively fix findings using ag-autoresearch pattern.
+- **`ag-sequential-thinking`**: Apply step-by-step analysis for complex problems with revision capability. Use for multi-step reasoning, hypothesis verification, adaptive planning, problem decomposition, course correction.
+- **`ag-setup`**: Interactive agent harness setup for any project. Detects your stack, asks about your project, scaffolds process directories, deep-scans the codebase, and populates context with real content. Works on fresh projects and existing projects with pre-existing configs — always asks before reorganizing.
+- **`ag-skill-standard`**: Rules, standards, and validation guides for writing and structure of skills. Use when creating or updating any skill files to ensure pattern compliance.
+- **`ag-team`**: Orchestrate Agent Teams for parallel multi-session collaboration. Use for research, implementation, review, and debug workflows requiring independent teammates.
+- **`ag-tech-graph`**: Use when you need publish-grade SVG or PNG technical diagrams for architecture, flow, sequence, UML, state, or comparison visuals, with preview used afterward for review rather than generation.
+- **`ag-update`**: Pull latest agent harness improvements from the remote kit repository. Shows a dry-run diff summary, waits for confirmation, then applies updates.
+- **`ag-watzup`**: Use when you need a read-only handoff summary of current branch state, local/remote refs, worktrees, active project plans, selected-plan hints, and suggested next checks.
+- **`ag-web-testing`**: Web testing with Playwright, Vitest, k6. E2E/unit/integration/load/security/visual/a11y testing. Use for test automation, flakiness, Core Web Vitals, mobile gestures, cross-browser.
+- **`ag-xia`**: Use when you need to compare a local or remote repository, extract a feature idea, or prepare an adaptation study without planning or implementing it yet.
+
+### Curated Reference Skills
+
+- **`code-simplifier`**: Code simplification skill for improving clarity, consistency, and maintainability while preserving exact behavior. Use when simplifying code, reducing complexity, cleaning up recent changes, applying refactoring patterns, or improving readability. Triggers on tasks involving code cleanup, simplification, refactoring, or readability improvements.
+- **`implementation-design-patterns`**: Implementation guide for the 22 Gang of Four design patterns in TypeScript, distilled from refactoring.guru. Use this skill when writing, refactoring, or reviewing TypeScript that exhibits a pattern-shaped problem — class-explosion from inheritance, conditionals switching on type, tight coupling to concrete classes, tree-shaped models, runtime algorithm selection, undo/redo, snapshot-and-restore, state-dependent behavior, subscriber notification, or hiding subsystem complexity.
+- **`implementation-functional-patterns`**: TypeScript's functional answers to the 22 Gang of Four classes — factory functions (Factory Method, Abstract Factory, Prototype, Memento), module-scope singletons, fluent immutable builders, wrapper functions (Adapter, Facade), native Proxy, WeakMap caches (Flyweight), discriminated unions with exhaustive match (State, Visitor, Composite), event emitters and signals (Mediator, Observer), pipelines and composition (CoR, Decorator), stream methods (Iterator), closures-as-commands, higher-order strategies, lambda placement.
+- **`nextjs`**: Next.js 16 App Router performance, caching, server components, server actions, routing, and codebase-hygiene best practices — plus a category-major review/refactor algorithm with codebase-level (remove/dedup/reuse) findings.
+- **`nextjs-bundle-optimizer`**: Next.js 16 bundle-size and build-time optimization guidelines.
+- **`nextjs-ppr-patterns`**: Next.js 16 App Router pages mixing static and dynamic content — Partial Prerendering (PPR) under the Cache Components model.
+- **`react-hook-form`**: React Hook Form performance optimization for client-side form validation using useForm, useWatch, useController, useFieldArray, and the v7.55+ subscribe() API.
+- **`react-hook-form-audit`**: Audits a Next.js (App Router, 14/15+) codebase for React Hook Form anti-patterns — watch() at form root, Controller inlined in parent, async submit without try/catch, missing setError on server failures, RHF in non-"use client" files, RHF mixed with useActionState, schemas defined inside components, useFieldArray without field.id keys, register({ disabled }) for visual disabling.
+- **`tailwind`**: Tailwind CSS v4 performance optimization and best practices guidelines (formerly tailwindcss-v4-style).
+- **`tailwind-refactor`**: Tailwind CSS code refactoring patterns for v4 migration and anti-pattern cleanup.
+- **`tailwind-responsive-ui`**: Responsive UI transformation patterns for Tailwind CSS applications.
+- **`tailwind-ui-refactor`**: Refactoring UI design patterns for Tailwind CSS applications to improve visual hierarchy, spacing, typography, color, depth, and polish.
+- **`typescript`**: TypeScript performance, tsconfig, type errors, async patterns — triggered when the user asks to "optimize TypeScript performance", "speed up tsc compilation", "configure tsconfig.json", "fix type errors", "improve async patterns", or encounters TS errors (TS2322, TS2339, "is not assignable to").
+- **`typescript-advanced-patterns`**: Advanced TypeScript — type-level programming, library/DSL APIs, declaration merging, modern language features at depth (decorators, using, const T, NoInfer, variance), and feature implementation patterns built on advanced types.
+- **`typescript-refactor`**: TypeScript and TSX refactoring and modernization guidelines from a principal specialist perspective, current to TypeScript 6.0 and React 19.
+- **`ui-design`**: UI/UX and frontend design best practices guidelines (formerly frontend-design).
+- **`upstash-ratelimit`**: Rules, standards, and references for rate limiting in serverless environments using Upstash Ratelimit.
+- **`zod`**: Zod v4 schema validation best practices. Use when defining schemas, utilizing safeParse, or customizing error messages.
+
+---
+
 ## How to Use
 
 This skill is local to `.omp/skills/` and is automatically loaded by the OMP session because it is registered in `ag-manifest.json` under `.omp/**`.
