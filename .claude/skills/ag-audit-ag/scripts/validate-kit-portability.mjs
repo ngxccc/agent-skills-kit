@@ -31,7 +31,7 @@ function fail(message) {
   failures.push(message);
 }
 
-function warn(message) {
+function _warn(message) {
   warnings.push(message);
 }
 

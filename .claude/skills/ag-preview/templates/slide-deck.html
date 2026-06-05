@@ -205,9 +205,9 @@
       @media (prefers-reduced-motion: reduce) {
         .slide,
         .slide .reveal {
-          opacity: 1 !important;
-          transform: none !important;
-          transition: none !important;
+          opacity: 1;
+          transform: none;
+          transition: none;
         }
       }
 
@@ -518,27 +518,27 @@
       }
 
       .mermaid .nodeLabel {
-        color: var(--text) !important;
+        color: var(--text);
       }
       .mermaid .edgeLabel {
-        color: var(--text-dim) !important;
-        background-color: var(--bg) !important;
+        color: var(--text-dim);
+        background-color: var(--bg);
       }
       .mermaid .edgeLabel rect {
-        fill: var(--bg) !important;
+        fill: var(--bg);
       }
       .slide--diagram .mermaid svg {
-        width: 100% !important;
-        height: auto !important;
-        max-width: 100% !important;
+        width: 100%;
+        height: auto;
+        max-width: 100%;
       }
 
       .slide--diagram .mermaid .nodeLabel {
-        font-size: 18px !important;
+        font-size: 18px;
       }
       .slide--diagram .mermaid .edgeLabel {
-        font-family: var(--font-mono) !important;
-        font-size: 14px !important;
+        font-family: var(--font-mono);
+        font-size: 14px;
       }
       .slide--diagram .mermaid .node rect,
       .slide--diagram .mermaid .node circle,
@@ -846,7 +846,7 @@
       aria-label="Toggle light/dark theme"
     ></button>
     <script>
-      (function () {
+      (() => {
         var t = document.getElementById("themeToggle");
         var s = localStorage.getItem("theme");
         var i =
@@ -856,7 +856,7 @@
             : "light");
         if (s) document.documentElement.setAttribute("data-theme", i);
         t.textContent = i === "dark" ? "\u2600" : "\u263E";
-        t.addEventListener("click", function () {
+        t.addEventListener("click", () => {
           var c =
             document.documentElement.getAttribute("data-theme") ||
             (matchMedia("(prefers-color-scheme: dark)").matches
@@ -1320,33 +1320,33 @@ graph LR
       });
 
       function autoFit() {
-        document.querySelectorAll(".mermaid svg").forEach(function (svg) {
+        document.querySelectorAll(".mermaid svg").forEach((svg) => {
           svg.removeAttribute("height");
           svg.style.width = "100%";
           svg.style.maxWidth = "100%";
           svg.style.height = "auto";
           svg.parentElement.style.width = "100%";
         });
-        document.querySelectorAll(".slide__kpi-val").forEach(function (el) {
+        document.querySelectorAll(".slide__kpi-val").forEach((el) => {
           if (el.scrollWidth > el.clientWidth) {
             var s = el.clientWidth / el.scrollWidth;
-            el.style.transform = "scale(" + s + ")";
+            el.style.transform = `scale(${s})`;
             el.style.transformOrigin = "left top";
           }
         });
         document
           .querySelectorAll(".slide--quote blockquote")
-          .forEach(function (el) {
+          .forEach((el) => {
             var len = el.textContent.trim().length;
             if (len > 100) {
               var scale = Math.max(0.5, 100 / len);
               var fs = parseFloat(getComputedStyle(el).fontSize);
-              el.style.fontSize = Math.max(16, Math.round(fs * scale)) + "px";
+              el.style.fontSize = `${Math.max(16, Math.round(fs * scale))}px`;
             }
           });
       }
 
-      mermaid.run().then(function () {
+      mermaid.run().then(() => {
         autoFit();
         new SlideEngine();
       });
@@ -1355,7 +1355,7 @@ graph LR
     <script>
       // Mermaid zoom controls + click-to-expand
       var INITIAL_ZOOM = 1;
-      function zoomDiagram(b, f) {
+      function _zoomDiagram(b, f) {
         var w = b.closest(".mermaid-wrap");
         var t = w.querySelector(".mermaid");
         var c = parseFloat(t.dataset.zoom || INITIAL_ZOOM);
@@ -1363,13 +1363,13 @@ graph LR
         t.dataset.zoom = n;
         t.style.zoom = n;
       }
-      function resetZoom(b) {
+      function _resetZoom(b) {
         var w = b.closest(".mermaid-wrap");
         var t = w.querySelector(".mermaid");
         t.dataset.zoom = INITIAL_ZOOM;
         t.style.zoom = INITIAL_ZOOM;
       }
-      function openDiagramFullscreen(b) {
+      function _openDiagramFullscreen(b) {
         openMermaidInNewTab(b.closest(".mermaid-wrap"));
       }
       function openMermaidInNewTab(w) {
@@ -1391,10 +1391,10 @@ graph LR
           "_blank",
         );
       }
-      document.querySelectorAll(".mermaid-wrap").forEach(function (w) {
+      document.querySelectorAll(".mermaid-wrap").forEach((w) => {
         w.addEventListener(
           "wheel",
-          function (e) {
+          (e) => {
             if (!e.ctrlKey && !e.metaKey) return;
             e.preventDefault();
             var t = w.querySelector(".mermaid");
@@ -1407,7 +1407,7 @@ graph LR
           { passive: false },
         );
         var sX, sY, sL, sT, sTime, didPan;
-        w.addEventListener("mousedown", function (e) {
+        w.addEventListener("mousedown", (e) => {
           if (e.target.closest(".zoom-controls")) return;
           w.classList.add("is-panning");
           sX = e.clientX;
@@ -1417,7 +1417,7 @@ graph LR
           sTime = Date.now();
           didPan = false;
         });
-        window.addEventListener("mousemove", function (e) {
+        window.addEventListener("mousemove", (e) => {
           if (!w.classList.contains("is-panning")) return;
           var dx = e.clientX - sX,
             dy = e.clientY - sY;
@@ -1425,7 +1425,7 @@ graph LR
           w.scrollLeft = sL - dx;
           w.scrollTop = sT - dy;
         });
-        window.addEventListener("mouseup", function () {
+        window.addEventListener("mouseup", () => {
           if (!w.classList.contains("is-panning")) return;
           w.classList.remove("is-panning");
           if (!didPan && Date.now() - sTime < 300) openMermaidInNewTab(w);
@@ -1450,13 +1450,12 @@ graph LR
         this.bar = bar;
         var dots = document.createElement("div");
         dots.className = "deck-dots";
-        var self = this;
-        this.slides.forEach(function (_, i) {
+        this.slides.forEach((_, i) => {
           var d = document.createElement("button");
           d.className = "deck-dot";
-          d.title = "Slide " + (i + 1);
-          d.onclick = function () {
-            self.goTo(i);
+          d.title = `Slide ${i + 1}`;
+          d.onclick = () => {
+            this.goTo(i);
           };
           dots.appendChild(d);
         });
@@ -1471,13 +1470,12 @@ graph LR
         hints.textContent = "\u2190 \u2192 or scroll to navigate";
         document.body.appendChild(hints);
         this.hints = hints;
-        this.hintTimer = setTimeout(function () {
+        this.hintTimer = setTimeout(() => {
           hints.classList.add("faded");
         }, 4000);
       };
       SlideEngine.prototype.bindEvents = function () {
-        var self = this;
-        document.addEventListener("keydown", function (e) {
+        document.addEventListener("keydown", (e) => {
           if (
             e.target.closest(
               ".mermaid-wrap,.table-scroll,.code-scroll,input,textarea,[contenteditable]",
@@ -1488,49 +1486,48 @@ graph LR
             ["ArrowDown", "ArrowRight", " ", "PageDown"].indexOf(e.key) > -1
           ) {
             e.preventDefault();
-            self.next();
+            this.next();
           } else if (["ArrowUp", "ArrowLeft", "PageUp"].indexOf(e.key) > -1) {
             e.preventDefault();
-            self.prev();
+            this.prev();
           } else if (e.key === "Home") {
             e.preventDefault();
-            self.goTo(0);
+            this.goTo(0);
           } else if (e.key === "End") {
             e.preventDefault();
-            self.goTo(self.total - 1);
+            this.goTo(this.total - 1);
           }
-          self.fadeHints();
+          this.fadeHints();
         });
         var tY;
         this.deck.addEventListener(
           "touchstart",
-          function (e) {
+          (e) => {
             tY = e.touches[0].clientY;
           },
           { passive: true },
         );
-        this.deck.addEventListener("touchend", function (e) {
+        this.deck.addEventListener("touchend", (e) => {
           var dy = tY - e.changedTouches[0].clientY;
           if (Math.abs(dy) > 50) {
-            dy > 0 ? self.next() : self.prev();
+            dy > 0 ? this.next() : this.prev();
           }
         });
       };
       SlideEngine.prototype.observe = function () {
-        var self = this;
         var obs = new IntersectionObserver(
-          function (entries) {
-            entries.forEach(function (entry) {
+          (entries) => {
+            entries.forEach((entry) => {
               if (entry.isIntersecting) {
                 entry.target.classList.add("visible");
-                self.current = self.slides.indexOf(entry.target);
-                self.update();
+                this.current = this.slides.indexOf(entry.target);
+                this.update();
               }
             });
           },
           { threshold: 0.5 },
         );
-        this.slides.forEach(function (s) {
+        this.slides.forEach((s) => {
           obs.observe(s);
         });
       };
@@ -1546,12 +1543,12 @@ graph LR
         if (this.current > 0) this.goTo(this.current - 1);
       };
       SlideEngine.prototype.update = function () {
-        this.bar.style.width = ((this.current + 1) / this.total) * 100 + "%";
+        this.bar.style.width = `${((this.current + 1) / this.total) * 100}%`;
         var c = this.current;
-        this.dots.forEach(function (d, i) {
+        this.dots.forEach((d, i) => {
           d.classList.toggle("active", i === c);
         });
-        this.counter.textContent = this.current + 1 + " / " + this.total;
+        this.counter.textContent = `${this.current + 1} / ${this.total}`;
       };
       SlideEngine.prototype.fadeHints = function () {
         clearTimeout(this.hintTimer);

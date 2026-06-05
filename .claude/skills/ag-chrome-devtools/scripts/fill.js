@@ -7,19 +7,19 @@
  *   - XPath: node fill.js --selector "//input[@type='email']" --value "user@example.com"
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
 import {
-  parseSelector,
-  waitForElement,
-  typeIntoElement,
   enhanceError,
+  parseSelector,
+  typeIntoElement,
+  waitForElement,
 } from "./lib/selector.js";
 
 async function fill() {
@@ -55,13 +55,13 @@ async function fill() {
     // Wait for element based on selector type
     await waitForElement(page, parsed, {
       visible: true,
-      timeout: parseInt(args.timeout || "5000"),
+      timeout: parseInt(args.timeout || "5000", 10),
     });
 
     // Type into element
     await typeIntoElement(page, parsed, args.value, {
       clear: args.clear === "true",
-      delay: parseInt(args.delay || "0"),
+      delay: parseInt(args.delay || "0", 10),
     });
 
     outputJSON({

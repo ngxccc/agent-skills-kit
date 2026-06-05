@@ -26,8 +26,8 @@
 
 // Crash wrapper — catches require() failures and logs them
 try {
-  const fs = require("fs");
-  const path = require("path");
+  const fs = require("node:fs");
+  const path = require("node:path");
 
   // Import shared scout checking logic
   const {

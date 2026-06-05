@@ -88,7 +88,7 @@ for (const skill of skillDirs) {
   if (frontmatter.name?.startsWith("ck:"))
     aliases.add(frontmatter.name.slice(3));
 
-  if (Object.prototype.hasOwnProperty.call(allowlistedSkills, skill)) {
+  if (Object.hasOwn(allowlistedSkills, skill)) {
     const reason = allowlistedSkills[skill];
     if (typeof reason !== "string" || reason.trim().length < 12) {
       fail(`${policyPath} allowlist entry for ${skill} needs a real reason`);

@@ -9,7 +9,7 @@ const { loadEnv } = require("./utils/env-loader");
 
 // Load environment
 const env = loadEnv();
-const DEBUG = env.DEBUG === "true";
+const _DEBUG = env.DEBUG === "true";
 
 /**
  * URL priority categories
@@ -206,7 +206,7 @@ function main() {
     process.exit(1);
   }
 
-  const fs = require("fs");
+  const fs = require("node:fs");
   let content;
 
   if (args[0] === "-") {

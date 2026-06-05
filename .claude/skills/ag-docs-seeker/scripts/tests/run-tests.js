@@ -4,8 +4,8 @@
  * Test runner - runs all tests
  */
 
-const { spawn } = require("child_process");
-const path = require("path");
+const { spawn } = require("node:child_process");
+const path = require("node:path");
 
 const tests = [
   "test-detect-topic.js",
@@ -13,8 +13,8 @@ const tests = [
   "test-analyze-llms.js",
 ];
 
-let totalPassed = 0;
-let totalFailed = 0;
+const _totalPassed = 0;
+const _totalFailed = 0;
 
 function runTest(testFile) {
   return new Promise((resolve, reject) => {
@@ -42,12 +42,12 @@ function runTest(testFile) {
 async function runAllTests() {
   console.log("Running all docs-seeker tests...");
 
-  let failedTests = [];
+  const failedTests = [];
 
   for (const test of tests) {
     try {
       await runTest(test);
-    } catch (error) {
+    } catch (_error) {
       failedTests.push(test);
     }
   }

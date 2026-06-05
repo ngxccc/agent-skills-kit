@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from "node:fs";
 /**
  * Reload the active page and capture all console logs
  * for a fixed window. Used to verify reconciliation diagnostic instrumentation.
@@ -8,7 +9,6 @@
  *     [--no-reload]
  */
 import puppeteer from "puppeteer";
-import fs from "fs";
 
 function parseArgs(argv) {
   const out = {};

@@ -14,15 +14,15 @@
  *   4. Run this script to import into puppeteer session
  *   5. Use other scripts (screenshot, navigate) with authenticated session
  */
-import fs from "fs";
+import fs from "node:fs";
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
   saveAuthSession,
 } from "./lib/browser.js";
 
@@ -160,7 +160,7 @@ async function importCookies() {
     // Navigate to URL first to establish domain context
     await page.goto(args.url, {
       waitUntil: args["wait-until"] || "networkidle2",
-      timeout: parseInt(args.timeout || "30000"),
+      timeout: parseInt(args.timeout || "30000", 10),
     });
 
     // Filter cookies by domain if --strict-domain is set

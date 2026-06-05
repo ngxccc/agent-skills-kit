@@ -8,8 +8,8 @@
  * @module privacy-checker
  */
 
-const path = require("path");
-const fs = require("fs");
+const path = require("node:path");
+const fs = require("node:fs");
 
 // ═══════════════════════════════════════════════════════════════════════════
 // CONSTANTS
@@ -59,7 +59,7 @@ function isSafeFile(testPath) {
  * @returns {boolean} true if path starts with APPROVED:
  */
 function hasApprovalPrefix(testPath) {
-  return testPath && testPath.startsWith(APPROVED_PREFIX);
+  return testPath?.startsWith(APPROVED_PREFIX);
 }
 
 /**
@@ -98,7 +98,7 @@ function isPrivacySensitive(testPath) {
   // Decode URI components to catch obfuscated paths (%2e = '.')
   try {
     normalized = decodeURIComponent(normalized);
-  } catch (e) {
+  } catch (_e) {
     // Invalid encoding, use as-is
   }
 
@@ -243,7 +243,7 @@ function checkPrivacy({ toolName, toolInput, options = {} }) {
     return { blocked: false };
   }
 
-  const isBashTool = toolName === "Bash";
+  const _isBashTool = toolName === "Bash";
   const paths = extractPaths(toolInput);
 
   // Check each path

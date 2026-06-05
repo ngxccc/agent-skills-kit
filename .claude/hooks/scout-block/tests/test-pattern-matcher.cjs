@@ -3,7 +3,7 @@
  * test-pattern-matcher.cjs - Unit tests for pattern-matcher module
  */
 
-const path = require("path");
+const _path = require("node:path");
 const {
   loadPatterns,
   createMatcher,

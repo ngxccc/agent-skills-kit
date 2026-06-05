@@ -8,8 +8,8 @@
  * @module scout-checker
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Import scout-block modules
 const {
@@ -36,7 +36,7 @@ const TOOL_COMMAND_PATTERN =
   /^(\.\/)?(npx|pnpx|bunx|tsc|esbuild|vite|webpack|rollup|turbo|nx|jest|vitest|mocha|eslint|prettier|go|cargo|make|mvn|mvnw|gradle|gradlew|dotnet|docker|podman|kubectl|helm|terraform|ansible|bazel|cmake|sbt|flutter|swift|ant|ninja|meson|python3?|pip|uv|deno|bundle|rake|gem|php|composer|ruby|mix|elixir)/;
 
 // Allow execution from .venv/bin/ or venv/bin/ (Unix) and .venv/Scripts/ or venv/Scripts/ (Windows)
-const VENV_EXECUTABLE_PATTERN = /(^|[\/\\])\.?venv[\/\\](bin|Scripts)[\/\\]/;
+const VENV_EXECUTABLE_PATTERN = /(^|[/\\])\.?venv[/\\](bin|Scripts)[/\\]/;
 
 // Allow Python venv creation commands (cross-platform):
 // - python/python3 -m venv (Unix/macOS/Windows)

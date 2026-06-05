@@ -7,10 +7,10 @@
  * Run: node .codex/hooks/lib/__tests__/statusline-integration.test.cjs
  */
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const { execSync } = require("child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
+const { execSync } = require("node:child_process");
 
 let passed = 0;
 let failed = 0;
@@ -29,7 +29,7 @@ function test(name, fn) {
   }
 }
 
-function assertEquals(actual, expected, msg = "") {
+function _assertEquals(actual, expected, msg = "") {
   if (actual !== expected) {
     throw new Error(
       `${msg}\n  Expected: ${JSON.stringify(expected)}\n  Actual: ${JSON.stringify(actual)}`,
@@ -270,7 +270,7 @@ try {
   });
 
   console.log(`  Output: ${invalidResult.trim()}`);
-} catch (e) {
+} catch (_e) {
   test("Invalid JSON produces fallback output", () => {
     // Fallback handling might close stderr silently
     console.log(`  Process exited (expected for invalid input)`);
@@ -359,7 +359,7 @@ console.log("\nTEST 8: Home Directory Expansion\n");
 const homeDir = os.homedir();
 const expandInput = JSON.stringify({
   model: { display_name: "Claude" },
-  workspace: { current_dir: homeDir + "/projects/test" },
+  workspace: { current_dir: `${homeDir}/projects/test` },
   context_window: { context_window_size: 200000 },
 });
 

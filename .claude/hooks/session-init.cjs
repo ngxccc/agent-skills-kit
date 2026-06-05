@@ -13,9 +13,9 @@
 
 // Crash wrapper
 try {
-  const fs = require("fs");
-  const path = require("path");
-  const os = require("os");
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const os = require("node:os");
   const {
     loadConfig,
     readSessionState,
@@ -160,7 +160,7 @@ try {
 
   function shouldWarmStatuslineCache(source, snapshot) {
     if (!["startup", "resume", "compact"].includes(source)) return false;
-    return !snapshot || snapshot.warmed !== true;
+    return snapshot?.warmed !== true;
   }
 
   /**

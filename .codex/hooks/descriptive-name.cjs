@@ -15,7 +15,7 @@ try {
       event: "PreToolUse",
       tool: "Write",
     });
-    let injectedPrompt = `## File naming guidance:
+    const injectedPrompt = `## File naming guidance:
 - Skip this guidance if you are creating markdown or plain text files
 - Prefer kebab-case for JS/TS/Python/shell (.js, .ts, .py, .sh) with descriptive names
 - Respect language conventions: C#/Java/Kotlin/Swift use PascalCase (.cs, .java, .kt, .swift), Go/Rust use snake_case (.go, .rs)

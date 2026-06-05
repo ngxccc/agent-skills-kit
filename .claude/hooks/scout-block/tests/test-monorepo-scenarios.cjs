@@ -7,8 +7,8 @@
  * are properly blocked in monorepo structures.
  */
 
-const { execSync } = require("child_process");
-const path = require("path");
+const { execSync } = require("node:child_process");
+const path = require("node:path");
 
 const hookPath = path.join(__dirname, "..", "..", "scout-block.cjs");
 

@@ -8,8 +8,8 @@
  *   node .claude/hooks/lib/__tests__/statusline-suite.cjs
  */
 
-const path = require("path");
-const { spawnSync } = require("child_process");
+const path = require("node:path");
+const { spawnSync } = require("node:child_process");
 
 const ROOT = path.resolve(__dirname, "../../../..");
 

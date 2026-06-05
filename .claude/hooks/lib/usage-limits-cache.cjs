@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 "use strict";
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const { execSync } = require("child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { execSync } = require("node:child_process");
 
 const DEFAULT_CACHE_TTL_MS = 60_000;
 const DEFAULT_FETCH_TIMEOUT_MS = 5_000;
@@ -199,10 +199,7 @@ function resolveQuotaDisplayEligibility(options = {}) {
   const explicitAccessToken =
     typeof options.accessToken === "string" &&
     options.accessToken.trim() !== "";
-  const explicitCredentials = Object.prototype.hasOwnProperty.call(
-    options,
-    "credentials",
-  );
+  const explicitCredentials = Object.hasOwn(options, "credentials");
 
   if (options.useCache && !explicitAccessToken && !explicitCredentials) {
     const cached = readQuotaEligibilityCache(options.eligibilityCachePath);

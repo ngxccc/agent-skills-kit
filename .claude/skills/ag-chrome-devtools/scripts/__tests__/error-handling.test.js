@@ -7,11 +7,12 @@
  * scripts still exit with code 1 (module not found), which validates the error path.
  * When puppeteer IS installed, missing --url triggers application-level error with code 1.
  */
-import { describe, it } from "node:test";
+
 import assert from "node:assert";
 import { spawn } from "node:child_process";
-import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { describe, it } from "node:test";
+import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const scriptsDir = path.join(__dirname, "..");

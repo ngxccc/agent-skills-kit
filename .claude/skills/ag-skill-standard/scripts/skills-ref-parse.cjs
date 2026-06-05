@@ -9,13 +9,13 @@
 //
 // Default command: parse.
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 let yaml;
 try {
   yaml = require("js-yaml");
-} catch (e) {
+} catch (_e) {
   console.error("js-yaml not installed. Run `npm install` in the repo root.");
   process.exit(2);
 }
@@ -41,7 +41,7 @@ function cmdParse(file) {
   try {
     process.stdout.write(JSON.stringify(parseFile(file)));
   } catch (e) {
-    console.error("YAML parse error in " + file + ": " + e.message);
+    console.error(`YAML parse error in ${file}: ${e.message}`);
     process.exit(1);
   }
 }
@@ -66,7 +66,7 @@ function cmdReadProperties(dir) {
   try {
     parsed = parseFile(skillMd);
   } catch (e) {
-    console.error(JSON.stringify({ error: "YAML parse error: " + e.message }));
+    console.error(JSON.stringify({ error: `YAML parse error: ${e.message}` }));
     process.exit(1);
   }
 
@@ -104,17 +104,15 @@ function cmdToPrompt(dirs) {
   for (const dir of dirs) {
     const skillMd = path.join(dir, "SKILL.md");
     if (!fs.existsSync(skillMd)) {
-      process.stdout.write("  <!-- Skipped: " + dir + " (no SKILL.md) -->\n");
+      process.stdout.write(`  <!-- Skipped: ${dir} (no SKILL.md) -->\n`);
       continue;
     }
 
     let parsed;
     try {
       parsed = parseFile(skillMd);
-    } catch (e) {
-      process.stdout.write(
-        "  <!-- Skipped: " + dir + " (YAML parse error) -->\n",
-      );
+    } catch (_e) {
+      process.stdout.write(`  <!-- Skipped: ${dir} (YAML parse error) -->\n`);
       continue;
     }
 

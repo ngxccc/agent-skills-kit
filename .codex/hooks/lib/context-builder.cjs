@@ -8,10 +8,10 @@
  * @module context-builder
  */
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const { execSync } = require("child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { execSync } = require("node:child_process");
 
 // Usage cache file path (written by usage-context-awareness.cjs hook)
 const USAGE_CACHE_FILE = path.join(os.tmpdir(), "ag-usage-limits-cache.json");
@@ -462,7 +462,7 @@ function clearPendingInjection(sessionId, scopeKey = "session") {
       const scopes = pruneReminderScopes(reminderState.scopes);
       const scopeState = getReminderScopeState({ scopes }, scopeKey);
 
-      if (!scopeState || !scopeState.pendingAt) {
+      if (!scopeState?.pendingAt) {
         return state;
       }
 

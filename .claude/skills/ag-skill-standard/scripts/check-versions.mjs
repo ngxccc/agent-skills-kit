@@ -25,7 +25,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import yaml from "js-yaml";
 
@@ -82,8 +82,7 @@ function readVersion(skill) {
     if (!match) return null;
     const parsed = yaml.load(match[1]);
     if (parsed && typeof parsed === "object") {
-      const version =
-        parsed.version || (parsed.metadata && parsed.metadata.version);
+      const version = parsed.version || parsed.metadata?.version;
       return typeof version === "string" ? version : null;
     }
     return null;
@@ -212,7 +211,7 @@ function main() {
   });
 
   if (JSON_OUT) {
-    process.stdout.write(JSON.stringify(rows, null, 2) + "\n");
+    process.stdout.write(`${JSON.stringify(rows, null, 2)}\n`);
     process.exit(0);
   } else {
     const header = ["STATUS", "TIER", "SKILL", "VERSION", "BUMP", "TOUCH"];
@@ -231,9 +230,9 @@ function main() {
       });
     }
     const fmt = (cells) => cells.map((c, i) => c.padEnd(widths[i])).join("  ");
-    process.stdout.write(fmt(header) + "\n");
-    process.stdout.write(widths.map((w) => "-".repeat(w)).join("  ") + "\n");
-    for (const row of data) process.stdout.write(fmt(row) + "\n");
+    process.stdout.write(`${fmt(header)}\n`);
+    process.stdout.write(`${widths.map((w) => "-".repeat(w)).join("  ")}\n`);
+    for (const row of data) process.stdout.write(`${fmt(row)}\n`);
 
     const counts = rows.reduce((acc, r) => {
       acc[r.status] = (acc[r.status] ?? 0) + 1;

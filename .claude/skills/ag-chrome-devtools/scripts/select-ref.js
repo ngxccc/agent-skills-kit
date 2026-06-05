@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
 /**
  * Select and interact with elements by ref from ARIA snapshot
  * Usage: node select-ref.js --ref e5 --action click
@@ -20,16 +22,14 @@
  *   Use --close true to fully close browser
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import fs from "fs/promises";
-import path from "path";
 
 async function selectRef() {
   const args = parseArgs(process.argv.slice(2));
@@ -77,7 +77,7 @@ async function selectRef() {
       throw new Error(`Could not get element handle for ref "${args.ref}"`);
     }
 
-    let result = {
+    const result = {
       success: true,
       ref: args.ref,
       action: args.action,
@@ -100,7 +100,7 @@ async function selectRef() {
         result.value = args.value;
         break;
 
-      case "screenshot":
+      case "screenshot": {
         if (!args.output) {
           throw new Error("--output is required for screenshot action");
         }
@@ -110,14 +110,16 @@ async function selectRef() {
         result.output = path.resolve(args.output);
         result.message = "Screenshot saved";
         break;
+      }
 
-      case "text":
+      case "text": {
         const text = await page.evaluate(
           (el) => el.textContent?.trim(),
           elementHandle,
         );
         result.text = text;
         break;
+      }
 
       case "focus":
         await elementHandle.focus();

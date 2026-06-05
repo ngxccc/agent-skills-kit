@@ -72,10 +72,10 @@ function renderAgentsLines(transcript, maxRows, sectionConfig = {}) {
 
   // Detail line: running agent (or last completed) description + elapsed
   const detailAgent = running[0] || completed[completed.length - 1];
-  if (detailAgent && detailAgent.description) {
+  if (detailAgent?.description) {
     const desc =
       detailAgent.description.length > 50
-        ? detailAgent.description.slice(0, 47) + "..."
+        ? `${detailAgent.description.slice(0, 47)}...`
         : detailAgent.description;
     const elapsed = formatElapsed(detailAgent.startTime, detailAgent.endTime);
     const renderTone = detailAgent.status === "running" ? tint : completedTint;
@@ -118,7 +118,7 @@ function renderTodosLine(transcript, truncation, sectionConfig = {}) {
       const nextPending = todos.find((t) => t.status === "pending");
       const nextTask = nextPending?.content || "Next task";
       const display =
-        nextTask.length > 40 ? nextTask.slice(0, 37) + "..." : nextTask;
+        nextTask.length > 40 ? `${nextTask.slice(0, 37)}...` : nextTask;
       return `${mutedTint(sectionConfig.icon || "○")} ${mutedTint(`Next: ${display}`)} ${mutedTint(`(${completedCount} done, ${pendingCount} pending)`)}`;
     }
     return null;
@@ -128,7 +128,7 @@ function renderTodosLine(transcript, truncation, sectionConfig = {}) {
   if (!displayText || displayText.length === 0) return null;
   const display =
     displayText.length > limit
-      ? displayText.slice(0, limit - 3) + "..."
+      ? `${displayText.slice(0, limit - 3)}...`
       : displayText;
   return `${tint(sectionConfig.icon || "▸")} ${tint(display)} ${mutedTint(`(${completedCount} done, ${pendingCount} pending)`)}`;
 }

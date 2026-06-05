@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
 /**
  * Take a screenshot
  * Usage: node screenshot.js --output screenshot.png [--url https://example.com] [--full-page true] [--selector .element] [--max-size 5] [--no-compress]
@@ -11,17 +13,15 @@
  *   Use --close true to fully close browser
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import { parseSelector, getElement, enhanceError } from "./lib/selector.js";
-import fs from "fs/promises";
-import path from "path";
+import { enhanceError, getElement, parseSelector } from "./lib/selector.js";
 
 /**
  * Check if Sharp is available
@@ -144,7 +144,7 @@ async function screenshot() {
     };
 
     if (args.quality) {
-      screenshotOptions.quality = parseInt(args.quality);
+      screenshotOptions.quality = parseInt(args.quality, 10);
     }
 
     let buffer;
@@ -181,11 +181,10 @@ async function screenshot() {
         result.compressed = true;
         result.originalSize = compressionResult.originalSize;
         result.size = compressionResult.finalSize;
-        result.compressionRatio =
-          (
-            (1 - compressionResult.finalSize / compressionResult.originalSize) *
+        result.compressionRatio = `${(
+          (1 - compressionResult.finalSize / compressionResult.originalSize) *
             100
-          ).toFixed(2) + "%";
+        ).toFixed(2)}%`;
       }
     }
 

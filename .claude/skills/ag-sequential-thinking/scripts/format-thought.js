@@ -49,7 +49,7 @@ class ThoughtFormatter {
     const border = "─".repeat(maxLength + 4);
 
     // Wrap long thoughts
-    const wrappedThought = this.wrapText(thought, maxLength);
+    const wrappedThought = ThoughtFormatter.wrapText(thought, maxLength);
     const thoughtLines = wrappedThought
       .map((line) => `│ ${line.padEnd(maxLength + 2)} │`)
       .join("\n");
@@ -72,8 +72,8 @@ ${thoughtLines}
     let currentLine = "";
 
     for (const word of words) {
-      if ((currentLine + " " + word).trim().length <= maxWidth) {
-        currentLine = currentLine ? currentLine + " " + word : word;
+      if (`${currentLine} ${word}`.trim().length <= maxWidth) {
+        currentLine = currentLine ? `${currentLine} ${word}` : word;
       } else {
         if (currentLine) lines.push(currentLine);
         currentLine = word;
@@ -148,7 +148,7 @@ if (require.main === module) {
           if (value === "true") parsed[key] = true;
           else if (value === "false") parsed[key] = false;
           // Parse number
-          else if (!isNaN(value)) parsed[key] = parseFloat(value);
+          else if (!Number.isNaN(value)) parsed[key] = parseFloat(value);
           // String
           else parsed[key] = value;
           i++;
@@ -180,7 +180,6 @@ if (require.main === module) {
     case "markdown":
       output = ThoughtFormatter.formatMarkdown(thoughtData);
       break;
-    case "box":
     default:
       output = ThoughtFormatter.format(thoughtData);
   }

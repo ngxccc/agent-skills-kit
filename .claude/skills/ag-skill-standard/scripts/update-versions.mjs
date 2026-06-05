@@ -12,8 +12,8 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { readFileSync, writeFileSync, existsSync, readdirSync } from "node:fs";
-import { join, basename, dirname } from "node:path";
+import { existsSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
 import yaml from "js-yaml";
 
 const ROOT = new URL("../../../..", import.meta.url).pathname.replace(
@@ -43,7 +43,7 @@ function getSkillDirs() {
 }
 
 function getGitLog(skillDir) {
-  const rel = skillDir.replace(ROOT + "/", "");
+  const rel = skillDir.replace(`${ROOT}/`, "");
   try {
     const out = execFileSync(
       "git",
@@ -62,7 +62,7 @@ function getGitLog(skillDir) {
 function deriveVersion(commits) {
   if (commits.length === 0) return "1.0.0";
 
-  let major = 1;
+  const major = 1;
   let minor = 0;
   let patch = 0;
 
@@ -89,9 +89,7 @@ function readVersion(skillMd) {
     if (!match) return null;
     const parsed = yaml.load(match[1]);
     if (parsed && typeof parsed === "object") {
-      return (
-        parsed.version || (parsed.metadata && parsed.metadata.version) || null
-      );
+      return parsed.version || parsed.metadata?.version || null;
     }
     return null;
   } catch {

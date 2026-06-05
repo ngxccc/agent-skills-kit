@@ -1,18 +1,18 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
 /**
  * Get DOM snapshot with selectors
  * Usage: node snapshot.js [--url https://example.com] [--output snapshot.json]
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import fs from "fs/promises";
 
 async function snapshot() {
   const args = parseArgs(process.argv.slice(2));

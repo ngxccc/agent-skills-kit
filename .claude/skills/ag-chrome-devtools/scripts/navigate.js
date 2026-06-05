@@ -20,14 +20,14 @@
  *   --login-timeout <ms>       : Max wait time for login (default: 300000 = 5 min)
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  saveAuthSession,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
+  saveAuthSession,
 } from "./lib/browser.js";
 
 async function navigate() {
@@ -53,7 +53,7 @@ async function navigate() {
 
     const options = {
       waitUntil: args["wait-until"] || "networkidle2",
-      timeout: parseInt(args.timeout || "30000"),
+      timeout: parseInt(args.timeout || "30000", 10),
     };
 
     await page.goto(args.url, options);
@@ -67,7 +67,7 @@ async function navigate() {
     // Interactive login: wait for user to complete OAuth/SSO flow
     if (args["wait-for-login"]) {
       const pattern = args["wait-for-login"];
-      const loginTimeout = parseInt(args["login-timeout"] || "300000");
+      const loginTimeout = parseInt(args["login-timeout"] || "300000", 10);
 
       // Validate timeout value
       if (!Number.isFinite(loginTimeout) || loginTimeout <= 0) {

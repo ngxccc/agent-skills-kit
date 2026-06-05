@@ -7,19 +7,19 @@
  *   - XPath: node click.js --selector "//button[contains(text(),'Submit')]"
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
 import {
-  parseSelector,
-  waitForElement,
   clickElement,
   enhanceError,
+  parseSelector,
+  waitForElement,
 } from "./lib/selector.js";
 
 async function click() {
@@ -50,7 +50,7 @@ async function click() {
     // Wait for element based on selector type
     await waitForElement(page, parsed, {
       visible: true,
-      timeout: parseInt(args.timeout || "5000"),
+      timeout: parseInt(args.timeout || "5000", 10),
     });
 
     // Set up navigation promise BEFORE clicking (in case click triggers immediate navigation)
@@ -67,7 +67,7 @@ async function click() {
     // Wait for optional selector after click
     if (args["wait-for"]) {
       await page.waitForSelector(args["wait-for"], {
-        timeout: parseInt(args.timeout || "5000"),
+        timeout: parseInt(args.timeout || "5000", 10),
       });
     } else {
       // Wait for navigation to complete (or timeout if no navigation)

@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-const fs = require("fs");
-const { spawnSync } = require("child_process");
-const path = require("path");
+const fs = require("node:fs");
+const { spawnSync } = require("node:child_process");
+const path = require("node:path");
 
 // Safe JSON logging to prevent corrupting stdout and crashing the agent
 function sendResponse(obj) {
-  process.stdout.write(JSON.stringify(obj) + "\n");
+  process.stdout.write(`${JSON.stringify(obj)}\n`);
   process.exit(0);
 }
 
@@ -32,12 +32,12 @@ try {
   let input = "";
   try {
     input = fs.readFileSync(0, "utf-8");
-  } catch (e) {}
+  } catch (_e) {}
 
   let payload = {};
   try {
     if (input.trim()) payload = JSON.parse(input);
-  } catch (e) {}
+  } catch (_e) {}
 
   let claudeInput = payload;
   if (eventType === "PreToolUse") {
@@ -57,8 +57,8 @@ try {
     else if (mappedToolName === "find_by_name") mappedToolName = "Glob";
     else if (mappedToolName === "grep_search") mappedToolName = "Grep";
 
-    let argsMap = payload.toolCall?.args || {};
-    let mappedArgs = { ...argsMap };
+    const argsMap = payload.toolCall?.args || {};
+    const mappedArgs = { ...argsMap };
     // Map Antigravity args to Claude path-extractor args
     if (argsMap.CommandLine) mappedArgs.command = argsMap.CommandLine;
     if (argsMap.AbsolutePath) mappedArgs.file_path = argsMap.AbsolutePath;
@@ -95,7 +95,7 @@ try {
     if (result.status === 0) {
       sendResponse({ decision: "allow" });
     } else {
-      let reason =
+      const reason =
         stderrStr || stdoutStr || `Blocked by ${path.basename(targetScript)}`;
       sendResponse({ decision: "deny", reason: reason });
     }
@@ -106,7 +106,7 @@ try {
   } else {
     sendResponse({});
   }
-} catch (err) {
+} catch (_err) {
   // Ultimate fallback: fail-open to prevent crashing the agent
   if (process.argv[2] === "PreToolUse") {
     sendResponse({ decision: "allow" });

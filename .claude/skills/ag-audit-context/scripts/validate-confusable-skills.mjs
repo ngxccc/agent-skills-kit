@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import {
+  levenshtein,
   loadSkillInventory,
   normalizeSkillName,
-  levenshtein,
 } from "./shared-skill-utils.mjs";
 
 const warnings = [];

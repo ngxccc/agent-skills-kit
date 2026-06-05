@@ -1,18 +1,18 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
 /**
  * Monitor network requests
  * Usage: node network.js --url https://example.com [--types xhr,fetch] [--output requests.json]
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import fs from "fs/promises";
 
 async function monitorNetwork() {
   const args = parseArgs(process.argv.slice(2));
@@ -66,7 +66,7 @@ async function monitorNetwork() {
             fromCache: response.fromCache(),
             timing: response.timing(),
           });
-        } catch (e) {
+        } catch (_e) {
           // Ignore errors for some response types
         }
       }

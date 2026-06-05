@@ -1,4 +1,7 @@
 #!/usr/bin/env node
+import fs from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 /**
  * Get ARIA-based accessibility snapshot with stable element refs
  * Usage: node aria-snapshot.js [--url https://example.com] [--output snapshot.yaml]
@@ -14,17 +17,14 @@
  *   Use --close true to fully close browser
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import fs from "fs/promises";
-import path from "path";
-import { fileURLToPath } from "url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 

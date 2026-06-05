@@ -16,10 +16,10 @@
  *   node .claude/hooks/lib/__tests__/statusline-scenarios.test.cjs
  */
 
-const fs = require("fs");
-const os = require("os");
-const path = require("path");
-const { spawn, spawnSync } = require("child_process");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
+const { spawn, spawnSync } = require("node:child_process");
 
 const TEST_ROOT = path.resolve(__dirname, "../../../..");
 const STATUSLINE_PATH = path.resolve(__dirname, "../../..", "statusline.cjs");
@@ -93,7 +93,7 @@ function scrubAnthropicRuntimeEnv(runtimeEnv, explicitEnv) {
     "ANTHROPIC_AUTH_TOKEN",
     "ANTHROPIC_API_KEY",
   ]) {
-    if (!Object.prototype.hasOwnProperty.call(explicitEnv, key)) {
+    if (!Object.hasOwn(explicitEnv, key)) {
       delete runtimeEnv[key];
     }
   }
@@ -119,11 +119,10 @@ function runStatuslineSync({
     CK_USAGE_ELIGIBILITY_CACHE_PATH: eligibilityCachePath,
     ...env,
   };
-  if (!Object.prototype.hasOwnProperty.call(env, "NO_COLOR"))
-    delete runtimeEnv.NO_COLOR;
+  if (!Object.hasOwn(env, "NO_COLOR")) delete runtimeEnv.NO_COLOR;
   scrubAnthropicRuntimeEnv(runtimeEnv, env);
   if (
-    !Object.prototype.hasOwnProperty.call(env, "HOME") &&
+    !Object.hasOwn(env, "HOME") &&
     (fs.existsSync(path.join(cwd, ".claude", ".vc.json")) ||
       fs.existsSync(path.join(cwd, ".claude", ".ck.json")))
   ) {
@@ -166,11 +165,10 @@ function runStatuslineWithDelayedChunks({
       CK_USAGE_ELIGIBILITY_CACHE_PATH: eligibilityCachePath,
       ...env,
     };
-    if (!Object.prototype.hasOwnProperty.call(env, "NO_COLOR"))
-      delete runtimeEnv.NO_COLOR;
+    if (!Object.hasOwn(env, "NO_COLOR")) delete runtimeEnv.NO_COLOR;
     scrubAnthropicRuntimeEnv(runtimeEnv, env);
     if (
-      !Object.prototype.hasOwnProperty.call(env, "HOME") &&
+      !Object.hasOwn(env, "HOME") &&
       (fs.existsSync(path.join(cwd, ".claude", ".vc.json")) ||
         fs.existsSync(path.join(cwd, ".claude", ".ck.json")))
     ) {
@@ -284,7 +282,7 @@ function withQuotaEligibilityCache(payload, fn) {
   }
 }
 
-function mkTranscript(lines) {
+function _mkTranscript(lines) {
   const p = path.join(
     os.tmpdir(),
     `statusline-scenario-transcript-${Date.now()}-${Math.random().toString(16).slice(2)}.jsonl`,

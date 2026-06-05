@@ -1,11 +1,12 @@
 #!/usr/bin/env node
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 /**
  * MCP Management CLI - Command-line interface for MCP operations
  */
 import { MCPClientManager } from "./mcp-client.js";
-import { writeFileSync, mkdirSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const GLOBAL_TIMEOUT_MS = parseInt(process.env.MCP_TIMEOUT || "120000", 10);

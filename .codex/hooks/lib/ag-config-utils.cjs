@@ -5,10 +5,10 @@
  * used by session-init.cjs and dev-rules-reminder.cjs
  */
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const { execFileSync } = require("child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
+const { execFileSync } = require("node:child_process");
 
 const LOCAL_CONFIG_PATH = ".claude/.vc.json";
 const GLOBAL_CONFIG_PATH = path.join(os.homedir(), ".claude", ".vc.json");
@@ -159,7 +159,7 @@ function loadConfigFromPath(configPath) {
   try {
     if (!fs.existsSync(configPath)) return null;
     return JSON.parse(fs.readFileSync(configPath, "utf8"));
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -184,7 +184,7 @@ function readSessionState(sessionId) {
   try {
     if (!fs.existsSync(tempPath)) return null;
     return JSON.parse(fs.readFileSync(tempPath, "utf8"));
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -198,12 +198,12 @@ function readSessionState(sessionId) {
 function writeSessionState(sessionId, state) {
   if (!sessionId) return false;
   const tempPath = getSessionTempPath(sessionId);
-  const tmpFile = tempPath + "." + Math.random().toString(36).slice(2);
+  const tmpFile = `${tempPath}.${Math.random().toString(36).slice(2)}`;
   try {
     fs.writeFileSync(tmpFile, JSON.stringify(state, null, 2));
     fs.renameSync(tmpFile, tempPath);
     return true;
-  } catch (e) {
+  } catch (_e) {
     try {
       fs.unlinkSync(tmpFile);
     } catch (_) {
@@ -327,7 +327,7 @@ const INVALID_FILENAME_CHARS = /[<>:"/\\|?*\x00-\x1f\x7f]/g;
 function sanitizeSlug(slug) {
   if (!slug || typeof slug !== "string") return "";
 
-  let sanitized = slug
+  const sanitized = slug
     // Remove invalid filename chars first
     .replace(INVALID_FILENAME_CHARS, "")
     // Replace any non-alphanumeric (except hyphen) with hyphen
@@ -351,7 +351,7 @@ function sanitizeSlug(slug) {
  */
 function extractSlugFromBranch(branch, pattern) {
   if (!branch) return null;
-  const defaultPattern = /(?:feat|fix|chore|refactor|docs)\/(?:[^\/]+\/)?(.+)/;
+  const defaultPattern = /(?:feat|fix|chore|refactor|docs)\/(?:[^/]+\/)?(.+)/;
   const regex = pattern ? new RegExp(pattern) : defaultPattern;
   const match = branch.match(regex);
   return match ? sanitizeSlug(match[1]) : null;
@@ -372,7 +372,7 @@ function findMostRecentPlan(plansDir) {
       .sort()
       .reverse();
     return planDirs.length > 0 ? path.join(plansDir, planDirs[0]) : null;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -417,7 +417,7 @@ function execSafe(cmd, options = {}) {
       stdio: ["pipe", "pipe", "pipe"],
       windowsHide: true,
     }).trim();
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -472,7 +472,7 @@ function resolvePlanPath(sessionId, config) {
               };
             }
           }
-        } catch (e) {
+        } catch (_e) {
           // Ignore errors reading plans dir
         }
         break;
@@ -670,7 +670,7 @@ function loadConfig(options = {}) {
     result.statuslineLayout = merged.statuslineLayout || undefined;
 
     return sanitizeConfig(result, projectRoot);
-  } catch (e) {
+  } catch (_e) {
     return getDefaultConfig(includeProject, includeAssertions, includeLocale);
   }
 }
@@ -749,7 +749,7 @@ function getReportsPath(
   baseDir = null,
 ) {
   const reportsDir = normalizePath(planConfig?.reportsDir) || "reports";
-  const plansDir = normalizePath(pathsConfig?.plans) || "plans";
+  const _plansDir = normalizePath(pathsConfig?.plans) || "plans";
 
   let reportPath;
   // Only use plan-specific reports path if explicitly active (session state)
@@ -771,7 +771,7 @@ function getReportsPath(
       ? reportPath
       : path.join(baseDir, reportPath);
   }
-  return reportPath + "/";
+  return `${reportPath}/`;
 }
 
 /**
@@ -950,7 +950,7 @@ function getGitRoot(cwd = null) {
  * @returns {string|null} Task list ID (plan directory name) or null
  */
 function extractTaskListId(resolved) {
-  if (!resolved || resolved.resolvedBy !== "session" || !resolved.path) {
+  if (resolved?.resolvedBy !== "session" || !resolved.path) {
     return null;
   }
   return path.basename(resolved.path);

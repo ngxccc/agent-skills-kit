@@ -180,7 +180,7 @@ function matchesExclude(filePath, excludePatterns) {
     // Pattern ending with /** — directory prefix match
     if (pattern.endsWith("/**")) {
       const prefix = pattern.slice(0, -3); // remove /**
-      if (filePath.startsWith(prefix + "/") || filePath === prefix) return true;
+      if (filePath.startsWith(`${prefix}/`) || filePath === prefix) return true;
     }
 
     // Pattern starting with **/ — suffix match
@@ -190,17 +190,17 @@ function matchesExclude(filePath, excludePatterns) {
       if (suffix.endsWith("/**")) {
         const dirName = suffix.slice(0, -3); // e.g. ".git"
         if (
-          filePath.includes("/" + dirName + "/") ||
-          filePath.startsWith(dirName + "/")
+          filePath.includes(`/${dirName}/`) ||
+          filePath.startsWith(`${dirName}/`)
         ) {
           return true;
         }
       } else {
         // suffix is a file pattern like .logs/**
         if (
-          filePath.includes("/" + suffix + "/") ||
-          filePath.startsWith(suffix + "/") ||
-          filePath.endsWith("/" + suffix) ||
+          filePath.includes(`/${suffix}/`) ||
+          filePath.startsWith(`${suffix}/`) ||
+          filePath.endsWith(`/${suffix}`) ||
           filePath === suffix
         ) {
           return true;
@@ -223,7 +223,7 @@ function matchesPatternList(filePath, patterns) {
     // dir/** pattern
     if (pattern.endsWith("/**")) {
       const prefix = pattern.slice(0, -3);
-      if (filePath.startsWith(prefix + "/") || filePath === prefix) return true;
+      if (filePath.startsWith(`${prefix}/`) || filePath === prefix) return true;
     }
 
     // Simple wildcard: e.g. README-preview*.html

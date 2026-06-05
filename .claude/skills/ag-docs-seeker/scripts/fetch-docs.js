@@ -5,7 +5,7 @@
  * Fetches documentation from context7.com with topic support and fallback chain
  */
 
-const https = require("https");
+const https = require("node:https");
 const { loadEnv } = require("./utils/env-loader");
 const { detectTopic } = require("./detect-topic");
 
@@ -124,7 +124,7 @@ async function fetchDocs(query) {
 
   let urls = [];
 
-  if (topicInfo && topicInfo.isTopicSpecific) {
+  if (topicInfo?.isTopicSpecific) {
     // Topic-specific search
     urls = await getUrlVariations(topicInfo.library, topicInfo.topic);
 

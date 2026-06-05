@@ -2,11 +2,12 @@
  * Shared browser utilities for Chrome DevTools scripts
  * Supports persistent browser sessions via WebSocket endpoint file
  */
-import puppeteer from "puppeteer";
+
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import debug from "debug";
-import fs from "fs";
-import path from "path";
-import { fileURLToPath } from "url";
+import puppeteer from "puppeteer";
 
 const log = debug("chrome-devtools:browser");
 
@@ -169,7 +170,7 @@ export function clearAuthSession() {
  * @param {Object} page - Puppeteer page instance
  * @param {string} url - Target URL for domain context
  */
-export async function applyAuthSession(page, url) {
+export async function applyAuthSession(page, _url) {
   const authData = readAuthSession();
   if (!authData) {
     log("No auth session found");
@@ -235,14 +236,14 @@ export async function applyAuthSession(page, url) {
  */
 export async function getBrowser(options = {}) {
   // If we already have a connected browser in this process, reuse it
-  if (browserInstance && browserInstance.isConnected()) {
+  if (browserInstance?.isConnected()) {
     log("Reusing existing browser instance from process");
     return browserInstance;
   }
 
   // Try to connect to existing browser from session file
   const session = readSession();
-  if (session && session.wsEndpoint) {
+  if (session?.wsEndpoint) {
     try {
       log("Attempting to connect to existing browser session");
       browserInstance = await puppeteer.connect({
@@ -382,7 +383,7 @@ export async function disconnectBrowser() {
 /**
  * Parse command line arguments
  */
-export function parseArgs(argv, options = {}) {
+export function parseArgs(argv, _options = {}) {
   const args = {};
 
   for (let i = 0; i < argv.length; i++) {

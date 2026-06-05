@@ -3,10 +3,10 @@
  * Run: node .codex/hooks/lib/__tests__/ag-config-utils.test.cjs
  */
 
-const path = require("path");
-const os = require("os");
-const fs = require("fs");
-const { execSync } = require("child_process");
+const path = require("node:path");
+const os = require("node:os");
+const fs = require("node:fs");
+const { execSync } = require("node:child_process");
 const {
   normalizePath,
   isAbsolutePath,
@@ -270,7 +270,7 @@ test("getGitRoot with subdirectory cwd returns same root", () => {
 });
 
 test("getGitRoot returns null for non-git directory", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-no-git-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-no-git-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     const result = getGitRoot(tempDir);
@@ -419,7 +419,7 @@ test("path.join concatenates paths (does NOT discard baseDir)", () => {
 console.log("\n=== Detached HEAD state tests ===\n");
 
 test("getGitBranch returns null or empty in detached HEAD state", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-detached-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-detached-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     // Initialize git repo and create a commit
@@ -447,7 +447,7 @@ test("getGitBranch returns null or empty in detached HEAD state", () => {
 });
 
 test("getGitRoot works in detached HEAD state", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-detached-root-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-detached-root-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync("git init -q", { cwd: tempDir });
@@ -474,7 +474,7 @@ test("getGitRoot works in detached HEAD state", () => {
 console.log("\n=== Bare repository tests ===\n");
 
 test("getGitRoot returns null for bare repository (no working tree)", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-bare-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-bare-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync("git init -q --bare", { cwd: tempDir });
@@ -489,7 +489,7 @@ test("getGitRoot returns null for bare repository (no working tree)", () => {
 });
 
 test("getGitBranch returns null for bare repository (no HEAD ref)", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-bare-branch-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-bare-branch-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync("git init -q --bare", { cwd: tempDir });
@@ -510,7 +510,7 @@ test("getGitBranch returns null for bare repository (no HEAD ref)", () => {
 console.log("\n=== Nested git repos tests ===\n");
 
 test("getGitRoot returns innermost repo for nested git repos", () => {
-  const outerDir = path.join(os.tmpdir(), "ag-test-nested-outer-" + Date.now());
+  const outerDir = path.join(os.tmpdir(), `ag-test-nested-outer-${Date.now()}`);
   const innerDir = path.join(outerDir, "inner");
   fs.mkdirSync(innerDir, { recursive: true });
   try {
@@ -533,7 +533,7 @@ test("getGitRoot returns innermost repo for nested git repos", () => {
 });
 
 test("getGitRoot from nested subdir returns correct root", () => {
-  const outerDir = path.join(os.tmpdir(), "ag-test-nested-sub-" + Date.now());
+  const outerDir = path.join(os.tmpdir(), `ag-test-nested-sub-${Date.now()}`);
   const innerDir = path.join(outerDir, "inner");
   const deepDir = path.join(innerDir, "deep", "subdir");
   fs.mkdirSync(deepDir, { recursive: true });
@@ -552,8 +552,8 @@ test("getGitRoot from nested subdir returns correct root", () => {
 console.log("\n=== Symlinked directory tests ===\n");
 
 test("getGitRoot resolves through symlink to git repo", () => {
-  const realDir = path.join(os.tmpdir(), "ag-test-real-" + Date.now());
-  const linkDir = path.join(os.tmpdir(), "ag-test-link-" + Date.now());
+  const realDir = path.join(os.tmpdir(), `ag-test-real-${Date.now()}`);
+  const linkDir = path.join(os.tmpdir(), `ag-test-link-${Date.now()}`);
   fs.mkdirSync(realDir, { recursive: true });
   try {
     // Create git repo in real dir
@@ -572,15 +572,15 @@ test("getGitRoot resolves through symlink to git repo", () => {
   } finally {
     try {
       fs.unlinkSync(linkDir);
-    } catch (e) {}
+    } catch (_e) {}
     fs.rmSync(realDir, { recursive: true, force: true });
   }
 });
 
 test("getGitRoot with symlinked subdirectory", () => {
-  const realDir = path.join(os.tmpdir(), "ag-test-real-sub-" + Date.now());
+  const realDir = path.join(os.tmpdir(), `ag-test-real-sub-${Date.now()}`);
   const subDir = path.join(realDir, "subdir");
-  const linkToSub = path.join(os.tmpdir(), "ag-test-link-sub-" + Date.now());
+  const linkToSub = path.join(os.tmpdir(), `ag-test-link-sub-${Date.now()}`);
   fs.mkdirSync(subDir, { recursive: true });
   try {
     execSync("git init -q", { cwd: realDir });
@@ -596,7 +596,7 @@ test("getGitRoot with symlinked subdirectory", () => {
   } finally {
     try {
       fs.unlinkSync(linkToSub);
-    } catch (e) {}
+    } catch (_e) {}
     fs.rmSync(realDir, { recursive: true, force: true });
   }
 });
@@ -604,8 +604,8 @@ test("getGitRoot with symlinked subdirectory", () => {
 console.log("\n=== Git worktree tests ===\n");
 
 test("getGitRoot works with git worktree", () => {
-  const mainDir = path.join(os.tmpdir(), "ag-test-wt-main-" + Date.now());
-  const worktreeDir = path.join(os.tmpdir(), "ag-test-wt-tree-" + Date.now());
+  const mainDir = path.join(os.tmpdir(), `ag-test-wt-main-${Date.now()}`);
+  const worktreeDir = path.join(os.tmpdir(), `ag-test-wt-tree-${Date.now()}`);
   fs.mkdirSync(mainDir, { recursive: true });
   try {
     // Create main repo with a commit
@@ -630,7 +630,7 @@ test("getGitRoot works with git worktree", () => {
   } finally {
     try {
       fs.rmSync(worktreeDir, { recursive: true, force: true });
-    } catch (e) {}
+    } catch (_e) {}
     fs.rmSync(mainDir, { recursive: true, force: true });
   }
 });
@@ -640,7 +640,7 @@ console.log("\n=== Unicode path tests ===\n");
 test("getGitRoot works with unicode characters in path", () => {
   const tempDir = path.join(
     os.tmpdir(),
-    "ag-test-日本語-émoji-🔥-" + Date.now(),
+    `ag-test-日本語-émoji-🔥-${Date.now()}`,
   );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
@@ -656,7 +656,7 @@ test("getGitRoot works with unicode characters in path", () => {
 test("getGitBranch works with unicode branch name", () => {
   const tempDir = path.join(
     os.tmpdir(),
-    "ag-test-unicode-branch-" + Date.now(),
+    `ag-test-unicode-branch-${Date.now()}`,
   );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
@@ -683,7 +683,7 @@ test("getGitRoot works with special shell characters in path", () => {
   // Test paths with characters that need escaping in shell
   const tempDir = path.join(
     os.tmpdir(),
-    "ag-test-special-$var-'quote'-" + Date.now(),
+    `ag-test-special-$var-'quote'-${Date.now()}`,
   );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
@@ -699,7 +699,7 @@ test("getGitRoot works with special shell characters in path", () => {
 console.log("\n=== Empty/new git repo tests ===\n");
 
 test("getGitRoot works on new repo with no commits", () => {
-  const tempDir = path.join(os.tmpdir(), "ag-test-empty-repo-" + Date.now());
+  const tempDir = path.join(os.tmpdir(), `ag-test-empty-repo-${Date.now()}`);
   fs.mkdirSync(tempDir, { recursive: true });
   try {
     execSync("git init -q", { cwd: tempDir });
@@ -715,7 +715,7 @@ test("getGitRoot works on new repo with no commits", () => {
 test("getGitBranch on new repo returns default branch", () => {
   const tempDir = path.join(
     os.tmpdir(),
-    "ag-test-new-repo-branch-" + Date.now(),
+    `ag-test-new-repo-branch-${Date.now()}`,
   );
   fs.mkdirSync(tempDir, { recursive: true });
   try {
@@ -743,7 +743,7 @@ function cleanupSession(sessionId) {
   const tempPath = getSessionTempPath(sessionId);
   try {
     fs.unlinkSync(tempPath);
-  } catch (e) {}
+  } catch (_e) {}
 }
 
 test("resolvePlanPath returns absolute path as-is (Issue #335)", () => {

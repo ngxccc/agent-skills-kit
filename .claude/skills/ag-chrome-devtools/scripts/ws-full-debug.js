@@ -1,7 +1,7 @@
 import {
+  disconnectBrowser,
   getBrowser,
   getPage,
-  disconnectBrowser,
   outputJSON,
 } from "./lib/browser.js";
 

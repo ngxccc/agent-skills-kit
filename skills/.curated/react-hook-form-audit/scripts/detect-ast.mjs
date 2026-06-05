@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 // detect-ast.mjs — Structural detectors via ts-morph AST analysis.
 // Part of: react-hook-form-audit
 //
@@ -18,10 +19,10 @@
 //
 // Output: JSON array of findings on stdout.
 
-import { resolve, dirname, relative } from "node:path";
-import { fileURLToPath } from "node:url";
-import { readFileSync, existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
+import { dirname, relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Load ts-morph from this script's local node_modules (installed by audit.sh).
 const here = dirname(fileURLToPath(import.meta.url));
@@ -119,7 +120,7 @@ function findCallsByName(scope, name) {
 
 function functionContainsAwaitOrAsync(fn) {
   if (!fn) return false;
-  if (fn.isAsync && fn.isAsync()) return true;
+  if (fn.isAsync?.()) return true;
   return fn.getDescendantsOfKind(SyntaxKind.AwaitExpression).length > 0;
 }
 

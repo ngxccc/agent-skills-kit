@@ -107,7 +107,7 @@ Options:
   --max-plan-refs <n>      Ranked refs to inspect for tracked project plan files`);
 }
 
-function runGit(args, cwd, { ok = [0] } = {}) {
+function _runGit(args, cwd, { ok = [0] } = {}) {
   const result = spawnSync("git", args, { cwd, encoding: "utf8" });
   if (!ok.includes(result.status)) {
     const message = (result.stderr || result.stdout || "").trim();

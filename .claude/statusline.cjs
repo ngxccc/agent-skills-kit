@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
+const _fs = require("node:fs");
+const _path = require("node:path");
+const _os = require("node:os");
 
 const {
   loadConfig,
@@ -85,7 +85,7 @@ async function main() {
   } else {
     try {
       payload = JSON.parse(input);
-    } catch (err) {
+    } catch (_err) {
       payload = {
         model: { display_name: "Claude" },
         workspace: { current_dir: process.cwd() },
@@ -200,7 +200,7 @@ async function main() {
   } else if (payload.session_id) {
     // If no transcript_path is supplied but session_id is, try to load cached statusline activity
     const sessionState = readSessionState(payload.session_id);
-    if (sessionState && sessionState.statusline) {
+    if (sessionState?.statusline) {
       ctx.transcript = {
         sessionStart:
           sessionState.statusline.sessionStart || new Date().toISOString(),

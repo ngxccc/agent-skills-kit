@@ -16,9 +16,9 @@
 
 const { describe, it, before, after } = require("node:test");
 const assert = require("node:assert");
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
+const path = require("node:path");
+const fs = require("node:fs");
+const os = require("node:os");
 
 // Import the module under test
 const contextBuilder = require("../context-builder.cjs");
@@ -224,10 +224,10 @@ describe("context-builder.cjs", () => {
 
   describe("Global path resolution", () => {
     let tempDir;
-    let originalHome;
+    let _originalHome;
 
     before(() => {
-      originalHome = os.homedir;
+      _originalHome = os.homedir;
     });
 
     after(() => {

@@ -145,9 +145,9 @@
         *,
         *::before,
         *::after {
-          animation-duration: 0.01ms !important;
-          animation-delay: 0ms !important;
-          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms;
+          animation-delay: 0ms;
+          transition-duration: 0.01ms;
         }
       }
 
@@ -285,23 +285,23 @@
 
       /* ============ MERMAID SVG OVERRIDES ============ */
       .mermaid .nodeLabel {
-        font-family: var(--font-body) !important;
-        font-size: 16px !important;
+        font-family: var(--font-body);
+        font-size: 16px;
       }
 
       .mermaid .edgeLabel {
-        font-family: var(--font-mono) !important;
-        font-size: 13px !important;
+        font-family: var(--font-mono);
+        font-size: 13px;
       }
 
       .mermaid .node rect,
       .mermaid .node circle,
       .mermaid .node polygon {
-        stroke-width: 1.5px !important;
+        stroke-width: 1.5px;
       }
 
       .mermaid .edge-pattern-solid {
-        stroke-width: 1.5px !important;
+        stroke-width: 1.5px;
       }
 
       /* ============ LEGEND ============ */
@@ -374,7 +374,7 @@
       aria-label="Toggle light/dark theme"
     ></button>
     <script>
-      (function () {
+      (() => {
         var t = document.getElementById("themeToggle");
         var s = localStorage.getItem("theme");
         var i =
@@ -384,7 +384,7 @@
             : "light");
         if (s) document.documentElement.setAttribute("data-theme", i);
         t.textContent = i === "dark" ? "\u2600" : "\u263E";
-        t.addEventListener("click", function () {
+        t.addEventListener("click", () => {
           var c =
             document.documentElement.getAttribute("data-theme") ||
             (matchMedia("(prefers-color-scheme: dark)").matches
@@ -493,8 +493,8 @@
     </div>
 
     <script type="module">
-      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
       import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk/dist/mermaid-layout-elk.esm.min.mjs";
+      import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
 
       const config = {
         fitPadding: 28,
@@ -595,10 +595,10 @@
           if (!svg || !svgW) return;
 
           constrainPan();
-          svg.style.width = svgW * zoom + "px";
-          svg.style.height = svgH * zoom + "px";
+          svg.style.width = `${svgW * zoom}px`;
+          svg.style.height = `${svgH * zoom}px`;
           canvas.style.transform = `translate(${panX}px, ${panY}px)`;
-          label.textContent = Math.round(zoom * 100) + "% \u2014 " + fitMode;
+          label.textContent = `${Math.round(zoom * 100)}% \u2014 ${fitMode}`;
         }
 
         function canPan() {
@@ -701,7 +701,7 @@
             Math.max(config.minHeight + 40, maxVp),
           );
           wrap.style.height =
-            Math.round(clamp(idealH, config.minHeight, hardMax)) + "px";
+            `${Math.round(clamp(idealH, config.minHeight, hardMax))}px`;
         }
 
         function openInNewTab() {
@@ -765,7 +765,7 @@
             fitDiagram();
           } catch (err) {
             console.error("Mermaid render failed:", err);
-            label.textContent = "Error: " + (err.message || "Render failed");
+            label.textContent = `Error: ${err.message || "Render failed"}`;
           }
         }
 

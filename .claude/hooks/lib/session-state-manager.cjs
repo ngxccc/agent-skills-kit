@@ -6,11 +6,11 @@
  */
 "use strict";
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const crypto = require("crypto");
-const { execFileSync } = require("child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
+const crypto = require("node:crypto");
+const { execFileSync } = require("node:child_process");
 const { parseTranscript } = require("./transcript-parser.cjs");
 const {
   readSessionState,
@@ -73,7 +73,7 @@ function loadState(cwd) {
     const tsMatch = content.match(/<!-- Generated: (.+?) -->/);
     if (tsMatch) {
       const parsed = new Date(tsMatch[1]).getTime();
-      if (isNaN(parsed)) return null;
+      if (Number.isNaN(parsed)) return null;
       if (Date.now() - parsed > EXPIRY_DAYS * 24 * 60 * 60 * 1000) return null;
     }
     return content;
@@ -103,7 +103,7 @@ function persistState(stdinData, options) {
         );
         // Fallback: if heading not found, append to end
         if (updated === existing)
-          updated = existing.trimEnd() + "\n" + agentSection;
+          updated = `${existing.trimEnd()}\n${agentSection}`;
       } else {
         updated =
           buildStateContent(extractSessionData(stdinData)) +
@@ -303,7 +303,7 @@ function shouldPreserveExistingSnapshot(
   transcript,
 ) {
   if (!hasSnapshotActivity(existingSnapshot)) return false;
-  if (!existingSnapshot || existingSnapshot.warmed !== true) return false;
+  if (existingSnapshot?.warmed !== true) return false;
   const existingUpdatedAt = Date.parse(existingSnapshot.updatedAt || "");
   const transcriptUpdatedAt = Date.parse(
     transcript?.lastActivityAt || transcript?.lastValidEntryAt || "",

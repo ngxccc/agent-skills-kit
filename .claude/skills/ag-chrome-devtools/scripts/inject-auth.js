@@ -20,15 +20,15 @@
  *   --close true   : Close browser completely and clear session
  */
 import {
-  getBrowser,
-  getPage,
+  clearAuthSession,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
   saveAuthSession,
-  clearAuthSession,
 } from "./lib/browser.js";
 
 /**
@@ -97,7 +97,7 @@ async function injectAuth() {
     // Navigate to the URL first to set the domain context
     await page.goto(args.url, {
       waitUntil: args["wait-until"] || "networkidle2",
-      timeout: parseInt(args.timeout || "30000"),
+      timeout: parseInt(args.timeout || "30000", 10),
     });
 
     const result = {

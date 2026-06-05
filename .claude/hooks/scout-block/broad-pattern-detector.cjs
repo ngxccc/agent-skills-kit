@@ -11,7 +11,7 @@
  * 3. Combined: Broad pattern + high-level path = BLOCK
  */
 
-const path = require("path");
+const _path = require("node:path");
 
 // Patterns that recursively match everywhere when at root
 // These are dangerous because they return ALL matching files
@@ -131,7 +131,7 @@ function hasSpecificDirectory(pattern) {
  * @param {string} cwd - Current working directory
  * @returns {boolean}
  */
-function isHighLevelPath(basePath, cwd) {
+function isHighLevelPath(basePath, _cwd) {
   // No path specified = uses CWD (often project root)
   if (!basePath) return true;
 
@@ -252,7 +252,7 @@ function detectBroadPatternIssue(toolInput) {
  * @param {string} claudeDir - Path to .claude directory
  * @returns {string}
  */
-function formatBroadPatternError(result, claudeDir) {
+function formatBroadPatternError(result, _claudeDir) {
   const { reason, pattern, suggestions } = result;
 
   const lines = [

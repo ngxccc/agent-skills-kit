@@ -4,13 +4,13 @@
  * Usage: node evaluate.js --script "document.title" [--url https://example.com]
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
 
 async function evaluate() {

@@ -77,7 +77,7 @@ function calculateRelevanceScore(tool, keywords, taskDescription) {
   }
   return Math.min(score, 1.0);
 }
-function explainScore(tool, keywords, taskDescription) {
+function explainScore(tool, keywords, _taskDescription) {
   const reasons = [];
   const toolText = `${tool.name} ${tool.description}`.toLowerCase();
   const matchedKeywords = keywords.filter((k) => toolText.includes(k));

@@ -104,7 +104,7 @@ function yellow(text) {
 function red(text) {
   return colorize(text, RED);
 }
-function blue(text) {
+function _blue(text) {
   return colorize(text, BLUE);
 }
 function cyan(text) {
@@ -116,25 +116,25 @@ function magenta(text) {
 function dim(text) {
   return colorize(text, DIM);
 }
-function brightRed(text) {
+function _brightRed(text) {
   return colorize(text, BRIGHT_RED);
 }
-function brightGreen(text) {
+function _brightGreen(text) {
   return colorize(text, BRIGHT_GREEN);
 }
-function brightYellow(text) {
+function _brightYellow(text) {
   return colorize(text, BRIGHT_YELLOW);
 }
-function brightBlue(text) {
+function _brightBlue(text) {
   return colorize(text, BRIGHT_BLUE);
 }
-function brightMagenta(text) {
+function _brightMagenta(text) {
   return colorize(text, BRIGHT_MAGENTA);
 }
-function brightCyan(text) {
+function _brightCyan(text) {
   return colorize(text, BRIGHT_CYAN);
 }
-function brightWhite(text) {
+function _brightWhite(text) {
   return colorize(text, BRIGHT_WHITE);
 }
 

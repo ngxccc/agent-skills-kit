@@ -7,12 +7,12 @@
  * - Edge cases: deleted CWD, symlinks, worktrees, permissions
  */
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
 const assert = require("node:assert/strict");
 const { describe, test, beforeEach, afterEach } = require("node:test");
-const { execSync } = require("child_process");
+const { execSync } = require("node:child_process");
 
 // Module under test
 const {
@@ -86,7 +86,7 @@ function createMockGitRepo(dir, options = {}) {
 function cleanupTempDir(dir) {
   try {
     fs.rmSync(dir, { recursive: true, force: true });
-  } catch (e) {
+  } catch (_e) {
     // Ignore cleanup errors
   }
 }
@@ -349,7 +349,7 @@ describe("isValidPythonPath", () => {
     const validPath = commonPaths.find((p) => {
       try {
         return fs.existsSync(p) && fs.statSync(p).isFile();
-      } catch (e) {
+      } catch (_e) {
         return false;
       }
     });

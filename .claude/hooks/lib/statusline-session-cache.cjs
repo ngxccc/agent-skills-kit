@@ -68,7 +68,7 @@ function sanitizeActivitySnapshot(snapshot) {
 function readActivitySnapshot(sessionId, readSessionState) {
   if (!sessionId) return null;
   const state = readSessionState(sessionId);
-  if (!state || !state.statusline) return null;
+  if (!state?.statusline) return null;
   return sanitizeActivitySnapshot(state.statusline);
 }
 

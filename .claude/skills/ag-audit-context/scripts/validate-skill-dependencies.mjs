@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import {
-  loadSkillInventory,
   extractSkillMentions,
+  loadSkillInventory,
 } from "./shared-skill-utils.mjs";
 
 const warnings = [];

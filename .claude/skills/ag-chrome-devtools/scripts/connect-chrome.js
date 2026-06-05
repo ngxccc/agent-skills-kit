@@ -14,14 +14,14 @@
  *   - Using existing Chrome session with all logged-in accounts
  *   - Avoiding Puppeteer's bundled Chromium
  */
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import {
+  disconnectBrowser,
   getBrowser,
   getPage,
-  disconnectBrowser,
-  parseArgs,
-  outputJSON,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
 
 /**
@@ -32,15 +32,16 @@ function getChromeExecutablePath() {
   switch (process.platform) {
     case "darwin":
       return "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
-    case "win32":
+    case "win32": {
       // Try common installation paths
       const paths = [
-        `${process.env["PROGRAMFILES"]}/Google/Chrome/Application/chrome.exe`,
+        `${process.env.PROGRAMFILES}/Google/Chrome/Application/chrome.exe`,
         `${process.env["PROGRAMFILES(X86)"]}/Google/Chrome/Application/chrome.exe`,
         `${process.env.LOCALAPPDATA}/Google/Chrome/Application/chrome.exe`,
       ];
       // Return first path (user should have Chrome installed in standard location)
       return paths[0];
+    }
     default: // Linux
       return "google-chrome";
   }
@@ -92,7 +93,7 @@ async function waitForDebugEndpoint(browserUrl, timeout = 10000) {
 
 async function connectChrome() {
   const args = parseArgs(process.argv.slice(2));
-  const port = parseInt(args.port || "9222");
+  const port = parseInt(args.port || "9222", 10);
   const browserUrl = args["browser-url"] || `http://localhost:${port}`;
 
   try {
@@ -120,7 +121,7 @@ async function connectChrome() {
     if (args.url) {
       await page.goto(args.url, {
         waitUntil: args["wait-until"] || "networkidle2",
-        timeout: parseInt(args.timeout || "30000"),
+        timeout: parseInt(args.timeout || "30000", 10),
       });
     }
 

@@ -1,13 +1,13 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import {
-  loadSkillInventory,
-  normalizeSkillName,
+  abs,
   extractRelativeReferences,
   extractSkillMentions,
   loadRoutingPolicy,
+  loadSkillInventory,
+  normalizeSkillName,
   writeJsonFile,
-  abs,
 } from "./shared-skill-utils.mjs";
 
 const outputPath = "process/context/generated-skills-catalog.json";

@@ -16,7 +16,7 @@
 
 (async () => {
   try {
-    const path = require("path");
+    const path = require("node:path");
     const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
 
     // Import shared privacy checking logic

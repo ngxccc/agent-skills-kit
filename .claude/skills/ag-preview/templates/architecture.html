@@ -180,9 +180,9 @@
         *,
         *::before,
         *::after {
-          animation-duration: 0.01ms !important;
-          animation-delay: 0ms !important;
-          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms;
+          animation-delay: 0ms;
+          transition-duration: 0.01ms;
         }
       }
 
@@ -589,7 +589,7 @@
       aria-label="Toggle light/dark theme"
     ></button>
     <script>
-      (function () {
+      (() => {
         var t = document.getElementById("themeToggle");
         var s = localStorage.getItem("theme");
         var i =
@@ -599,7 +599,7 @@
             : "light");
         if (s) document.documentElement.setAttribute("data-theme", i);
         t.textContent = i === "dark" ? "\u2600" : "\u263E";
-        t.addEventListener("click", function () {
+        t.addEventListener("click", () => {
           var c =
             document.documentElement.getAttribute("data-theme") ||
             (matchMedia("(prefers-color-scheme: dark)").matches

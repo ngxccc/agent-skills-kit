@@ -7,11 +7,11 @@
  * Run: node .claude/hooks/lib/__tests__/statusline.test.cjs
  */
 
-const path = require("path");
-const fs = require("fs");
-const os = require("os");
-const crypto = require("crypto");
-const { execSync } = require("child_process");
+const path = require("node:path");
+const fs = require("node:fs");
+const os = require("node:os");
+const crypto = require("node:crypto");
+const { execSync } = require("node:child_process");
 
 // Import modules
 const {
@@ -90,7 +90,7 @@ function assertContains(actual, search, msg = "") {
   }
 }
 
-function assertMatch(actual, regex, msg = "") {
+function _assertMatch(actual, regex, msg = "") {
   if (!regex.test(actual)) {
     throw new Error(`${msg}\n  Pattern: ${regex}\n  Actual: ${actual}`);
   }

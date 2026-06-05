@@ -1,11 +1,11 @@
 #!/usr/bin/env node
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 /**
  * MCP Client - Core client for interacting with MCP servers
  */
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { readFile } from "fs/promises";
-import { resolve } from "path";
 export class MCPClientManager {
   config = null;
   clients = new Map();

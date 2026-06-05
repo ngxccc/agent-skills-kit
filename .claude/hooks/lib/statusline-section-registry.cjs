@@ -65,7 +65,7 @@ function renderModelSection(ctx, sectionConfig, theme) {
 }
 
 // "▰▰▱▱▱ 40%" — returns null when context is 0
-function renderContextSection(ctx, sectionConfig, theme) {
+function renderContextSection(ctx, _sectionConfig, theme) {
   if (ctx.contextPercent <= 0) return null;
   const palette = {
     low: theme.contextLow,
@@ -87,12 +87,12 @@ function renderQuotaSection(ctx, sectionConfig, theme) {
 }
 
 // "📁 ~/project"
-function renderDirectorySection(ctx, sectionConfig, theme) {
+function renderDirectorySection(ctx, sectionConfig, _theme) {
   return `${sectionConfig.icon || "📁"} ${resolveColor(sectionConfig.color || "yellow")(ctx.currentDir)}`;
 }
 
 // "🌿 main (2, +1, 3↑)" — returns null outside git repos
-function renderGitSection(ctx, sectionConfig, theme) {
+function renderGitSection(ctx, sectionConfig, _theme) {
   if (!ctx.gitBranch) return null;
   const gitColorFn = resolveColor(sectionConfig.color || "magenta");
   let part = `${sectionConfig.icon || "🌿"} ${gitColorFn(ctx.gitBranch)}`;
@@ -106,13 +106,13 @@ function renderGitSection(ctx, sectionConfig, theme) {
 }
 
 // "💰 $0.42" — returns null when no cost data
-function renderCostSection(ctx, sectionConfig, theme) {
+function renderCostSection(ctx, sectionConfig, _theme) {
   if (!ctx.costText) return null;
   return `${sectionConfig.icon || "💰"} ${resolveColor(sectionConfig.color || "dim")(ctx.costText)}`;
 }
 
 // "📝 +10 -5" — returns null when no lines changed; if sectionConfig.color set, applies uniform color
-function renderChangesSection(ctx, sectionConfig, theme) {
+function renderChangesSection(ctx, sectionConfig, _theme) {
   if (ctx.linesAdded <= 0 && ctx.linesRemoved <= 0) return null;
   if (sectionConfig.color) {
     const changeFn = resolveColor(sectionConfig.color);

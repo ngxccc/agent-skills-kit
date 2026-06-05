@@ -117,7 +117,7 @@ function extractFromCommand(command) {
     const content = match[1];
 
     // Skip sed/awk regex expressions (s/pattern/replacement/flags)
-    if (/^s[\/|@#,]/.test(content)) continue;
+    if (/^s[/|@#,]/.test(content)) continue;
 
     if (looksLikePath(content)) {
       paths.push(normalizeExtractedPath(content));
@@ -453,7 +453,7 @@ function normalizeExtractedPath(path) {
   }
 
   // Strip shell metacharacters from edges (backticks, parens, braces)
-  normalized = normalized.replace(/^[`({\[]+/, "").replace(/[`)};\]]+$/, "");
+  normalized = normalized.replace(/^[`({[]+/, "").replace(/[`)};\]]+$/, "");
 
   // Normalize path separators to forward slash
   normalized = normalized.replace(/\\/g, "/");

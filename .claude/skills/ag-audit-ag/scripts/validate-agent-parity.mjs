@@ -16,7 +16,7 @@ function warn(message) {
   else warnings.push(message);
 }
 
-function exists(relPath) {
+function _exists(relPath) {
   return fs.existsSync(path.join(root, relPath));
 }
 

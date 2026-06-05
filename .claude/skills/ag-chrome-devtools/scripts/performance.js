@@ -4,15 +4,14 @@
  * Usage: node performance.js --url https://example.com [--trace trace.json] [--metrics]
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
-import fs from "fs/promises";
 
 async function measurePerformance() {
   const args = parseArgs(process.argv.slice(2));
@@ -77,7 +76,7 @@ async function measurePerformance() {
             entryTypes: ["largest-contentful-paint"],
             buffered: true,
           });
-        } catch (e) {}
+        } catch (_e) {}
 
         // CLS
         try {
@@ -88,7 +87,7 @@ async function measurePerformance() {
               }
             });
           }).observe({ entryTypes: ["layout-shift"], buffered: true });
-        } catch (e) {}
+        } catch (_e) {}
 
         // FCP
         try {
@@ -99,7 +98,7 @@ async function measurePerformance() {
           if (fcpEntry) {
             vitals.FCP = fcpEntry.startTime;
           }
-        } catch (e) {}
+        } catch (_e) {}
 
         // TTFB
         try {
@@ -108,7 +107,7 @@ async function measurePerformance() {
             vitals.TTFB =
               navigationEntry.responseStart - navigationEntry.requestStart;
           }
-        } catch (e) {}
+        } catch (_e) {}
 
         // Wait a bit for metrics to stabilize
         setTimeout(() => resolve(vitals), 1000);

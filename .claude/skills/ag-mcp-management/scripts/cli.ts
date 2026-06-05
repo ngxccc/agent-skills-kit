@@ -1,12 +1,13 @@
 #!/usr/bin/env node
+
 /**
  * MCP Management CLI - Command-line interface for MCP operations
  */
 
+import { mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { MCPClientManager } from "./mcp-client.js";
-import { writeFileSync, mkdirSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

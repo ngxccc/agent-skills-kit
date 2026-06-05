@@ -8,8 +8,8 @@
  *   --dir      Target directory (default: current directory)
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Parse arguments
 const args = process.argv.slice(2);

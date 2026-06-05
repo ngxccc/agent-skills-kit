@@ -8,10 +8,10 @@
  * @module project-detector
  */
 
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
-const { execSync, execFileSync } = require("child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
+const { execSync, execFileSync } = require("node:child_process");
 
 // ═══════════════════════════════════════════════════════════════════════════
 // SAFE EXECUTION HELPERS
@@ -30,7 +30,7 @@ function execSafe(cmd, timeoutMs = 5000) {
       timeout: timeoutMs,
       stdio: ["pipe", "pipe", "pipe"],
     }).trim();
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -49,7 +49,7 @@ function execFileSafe(binary, args, timeoutMs = 2000) {
       timeout: timeoutMs,
       stdio: ["pipe", "pipe", "pipe"],
     }).trim();
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -69,7 +69,7 @@ function isValidPythonPath(p) {
   try {
     const stat = fs.statSync(p);
     return stat.isFile();
-  } catch (e) {
+  } catch (_e) {
     return false;
   }
 }
@@ -196,7 +196,7 @@ function isGitRepo(startDir) {
   let dir;
   try {
     dir = startDir || process.cwd();
-  } catch (e) {
+  } catch (_e) {
     // CWD deleted or inaccessible
     return false;
   }
@@ -256,7 +256,7 @@ function detectProjectType(configOverride) {
       const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
       if (pkg.workspaces) return "monorepo";
       if (pkg.main || pkg.exports) return "library";
-    } catch (e) {
+    } catch (_e) {
       /* ignore */
     }
   }
@@ -293,20 +293,20 @@ function detectFramework(configOverride) {
     const pkg = JSON.parse(fs.readFileSync("package.json", "utf8"));
     const deps = { ...pkg.dependencies, ...pkg.devDependencies };
 
-    if (deps["next"]) return "next";
-    if (deps["nuxt"]) return "nuxt";
-    if (deps["astro"]) return "astro";
+    if (deps.next) return "next";
+    if (deps.nuxt) return "nuxt";
+    if (deps.astro) return "astro";
     if (deps["@remix-run/node"] || deps["@remix-run/react"]) return "remix";
-    if (deps["svelte"] || deps["@sveltejs/kit"]) return "svelte";
-    if (deps["vue"]) return "vue";
-    if (deps["react"]) return "react";
-    if (deps["express"]) return "express";
-    if (deps["fastify"]) return "fastify";
-    if (deps["hono"]) return "hono";
-    if (deps["elysia"]) return "elysia";
+    if (deps.svelte || deps["@sveltejs/kit"]) return "svelte";
+    if (deps.vue) return "vue";
+    if (deps.react) return "react";
+    if (deps.express) return "express";
+    if (deps.fastify) return "fastify";
+    if (deps.hono) return "hono";
+    if (deps.elysia) return "elysia";
 
     return null;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }
@@ -350,7 +350,7 @@ function getCodingLevelGuidelines(level, configDir) {
     const content = fs.readFileSync(stylePath, "utf8");
     const withoutFrontmatter = content.replace(/^---[\s\S]*?---\n*/, "").trim();
     return withoutFrontmatter;
-  } catch (e) {
+  } catch (_e) {
     return null;
   }
 }

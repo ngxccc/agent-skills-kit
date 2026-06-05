@@ -2,10 +2,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  parseFrontmatter,
-  listSkillDirs,
   exists,
-  abs,
+  listSkillDirs,
+  parseFrontmatter,
 } from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
@@ -45,7 +44,7 @@ function warn(message) {
   warnings.push(message);
 }
 
-function read(relPath) {
+function _read(relPath) {
   return fs.readFileSync(path.join(root, relPath), "utf8");
 }
 

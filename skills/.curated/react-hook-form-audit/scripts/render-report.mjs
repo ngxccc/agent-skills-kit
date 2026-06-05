@@ -119,7 +119,7 @@ for (const sev of ["CRITICAL", "HIGH", "MEDIUM", "LOW"]) {
     out += `\n\n`;
     out += `${f.message}\n\n`;
     if (f.snippet) {
-      out += "```\n" + f.snippet + "\n```\n\n";
+      out += `\`\`\`\n${f.snippet}\n\`\`\`\n\n`;
     }
   }
 }

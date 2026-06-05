@@ -38,7 +38,7 @@ function renderSection(enabledSections, id, ctx, theme) {
   const sec = enabledSections.find((s) => s.id === id);
   if (!sec) return "";
   const fn = getSectionRenderer(id);
-  return (fn && fn(ctx, sec, theme)) || "";
+  return fn?.(ctx, sec, theme) || "";
 }
 
 /**
@@ -220,7 +220,7 @@ function renderMinimal(ctx, layout) {
       "contextLow",
       "contextMid",
       "contextHigh",
-    ].some((key) => Object.prototype.hasOwnProperty.call(themeOverrides, key));
+    ].some((key) => Object.hasOwn(themeOverrides, key));
     const batteryIcon = hasCustomContextTheme
       ? resolveColor(getContextColorName(ctx.contextPercent, layout.theme))(
           batteryGlyph,
@@ -234,8 +234,8 @@ function renderMinimal(ctx, layout) {
   if (ctx.usageWindows?.length > 0 && isEnabled("quota")) {
     const quotaConfig = getSectionConfig("quota");
     const hasCustomQuotaTheme =
-      Object.prototype.hasOwnProperty.call(themeOverrides, "quotaLow") ||
-      Object.prototype.hasOwnProperty.call(themeOverrides, "quotaHigh");
+      Object.hasOwn(themeOverrides, "quotaLow") ||
+      Object.hasOwn(themeOverrides, "quotaHigh");
     const quotaText = ctx.usageWindows.join("  ");
     const quotaColor =
       quotaConfig.color ||

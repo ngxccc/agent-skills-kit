@@ -14,9 +14,9 @@
 
 // Crash wrapper
 try {
-  const fs = require("fs");
-  const path = require("path");
-  const os = require("os");
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const os = require("node:os");
   const { isHookEnabled } = require("./lib/ag-config-utils.cjs");
   const { invalidateCache } = require("./lib/git-info-cache.cjs");
   const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
@@ -43,7 +43,7 @@ try {
         }
         return data;
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore errors, reinitialize
     }
     return initSessionData();
@@ -68,7 +68,7 @@ try {
   function saveSessionData(data) {
     try {
       fs.writeFileSync(SESSION_TRACK_FILE, JSON.stringify(data, null, 2));
-    } catch (e) {
+    } catch (_e) {
       // Ignore write errors
     }
   }

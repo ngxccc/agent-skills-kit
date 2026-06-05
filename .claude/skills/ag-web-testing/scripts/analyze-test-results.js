@@ -11,8 +11,8 @@
  *   --fail-threshold <n> Exit with code 1 if pass rate below n% (default: 0)
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Parse arguments
 const args = process.argv.slice(2);

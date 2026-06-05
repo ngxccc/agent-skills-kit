@@ -230,7 +230,7 @@ const REPLACERS = [
 
     // `\` is escaped by step 3
     /(\\)?\[([^\]/]*?)(\\*)($|\])/g,
-    (match, leadEscape, range, endEscape, close) =>
+    (_match, leadEscape, range, endEscape, close) =>
       leadEscape === ESCAPE
         ? // '\\[bar]' -> '\\\\[bar\\]'
           `\\[${range}${cleanRangeBackSlash(endEscape)}${close}`
@@ -411,7 +411,7 @@ class Ignore {
 
   _addPattern(pattern) {
     // #32
-    if (pattern && pattern[KEY_IGNORE]) {
+    if (pattern?.[KEY_IGNORE]) {
       this._rules = this._rules.concat(pattern._rules);
       this._added = true;
       return;
@@ -575,8 +575,7 @@ module.exports = factory;
 if (
   // Detect `process` so that it can run in browsers.
   typeof process !== "undefined" &&
-  ((process.env && process.env.IGNORE_TEST_WIN32) ||
-    process.platform === "win32")
+  (process.env?.IGNORE_TEST_WIN32 || process.platform === "win32")
 ) {
   /* eslint no-control-regex: "off" */
   const makePosix = (str) =>

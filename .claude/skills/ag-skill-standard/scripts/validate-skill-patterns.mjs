@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
-import fs from "fs";
-import path from "path";
+import fs from "node:fs";
+import path from "node:path";
 
 const colors = {
   reset: "\x1b[0m",

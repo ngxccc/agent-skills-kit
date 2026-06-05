@@ -84,13 +84,13 @@ function formatElapsed(startTime, endTime) {
     startTime instanceof Date
       ? startTime.getTime()
       : new Date(startTime).getTime();
-  if (isNaN(start)) return "0s";
+  if (Number.isNaN(start)) return "0s";
   const end = endTime
     ? endTime instanceof Date
       ? endTime.getTime()
       : new Date(endTime).getTime()
     : Date.now();
-  if (isNaN(end)) return "0s";
+  if (Number.isNaN(end)) return "0s";
   const ms = end - start;
   if (ms < 0 || ms < 1000) return "<1s";
   if (ms < 60000) return `${Math.round(ms / 1000)}s`;
@@ -108,7 +108,7 @@ function getTerminalWidth() {
   if (process.stderr.columns) return process.stderr.columns;
   if (process.env.COLUMNS) {
     const parsed = parseInt(process.env.COLUMNS, 10);
-    if (!isNaN(parsed) && parsed > 0) return parsed;
+    if (!Number.isNaN(parsed) && parsed > 0) return parsed;
   }
   return 120;
 }
@@ -121,7 +121,7 @@ function getTerminalWidth() {
 function safeGetTime(dateValue) {
   if (!dateValue) return 0;
   const time = new Date(dateValue).getTime();
-  return isNaN(time) ? 0 : time;
+  return Number.isNaN(time) ? 0 : time;
 }
 
 /**

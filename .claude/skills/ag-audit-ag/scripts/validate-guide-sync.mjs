@@ -2,10 +2,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import {
-  parseFrontmatter,
-  listSkillDirs,
   exists,
-  abs,
+  listSkillDirs,
+  parseFrontmatter,
 } from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
@@ -97,7 +96,7 @@ if (!exists(guidePath)) {
     const skillFile = `.claude/skills/${skill}/SKILL.md`;
     if (exists(skillFile)) {
       const parsed = parseFrontmatter(skillFile);
-      if (parsed && parsed.fields.name) {
+      if (parsed?.fields.name) {
         diskSkills.add(parsed.fields.name);
       }
       // Also add folder name as alias

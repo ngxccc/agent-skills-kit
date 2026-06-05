@@ -1,8 +1,9 @@
 // @ts-check
-// @ts-ignore
+// @ts-expect-error
+
+import { execSync } from "node:child_process";
+import * as path from "node:path";
 import type { HookAPI } from "@oh-my-pi/pi-coding-agent/extensibility/hooks";
-import { execSync } from "child_process";
-import * as path from "path";
 
 export default function (pi: HookAPI) {
   pi.on("session_start", (event) => {
@@ -19,7 +20,7 @@ export default function (pi: HookAPI) {
         encoding: "utf-8",
         stdio: ["pipe", "ignore", "ignore"],
       });
-    } catch (e) {
+    } catch (_e) {
       // Session lifecycle errors are ignored
     }
   });
@@ -42,7 +43,7 @@ export default function (pi: HookAPI) {
           stdio: ["pipe", "ignore", "ignore"],
         });
       }
-    } catch (e) {
+    } catch (_e) {
       // Ignore
     }
   });

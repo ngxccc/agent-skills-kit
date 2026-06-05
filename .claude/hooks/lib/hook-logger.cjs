@@ -8,8 +8,8 @@
  * Export: logHook(hookName, data), createHookTimer(hookName, baseData), logHookCrash(hookName, error, data)
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const LOG_DIR = path.join(__dirname, "..", ".logs");
 const LOG_FILE = path.join(LOG_DIR, "hook-log.jsonl");
@@ -47,7 +47,7 @@ function withLogLock(fn) {
         } catch (_) {}
       }
     } catch (error) {
-      if (!error || error.code !== "EEXIST") {
+      if (error?.code !== "EEXIST") {
         throw error;
       }
       sleep(LOCK_RETRY_MS);
@@ -81,7 +81,7 @@ function rotateIfNeeded() {
       .split("\n")
       .filter(Boolean);
     if (lines.length >= MAX_LINES) {
-      const truncated = lines.slice(-TRUNCATE_TO).join("\n") + "\n";
+      const truncated = `${lines.slice(-TRUNCATE_TO).join("\n")}\n`;
       fs.writeFileSync(LOG_FILE, truncated, "utf-8");
     }
   } catch (_) {
@@ -109,7 +109,7 @@ function logHook(hookName, data) {
       error: data.error || "",
     };
 
-    const serialized = JSON.stringify(entry) + "\n";
+    const serialized = `${JSON.stringify(entry)}\n`;
     const wroteWithLock = withLogLock(() => {
       fs.appendFileSync(LOG_FILE, serialized, "utf-8");
       rotateIfNeeded();

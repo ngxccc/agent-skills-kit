@@ -4,13 +4,13 @@
  * Usage: node console.js --url https://example.com [--types error,warn] [--duration 5000]
  */
 import {
-  getBrowser,
-  getPage,
   closeBrowser,
   disconnectBrowser,
-  parseArgs,
-  outputJSON,
+  getBrowser,
+  getPage,
   outputError,
+  outputJSON,
+  parseArgs,
 } from "./lib/browser.js";
 
 async function monitorConsole() {
@@ -63,7 +63,7 @@ async function monitorConsole() {
     // Wait for additional time if specified
     if (args.duration) {
       await new Promise((resolve) =>
-        setTimeout(resolve, parseInt(args.duration)),
+        setTimeout(resolve, parseInt(args.duration, 10)),
       );
     }
 

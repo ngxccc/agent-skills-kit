@@ -2,7 +2,7 @@
 "use strict";
 
 try {
-  const fs = require("fs");
+  const fs = require("node:fs");
   const { isHookEnabled } = require("./lib/ag-config-utils.cjs");
   const { createHookTimer, logHookCrash } = require("./lib/hook-logger.cjs");
   const {
@@ -35,12 +35,12 @@ try {
 
     if (PERSIST_EVENTS.has(eventType)) {
       const result = persist(payload, { eventType });
-      persisted = Boolean(result && result.success);
+      persisted = Boolean(result?.success);
     }
 
     if (REFRESH_EVENTS.has(eventType)) {
       const result = await refresh(payload);
-      refreshed = Boolean(result && result.success);
+      refreshed = Boolean(result?.success);
     }
 
     return {

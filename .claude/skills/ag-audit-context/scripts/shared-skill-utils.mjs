@@ -30,8 +30,8 @@ export function parseFrontmatterText(text) {
     if (rawValue === ">-" || rawValue === "|" || rawValue === ">") {
       const blockLines = [];
       let cursor = index + 1;
-      while (cursor < lines.length && /^  /.test(lines[cursor])) {
-        blockLines.push(lines[cursor].replace(/^  /, ""));
+      while (cursor < lines.length && /^ {2}/.test(lines[cursor])) {
+        blockLines.push(lines[cursor].replace(/^ {2}/, ""));
         cursor += 1;
       }
       fields[key] = blockLines.join(" ").trim();
@@ -116,10 +116,7 @@ export function loadSkillInventory() {
       frontmatter: fields,
       frontmatterKeys: parsed?.keys || [],
       aliases: [...aliases],
-      allowlisted: Object.prototype.hasOwnProperty.call(
-        policy.allowlistedSkills,
-        skill,
-      ),
+      allowlisted: Object.hasOwn(policy.allowlistedSkills, skill),
       allowlistReason: policy.allowlistedSkills[skill] || null,
       routedFrom,
     };

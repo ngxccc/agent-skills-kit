@@ -11,10 +11,10 @@
  * Cross-platform: No bash-only syntax (no 2>/dev/null), windowsHide on all exec calls
  */
 
-const { execSync } = require("child_process");
-const fs = require("fs");
-const path = require("path");
-const os = require("os");
+const { execSync } = require("node:child_process");
+const fs = require("node:fs");
+const path = require("node:path");
+const os = require("node:os");
 
 // Cache TTL — long fallback for external changes (git checkout outside Claude)
 // Active invalidation happens via PostToolUse hooks after Edit/Write/Bash
@@ -63,7 +63,7 @@ function execIn(cmd, cwd) {
  * Get cache file path for current working directory
  */
 function getCachePath(cwd) {
-  const hash = require("crypto")
+  const hash = require("node:crypto")
     .createHash("md5")
     .update(cwd)
     .digest("hex")
@@ -92,7 +92,7 @@ function readCache(cachePath, options = {}) {
  * Write cache atomically (temp file + rename to avoid partial reads on Windows)
  */
 function writeCache(cachePath, data) {
-  const tmpPath = cachePath + ".tmp";
+  const tmpPath = `${cachePath}.tmp`;
   try {
     fs.writeFileSync(tmpPath, JSON.stringify({ timestamp: Date.now(), data }));
     fs.renameSync(tmpPath, cachePath);

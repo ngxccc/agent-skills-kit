@@ -6,8 +6,8 @@
  * @module transcript-parser
  */
 
-const fs = require("fs");
-const readline = require("readline");
+const fs = require("node:fs");
+const readline = require("node:readline");
 
 function isNativeTaskTodo(todo) {
   return Boolean(todo && todo._source === "native_task");
@@ -39,7 +39,7 @@ function extractTaskIdFromString(text) {
   const match = trimmed.match(
     /["']?task[_-]?id["']?\s*[:=]\s*["']([^"']+)["']/i,
   );
-  if (match && match[1]) return match[1];
+  if (match?.[1]) return match[1];
   return null;
 }
 
@@ -97,7 +97,7 @@ async function parseTranscript(transcriptPath) {
 
   const toolMap = new Map();
   const agentMap = new Map();
-  let latestTodos = [];
+  const latestTodos = [];
 
   try {
     const fileStream = fs.createReadStream(transcriptPath);
@@ -216,9 +216,7 @@ function processEntry(entry, toolMap, agentMap, latestTodos, result) {
 
           if (task) {
             task.status = block.input.status;
-            if (
-              Object.prototype.hasOwnProperty.call(block.input, "activeForm")
-            ) {
+            if (Object.hasOwn(block.input, "activeForm")) {
               task.activeForm = block.input.activeForm || null;
             }
           }
@@ -289,10 +287,11 @@ function extractTarget(toolName, input) {
     case "Grep":
       return input.pattern ?? null;
 
-    case "Bash":
+    case "Bash": {
       const cmd = input.command;
       if (!cmd) return null;
-      return cmd.length > 30 ? cmd.slice(0, 30) + "..." : cmd;
+      return cmd.length > 30 ? `${cmd.slice(0, 30)}...` : cmd;
+    }
 
     default:
       return null;

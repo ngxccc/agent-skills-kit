@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import fs from "node:fs";
 /**
  * Attach to an existing Chrome tab via remote debugging WITHOUT navigating.
  * Captures console messages + network requests for a fixed duration.
@@ -10,7 +11,6 @@
  * Designed to leave the page state intact (no goto, no reload).
  */
 import puppeteer from "puppeteer";
-import fs from "fs";
 
 function parseArgs(argv) {
   const out = {};

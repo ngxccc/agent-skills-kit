@@ -5,8 +5,8 @@
  * Respects order: process.env > skill/.env > skills/.env > .claude/.env
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 /**
  * Parse .env file content into key-value pairs
@@ -66,7 +66,7 @@ function loadEnv() {
         const content = fs.readFileSync(envPath, "utf8");
         const parsed = parseEnvFile(content);
         mergedEnv = { ...mergedEnv, ...parsed };
-      } catch (error) {
+      } catch (_error) {
         // Silently skip unreadable files
       }
     }

@@ -12,12 +12,12 @@
  *   node process-thought.js --reset  # Reset thought history
  */
 
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs");
+const path = require("node:path");
 
 // Configuration
 const HISTORY_FILE = path.join(__dirname, ".thought-history.json");
-const DISABLE_LOGGING =
+const _DISABLE_LOGGING =
   process.env.DISABLE_THOUGHT_LOGGING?.toLowerCase() === "true";
 
 class ThoughtProcessor {
@@ -35,7 +35,7 @@ class ThoughtProcessor {
         this.thoughtHistory = [];
         this.branches = {};
       }
-    } catch (error) {
+    } catch (_error) {
       this.thoughtHistory = [];
       this.branches = {};
     }
@@ -222,7 +222,7 @@ if (require.main === module) {
           if (value === "true") parsed[key] = true;
           else if (value === "false") parsed[key] = false;
           // Parse number
-          else if (!isNaN(value)) parsed[key] = parseFloat(value);
+          else if (!Number.isNaN(value)) parsed[key] = parseFloat(value);
           // String
           else parsed[key] = value;
           i++;

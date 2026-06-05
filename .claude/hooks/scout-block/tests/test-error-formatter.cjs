@@ -84,7 +84,7 @@ test(
 );
 
 // Test long path truncation
-const longPath = "a/".repeat(50) + "node_modules/package/index.js";
+const longPath = `${"a/".repeat(50)}node_modules/package/index.js`;
 const longPathError = formatBlockedError({
   path: longPath,
   pattern: "node_modules",

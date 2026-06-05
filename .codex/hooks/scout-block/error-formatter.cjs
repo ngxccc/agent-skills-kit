@@ -6,7 +6,7 @@
  * Supports ANSI colors with NO_COLOR env var respect.
  */
 
-const path = require("path");
+const path = require("node:path");
 
 // ANSI color codes
 const COLORS = {
@@ -85,14 +85,14 @@ function formatBlockedError(details) {
 
   // Truncate path if too long
   const displayPath =
-    blockedPath.length > 60 ? "..." + blockedPath.slice(-57) : blockedPath;
+    blockedPath.length > 60 ? `...${blockedPath.slice(-57)}` : blockedPath;
 
   const lines = [
     "",
     colorize("NOTE:", "cyan") +
       " This is not an error - this block is intentional to optimize context.",
     "",
-    colorize("BLOCKED", "red") + `: Access to '${displayPath}' denied`,
+    `${colorize("BLOCKED", "red")}: Access to '${displayPath}' denied`,
     "",
     `  ${colorize("Pattern:", "yellow")}  ${pattern}`,
     `  ${colorize("Tool:", "yellow")}     ${tool || "unknown"}`,
@@ -146,7 +146,7 @@ function formatMachineError(details) {
  * @returns {string}
  */
 function formatWarning(message) {
-  return colorize("WARN:", "yellow") + " " + message;
+  return `${colorize("WARN:", "yellow")} ${message}`;
 }
 
 module.exports = {

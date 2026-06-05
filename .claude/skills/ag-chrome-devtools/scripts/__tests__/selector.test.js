@@ -2,8 +2,9 @@
  * Tests for selector parsing library
  * Run with: node --test __tests__/selector.test.js
  */
-import { describe, it } from "node:test";
+
 import assert from "node:assert";
+import { describe, it } from "node:test";
 import { parseSelector } from "../lib/selector.js";
 
 describe("parseSelector", () => {
@@ -138,7 +139,7 @@ describe("parseSelector", () => {
     });
 
     it("should block extremely long selectors (DoS prevention)", () => {
-      const longSelector = "//" + "a".repeat(1001);
+      const longSelector = `//${"a".repeat(1001)}`;
       assert.throws(
         () => parseSelector(longSelector),
         /XPath selector too long/i,
