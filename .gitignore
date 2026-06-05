@@ -16,3 +16,6 @@ node_modules/
 !/process/general-plans/references/.gitkeep
 /process/features/**
 !/process/features/.gitkeep
+
+/.omp/skills/**
+!/.omp/skills/ag-*
