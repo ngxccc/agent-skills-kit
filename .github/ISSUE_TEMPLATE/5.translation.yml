@@ -1,0 +1,36 @@
+name: Translation
+description: Contribute a README translation
+title: "[Translation]: "
+labels: ["translation", "i18n"]
+body:
+  - type: input
+    id: language
+    attributes:
+      label: Language
+      placeholder: "e.g., French (fr-FR)"
+    validations:
+      required: true
+  - type: dropdown
+    id: coverage
+    attributes:
+      label: Coverage
+      options:
+        - Full translation
+        - Partial (key sections only)
+    validations:
+      required: true
+  - type: dropdown
+    id: quality
+    attributes:
+      label: Quality
+      options:
+        - Native speaker
+        - Fluent non-native
+        - AI-assisted (needs native review)
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Notes
+      description: "Any context about the translation"

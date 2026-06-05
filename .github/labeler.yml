@@ -1,0 +1,19 @@
+skill:
+  - changed-files:
+    - any-glob-to-any-file: '.claude/skills/**'
+agent:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.claude/agents/**'
+      - '.codex/agents/**'
+docs:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '*.md'
+      - 'docs/**'
+hook:
+  - changed-files:
+    - any-glob-to-any-file: '.claude/hooks/**'
+protocol:
+  - changed-files:
+    - any-glob-to-any-file: 'process/development-protocols/**'

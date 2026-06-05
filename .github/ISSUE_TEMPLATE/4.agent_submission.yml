@@ -1,0 +1,55 @@
+name: Agent Submission
+description: Propose a new specialist agent
+title: "[Agent]: "
+labels: ["agent", "community"]
+body:
+  - type: checkboxes
+    id: dedup
+    attributes:
+      label: Verification
+      options:
+        - label: I confirmed this does not duplicate existing functionality
+          required: true
+  - type: input
+    id: name
+    attributes:
+      label: Agent Name
+      description: "Must NOT use ag- prefix (reserved for core)"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: Purpose
+      description: What role does this agent fill? How does it differ from existing agents?
+    validations:
+      required: true
+  - type: dropdown
+    id: phase
+    attributes:
+      label: Primary RIPER-5 Phase
+      options:
+        - RESEARCH (read-only)
+        - INNOVATE (discussion-only)
+        - PLAN (spec writing)
+        - EXECUTE (implementation)
+        - Cross-phase specialist
+    validations:
+      required: true
+  - type: textarea
+    id: tools
+    attributes:
+      label: Tool Restrictions
+      description: "What tools should this agent have access to?"
+    validations:
+      required: true
+  - type: dropdown
+    id: status
+    attributes:
+      label: Implementation Status
+      options:
+        - Idea only
+        - Work in progress
+        - Ready for review (PR incoming)
+    validations:
+      required: true

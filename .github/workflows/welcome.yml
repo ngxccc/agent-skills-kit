@@ -1,0 +1,32 @@
+name: Welcome New Contributors
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome first-time contributors
+        uses: actions/first-interaction@530e038ee9729a57bac8f91f4dd8c0e8d498b59b # v1
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue-message: |
+            Welcome to agent-skills-kit! Thanks for opening your first issue.
+
+            A maintainer will take a look shortly. In the meantime, feel free to
+            join the community on WhatsApp: https://chat.whatsapp.com/LRKy3kCQYz2AJOeland6kK
+          pr-message: |
+            Welcome to agent-skills-kit! Thanks for opening your first pull request.
+
+            Please make sure you have read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting.
+            A maintainer will review your changes soon.
+
+            Join the community on WhatsApp: https://chat.whatsapp.com/LRKy3kCQYz2AJOeland6kK

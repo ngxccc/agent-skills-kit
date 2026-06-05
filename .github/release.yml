@@ -1,0 +1,12 @@
+changelog:
+  categories:
+    - title: New Features
+      labels: [enhancement, skill, agent]
+    - title: Bug Fixes
+      labels: [bug]
+    - title: Documentation
+      labels: [docs, translation]
+    - title: Community
+      labels: [community, hook, protocol]
+    - title: Other Changes
+      labels: ['*']

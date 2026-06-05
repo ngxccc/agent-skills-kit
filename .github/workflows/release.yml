@@ -1,0 +1,89 @@
+name: Release Kit
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
+        with:
+          node-version: 20
+
+      - name: Validate agent parity
+        run: node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
+
+      - name: Validate skills
+        run: node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
+
+      - name: Validate guide sync
+        run: node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs
+
+      - name: Validate protocol wiring
+        run: node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs
+
+      - name: Validate seeds
+        run: node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs
+
+      - name: Validate context discovery
+        run: node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
+
+      - name: Validate skill routing
+        run: node .claude/skills/ag-audit-context/scripts/validate-skill-routing.mjs
+
+      - name: Validate skill cross-refs
+        run: node .claude/skills/ag-audit-context/scripts/validate-skill-cross-refs.mjs
+
+      - name: Validate skill dependencies
+        run: node .claude/skills/ag-audit-context/scripts/validate-skill-dependencies.mjs
+
+      - name: Validate confusable skills
+        run: node .claude/skills/ag-audit-context/scripts/validate-confusable-skills.mjs
+
+      - name: Generate skills catalog
+        run: node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs
+
+      - name: Validate plan inventory
+        run: node .claude/skills/ag-audit-plans/scripts/validate-plan-inventory.mjs
+
+      - name: Validate all context
+        run: node .claude/skills/ag-generate-context/scripts/validate-all-context.mjs
+
+      - name: Check for personal path leaks
+        run: |
+          if grep -rn '/Users/\|/home/\|C:\\Users\\' \
+            --include='*.md' --include='*.yml' --include='*.yaml' \
+            --include='*.json' --include='*.mjs' --include='*.js' \
+            --include='*.ts' \
+            --exclude-dir=node_modules --exclude-dir=.git \
+            . ; then
+            echo "::error::Personal paths detected in repository files"
+            exit 1
+          else
+            echo "No personal path leaks found."
+          fi
+
+      - name: Lint Markdown (non-blocking)
+        run: npx markdownlint-cli2 '**/*.md' '#node_modules' || true
+
+      - name: Extract version
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "agent-skills-kit ${{ steps.version.outputs.version }}" \
+            --generate-notes
