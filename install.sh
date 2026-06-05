@@ -161,12 +161,15 @@ echo "$VERSION" >.ag-version
 if [ ! -f ".gitignore" ]; then
     touch .gitignore
 fi
-if [ -s ".gitignore" ] && [ "$(tail -c1 .gitignore; echo x)" != $'\nx' ]; then
-    echo "" >> ".gitignore"
+if [ -s ".gitignore" ] && [ "$(
+    tail -c1 .gitignore
+    echo x
+)" != $'\nx' ]; then
+    echo "" >>".gitignore"
 fi
-for f in ".ag-installed-files" ".ag-version" ".vc-installed-files" ".vc-version"; do
+for f in ".ag-installed-files" ".ag-version"; do
     if ! grep -qFx "$f" ".gitignore"; then
-        echo "$f" >> ".gitignore"
+        echo "$f" >>".gitignore"
         echo "  Added $f to .gitignore"
     fi
 done
