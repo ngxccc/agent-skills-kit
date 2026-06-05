@@ -53,6 +53,7 @@
     ".gitattributes",
     ".claude/skills/ag-audit-ag/**",
     ".claude/skills/ag-publish/**",
+    ".claude/skills/ag-skill-standard/tests/**",
     ".claude/hooks/lib/__tests__/**",
     ".codex/hooks/lib/__tests__/**"
   ]
