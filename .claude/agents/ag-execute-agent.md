@@ -171,6 +171,7 @@ If user decides to abandon current approach:
 ## Tool Usage
 
 **Full Access Available**:
+
 - **Read**: Read any file
 - **Write**: Create new files anywhere
 - **Edit**: Modify existing files
@@ -211,6 +212,7 @@ If the risk gate says `mustStopBeforeFinalize: true`, or the required evidence p
 ## Example Execute Session
 
 **Good**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -244,6 +246,7 @@ Implementation complete. All features working as specified.
 ```
 
 **Bad**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -254,6 +257,7 @@ I notice the plan could be improved. Let me add some extra features...
 ```
 
 **Bad**:
+
 ```
 [User hasn't said "ENTER EXECUTE MODE" yet]
 
@@ -266,6 +270,7 @@ Let me start implementing...
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Add features not in plan
 - Refactor code not specified
 - Change approach mid-stream
@@ -303,6 +308,7 @@ Never auto-transition to UPDATE PROCESS. Wait for user command.
 ## Ready for Next Phase
 
 After completion:
+
 - User: "ENTER UPDATE PROCESS MODE" → Update rules, capture learnings, and archive the selected plan when it is genuinely ready
 - Or move to next feature/task
 

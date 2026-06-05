@@ -17,8 +17,8 @@
   <img src="../../assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*Được xây dựng bởi những kỹ sư hàng đầu, dành cho agent-skillsrs tại*<br>
-*[flowser.ai](https://flowser.ai) — AI Agents với máy tính cho GTM*
+_Được xây dựng bởi những kỹ sư hàng đầu, dành cho agent-skillsrs tại_<br>
+_[flowser.ai](https://flowser.ai) — AI Agents với máy tính cho GTM_
 
 <br>
 
@@ -33,7 +33,7 @@
   <strong>— Tanjiro Kamado</strong>
 </p>
 
-*Bộ meta harness này biến bất kỳ AI coding agent nào thành một đội ngũ kỹ sư spec-driven biết research, lên plan, ship code production-grade, và tự cải thiện bộ nhớ để sống sót qua context-rotting kể cả 6 tháng sau.*
+_Bộ meta harness này biến bất kỳ AI coding agent nào thành một đội ngũ kỹ sư spec-driven biết research, lên plan, ship code production-grade, và tự cải thiện bộ nhớ để sống sót qua context-rotting kể cả 6 tháng sau._
 
 🔬 Spec-driven development cho AI agents<br>
 📋 Tự động tạo PRDs, quản lý backlogs, route context tự động<br>
@@ -500,13 +500,13 @@ Mỗi feature đều có một **plan với phân tích blast radius** trước 
 
 **Mỗi plan bao gồm:**
 
-| Mục | Mục đích |
-|---|---|
-| 📍 **Touchpoints** | Mọi file sẽ được tạo hoặc sửa, liệt kê trước |
-| 📜 **Public contracts** | Những API surfaces hoặc interfaces nào thay đổi |
-| 💥 **Blast radius** | Cái gì có thể hỏng, tests nào cần chạy, cần theo dõi gì |
-| ✅ **Verification evidence** | Cách chứng minh implementation là đúng |
-| 🔄 **Resume handoff** | Đủ context để bất kỳ agent nào pick up giữa chừng plan |
+| Mục                          | Mục đích                                                |
+| ---------------------------- | ------------------------------------------------------- |
+| 📍 **Touchpoints**           | Mọi file sẽ được tạo hoặc sửa, liệt kê trước            |
+| 📜 **Public contracts**      | Những API surfaces hoặc interfaces nào thay đổi         |
+| 💥 **Blast radius**          | Cái gì có thể hỏng, tests nào cần chạy, cần theo dõi gì |
+| ✅ **Verification evidence** | Cách chứng minh implementation là đúng                  |
+| 🔄 **Resume handoff**        | Đủ context để bất kỳ agent nào pick up giữa chừng plan  |
 
 <br>
 
@@ -563,18 +563,18 @@ Mỗi feature hoàn thành đều feed learnings ngược lại vào context sys
 
 ## So sánh
 
-| Tính năng | agent-skills-kit | Superpowers | GSD | gstack |
-|---------|---------------------|-------------|-----|--------|
-| Spec-driven lifecycle | Full RIPER-5 (research → plan → execute → verify) | Mandatory workflows | Context-rot fix | Một phần |
-| Phase-locked safety | Tool restrictions theo mode (read-only research, no-write innovate) | Skill-based constraints | Phase separation | Không có |
-| Hỗ trợ nhiều tool | 7 tools qua AGENTS.md + native | Claude Code plugin | 14 runtimes | 1 tool |
-| Auto-improving context | Domain-routed context groups, cập nhật sau mỗi feature | Plugin memory | Disk-persisted state | Thủ công |
-| Team collaboration | Shared specs, plans, và review artifacts | Solo | Solo | Solo |
-| Hệ thống skills | 32 tự động discover, keyword-matched ở mỗi prompt | 86 composable skills | Meta-prompting | 23 role tools |
-| Multi-phase programs | Umbrella plans + vòng lặp phase-by-phase với regression checks | Single task | Single task | Single task |
-| Quality pipeline | Chuỗi 6 bước (code-review → test → simplify → security → audit → commit) | Per-skill quality | Không tự động | Không tự động |
-| Cài đặt | 30 giây `curl` install + auto-setup | Plugin marketplace | npx one-liner | git clone |
-| Context routing | Domain-based routing table với grouped context packs | Flat skill context | Flat context | Single file |
+| Tính năng              | agent-skills-kit                                                         | Superpowers             | GSD                  | gstack        |
+| ---------------------- | ------------------------------------------------------------------------ | ----------------------- | -------------------- | ------------- |
+| Spec-driven lifecycle  | Full RIPER-5 (research → plan → execute → verify)                        | Mandatory workflows     | Context-rot fix      | Một phần      |
+| Phase-locked safety    | Tool restrictions theo mode (read-only research, no-write innovate)      | Skill-based constraints | Phase separation     | Không có      |
+| Hỗ trợ nhiều tool      | 7 tools qua AGENTS.md + native                                           | Claude Code plugin      | 14 runtimes          | 1 tool        |
+| Auto-improving context | Domain-routed context groups, cập nhật sau mỗi feature                   | Plugin memory           | Disk-persisted state | Thủ công      |
+| Team collaboration     | Shared specs, plans, và review artifacts                                 | Solo                    | Solo                 | Solo          |
+| Hệ thống skills        | 32 tự động discover, keyword-matched ở mỗi prompt                        | 86 composable skills    | Meta-prompting       | 23 role tools |
+| Multi-phase programs   | Umbrella plans + vòng lặp phase-by-phase với regression checks           | Single task             | Single task          | Single task   |
+| Quality pipeline       | Chuỗi 6 bước (code-review → test → simplify → security → audit → commit) | Per-skill quality       | Không tự động        | Không tự động |
+| Cài đặt                | 30 giây `curl` install + auto-setup                                      | Plugin marketplace      | npx one-liner        | git clone     |
+| Context routing        | Domain-based routing table với grouped context packs                     | Flat skill context      | Flat context         | Single file   |
 
 > **Về độ rộng runtime:** GSD hỗ trợ 14 runtimes. Chúng tôi hỗ trợ 7 một cách sâu — với full agent harnesses, skill discovery, và lifecycle hooks trên mọi platform. Rộng vs. sâu: bạn chọn.
 
@@ -643,13 +643,13 @@ Orchestrator **không bao giờ tự làm việc** — nó route, monitor, và q
 
 ### 📊 Workflow
 
-| Phase | Chuyện gì xảy ra | Bạn nói |
-|-------|-------------|---------|
-| 🔍 **RESEARCH** | Fact gathering read-only — codebase + web | *(tự động với feature requests)* |
-| 💡 **INNOVATE** | Explore 2-3 approaches với trade-offs | `go` |
-| 📋 **PLAN** | Viết spec chi tiết để bạn review | `go` |
-| ⚡ **EXECUTE** | Implement đúng những gì đã plan | `ENTER EXECUTE MODE` |
-| 🧠 **UPDATE PROCESS** | Capture learnings, cập nhật context, archive plan | *(khuyến nghị sau non-trivial work)* |
+| Phase                 | Chuyện gì xảy ra                                  | Bạn nói                              |
+| --------------------- | ------------------------------------------------- | ------------------------------------ |
+| 🔍 **RESEARCH**       | Fact gathering read-only — codebase + web         | _(tự động với feature requests)_     |
+| 💡 **INNOVATE**       | Explore 2-3 approaches với trade-offs             | `go`                                 |
+| 📋 **PLAN**           | Viết spec chi tiết để bạn review                  | `go`                                 |
+| ⚡ **EXECUTE**        | Implement đúng những gì đã plan                   | `ENTER EXECUTE MODE`                 |
+| 🧠 **UPDATE PROCESS** | Capture learnings, cập nhật context, archive plan | _(khuyến nghị sau non-trivial work)_ |
 
 > 💡 **Shortcuts:** `ENTER FAST MODE - [task]` nén RESEARCH+INNOVATE+PLAN thành một lượt — vẫn pause trước EXECUTE. Trivial fixes (single file, <15 dòng, không schema/auth changes) nhảy thẳng vào execute.
 
@@ -837,13 +837,13 @@ flowchart TD
 
 <br>
 
-| Bước | Làm gì |
-|---|---|
-| 🔎 **Self-review** | Check mọi checklist item với plan để phát hiện deviations, document lại |
-| 🧪 **Tester** | Map changed files sang test files, auto-escalate lên full suite khi >70% được mapped |
-| 🔍 **Code reviewer** | Dispatch edge case scout TRƯỚC review, check N+1 queries, auth paths, data leaks |
-| ✨ **Simplifier** | Clarity refactoring sau khi review pass — không thay đổi behavior |
-| 📦 **Git manager** | Nhận danh sách `touched_files`, split thành logical conventional commits, từ chối unknown files |
+| Bước                 | Làm gì                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------- |
+| 🔎 **Self-review**   | Check mọi checklist item với plan để phát hiện deviations, document lại                         |
+| 🧪 **Tester**        | Map changed files sang test files, auto-escalate lên full suite khi >70% được mapped            |
+| 🔍 **Code reviewer** | Dispatch edge case scout TRƯỚC review, check N+1 queries, auth paths, data leaks                |
+| ✨ **Simplifier**    | Clarity refactoring sau khi review pass — không thay đổi behavior                               |
+| 📦 **Git manager**   | Nhận danh sách `touched_files`, split thành logical conventional commits, từ chối unknown files |
 
 ---
 
@@ -884,7 +884,7 @@ flowchart TD
 
 <br>
 
-> 💡 Sáu tháng sau, khi ai đó hỏi *"tại sao mình build auth kiểu này?"*, câu trả lời nằm trong `completed/`. Không bị trôi trong Slack thread.
+> 💡 Sáu tháng sau, khi ai đó hỏi _"tại sao mình build auth kiểu này?"_, câu trả lời nằm trong `completed/`. Không bị trôi trong Slack thread.
 
 <br>
 
@@ -967,14 +967,14 @@ flowchart TD
 
 **Tính năng chính:**
 
-| | Tính năng | Tại sao quan trọng |
-|---|---|---|
-| 🔄 | **Re-research mỗi phase** | Check code drift, đọc reports mới nhất, cập nhật assumptions |
-| ✅ | **Validation gates** | Phase chưa `VERIFIED` cho đến khi evidence chứng minh. Status trung thực: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` hoặc `BLOCKED` |
-| 📄 | **Durable reports** | Mỗi phase viết results xuống disk. Progress sống sót qua context compaction |
-| 🧠 | **Learnings feed forward** | Phát hiện Phase 1 cập nhật plan Phase 2 trước khi execute |
-| 🏗️ | **Foundation vs expansion** | Tách rõ "chứng minh architecture" khỏi "implement mọi thứ" |
-| 🚧 | **Honest blocker handling** | Phases bị blocked giữ nguyên `BLOCKED` với evidence. Không ép green status |
+|     | Tính năng                   | Tại sao quan trọng                                                                                                                        |
+| --- | --------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔄  | **Re-research mỗi phase**   | Check code drift, đọc reports mới nhất, cập nhật assumptions                                                                              |
+| ✅  | **Validation gates**        | Phase chưa `VERIFIED` cho đến khi evidence chứng minh. Status trung thực: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` hoặc `BLOCKED` |
+| 📄  | **Durable reports**         | Mỗi phase viết results xuống disk. Progress sống sót qua context compaction                                                               |
+| 🧠  | **Learnings feed forward**  | Phát hiện Phase 1 cập nhật plan Phase 2 trước khi execute                                                                                 |
+| 🏗️  | **Foundation vs expansion** | Tách rõ "chứng minh architecture" khỏi "implement mọi thứ"                                                                                |
+| 🚧  | **Honest blocker handling** | Phases bị blocked giữ nguyên `BLOCKED` với evidence. Không ép green status                                                                |
 
 ---
 
@@ -1005,12 +1005,12 @@ process/context/
 
 <br>
 
-| | Cách hoạt động |
-|---|---|
-| 🧭 **Router pattern** | Agents chỉ đọc cái liên quan đến task, không phải mọi thứ |
-| 📏 **Auto-promotion** | Topics có 3+ docs hoặc 800+ dòng tự có context group riêng |
-| 🔄 **Living docs** | Được cập nhật bởi `update-process-agent` sau mỗi feature non-trivial |
-| 🧪 **Auditable** | `ag-audit-context` verify routing và consistency |
+|                       | Cách hoạt động                                                       |
+| --------------------- | -------------------------------------------------------------------- |
+| 🧭 **Router pattern** | Agents chỉ đọc cái liên quan đến task, không phải mọi thứ            |
+| 📏 **Auto-promotion** | Topics có 3+ docs hoặc 800+ dòng tự có context group riêng           |
+| 🔄 **Living docs**    | Được cập nhật bởi `update-process-agent` sau mỗi feature non-trivial |
+| 🧪 **Auditable**      | `ag-audit-context` verify routing và consistency                     |
 
 ---
 
@@ -1031,12 +1031,12 @@ process/features/{feature}/
 
 <br>
 
-| | Chuyện gì xảy ra |
-|---|---|
-| 🆕 | Công việc mới bắt đầu ở `active/` → reports tích lũy → plan archive vào `completed/` |
-| 📌 | Công việc trì hoãn vào `backlog/` — agents check trước khi tạo plans trùng lặp |
-| 📦 | Feature promotion tự động khi general artifacts đạt 5+ |
-| 🔍 | Mỗi feature có lịch sử hoàn chỉnh, khép kín — plans, decisions, reports, research |
+|     | Chuyện gì xảy ra                                                                     |
+| --- | ------------------------------------------------------------------------------------ |
+| 🆕  | Công việc mới bắt đầu ở `active/` → reports tích lũy → plan archive vào `completed/` |
+| 📌  | Công việc trì hoãn vào `backlog/` — agents check trước khi tạo plans trùng lặp       |
+| 📦  | Feature promotion tự động khi general artifacts đạt 5+                               |
+| 🔍  | Mỗi feature có lịch sử hoàn chỉnh, khép kín — plans, decisions, reports, research    |
 
 ---
 
@@ -1053,27 +1053,27 @@ process/features/{feature}/
 
 **Core workflow agents** — mỗi agent cho một phase RIPER-5:
 
-| Agent | Vai trò |
-|-------|------|
-| 🔍 `ag-research-agent` | Codebase + web research, read-only. Có contradiction tracking |
-| 💡 `ag-innovate-agent` | Brainstorm 2-3 approaches. Phải tạo decision summary trước PLAN |
-| 📋 `ag-plan-agent` | Viết spec với anti-rationalization guards. "Tôi đã biết cách" không phải là plan |
-| ⚡ `ag-execute-agent` | Implement theo plan. 50% check-in, deviation protocol, self-review |
-| ⏩ `ag-fast-mode-agent` | RESEARCH→INNOVATE→PLAN nén lại với safety pause bắt buộc |
-| 🧠 `ag-update-process-agent` | Checklist bắt buộc 7 bước bao gồm quét stale artifacts |
+| Agent                        | Vai trò                                                                          |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| 🔍 `ag-research-agent`       | Codebase + web research, read-only. Có contradiction tracking                    |
+| 💡 `ag-innovate-agent`       | Brainstorm 2-3 approaches. Phải tạo decision summary trước PLAN                  |
+| 📋 `ag-plan-agent`           | Viết spec với anti-rationalization guards. "Tôi đã biết cách" không phải là plan |
+| ⚡ `ag-execute-agent`        | Implement theo plan. 50% check-in, deviation protocol, self-review               |
+| ⏩ `ag-fast-mode-agent`      | RESEARCH→INNOVATE→PLAN nén lại với safety pause bắt buộc                         |
+| 🧠 `ag-update-process-agent` | Checklist bắt buộc 7 bước bao gồm quét stale artifacts                           |
 
 <br>
 
 **Specialist agents** — được gọi trong EXECUTE hoặc standalone:
 
-| Agent | Vai trò |
-|-------|------|
-| 🐛 `ag-debugger` | Evidence-before-hypothesis. Competing hypotheses, elimination chains |
-| 🧪 `ag-tester` | Diff-aware. Chỉ chạy affected tests. Auto-escalate khi config thay đổi |
-| 🔎 `ag-code-reviewer` | Edge case scout TRƯỚC review. N+1 detection, auth path validation |
-| ✨ `ag-code-simplifier` | Clarity refactoring không thay đổi behavior |
-| 🎨 `ag-ui-ux-designer` | Design-aware frontend. Có thể spawn research subagent giữa execution |
-| 📦 `ag-git-manager` | Logical commit splitting từ `touched_files`. Từ chối unknown files |
+| Agent                   | Vai trò                                                                |
+| ----------------------- | ---------------------------------------------------------------------- |
+| 🐛 `ag-debugger`        | Evidence-before-hypothesis. Competing hypotheses, elimination chains   |
+| 🧪 `ag-tester`          | Diff-aware. Chỉ chạy affected tests. Auto-escalate khi config thay đổi |
+| 🔎 `ag-code-reviewer`   | Edge case scout TRƯỚC review. N+1 detection, auth path validation      |
+| ✨ `ag-code-simplifier` | Clarity refactoring không thay đổi behavior                            |
+| 🎨 `ag-ui-ux-designer`  | Design-aware frontend. Có thể spawn research subagent giữa execution   |
+| 📦 `ag-git-manager`     | Logical commit splitting từ `touched_files`. Từ chối unknown files     |
 
 </details>
 
@@ -1106,15 +1106,15 @@ process/features/{feature}/
 
 ### 🪝 7 Hooks
 
-| Hook | Chức năng |
-|------|-------------|
-| 🔐 **Privacy guardrails** | Chặn `.env`, credentials, SSH keys. Yêu cầu phê duyệt rõ ràng |
-| 🚫 **Scout blocker** | Ngăn agent lang thang vào `node_modules/`, `dist/`. Gitignore-syntax `.ckignore` |
-| 🧠 **Session init** | Detect stack, inject env vars, khôi phục approval gates sau compaction |
-| 💉 **Subagent context** | Inject ~200 token compact context block vào mỗi subagent |
-| ✨ **Edit quality** | Sau 5+ edits, nhắc chạy code-simplifier (non-blocking, throttled) |
-| 📛 **Descriptive naming** | Language-aware file naming conventions trên mọi Write |
-| 📊 **Usage tracking** | Session metrics và token awareness |
+| Hook                      | Chức năng                                                                        |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| 🔐 **Privacy guardrails** | Chặn `.env`, credentials, SSH keys. Yêu cầu phê duyệt rõ ràng                    |
+| 🚫 **Scout blocker**      | Ngăn agent lang thang vào `node_modules/`, `dist/`. Gitignore-syntax `.ckignore` |
+| 🧠 **Session init**       | Detect stack, inject env vars, khôi phục approval gates sau compaction           |
+| 💉 **Subagent context**   | Inject ~200 token compact context block vào mỗi subagent                         |
+| ✨ **Edit quality**       | Sau 5+ edits, nhắc chạy code-simplifier (non-blocking, throttled)                |
+| 📛 **Descriptive naming** | Language-aware file naming conventions trên mọi Write                            |
+| 📊 **Usage tracking**     | Session metrics và token awareness                                               |
 
 <br>
 

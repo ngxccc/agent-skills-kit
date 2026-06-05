@@ -3,7 +3,10 @@
 > **Project Note:** The main app database is Prisma over PostgreSQL. API tests usually use the PGlite-backed Prisma helper from `@sassy/db/test`, while container-local skill apps may still use SQLite and Drizzle. Choose the database pattern by layer instead of treating Drizzle/SQLite as the main app database.
 >
 > ```typescript
-> import { closeTestPrismaClient, createTestPrismaClient } from "@sassy/db/test";
+> import {
+>   closeTestPrismaClient,
+>   createTestPrismaClient,
+> } from "@sassy/db/test";
 >
 > const db = await createTestPrismaClient();
 > // ...run isolated API assertions...
@@ -25,17 +28,15 @@ pnpm add -D @testcontainers/mongodb
 ### PostgreSQL Example
 
 ```typescript
-import { PostgreSqlContainer } from '@testcontainers/postgresql';
-import { Pool } from 'pg';
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
+import { Pool } from "pg";
 
-describe('User Repository', () => {
+describe("User Repository", () => {
   let container: PostgreSqlContainer;
   let pool: Pool;
 
   beforeAll(async () => {
-    container = await new PostgreSqlContainer()
-      .withDatabase('testdb')
-      .start();
+    container = await new PostgreSqlContainer().withDatabase("testdb").start();
 
     pool = new Pool({ connectionString: container.getConnectionUri() });
     await runMigrations(pool);
@@ -47,12 +48,12 @@ describe('User Repository', () => {
   });
 
   afterEach(async () => {
-    await pool.query('TRUNCATE users RESTART IDENTITY CASCADE');
+    await pool.query("TRUNCATE users RESTART IDENTITY CASCADE");
   });
 
-  it('creates user', async () => {
+  it("creates user", async () => {
     const repo = new UserRepository(pool);
-    const user = await repo.create({ email: 'test@example.com' });
+    const user = await repo.create({ email: "test@example.com" });
     expect(user.id).toBeDefined();
   });
 });
@@ -61,10 +62,10 @@ describe('User Repository', () => {
 ### MongoDB Example
 
 ```typescript
-import { MongoDBContainer } from '@testcontainers/mongodb';
-import mongoose from 'mongoose';
+import { MongoDBContainer } from "@testcontainers/mongodb";
+import mongoose from "mongoose";
 
-describe('User Repository', () => {
+describe("User Repository", () => {
   let container: MongoDBContainer;
 
   beforeAll(async () => {
@@ -88,7 +89,7 @@ describe('User Repository', () => {
 ## Transaction Rollback Pattern
 
 ```typescript
-describe('User Service', () => {
+describe("User Service", () => {
   let transaction: Transaction;
 
   beforeEach(async () => {
@@ -99,9 +100,9 @@ describe('User Service', () => {
     await transaction.rollback(); // Always rollback
   });
 
-  it('creates user within transaction', async () => {
+  it("creates user within transaction", async () => {
     const service = new UserService(transaction);
-    await service.create({ email: 'test@example.com' });
+    await service.create({ email: "test@example.com" });
     // Transaction rolls back - no cleanup needed
   });
 });
@@ -111,22 +112,25 @@ describe('User Service', () => {
 
 ```typescript
 // fixtures/db.ts
-import { test as base } from '@playwright/test';
-import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { test as base } from "@playwright/test";
+import { PostgreSqlContainer } from "@testcontainers/postgresql";
 
 export const test = base.extend<{ db: Pool }>({
-  db: [async ({}, use, testInfo) => {
-    const container = await new PostgreSqlContainer().start();
-    const pool = new Pool({ connectionString: container.getConnectionUri() });
+  db: [
+    async ({}, use, testInfo) => {
+      const container = await new PostgreSqlContainer().start();
+      const pool = new Pool({ connectionString: container.getConnectionUri() });
 
-    // Seed per-worker data
-    await seedData(pool, testInfo.workerIndex);
+      // Seed per-worker data
+      await seedData(pool, testInfo.workerIndex);
 
-    await use(pool);
+      await use(pool);
 
-    await pool.end();
-    await container.stop();
-  }, { scope: 'worker' }]
+      await pool.end();
+      await container.stop();
+    },
+    { scope: "worker" },
+  ],
 });
 ```
 
@@ -134,10 +138,10 @@ export const test = base.extend<{ db: Pool }>({
 
 ```typescript
 // SQLite in-memory (faster, less realistic)
-const db = new Database(':memory:');
+const db = new Database(":memory:");
 
 // PGlite (Postgres in browser/Node)
-import { PGlite } from '@electric-sql/pglite';
+import { PGlite } from "@electric-sql/pglite";
 const db = new PGlite();
 ```
 

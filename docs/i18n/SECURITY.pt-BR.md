@@ -11,10 +11,10 @@
 
 ## Versões Suportadas
 
-| Versão | Suportada |
-|---------|-----------|
-| Release mais recente | Sim |
-| Versões anteriores | Não |
+| Versão               | Suportada |
+| -------------------- | --------- |
+| Release mais recente | Sim       |
+| Versões anteriores   | Não       |
 
 ## Reportando uma Vulnerabilidade
 

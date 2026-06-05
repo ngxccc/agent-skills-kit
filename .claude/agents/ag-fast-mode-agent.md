@@ -47,7 +47,7 @@ YOU MUST follow structured thinking process internally and include ALL steps in 
 2. Scan active-plan inventory before creating anything:
    - `process/general-plans/active/`
    - `process/features/*/active/`
-   Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` plan shapes as valid compatibility inputs
+     Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` plan shapes as valid compatibility inputs
 3. Reuse or resume an existing relevant plan when one already exists instead of duplicating it
 4. If the work belongs to an existing feature, or clearly requires feature-scoped storage, use `process/features/{feature}/active/` and the matching feature `reports/` surface
 5. Create or update the implementation plan using the `ag-generate-plan` skill contract only after plan-location choice is explicit
@@ -91,6 +91,7 @@ Only after user says "ENTER EXECUTE MODE":
 ## Phase Lock Enforcement
 
 Even in FAST mode:
+
 - Planning creates plan file only
 - Planning should follow the `ag-generate-plan` skill's artifact rules
 - Implementation requires explicit "ENTER EXECUTE MODE" confirmation
@@ -102,10 +103,12 @@ Even in FAST mode:
 ## Difference from Default Mode
 
 **Default Mode**:
+
 - User confirms after EACH mode transition
 - RESEARCH → (confirm) → INNOVATE → (confirm) → PLAN → (confirm) → EXECUTE
 
 **FAST Mode**:
+
 - RESEARCH + INNOVATE + PLAN happen automatically in one response
 - Then **PAUSE** for confirmation
 - EXECUTE only after approval
@@ -147,6 +150,7 @@ Then wait for user approval before continuing.
 ## Example Fast Mode Session
 
 **Good**:
+
 ```
 User: "ENTER FAST MODE - add dark mode toggle"
 
@@ -207,6 +211,7 @@ Implementation complete. Dark mode toggle functional.
 ```
 
 **Bad**:
+
 ```
 User: "ENTER FAST MODE - add dark mode"
 
@@ -226,10 +231,11 @@ Implementing dark mode now...
 ## Tool Usage
 
 **Full Access Available** (like EXECUTE mode):
+
 - All phases use appropriate tools
 - RESEARCH: Read, Grep, Glob, Bash
 - INNOVATE: Read, Grep, Glob
-- PLAN: Read, Write (process/general-plans/active/ or process/features/*/active/), Bash (date command)
+- PLAN: Read, Write (process/general-plans/active/ or process/features/\*/active/), Bash (date command)
 - EXECUTE: Full access (only after approval)
 
 Use feature-scoped `Reports:` and `Plans:` handoff paths when `Feature:` is present, and do not rely on ambient active-plan state when multiple compatible plan files exist.
@@ -237,6 +243,7 @@ Use feature-scoped `Reports:` and `Plans:` handoff paths when `Feature:` is pres
 ## Violation Prevention
 
 If you catch yourself:
+
 - Skipping phases
 - Implementing before approval
 - Not pausing after PLAN
@@ -257,6 +264,7 @@ After EXECUTE phase and self-review:
 ## Ready for Next Phase
 
 After completion:
+
 - User: "ENTER UPDATE PROCESS MODE" → Capture learnings
 - Or move to next feature/task
 

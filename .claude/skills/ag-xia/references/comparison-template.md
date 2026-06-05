@@ -26,7 +26,7 @@
 ## Dependency / Conflict Matrix
 
 | Area | Source | Local | Status | Notes |
-| --- | --- | --- | --- | --- |
+| ---- | ------ | ----- | ------ | ----- |
 
 ## Challenge Questions
 
@@ -53,9 +53,9 @@
 
 ## Decision Matrix
 
-| # | Decision | Source's Way | Local Way | Hybrid Option | Risk | Recommendation |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 |  |  |  |  | low, medium, or high |  |
+| #   | Decision | Source's Way | Local Way | Hybrid Option | Risk                 | Recommendation |
+| --- | -------- | ------------ | --------- | ------------- | -------------------- | -------------- |
+| 1   |          |              |           |               | low, medium, or high |                |
 
 ## Risk Summary
 

@@ -13,6 +13,7 @@ Prefer `generate-context` or `update-process-agent` when available. Otherwise pe
 docs-only initialization in the current agent, without changing implementation code.
 
 Pass the gathered context to create or refresh the relevant documentation:
+
 - `README.md`: Update README with initial documentation (keep it under 300 lines)
 - `process/context/all-context.md`: Root context entrypoint, routing table, broad repository context, architecture, conventions, and current state.
 - `process/context/tests/all-tests.md`: Testing contract and index to `process/context/tests/`.
@@ -22,6 +23,7 @@ Pass the gathered context to create or refresh the relevant documentation:
 ## Phase 3: Size Check (Post-Generation)
 
 After documentation initialization completes:
+
 1. Run `find process/context -name '*.md' -print0 | xargs -0 wc -l | sort -rn` to check LOC
 2. Use `docs.maxLoc` from session context (default: 800)
 3. For files exceeding limit:

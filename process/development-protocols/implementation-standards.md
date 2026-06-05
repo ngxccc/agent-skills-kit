@@ -27,6 +27,7 @@
 - Use Context7 for library and API docs or setup guidance.
 - Use `gh` for GitHub automation when needed.
 - For database debugging, follow the current repo stack and context docs; do not assume Drizzle or SQLite unless the specific package actually uses them.
+- Markdown formatting: Always format markdown files using Prettier.
 
 ## Quality Gates
 

@@ -42,6 +42,7 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 ### Phase 2: Improvement Generation
 
 Categorize potential improvements by target rule file:
+
 - **Code Standards / Tech Stack** → `process/development-protocols/implementation-standards.md`
 - **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `CLAUDE.md` or `AGENTS.md` if adapter guidance must change
 - **Mode Orchestration** → `process/development-protocols/orchestration.md`
@@ -49,6 +50,7 @@ Categorize potential improvements by target rule file:
 - **Skills** → `.agents/skills/`
 
 Format each improvement as:
+
 ```
 [Number]. [Category] - [Target File]
 Summary: [Concise description]
@@ -60,11 +62,13 @@ Location: [Where in file - section name or append location]
 **MANDATORY: You MUST check ALL of the following categories every time. Do NOT skip any.**
 
 **1. Memory Updates** (learnings, patterns, user preferences):
+
 - Capture stable patterns confirmed during execution
 - Update or correct existing memory entries that are wrong
 - Add new entries for reusable knowledge
 
 **2. Plan File Updates** (if `process/general-plans/active/[feature]_PLAN_*.md` exists):
+
 - Mark Phase X as complete (✅)
 - Update "What's Functional Now" with [specific additions]
 - Document deviations: [list specific deviations from self-review]
@@ -74,6 +78,7 @@ Location: [Where in file - section name or append location]
   - `process/features/{feature}/completed/` (for feature-scoped plans)
 
 **2b. Phase Program Updates** (if the work used an umbrella plan plus per-phase plans):
+
 - Determine whether this was a normal one-plan task or a phase program under `process/features/{feature}/`
 - For phase programs, check ALL of the following:
   - Which phase plans are now `✅ VERIFIED`
@@ -89,12 +94,14 @@ Location: [Where in file - section name or append location]
   - do NOT keep the old feature artificially "in progress" just because future adjacent work exists
 
 **3. Feature List Sync — ALWAYS CHECK THIS:**
+
 - Run `ls process/features/` and compare to the **Current features** list in `CLAUDE.md` and `AGENTS.md`
 - If a new feature folder exists that isn't in the list → update the list
 - If a listed feature folder no longer exists → remove it from the list
 - If general artifacts (plans/reports/references) for a single topic have reached 5+ → flag for promotion and ask user
 
 **4. Context File Updates — ALWAYS CHECK THIS:**
+
 - **This is NOT optional.** Every implementation session changes the codebase. You MUST scan `process/context/` and propose updates for affected files.
 - Read `process/context/all-context.md` first. It is the context router and grouping protocol.
 - Run `find process/context -maxdepth 2 -name '*.md' | sort` to see root files and grouped docs.
@@ -123,6 +130,7 @@ Location: [Where in file - section name or append location]
   - explicitly trigger or recommend the `ag-audit-context` skill before claiming the context layer is fully reconciled
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
+
 - Check `.agents/skills/`, `.claude/agents/`, and `.codex/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
@@ -137,6 +145,7 @@ Location: [Where in file - section name or append location]
 - If structural context changes happened, `ag-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
 
 **5b. Mirror Discipline — ALWAYS CHECK THIS:**
+
 - If shared workflow behavior changed, explicitly review all of:
   - `process/development-protocols/`
   - `AGENTS.md`
@@ -154,6 +163,7 @@ Location: [Where in file - section name or append location]
 - Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces mirror those sources rather than inventing parallel truth.
 
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
+
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"
 - Look for phrases like: "skip for now", "we'll do this later", "not in scope", "defer", "parking this", "out of scope", "TODO", "future work"
 - For each deferred item, determine the correct destination:
@@ -178,6 +188,7 @@ Location: [Where in file - section name or append location]
 - Present deferred items to user for approval alongside other improvements in Phase 3
 
 **7. Stale Artifact Scan -- ALWAYS CHECK THIS:**
+
 - When archiving a plan from `active/` to `completed/`, scan the sibling `reports/` and `references/` directories for related artifacts
 - Match artifacts to the plan being archived using these heuristics:
   - (a) Filename contains the plan's feature slug
@@ -204,17 +215,20 @@ Location: [Where in file - section name or append location]
 For each approved improvement:
 
 **Memory Storage**:
+
 - Store durable shared project knowledge in `process/context/`.
 - If the user explicitly asks to update Claude-specific project memory, write to `~/.claude/projects/[project-slug]/memory/` using the existing memory format.
 - Codex does not have a separate repo-local project-memory mirror.
 
 **Rule File Updates**:
+
 - Read target file
 - Check for overlap with existing content
 - Append to relevant section or integrate contextually
 - Validate format compliance
 
 **Plan Updates**:
+
 - Update `process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md`
 - Mark phases complete (✅)
 - Update "What's Functional Now"
@@ -225,6 +239,7 @@ For each approved improvement:
   - needs reconciliation before archival
 
 **Phase Program Updates**:
+
 - For umbrella/phase-plan programs, update the selected feature folder as a coordinated set:
   - umbrella/orchestration plan
   - current phase plan
@@ -239,6 +254,7 @@ For each approved improvement:
 - If execution exposed a well-defined missing downstream lane, create the new phase plan or follow-up artifact in this mode and update the umbrella or parent plan so the next path is explicit.
 
 **Context Updates**:
+
 - Read `process/context/all-context.md` first to identify the owning root file or context group.
 - Use `process/context/tests/all-tests.md` as the verification router whenever test commands, runner selection, or validation-gate truth changed.
 - Scan `process/context/` to identify ALL context files and groups:
@@ -276,18 +292,22 @@ For each approved improvement:
 | `skill-apps.md` | Vite skill apps infrastructure, gateway proxy, supervisord lifecycle |
 
 **Registry auto-update rule**: After every UPDATE PROCESS session, run:
+
 ```bash
 find process/context -maxdepth 2 -name '*.md' | sort
 ```
+
 Compare the output against `process/context/all-context.md`, group `all-*.md` entrypoints, and the registry table above. For any file present on disk but missing from the router/index, add it with a one-line description derived from the first heading and overview paragraph. Edit this agent file directly only when the set of durable context entrypoints changes.
 
 **Context grouping rule**: If a topic has 3+ durable docs, a context file exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly need one slice of a large context file, propose a new context group. Do not move files without user approval. After any context grouping change, run:
+
 ```bash
 node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
 ```
 
 **Cross-surface mirror validation**:
 If workflow/process/agent/skill files changed, run:
+
 ```bash
 node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
 node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
@@ -335,6 +355,7 @@ mv {source-dir}/{artifact-name} {sibling-completed}/completed_{artifact-name}
 ### Phase 5: Final Review
 
 List all changes made:
+
 - Memory entries created (with titles)
 - Rule files modified (with sections updated)
 - Specific content added/modified
@@ -345,6 +366,7 @@ List all changes made:
 Provide summary of enhancement impact.
 
 **Required final checklist**:
+
 - Claude surface updated or explicitly unchanged with reason
 - Codex surface updated or explicitly unchanged with reason
 - `process/` docs updated or explicitly unchanged with reason
@@ -370,6 +392,7 @@ When archiving completed plans, follow this sequence to prevent duplicates:
 5. **Verify & Cleanup**: After move, explicitly verify source file is gone and delete if it remains
 
 **Implementation sequence**:
+
 ```bash
 # 1. All search_replace operations to update plan status
 # (completed in Phase 4)
@@ -392,6 +415,7 @@ mv process/general-plans/active/feature_PLAN_dd-mm-yy.md \
 **Rationale**: Editors may re-save files with pending edits after `mv` command executes, causing original to remain. Explicit verification ensures no duplicates.
 
 **Closeout rule**:
+
 - UPDATE PROCESS is the default archival/context-reconciliation path after non-trivial EXECUTE work.
 - If the selected plan is not genuinely ready to archive, say so explicitly and leave it in `active/`.
 - If cleanup debt is broader than the selected plan, suggest `ag-audit-plans` as a follow-up maintenance step rather than silently normalizing unrelated plans.
@@ -412,6 +436,7 @@ Never skip Phase 3 approval collection. Do not silently implement proposed impro
 ## Example Update Process Session
 
 **Good**:
+
 ```
 User: "ENTER UPDATE PROCESS MODE"
 
@@ -473,6 +498,7 @@ UPDATE PROCESS complete. Ready for next task.
 ```
 
 **Good — phase program closeout**:
+
 ```text
 User: "ENTER UPDATE PROCESS MODE"
 
@@ -495,6 +521,7 @@ Approved updates:
 ## Violation Prevention
 
 This mode is systematic. Follow all 6 phases in order:
+
 - Don't skip Phase 3 approval collection
 - Don't implement before getting approval
 - Don't forget to update plan and context when applicable

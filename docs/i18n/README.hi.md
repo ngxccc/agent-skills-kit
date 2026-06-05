@@ -17,8 +17,8 @@
   <img src="assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*विश्वस्तरीय इंजीनियरों द्वारा निर्मित, agent-skillsrs के लिए*<br>
-*[flowser.ai](https://flowser.ai) — GTM के लिए कंप्यूटर वाले AI Agents*
+_विश्वस्तरीय इंजीनियरों द्वारा निर्मित, agent-skillsrs के लिए_<br>
+_[flowser.ai](https://flowser.ai) — GTM के लिए कंप्यूटर वाले AI Agents_
 
 <br>
 
@@ -502,13 +502,13 @@ Design-aware agent आपका mockup analyze करता है, आपके
 
 **हर plan में क्या होता है:**
 
-| Section | उद्देश्य |
-|---|---|
-| 📍 **Touchpoints** | हर वह file जो बनाई या modify की जाएगी, upfront listed |
-| 📜 **Public contracts** | कौन से API surfaces या interfaces बदलते हैं |
-| 💥 **Blast radius** | क्या break हो सकता है, कौन से tests चलाने हैं, क्या देखना है |
-| ✅ **Verification evidence** | Implementation सही है यह कैसे साबित करें |
-| 🔄 **Resume handoff** | किसी भी agent के लिए mid-plan pick up करने के लिए पर्याप्त context |
+| Section                      | उद्देश्य                                                           |
+| ---------------------------- | ------------------------------------------------------------------ |
+| 📍 **Touchpoints**           | हर वह file जो बनाई या modify की जाएगी, upfront listed              |
+| 📜 **Public contracts**      | कौन से API surfaces या interfaces बदलते हैं                        |
+| 💥 **Blast radius**          | क्या break हो सकता है, कौन से tests चलाने हैं, क्या देखना है       |
+| ✅ **Verification evidence** | Implementation सही है यह कैसे साबित करें                           |
+| 🔄 **Resume handoff**        | किसी भी agent के लिए mid-plan pick up करने के लिए पर्याप्त context |
 
 <br>
 
@@ -565,18 +565,18 @@ process/context/
 
 ## तुलना
 
-| Feature | agent-skills-kit | Superpowers | GSD | gstack |
-|---------|---------------------|-------------|-----|--------|
-| Spec-driven lifecycle | Full RIPER-5 (research → plan → execute → verify) | Mandatory workflows | Context-rot fix | Partial |
-| Phase-locked safety | Tool restrictions per mode (read-only research, no-write innovate) | Skill-based constraints | Phase separation | None |
-| Multi-tool support | 7 tools via AGENTS.md + native | Claude Code plugin | 14 runtimes | 1 tool |
-| Auto-improving context | Domain-routed context groups, updates after every feature | Plugin memory | Disk-persisted state | Manual |
-| Team collaboration | Shared specs, plans, and review artifacts | Solo | Solo | Solo |
-| Skills system | 32 auto-discovered, keyword-matched at every prompt | 86 composable skills | Meta-prompting | 23 role tools |
-| Multi-phase programs | Umbrella plans + phase-by-phase execution loop with regression checks | Single task | Single task | Single task |
-| Quality pipeline | 6-step chain (code-review → test → simplify → security → audit → commit) | Per-skill quality | No auto-chain | No auto-chain |
-| Installation | 30-second `curl` install + auto-setup | Plugin marketplace | npx one-liner | git clone |
-| Context routing | Domain-based routing table with grouped context packs | Flat skill context | Flat context | Single file |
+| Feature                | agent-skills-kit                                                         | Superpowers             | GSD                  | gstack        |
+| ---------------------- | ------------------------------------------------------------------------ | ----------------------- | -------------------- | ------------- |
+| Spec-driven lifecycle  | Full RIPER-5 (research → plan → execute → verify)                        | Mandatory workflows     | Context-rot fix      | Partial       |
+| Phase-locked safety    | Tool restrictions per mode (read-only research, no-write innovate)       | Skill-based constraints | Phase separation     | None          |
+| Multi-tool support     | 7 tools via AGENTS.md + native                                           | Claude Code plugin      | 14 runtimes          | 1 tool        |
+| Auto-improving context | Domain-routed context groups, updates after every feature                | Plugin memory           | Disk-persisted state | Manual        |
+| Team collaboration     | Shared specs, plans, and review artifacts                                | Solo                    | Solo                 | Solo          |
+| Skills system          | 32 auto-discovered, keyword-matched at every prompt                      | 86 composable skills    | Meta-prompting       | 23 role tools |
+| Multi-phase programs   | Umbrella plans + phase-by-phase execution loop with regression checks    | Single task             | Single task          | Single task   |
+| Quality pipeline       | 6-step chain (code-review → test → simplify → security → audit → commit) | Per-skill quality       | No auto-chain        | No auto-chain |
+| Installation           | 30-second `curl` install + auto-setup                                    | Plugin marketplace      | npx one-liner        | git clone     |
+| Context routing        | Domain-based routing table with grouped context packs                    | Flat skill context      | Flat context         | Single file   |
 
 > **Runtime breadth के बारे में:** GSD 14 runtimes support करता है। हम 7 को गहराई से support करते हैं — हर platform पर full agent harnesses, skill discovery, और lifecycle hooks के साथ। Breadth बनाम depth: आपकी पसंद।
 
@@ -645,13 +645,13 @@ Orchestrator **खुद कभी काम नहीं करता** — य
 
 ### 📊 Workflow
 
-| Phase | क्या होता है | आप कहते हैं |
-|-------|-------------|---------|
-| 🔍 **RESEARCH** | Read-only fact gathering — codebase + web | *(feature requests पर automatic)* |
-| 💡 **INNOVATE** | Trade-offs के साथ 2-3 approaches explore करना | `go` |
-| 📋 **PLAN** | एक detailed spec लिखना जिसे आप review कर सकें | `go` |
-| ⚡ **EXECUTE** | बिल्कुल plan के अनुसार implement करना | `ENTER EXECUTE MODE` |
-| 🧠 **UPDATE PROCESS** | Learnings capture करना, context update करना, plan archive करना | *(non-trivial काम के बाद recommended)* |
+| Phase                 | क्या होता है                                                   | आप कहते हैं                            |
+| --------------------- | -------------------------------------------------------------- | -------------------------------------- |
+| 🔍 **RESEARCH**       | Read-only fact gathering — codebase + web                      | _(feature requests पर automatic)_      |
+| 💡 **INNOVATE**       | Trade-offs के साथ 2-3 approaches explore करना                  | `go`                                   |
+| 📋 **PLAN**           | एक detailed spec लिखना जिसे आप review कर सकें                  | `go`                                   |
+| ⚡ **EXECUTE**        | बिल्कुल plan के अनुसार implement करना                          | `ENTER EXECUTE MODE`                   |
+| 🧠 **UPDATE PROCESS** | Learnings capture करना, context update करना, plan archive करना | _(non-trivial काम के बाद recommended)_ |
 
 > 💡 **Shortcuts:** `ENTER FAST MODE - [task]` RESEARCH+INNOVATE+PLAN को एक pass में compress करता है — EXECUTE से पहले फिर भी pause करता है। Trivial fixes (single file, <15 lines, कोई schema/auth changes नहीं) सीधे execute पर जाती हैं।
 
@@ -839,13 +839,13 @@ flowchart TD
 
 <br>
 
-| Step | क्या करता है |
-|---|---|
-| 🔎 **Self-review** | Deviations के लिए plan के विरुद्ध हर checklist item check करता है, document करता है |
-| 🧪 **Tester** | Changed files को test files से map करता है, >70% mapped होने पर full suite तक auto-escalate करता है |
-| 🔍 **Code reviewer** | Review से पहले edge case scout dispatch करता है, N+1 queries, auth paths, data leaks check करता है |
-| ✨ **Simplifier** | Review pass होने के बाद clarity refactoring — कोई behavior changes नहीं |
-| 📦 **Git manager** | `touched_files` list receive करता है, logical conventional commits में split करता है, unknown files refuse करता है |
+| Step                 | क्या करता है                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 🔎 **Self-review**   | Deviations के लिए plan के विरुद्ध हर checklist item check करता है, document करता है                                |
+| 🧪 **Tester**        | Changed files को test files से map करता है, >70% mapped होने पर full suite तक auto-escalate करता है                |
+| 🔍 **Code reviewer** | Review से पहले edge case scout dispatch करता है, N+1 queries, auth paths, data leaks check करता है                 |
+| ✨ **Simplifier**    | Review pass होने के बाद clarity refactoring — कोई behavior changes नहीं                                            |
+| 📦 **Git manager**   | `touched_files` list receive करता है, logical conventional commits में split करता है, unknown files refuse करता है |
 
 ---
 
@@ -886,7 +886,7 @@ flowchart TD
 
 <br>
 
-> 💡 छह महीने बाद, जब कोई पूछेगा *"हमने auth इस तरह क्यों बनाया?"*, तो जवाब `completed/` में होगा। किसी Slack thread में खोया नहीं।
+> 💡 छह महीने बाद, जब कोई पूछेगा _"हमने auth इस तरह क्यों बनाया?"_, तो जवाब `completed/` में होगा। किसी Slack thread में खोया नहीं।
 
 <br>
 
@@ -969,14 +969,14 @@ flowchart TD
 
 **मुख्य features:**
 
-| | Feature | क्यों ज़रूरी है |
-|---|---|---|
-| 🔄 | **हर phase पर Re-research** | Code drift check करता है, latest reports पढ़ता है, assumptions update करता है |
-| ✅ | **Validation gates** | Phase `VERIFIED` नहीं है जब तक evidence prove न करे। Honest status: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` या `BLOCKED` |
-| 📄 | **Durable reports** | हर phase results disk पर लिखती है। Progress context compaction से बचती है |
-| 🧠 | **Learnings आगे feed होती हैं** | Phase 1 की discoveries execution से पहले Phase 2 के plan को update करती हैं |
-| 🏗️ | **Foundation बनाम expansion** | "Architecture prove करो" और "सब कुछ implement करो" को explicitly split करता है |
-| 🚧 | **Honest blocker handling** | Blocked phases evidence के साथ `BLOCKED` रहती हैं। कोई green status force नहीं होता |
+|     | Feature                         | क्यों ज़रूरी है                                                                                                                   |
+| --- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| 🔄  | **हर phase पर Re-research**     | Code drift check करता है, latest reports पढ़ता है, assumptions update करता है                                                     |
+| ✅  | **Validation gates**            | Phase `VERIFIED` नहीं है जब तक evidence prove न करे। Honest status: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` या `BLOCKED` |
+| 📄  | **Durable reports**             | हर phase results disk पर लिखती है। Progress context compaction से बचती है                                                         |
+| 🧠  | **Learnings आगे feed होती हैं** | Phase 1 की discoveries execution से पहले Phase 2 के plan को update करती हैं                                                       |
+| 🏗️  | **Foundation बनाम expansion**   | "Architecture prove करो" और "सब कुछ implement करो" को explicitly split करता है                                                    |
+| 🚧  | **Honest blocker handling**     | Blocked phases evidence के साथ `BLOCKED` रहती हैं। कोई green status force नहीं होता                                               |
 
 ---
 
@@ -1007,12 +1007,12 @@ process/context/
 
 <br>
 
-| | कैसे काम करता है |
-|---|---|
-| 🧭 **Router pattern** | Agents सिर्फ वही पढ़ते हैं जो उनके task के लिए relevant है, सब कुछ नहीं |
-| 📏 **Auto-promotion** | 3+ docs या 800+ lines वाले topics को अपना context group मिलता है |
-| 🔄 **Living docs** | हर non-trivial feature के बाद `update-process-agent` द्वारा update होते हैं |
-| 🧪 **Auditable** | `ag-audit-context` routing और consistency verify करता है |
+|                       | कैसे काम करता है                                                            |
+| --------------------- | --------------------------------------------------------------------------- |
+| 🧭 **Router pattern** | Agents सिर्फ वही पढ़ते हैं जो उनके task के लिए relevant है, सब कुछ नहीं     |
+| 📏 **Auto-promotion** | 3+ docs या 800+ lines वाले topics को अपना context group मिलता है            |
+| 🔄 **Living docs**    | हर non-trivial feature के बाद `update-process-agent` द्वारा update होते हैं |
+| 🧪 **Auditable**      | `ag-audit-context` routing और consistency verify करता है                    |
 
 ---
 
@@ -1033,12 +1033,12 @@ process/features/{feature}/
 
 <br>
 
-| | क्या होता है |
-|---|---|
-| 🆕 | नया काम `active/` में शुरू होता है → reports जमा होती हैं → plan `completed/` में archive होता है |
-| 📌 | Deferred काम `backlog/` में जाता है — agents duplicate plans बनाने से पहले check करते हैं |
-| 📦 | Feature promotion automatically होती है जब general artifacts 5+ hit करते हैं |
-| 🔍 | हर feature का complete, self-contained history — plans, decisions, reports, research |
+|     | क्या होता है                                                                                      |
+| --- | ------------------------------------------------------------------------------------------------- |
+| 🆕  | नया काम `active/` में शुरू होता है → reports जमा होती हैं → plan `completed/` में archive होता है |
+| 📌  | Deferred काम `backlog/` में जाता है — agents duplicate plans बनाने से पहले check करते हैं         |
+| 📦  | Feature promotion automatically होती है जब general artifacts 5+ hit करते हैं                      |
+| 🔍  | हर feature का complete, self-contained history — plans, decisions, reports, research              |
 
 ---
 
@@ -1055,27 +1055,27 @@ process/features/{feature}/
 
 **Core workflow agents** — हर RIPER-5 phase के लिए एक:
 
-| Agent | भूमिका |
-|-------|------|
-| 🔍 `ag-research-agent` | Codebase + web research, read-only। Contradiction tracking built in |
-| 💡 `ag-innovate-agent` | 2-3 approaches brainstorm करें। PLAN से पहले decision summary produce करनी होगी |
-| 📋 `ag-plan-agent` | Anti-rationalization guards के साथ spec लिखें। "मुझे पहले से पता है" कोई plan नहीं है |
-| ⚡ `ag-execute-agent` | Plan के अनुसार implement करें। 50% check-in, deviation protocol, self-review |
-| ⏩ `ag-fast-mode-agent` | Mandatory safety pause के साथ compressed RESEARCH→INNOVATE→PLAN |
-| 🧠 `ag-update-process-agent` | Stale artifact scanning सहित 7-phase mandatory checklist |
+| Agent                        | भूमिका                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------- |
+| 🔍 `ag-research-agent`       | Codebase + web research, read-only। Contradiction tracking built in                   |
+| 💡 `ag-innovate-agent`       | 2-3 approaches brainstorm करें। PLAN से पहले decision summary produce करनी होगी       |
+| 📋 `ag-plan-agent`           | Anti-rationalization guards के साथ spec लिखें। "मुझे पहले से पता है" कोई plan नहीं है |
+| ⚡ `ag-execute-agent`        | Plan के अनुसार implement करें। 50% check-in, deviation protocol, self-review          |
+| ⏩ `ag-fast-mode-agent`      | Mandatory safety pause के साथ compressed RESEARCH→INNOVATE→PLAN                       |
+| 🧠 `ag-update-process-agent` | Stale artifact scanning सहित 7-phase mandatory checklist                              |
 
 <br>
 
 **Specialist agents** — EXECUTE के दौरान या standalone:
 
-| Agent | भूमिका |
-|-------|------|
-| 🐛 `ag-debugger` | Evidence-before-hypothesis। Competing hypotheses, elimination chains |
-| 🧪 `ag-tester` | Diff-aware। केवल affected tests run करता है। Config changes पर auto-escalate |
-| 🔎 `ag-code-reviewer` | Review से पहले edge case scout। N+1 detection, auth path validation |
-| ✨ `ag-code-simplifier` | Behavior change के बिना clarity refactoring |
-| 🎨 `ag-ui-ux-designer` | Design-aware frontend। Execution के बीच में research subagent spawn कर सकता है |
-| 📦 `ag-git-manager` | `touched_files` से logical commit splitting। Unknown files refuse करता है |
+| Agent                   | भूमिका                                                                         |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| 🐛 `ag-debugger`        | Evidence-before-hypothesis। Competing hypotheses, elimination chains           |
+| 🧪 `ag-tester`          | Diff-aware। केवल affected tests run करता है। Config changes पर auto-escalate   |
+| 🔎 `ag-code-reviewer`   | Review से पहले edge case scout। N+1 detection, auth path validation            |
+| ✨ `ag-code-simplifier` | Behavior change के बिना clarity refactoring                                    |
+| 🎨 `ag-ui-ux-designer`  | Design-aware frontend। Execution के बीच में research subagent spawn कर सकता है |
+| 📦 `ag-git-manager`     | `touched_files` से logical commit splitting। Unknown files refuse करता है      |
 
 </details>
 
@@ -1108,15 +1108,15 @@ process/features/{feature}/
 
 ### 🪝 7 Hooks
 
-| Hook | क्या करता है |
-|------|-------------|
-| 🔐 **Privacy guardrails** | `.env`, credentials, SSH keys block करता है। Explicit approval चाहिए |
-| 🚫 **Scout blocker** | Agent को `node_modules/`, `dist/` में भटकने से रोकता है। Gitignore-syntax `.ckignore` |
-| 🧠 **Session init** | Stack detect करता है, env vars inject करता है, compaction के बाद approval gates recover करता है |
-| 💉 **Subagent context** | हर subagent में ~200 token compact context block inject करता है |
-| ✨ **Edit quality** | 5+ edits के बाद, code-simplifier run करने का सुझाव देता है (non-blocking, throttled) |
-| 📛 **Descriptive naming** | हर Write पर language-aware file naming conventions |
-| 📊 **Usage tracking** | Session metrics और token awareness |
+| Hook                      | क्या करता है                                                                                    |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| 🔐 **Privacy guardrails** | `.env`, credentials, SSH keys block करता है। Explicit approval चाहिए                            |
+| 🚫 **Scout blocker**      | Agent को `node_modules/`, `dist/` में भटकने से रोकता है। Gitignore-syntax `.ckignore`           |
+| 🧠 **Session init**       | Stack detect करता है, env vars inject करता है, compaction के बाद approval gates recover करता है |
+| 💉 **Subagent context**   | हर subagent में ~200 token compact context block inject करता है                                 |
+| ✨ **Edit quality**       | 5+ edits के बाद, code-simplifier run करने का सुझाव देता है (non-blocking, throttled)            |
+| 📛 **Descriptive naming** | हर Write पर language-aware file naming conventions                                              |
+| 📊 **Usage tracking**     | Session metrics और token awareness                                                              |
 
 <br>
 

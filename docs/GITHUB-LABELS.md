@@ -4,64 +4,64 @@ Standardized label system for issue and PR triage. Labels are grouped by categor
 
 ## Color Grouping
 
-| Category | Color Range | Purpose |
-|----------|-------------|---------|
-| **Type** | Varied per type | Classify what kind of work an issue represents |
-| **Priority** | Red-Yellow gradient | Signal urgency (P0 = critical, P2 = low) |
-| **Size** | Pastel gradient | Estimate effort for sprint planning |
-| **Triage** | Pink-Purple | Track issues needing attention |
-| **Workflow** | Green-Red | Track issue lifecycle state |
+| Category     | Color Range         | Purpose                                        |
+| ------------ | ------------------- | ---------------------------------------------- |
+| **Type**     | Varied per type     | Classify what kind of work an issue represents |
+| **Priority** | Red-Yellow gradient | Signal urgency (P0 = critical, P2 = low)       |
+| **Size**     | Pastel gradient     | Estimate effort for sprint planning            |
+| **Triage**   | Pink-Purple         | Track issues needing attention                 |
+| **Workflow** | Green-Red           | Track issue lifecycle state                    |
 
 ## Labels
 
 ### Type Labels (13)
 
-| Name | Color | Hex | Description |
-|------|-------|-----|-------------|
-| `good first issue` | Purple | `#7057ff` | Good for newcomers to the project |
-| `skill` | Green | `#0e8a16` | New or improved skill contribution |
-| `agent` | Blue | `#1d76db` | New or improved agent contribution |
-| `hook` | Dark Purple | `#5319e7` | New or improved hook contribution |
-| `translation` | Green | `#0e8a16` | Translation or internationalization work |
-| `bug` | Red | `#d73a4a` | Something is not working correctly |
-| `enhancement` | Cyan | `#a2eeef` | New feature or improvement request |
-| `docs` | Blue | `#0075ca` | Documentation improvements |
-| `protocol` | Green | `#0e8a16` | RIPER-5 protocol or development process changes |
-| `community` | Light Blue | `#c5def5` | Community-related discussions or improvements |
-| `help wanted` | Teal | `#008672` | Extra attention is needed |
-| `duplicate` | Light Gray | `#cfd3d7` | This issue or PR already exists |
-| `wontfix` | White | `#ffffff` | This will not be worked on |
+| Name               | Color       | Hex       | Description                                     |
+| ------------------ | ----------- | --------- | ----------------------------------------------- |
+| `good first issue` | Purple      | `#7057ff` | Good for newcomers to the project               |
+| `skill`            | Green       | `#0e8a16` | New or improved skill contribution              |
+| `agent`            | Blue        | `#1d76db` | New or improved agent contribution              |
+| `hook`             | Dark Purple | `#5319e7` | New or improved hook contribution               |
+| `translation`      | Green       | `#0e8a16` | Translation or internationalization work        |
+| `bug`              | Red         | `#d73a4a` | Something is not working correctly              |
+| `enhancement`      | Cyan        | `#a2eeef` | New feature or improvement request              |
+| `docs`             | Blue        | `#0075ca` | Documentation improvements                      |
+| `protocol`         | Green       | `#0e8a16` | RIPER-5 protocol or development process changes |
+| `community`        | Light Blue  | `#c5def5` | Community-related discussions or improvements   |
+| `help wanted`      | Teal        | `#008672` | Extra attention is needed                       |
+| `duplicate`        | Light Gray  | `#cfd3d7` | This issue or PR already exists                 |
+| `wontfix`          | White       | `#ffffff` | This will not be worked on                      |
 
 ### Priority Labels (3)
 
-| Name | Color | Hex | Description |
-|------|-------|-----|-------------|
-| `priority:P0` | Dark Red | `#b60205` | Critical -- must fix immediately |
+| Name          | Color      | Hex       | Description                      |
+| ------------- | ---------- | --------- | -------------------------------- |
+| `priority:P0` | Dark Red   | `#b60205` | Critical -- must fix immediately |
 | `priority:P1` | Orange Red | `#d93f0b` | High -- fix within current cycle |
-| `priority:P2` | Yellow | `#fbca04` | Low -- fix when convenient |
+| `priority:P2` | Yellow     | `#fbca04` | Low -- fix when convenient       |
 
 ### Size Labels (4)
 
-| Name | Color | Hex | Description |
-|------|-------|-----|-------------|
-| `size:S` | Light Green | `#c2e0c6` | Small -- less than 2 hours |
-| `size:M` | Light Blue | `#bfd4f2` | Medium -- 2-6 hours |
-| `size:L` | Light Purple | `#d4c5f9` | Large -- 6-16 hours |
+| Name      | Color        | Hex       | Description                       |
+| --------- | ------------ | --------- | --------------------------------- |
+| `size:S`  | Light Green  | `#c2e0c6` | Small -- less than 2 hours        |
+| `size:M`  | Light Blue   | `#bfd4f2` | Medium -- 2-6 hours               |
+| `size:L`  | Light Purple | `#d4c5f9` | Large -- 6-16 hours               |
 | `size:XL` | Light Orange | `#f9d0c4` | Extra Large -- more than 16 hours |
 
 ### Triage Labels (2)
 
-| Name | Color | Hex | Description |
-|------|-------|-----|-------------|
-| `needs-triage` | Pink | `#e99695` | Issue has not been reviewed yet |
-| `needs-info` | Purple | `#d876e3` | More information needed from reporter |
+| Name           | Color  | Hex       | Description                           |
+| -------------- | ------ | --------- | ------------------------------------- |
+| `needs-triage` | Pink   | `#e99695` | Issue has not been reviewed yet       |
+| `needs-info`   | Purple | `#d876e3` | More information needed from reporter |
 
 ### Workflow Labels (2)
 
-| Name | Color | Hex | Description |
-|------|-------|-----|-------------|
-| `in-progress` | Green | `#0e8a16` | Actively being worked on |
-| `blocked` | Dark Red | `#b60205` | Blocked by another issue or external dependency |
+| Name          | Color    | Hex       | Description                                     |
+| ------------- | -------- | --------- | ----------------------------------------------- |
+| `in-progress` | Green    | `#0e8a16` | Actively being worked on                        |
+| `blocked`     | Dark Red | `#b60205` | Blocked by another issue or external dependency |
 
 ## CLI Setup Commands
 

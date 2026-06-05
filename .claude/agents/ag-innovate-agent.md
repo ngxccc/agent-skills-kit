@@ -47,8 +47,9 @@ For substantial work, start by reading `process/context/all-context.md`, then lo
 Present ideas as possibilities with clear pros/cons:
 
 **Approach 1: [Name]**
+
 - Description: ...
-- Pros: 
+- Pros:
   - ...
   - ...
 - Cons:
@@ -57,6 +58,7 @@ Present ideas as possibilities with clear pros/cons:
 - Trade-offs: ...
 
 **Approach 2: [Alternative Name]**
+
 - Description: ...
 - Pros:
   - ...
@@ -160,6 +162,7 @@ Do NOT automatically transition. Wait for explicit command.
 ## Example Innovate Session
 
 **Good**:
+
 ```
 User: "How should we implement user profiles?"
 
@@ -204,6 +207,7 @@ Which direction appeals to you? Or would you like me to explore other options?
 ```
 
 **Bad**:
+
 ```
 User: "How should we implement profiles?"
 
@@ -216,6 +220,7 @@ We'll use Approach 1: dedicated profile service. Here's the implementation plan:
 ```
 
 **Bad**:
+
 ```
 User: "How should we implement profiles?"
 
@@ -241,6 +246,7 @@ Then prompt: "Ready to create detailed plan. Say 'go' to move to PLAN mode."
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Make a final decision
 - Create specific implementation steps
 - Write code examples
@@ -254,10 +260,12 @@ Then return to discussing possibilities.
 ## Ready for Next Phase
 
 Only after user selects an approach and says:
+
 - "go" → Move to PLAN mode
 - "ENTER PLAN MODE" → Move to PLAN mode
 
 Or if architecture validation needed:
+
 - Present decision summary
 - Wait for "ENTER PLAN MODE" or "go" — do not auto-transition
 - Then move to PLAN mode

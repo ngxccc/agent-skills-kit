@@ -75,6 +75,7 @@ Use helper skills only when they sharpen verification, not as alternate workflow
 By default, analyze changed scope to run only tests affected by the selected work. Use `--full` only when the selected plan, routed test docs, or explicit user request requires a broader suite.
 
 **Workflow:**
+
 1. `git diff --name-only HEAD` (or `HEAD~1 HEAD` for committed changes) to find changed files
 2. Map each changed file to test files using strategies below (priority order — first match wins)
 3. State which files changed and WHY those tests were selected
@@ -83,23 +84,25 @@ By default, analyze changed scope to run only tests affected by the selected wor
 
 **Mapping Strategies (priority order):**
 
-| # | Strategy | Pattern | Example |
-|---|----------|---------|---------|
-| A | Co-located | `foo.ts` → `foo.test.ts` next to `foo.ts` in same dir | `src/auth/login.ts` → `src/auth/login.test.ts` |
-| A2 | src/__tests__ | `src/foo.ts` → `src/__tests__/foo.test.ts` (this repo's primary pattern) | `src/router/user.ts` → `src/__tests__/router/user.test.ts` |
-| B | Mirror dir | SKIP — this repo does not use mirror `tests/` directories | N/A |
-| C | Import graph | `grep -r "from.*<module>" --include="*.test.*" -l` | Find tests importing the changed module |
-| D | Config change | tsconfig, jest.config, package.json, etc. → **full suite** | Config affects all tests |
-| E | High fan-out | Module with >5 importers → **full suite** | Shared utils, barrel `index.ts` files |
+| #   | Strategy      | Pattern                                                                  | Example                                                    |
+| --- | ------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| A   | Co-located    | `foo.ts` → `foo.test.ts` next to `foo.ts` in same dir                    | `src/auth/login.ts` → `src/auth/login.test.ts`             |
+| A2  | src/**tests** | `src/foo.ts` → `src/__tests__/foo.test.ts` (this repo's primary pattern) | `src/router/user.ts` → `src/__tests__/router/user.test.ts` |
+| B   | Mirror dir    | SKIP — this repo does not use mirror `tests/` directories                | N/A                                                        |
+| C   | Import graph  | `grep -r "from.*<module>" --include="*.test.*" -l`                       | Find tests importing the changed module                    |
+| D   | Config change | tsconfig, jest.config, package.json, etc. → **full suite**               | Config affects all tests                                   |
+| E   | High fan-out  | Module with >5 importers → **full suite**                                | Shared utils, barrel `index.ts` files                      |
 
 **Auto-escalation to `--full`:**
+
 - Config/infra/test-helper files changed → full suite
-- >70% of total tests mapped → full suite (diff overhead not worth it)
+- > 70% of total tests mapped → full suite (diff overhead not worth it)
 - Explicitly requested via `--full` flag
 
 **Common pitfalls:** Barrel files (`index.ts`) = high fan-out; test helpers (`fixtures/`, `mocks/`) = treat as config; renamed files = check `git diff --name-status` for R entries.
 
 **Report format:**
+
 ```
 Diff-aware mode: analyzed N changed files
   Changed: <files>
@@ -107,6 +110,7 @@ Diff-aware mode: analyzed N changed files
   Unmapped: <files with no tests found>
 Ran {N}/{TOTAL} tests (diff-based): {pass} passed, {fail} failed
 ```
+
 For unmapped: "[!] No tests found for `<file>` — consider adding tests for `<function/class>`"
 
 **Working Process:**
@@ -130,6 +134,7 @@ Trusted gate policy:
 **Output Format:**
 Use `ag-sequential-thinking` skill to break complex problems into sequential thought steps.
 Your summary report should include:
+
 - **Test Results Overview**: Total tests run, passed, failed, skipped
 - **Coverage Metrics**: Line coverage, branch coverage, function coverage percentages
 - **Failed Tests**: Detailed information about any failures including error messages and stack traces
@@ -144,6 +149,7 @@ Your summary report should include:
 **IMPORTANT:** In reports, list any unresolved questions at the end, if any.
 
 **Quality Standards:**
+
 - Ensure all critical paths have test coverage
 - Validate both happy path and error scenarios
 - Check for proper test isolation (no test interdependencies)
@@ -152,6 +158,7 @@ Your summary report should include:
 
 **Tools & Commands:**
 You should be familiar with common testing commands:
+
 - Use the appropriate per-package test command from the table above for JavaScript/TypeScript projects in this repo
 - Use the appropriate per-package test command from the table above with a `--coverage` flag for coverage reports
 - `pytest` or `python -m unittest` for Python projects
@@ -161,6 +168,7 @@ You should be familiar with common testing commands:
 - Docker-based test execution when applicable
 
 **Important Considerations:**
+
 - Always run tests in a clean environment when possible
 - Consider both unit and integration test results
 - Pay attention to test execution order dependencies

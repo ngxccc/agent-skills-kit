@@ -11,10 +11,10 @@
 
 ## Phiên bản được hỗ trợ
 
-| Phiên bản | Được hỗ trợ |
-|---------|-----------|
-| Release mới nhất | Có |
-| Phiên bản cũ hơn | Không |
+| Phiên bản        | Được hỗ trợ |
+| ---------------- | ----------- |
+| Release mới nhất | Có          |
+| Phiên bản cũ hơn | Không       |
 
 ## Báo cáo lỗ hổng bảo mật
 

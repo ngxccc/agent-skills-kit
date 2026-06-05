@@ -15,8 +15,8 @@ Light is the default. Dark activates via OS preference (`@media`) OR manual togg
 ```css
 /* ── Light (default) ── */
 :root {
-  --font-body: 'IBM Plex Sans', system-ui, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Consolas, monospace;
 
   --bg: #faf7f5;
   --surface: #ffffff;
@@ -151,7 +151,9 @@ Light is the default. Dark activates via OS preference (`@media`) OR manual togg
   align-items: center;
   justify-content: center;
   font-size: 16px;
-  transition: background 0.15s, color 0.15s;
+  transition:
+    background 0.15s,
+    color 0.15s;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
 .theme-toggle:hover {
@@ -165,24 +167,32 @@ Light is the default. Dark activates via OS preference (`@media`) OR manual togg
 Place the button as the first child of `<body>`. The script detects OS preference on load and persists manual choice in `localStorage`.
 
 ```html
-<button class="theme-toggle" id="themeToggle" title="Toggle theme" aria-label="Toggle light/dark theme"></button>
+<button
+  class="theme-toggle"
+  id="themeToggle"
+  title="Toggle theme"
+  aria-label="Toggle light/dark theme"
+></button>
 
 <script>
-(function() {
-  var toggle = document.getElementById('themeToggle');
-  var saved = localStorage.getItem('theme');
-  var initial = saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  if (saved) document.documentElement.setAttribute('data-theme', initial);
-  toggle.textContent = initial === 'dark' ? '\u2600' : '\u263E';
-  toggle.addEventListener('click', function() {
-    var current = document.documentElement.getAttribute('data-theme')
-      || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var next = current === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    toggle.textContent = next === 'dark' ? '\u2600' : '\u263E';
-  });
-})();
+  (function () {
+    var toggle = document.getElementById("themeToggle");
+    var saved = localStorage.getItem("theme");
+    var initial =
+      saved ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    if (saved) document.documentElement.setAttribute("data-theme", initial);
+    toggle.textContent = initial === "dark" ? "\u2600" : "\u263E";
+    toggle.addEventListener("click", function () {
+      var current =
+        document.documentElement.getAttribute("data-theme") ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      var next = current === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+      toggle.textContent = next === "dark" ? "\u2600" : "\u263E";
+    });
+  })();
 </script>
 ```
 
@@ -192,18 +202,18 @@ Place the button as the first child of `<body>`. The script detects OS preferenc
 
 Minimum readable font sizes for generated HTML pages. Smaller sizes strain readability, especially on high-DPI screens.
 
-| Element | Minimum | Recommended |
-|---------|---------|-------------|
-| Body / card content | 15px | 15–16px |
-| Code blocks | 14px | 14px |
-| Table cells | 14px | 14–15px |
-| Table headers (mono uppercase) | 12px | 12px |
-| List items | 14px | 15px |
-| Section labels (mono uppercase) | 11px | 12px |
-| Card labels (mono uppercase) | 11px | 11px |
-| Status badges (mono) | 12px | 12px |
-| TOC links | 11px | 12px |
-| Callout body | 15px | 16px |
+| Element                         | Minimum | Recommended |
+| ------------------------------- | ------- | ----------- |
+| Body / card content             | 15px    | 15–16px     |
+| Code blocks                     | 14px    | 14px        |
+| Table cells                     | 14px    | 14–15px     |
+| Table headers (mono uppercase)  | 12px    | 12px        |
+| List items                      | 14px    | 15px        |
+| Section labels (mono uppercase) | 11px    | 12px        |
+| Card labels (mono uppercase)    | 11px    | 11px        |
+| Status badges (mono)            | 12px    | 12px        |
+| TOC links                       | 11px    | 12px        |
+| Callout body                    | 15px    | 16px        |
 
 Monospace uppercase labels are allowed at 11px because letter-spacing and uppercase improve legibility at small sizes. Body text and content must stay at 14px+.
 
@@ -215,7 +225,11 @@ Flat backgrounds feel dead. Use subtle gradients or patterns.
 /* Radial glow behind focal area */
 body {
   background: var(--bg);
-  background-image: radial-gradient(ellipse at 50% 0%, var(--accent-dim) 0%, transparent 60%);
+  background-image: radial-gradient(
+    ellipse at 50% 0%,
+    var(--accent-dim) 0%,
+    transparent 60%
+  );
 }
 
 /* Faint dot grid */
@@ -229,8 +243,11 @@ body {
 body {
   background-color: var(--bg);
   background-image: repeating-linear-gradient(
-    -45deg, transparent, transparent 40px,
-    var(--border) 40px, var(--border) 41px
+    -45deg,
+    transparent,
+    transparent 40px,
+    var(--border) 40px,
+    var(--border) 41px
   );
 }
 
@@ -272,7 +289,9 @@ The fundamental building block. A colored card representing a system component, 
 /* Elevated: KPIs, key sections, anything that should pop */
 .ve-card--elevated {
   background: var(--surface-elevated);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 /* Recessed: code blocks, secondary content, detail panels */
@@ -285,7 +304,9 @@ The fundamental building block. A colored card representing a system component, 
 /* Hero: executive summaries, focal elements — demands attention */
 .ve-card--hero {
   background: color-mix(in srgb, var(--surface) 92%, var(--accent) 8%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.08),
+    0 1px 3px rgba(0, 0, 0, 0.04);
   border-color: color-mix(in srgb, var(--border) 50%, var(--accent) 50%);
 }
 
@@ -313,7 +334,7 @@ The fundamental building block. A colored card representing a system component, 
 
 /* Colored dot indicator */
 .ve-card__label::before {
-  content: '';
+  content: "";
   width: 8px;
   height: 8px;
   border-radius: 50%;
@@ -406,6 +427,7 @@ function example() {
 For implementation plans and architecture docs, **don't display entire source files inline**. Instead:
 
 1. **Show structure, not code:**
+
    ```html
    <div class="file-structure">
      <div class="file-structure__path">src/extension.ts</div>
@@ -417,6 +439,7 @@ For implementation plans and architecture docs, **don't display entire source fi
    ```
 
 2. **Use collapsible sections for full code:**
+
    ```html
    <details class="collapsible">
      <summary>Full implementation (87 lines)</summary>
@@ -427,6 +450,7 @@ For implementation plans and architecture docs, **don't display entire source fi
 3. **Show key snippets only** — the 5-10 lines illustrating core logic.
 
 **Anti-patterns:**
+
 - Displaying full source files inline (100+ lines overwhelming the page)
 - Code blocks without `white-space: pre-wrap` (code runs together)
 - No height constraint on long code (page becomes endless scroll)
@@ -448,8 +472,15 @@ For file structures, use `<pre>` with monospace + `white-space: pre`. Tree conne
   white-space: pre;
 }
 
-.dir-tree .ann { color: var(--text-dim); font-size: 11px; font-style: italic; }
-.dir-tree .hl  { color: var(--accent); font-weight: 600; }
+.dir-tree .ann {
+  color: var(--text-dim);
+  font-size: 11px;
+  font-style: italic;
+}
+.dir-tree .hl {
+  color: var(--accent);
+  font-weight: 600;
+}
 ```
 
 ```html
@@ -470,7 +501,8 @@ Grid and flex children default to `min-width: auto`, which prevents them from sh
 
 ```css
 /* Every grid/flex child must be able to shrink */
-.grid > *, .flex > *,
+.grid > *,
+.flex > *,
 [style*="display: grid"] > *,
 [style*="display: flex"] > * {
   min-width: 0;
@@ -497,7 +529,9 @@ body {
 }
 
 @media (max-width: 768px) {
-  .comparison { grid-template-columns: 1fr; }
+  .comparison {
+    grid-template-columns: 1fr;
+  }
 }
 ```
 
@@ -515,7 +549,7 @@ li {
   gap: 6px;
 }
 li::before {
-  content: '›';
+  content: "›";
   flex-shrink: 0;
 }
 
@@ -525,7 +559,7 @@ li {
   position: relative;
 }
 li::before {
-  content: '›';
+  content: "›";
   position: absolute;
   left: 0;
 }
@@ -535,12 +569,14 @@ li::before {
 
 ```css
 /* RIGHT — use inside positioning or adequate padding */
-.card ol, .card ul {
+.card ol,
+.card ul {
   list-style-position: inside;
 }
 
 /* OR — adequate padding for outside markers */
-.card ol, .card ul {
+.card ol,
+.card ul {
   padding-left: 2em;
 }
 
@@ -592,16 +628,18 @@ Mermaid diagrams have two common layout issues: they render too small to read, a
 ### Scaling Small Diagrams
 
 **1. Increase fontSize in themeVariables** (most effective):
+
 ```javascript
 mermaid.initialize({
-  theme: 'base',
+  theme: "base",
   themeVariables: {
-    fontSize: '18px',  // default 16px, bump to 18-20px for complex diagrams
-  }
+    fontSize: "18px", // default 16px, bump to 18-20px for complex diagrams
+  },
 });
 ```
 
 **2. CSS zoom** for diagrams that still render too small:
+
 ```css
 .mermaid-wrap--scaled .mermaid {
   zoom: 1.3;
@@ -609,6 +647,7 @@ mermaid.initialize({
 ```
 
 **3. Constrain container width** so the diagram doesn't float in dead space:
+
 ```css
 .mermaid-wrap--constrained {
   max-width: 800px;
@@ -638,8 +677,12 @@ Add zoom controls to every `.mermaid-wrap` container.
   min-height: 400px;
 }
 
-.mermaid-wrap--compact { min-height: 200px; }
-.mermaid-wrap--tall { min-height: 600px; }
+.mermaid-wrap--compact {
+  min-height: 200px;
+}
+.mermaid-wrap--tall {
+  min-height: 600px;
+}
 
 .zoom-controls {
   position: absolute;
@@ -667,7 +710,9 @@ Add zoom controls to every `.mermaid-wrap` container.
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .zoom-controls button:hover {
@@ -675,8 +720,13 @@ Add zoom controls to every `.mermaid-wrap` container.
   color: var(--text);
 }
 
-.mermaid-wrap { cursor: grab; }
-.mermaid-wrap.is-panning { cursor: grabbing; user-select: none; }
+.mermaid-wrap {
+  cursor: grab;
+}
+.mermaid-wrap.is-panning {
+  cursor: grabbing;
+  user-select: none;
+}
 
 /* Multi-diagram structure */
 .diagram-shell {
@@ -721,15 +771,22 @@ Add zoom controls to every `.mermaid-wrap` container.
 ```html
 <section class="diagram-shell">
   <p class="diagram-shell__hint">
-    Ctrl/Cmd + wheel to zoom. Scroll to pan. Drag to pan when zoomed. Double-click to fit.
+    Ctrl/Cmd + wheel to zoom. Scroll to pan. Drag to pan when zoomed.
+    Double-click to fit.
   </p>
   <div class="mermaid-wrap">
     <div class="zoom-controls">
       <button type="button" data-action="zoom-in" title="Zoom in">+</button>
-      <button type="button" data-action="zoom-out" title="Zoom out">&minus;</button>
-      <button type="button" data-action="zoom-fit" title="Smart fit">&#8634;</button>
+      <button type="button" data-action="zoom-out" title="Zoom out">
+        &minus;
+      </button>
+      <button type="button" data-action="zoom-fit" title="Smart fit">
+        &#8634;
+      </button>
       <button type="button" data-action="zoom-one" title="1:1 zoom">1:1</button>
-      <button type="button" data-action="zoom-expand" title="Open full size">&#x26F6;</button>
+      <button type="button" data-action="zoom-expand" title="Open full size">
+        &#x26F6;
+      </button>
       <span class="zoom-label">Loading...</span>
     </div>
     <div class="mermaid-viewport">
@@ -748,22 +805,27 @@ Use one `.diagram-shell` per diagram. The source Mermaid text lives in `<script 
 ### JavaScript (Closure-Based)
 
 ```javascript
-const config = { /* fitPadding, zoom bounds, readabilityFloor */ };
+const config = {
+  /* fitPadding, zoom bounds, readabilityFloor */
+};
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 let activeDrag = null;
 
-addEventListener('mousemove', (e) => activeDrag?.onMove(e));
-addEventListener('mouseup', () => { activeDrag?.onEnd(); activeDrag = null; });
+addEventListener("mousemove", (e) => activeDrag?.onMove(e));
+addEventListener("mouseup", () => {
+  activeDrag?.onEnd();
+  activeDrag = null;
+});
 
 function initDiagram(shell) {
-  const wrap = shell.querySelector('.mermaid-wrap');
-  const viewport = shell.querySelector('.mermaid-viewport');
-  const canvas = shell.querySelector('.mermaid-canvas');
-  const source = shell.querySelector('.diagram-source');
-  const label = shell.querySelector('.zoom-label');
+  const wrap = shell.querySelector(".mermaid-wrap");
+  const viewport = shell.querySelector(".mermaid-viewport");
+  const canvas = shell.querySelector(".mermaid-canvas");
+  const source = shell.querySelector(".diagram-source");
+  const label = shell.querySelector(".zoom-label");
 
   if (!wrap || !viewport || !canvas || !source || !label) {
-    console.error('initDiagram: missing required elements in', shell);
+    console.error("initDiagram: missing required elements in", shell);
     return;
   }
 
@@ -775,21 +837,25 @@ function initDiagram(shell) {
   async function render() {
     try {
       const code = source.textContent.trim();
-      if (!code) { label.textContent = 'Error: Empty source'; return; }
-      const id = 'diagram-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+      if (!code) {
+        label.textContent = "Error: Empty source";
+        return;
+      }
+      const id =
+        "diagram-" + Date.now() + "-" + Math.random().toString(36).slice(2, 8);
       const { svg } = await mermaid.render(id, code);
       canvas.innerHTML = svg;
       // wire controls, fit, zoom/pan/touch handlers scoped to this shell
     } catch (err) {
-      console.error('Mermaid render failed:', err);
-      label.textContent = 'Error: ' + (err.message || 'Render failed');
+      console.error("Mermaid render failed:", err);
+      label.textContent = "Error: " + (err.message || "Render failed");
     }
   }
 
   render();
 }
 
-document.querySelectorAll('.diagram-shell').forEach(initDiagram);
+document.querySelectorAll(".diagram-shell").forEach(initDiagram);
 ```
 
 This pattern removes all hardcoded IDs and supports unlimited diagrams per page. For the full implementation (smart fit, pinch zoom, shared drag state), use the full template from the skill's `templates/` directory.
@@ -799,6 +865,7 @@ This pattern removes all hardcoded IDs and supports unlimited diagrams per page.
 ## Grid Layouts
 
 ### Architecture Diagram (2-column with sidebar)
+
 ```css
 .arch-grid {
   display: grid;
@@ -809,12 +876,19 @@ This pattern removes all hardcoded IDs and supports unlimited diagrams per page.
   margin: 0 auto;
 }
 
-.arch-grid__sidebar { grid-column: 1; }
-.arch-grid__main { grid-column: 2; }
-.arch-grid__full { grid-column: 1 / -1; }
+.arch-grid__sidebar {
+  grid-column: 1;
+}
+.arch-grid__main {
+  grid-column: 2;
+}
+.arch-grid__full {
+  grid-column: 1 / -1;
+}
 ```
 
 ### Pipeline (horizontal steps)
+
 ```css
 .pipeline {
   display: flex;
@@ -847,6 +921,7 @@ This pattern removes all hardcoded IDs and supports unlimited diagrams per page.
 ```
 
 ### Card Grid (dashboard / metrics)
+
 ```css
 .card-grid {
   display: grid;
@@ -1007,12 +1082,19 @@ Styled spans for match/gap/warning states. Never use emoji.
   display: inline-block;
 }
 
-.status-dot--match { background: var(--green, #059669); }
-.status-dot--gap { background: var(--red, #ef4444); }
-.status-dot--warn { background: var(--orange, #d97706); }
+.status-dot--match {
+  background: var(--green, #059669);
+}
+.status-dot--gap {
+  background: var(--red, #ef4444);
+}
+.status-dot--warn {
+  background: var(--orange, #d97706);
+}
 ```
 
 Usage in table cells:
+
 ```html
 <td><span class="status status--match">Match</span></td>
 <td><span class="status status--gap">Gap</span></td>
@@ -1051,6 +1133,7 @@ Usage in table cells:
 ## Connectors
 
 ### CSS Arrow (vertical, between stacked sections)
+
 ```css
 .flow-arrow {
   display: flex;
@@ -1075,14 +1158,16 @@ Usage in table cells:
 ```
 
 Down arrow SVG (reuse inline):
+
 ```html
-<svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12"/></svg>
+<svg viewBox="0 0 20 20"><path d="M10 4 L10 16 M6 12 L10 16 L14 12" /></svg>
 ```
 
 ### CSS Arrow (horizontal, between inline steps)
+
 ```css
 .h-arrow::after {
-  content: '→';
+  content: "→";
   color: var(--border-bright);
   font-size: 18px;
   padding: 0 4px;
@@ -1090,11 +1175,21 @@ Down arrow SVG (reuse inline):
 ```
 
 ### SVG Curved Connector (between arbitrary nodes)
+
 ```html
-<svg class="connectors" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;">
-  <path d="M 150,100 C 150,200 350,100 350,200" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+<svg
+  class="connectors"
+  style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;"
+>
+  <path
+    d="M 150,100 C 150,200 350,100 350,200"
+    fill="none"
+    stroke="var(--accent)"
+    stroke-width="1.5"
+    stroke-dasharray="4 3"
+  />
   <!-- Arrowhead -->
-  <polygon points="348,195 352,205 356,195" fill="var(--accent)"/>
+  <polygon points="348,195 352,205 356,195" fill="var(--accent)" />
 </svg>
 ```
 
@@ -1108,8 +1203,14 @@ Define the keyframe once, then stagger via a `--i` CSS variable set per element.
 
 ```css
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .ve-card {
@@ -1119,6 +1220,7 @@ Define the keyframe once, then stagger via a `--i` CSS variable set per element.
 ```
 
 Set `--i` per element to control stagger order:
+
 ```html
 <div class="ve-card" style="--i: 0">First</div>
 <div class="ve-card" style="--i: 1">Second</div>
@@ -1126,9 +1228,12 @@ Set `--i` per element to control stagger order:
 ```
 
 ### Hover Lift
+
 ```css
 .ve-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .ve-card:hover {
@@ -1141,8 +1246,14 @@ Set `--i` per element to control stagger order:
 
 ```css
 @keyframes fadeScale {
-  from { opacity: 0; transform: scale(0.92); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .kpi-card {
@@ -1155,8 +1266,12 @@ Set `--i` per element to control stagger order:
 
 ```css
 @keyframes drawIn {
-  from { stroke-dashoffset: var(--path-length); }
-  to { stroke-dashoffset: 0; }
+  from {
+    stroke-dashoffset: var(--path-length);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 /* Set --path-length to the path's getTotalLength() value */
@@ -1173,13 +1288,15 @@ Uses `@property` to animate a custom property as an integer. Falls back to showi
 
 ```css
 @property --count {
-  syntax: '<integer>';
+  syntax: "<integer>";
   initial-value: 0;
   inherits: false;
 }
 
 @keyframes countUp {
-  to { --count: var(--target); }
+  to {
+    --count: var(--target);
+  }
 }
 
 .kpi-card__value--animated {
@@ -1196,6 +1313,7 @@ Uses `@property` to animate a custom property as an integer. Falls back to showi
 ### Choreography
 
 Mix animation types by element role:
+
 - **Cards**: `fadeUp` — default entrance, reliable and subtle
 - **KPI / badges**: `fadeScale` — scale draws the eye to important numbers
 - **SVG connectors**: `drawIn` — reveals flow direction, pairs with card stagger
@@ -1203,9 +1321,12 @@ Mix animation types by element role:
 - **Stagger timing**: `calc(var(--i) * 0.06s)` with lower `--i` on important elements (appear first)
 
 ### Respect Reduced Motion
+
 ```css
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -1218,13 +1339,22 @@ Mix animation types by element role:
 ```html
 <!-- Sparkline -->
 <svg viewBox="0 0 100 30" style="width:100px;height:30px;">
-  <polyline points="0,25 15,20 30,22 45,10 60,15 75,5 90,12 100,8"
-    fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round"/>
+  <polyline
+    points="0,25 15,20 30,22 45,10 60,15 75,5 90,12 100,8"
+    fill="none"
+    stroke="var(--accent)"
+    stroke-width="1.5"
+    stroke-linecap="round"
+  />
 </svg>
 
 <!-- Progress bar -->
-<div style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
-  <div style="height:100%;width:72%;background:var(--accent);border-radius:3px;"></div>
+<div
+  style="height:6px;background:var(--border);border-radius:3px;overflow:hidden;"
+>
+  <div
+    style="height:100%;width:72%;background:var(--accent);border-radius:3px;"
+  ></div>
 </div>
 ```
 
@@ -1234,10 +1364,19 @@ Include a single breakpoint for narrow viewports:
 
 ```css
 @media (max-width: 768px) {
-  .arch-grid { grid-template-columns: 1fr; }
-  .pipeline { flex-wrap: wrap; gap: 8px; }
-  .pipeline__arrow { display: none; }
-  body { padding: 16px; }
+  .arch-grid {
+    grid-template-columns: 1fr;
+  }
+  .pipeline {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .pipeline__arrow {
+    display: none;
+  }
+  body {
+    padding: 16px;
+  }
 }
 ```
 
@@ -1272,7 +1411,7 @@ Include a single breakpoint for narrow viewports:
 }
 
 .node-list li::before {
-  content: '›';
+  content: "›";
   color: var(--text-dim);
   font-weight: 600;
   position: absolute;
@@ -1330,8 +1469,12 @@ Include a single breakpoint for narrow viewports:
   margin-top: 4px;
 }
 
-.kpi-card__trend--up { color: var(--node-b, #059669); }
-.kpi-card__trend--down { color: var(--red, #ef4444); }
+.kpi-card__trend--up {
+  color: var(--node-b, #059669);
+}
+.kpi-card__trend--down {
+  color: var(--red, #ef4444);
+}
 ```
 
 ```html
@@ -1356,7 +1499,10 @@ Include a single breakpoint for narrow viewports:
   overflow: hidden;
 }
 
-.diff-panels > * { min-width: 0; overflow-wrap: break-word; }
+.diff-panels > * {
+  min-width: 0;
+  overflow-wrap: break-word;
+}
 
 .diff-panel__header {
   font-family: var(--font-mono);
@@ -1393,7 +1539,9 @@ Include a single breakpoint for narrow viewports:
 }
 
 @media (max-width: 768px) {
-  .diff-panels { grid-template-columns: 1fr; }
+  .diff-panels {
+    grid-template-columns: 1fr;
+  }
 }
 ```
 
@@ -1427,11 +1575,13 @@ details.collapsible summary:hover {
   background: var(--surface-elevated, var(--surface));
 }
 
-details.collapsible summary::-webkit-details-marker { display: none; }
+details.collapsible summary::-webkit-details-marker {
+  display: none;
+}
 
 /* Chevron indicator */
 details.collapsible summary::before {
-  content: '▸';
+  content: "▸";
   font-size: 11px;
   color: var(--text-dim);
   transition: transform 0.15s ease;
@@ -1582,7 +1732,8 @@ Patterns for documentation, articles, blog posts, and reading-first content. Opt
 }
 
 /* Lists inside callouts need padding fix */
-.callout ul, .callout ol {
+.callout ul,
+.callout ol {
   padding-left: 1.5em;
   margin: 8px 0 0 0;
 }
@@ -1591,7 +1742,8 @@ Patterns for documentation, articles, blog posts, and reading-first content. Opt
 ### Theme Toggle
 
 ```css
-:root, [data-theme="light"] {
+:root,
+[data-theme="light"] {
   --bg: #fafaf9;
   --surface: #ffffff;
   --text: #1c1917;
@@ -1612,19 +1764,26 @@ Patterns for documentation, articles, blog posts, and reading-first content. Opt
 
 ```javascript
 // Random initial theme
-const themes = ['light', 'dark'];
-document.documentElement.setAttribute('data-theme', themes[Math.floor(Math.random() * 2)]);
+const themes = ["light", "dark"];
+document.documentElement.setAttribute(
+  "data-theme",
+  themes[Math.floor(Math.random() * 2)],
+);
 
 // Toggle
 function toggleTheme() {
-  const current = document.documentElement.getAttribute('data-theme');
-  document.documentElement.setAttribute('data-theme', current === 'light' ? 'dark' : 'light');
+  const current = document.documentElement.getAttribute("data-theme");
+  document.documentElement.setAttribute(
+    "data-theme",
+    current === "light" ? "dark" : "light",
+  );
 }
 ```
 
 ### Prose Anti-Patterns
 
 Avoid in reading-first content:
+
 - Body text smaller than 16px
 - Line-height below 1.5
 - Measure wider than 75ch
@@ -1654,7 +1813,7 @@ For AI-generated illustrations embedded as base64 data URIs. Use Claude's built-
 
 /* Gradient fade into page background */
 .hero-img-wrap::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -1667,7 +1826,7 @@ For AI-generated illustrations embedded as base64 data URIs. Use Claude's built-
 
 ```html
 <div class="hero-img-wrap">
-  <img src="data:image/png;base64,..." alt="Descriptive alt text">
+  <img src="data:image/png;base64,..." alt="Descriptive alt text" />
 </div>
 ```
 

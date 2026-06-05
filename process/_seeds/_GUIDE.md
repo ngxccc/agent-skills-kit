@@ -5,16 +5,16 @@ This is the operational workspace for the agent harness. It holds context, plans
 ## Directory Structure
 
 process/
-  _seeds/                  -- seed templates (read-only reference, never modified during setup)
-  context/                 -- durable project knowledge (all-context.md is the root router)
-  development-protocols/   -- managed methodology docs (RIPER-5, orchestration, standards)
-  features/                -- feature-scoped storage (plans, reports, references per feature)
-  general-plans/           -- cross-cutting plans, reports, and references
-    active/                -- in-progress plans
-    completed/             -- archived completed plans
-    backlog/               -- deferred/future plans
-    reports/               -- operational reports
-    references/            -- research and reference docs
+\_seeds/ -- seed templates (read-only reference, never modified during setup)
+context/ -- durable project knowledge (all-context.md is the root router)
+development-protocols/ -- managed methodology docs (RIPER-5, orchestration, standards)
+features/ -- feature-scoped storage (plans, reports, references per feature)
+general-plans/ -- cross-cutting plans, reports, and references
+active/ -- in-progress plans
+completed/ -- archived completed plans
+backlog/ -- deferred/future plans
+reports/ -- operational reports
+references/ -- research and reference docs
 
 ## Key Conventions
 

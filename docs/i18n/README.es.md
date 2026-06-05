@@ -17,8 +17,8 @@
   <img src="../../assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*Creado por ingenieros de clase mundial, para agent-skillsrs en*<br>
-*[flowser.ai](https://flowser.ai) — Agentes de IA con computadoras para GTM*
+_Creado por ingenieros de clase mundial, para agent-skillsrs en_<br>
+_[flowser.ai](https://flowser.ai) — Agentes de IA con computadoras para GTM_
 
 <br>
 
@@ -96,7 +96,7 @@
 
 ## 🚀 Instalación (30 segundos)
 
-> **Ejecuta esto dentro de la carpeta de tu proyecto.** Abre una terminal y usa `cd` para entrar al proyecto donde quieres instalar el harness *antes* de ejecutar el comando — se instala en el directorio actual.
+> **Ejecuta esto dentro de la carpeta de tu proyecto.** Abre una terminal y usa `cd` para entrar al proyecto donde quieres instalar el harness _antes_ de ejecutar el comando — se instala en el directorio actual.
 >
 > ¿Prefieres manejarlo desde tu agente? Abre Claude Code o Codex **con esa carpeta de proyecto como directorio de trabajo**, luego pega el [prompt completo de configuración](#-prompt-completo-de-configuración-del-agente) a continuación.
 
@@ -502,13 +502,13 @@ Cada feature recibe un **plan escrito con análisis de blast radius** antes de q
 
 **Qué hay en cada plan:**
 
-| Sección | Propósito |
-|---|---|
-| 📍 **Touchpoints** | Cada archivo que se creará o modificará, listado de antemano |
-| 📜 **Contratos públicos** | Qué superficies de API o interfaces cambian |
-| 💥 **Blast radius** | Qué podría romperse, qué pruebas ejecutar, qué vigilar |
-| ✅ **Evidencia de verificación** | Cómo demostrar que la implementación es correcta |
-| 🔄 **Handoff de retomada** | Suficiente contexto para que cualquier agente pueda continuar a mitad del plan |
+| Sección                          | Propósito                                                                      |
+| -------------------------------- | ------------------------------------------------------------------------------ |
+| 📍 **Touchpoints**               | Cada archivo que se creará o modificará, listado de antemano                   |
+| 📜 **Contratos públicos**        | Qué superficies de API o interfaces cambian                                    |
+| 💥 **Blast radius**              | Qué podría romperse, qué pruebas ejecutar, qué vigilar                         |
+| ✅ **Evidencia de verificación** | Cómo demostrar que la implementación es correcta                               |
+| 🔄 **Handoff de retomada**       | Suficiente contexto para que cualquier agente pueda continuar a mitad del plan |
 
 <br>
 
@@ -565,18 +565,18 @@ Cada feature completada retroalimenta aprendizajes al sistema de contexto.
 
 ## Cómo Se Compara
 
-| Feature | agent-skills-kit | Superpowers | GSD | gstack |
-|---------|---------------------|-------------|-----|--------|
-| Ciclo de vida orientado a specs | RIPER-5 completo (investigación → plan → ejecución → verificación) | Flujos de trabajo obligatorios | Corrección de context-rot | Parcial |
-| Seguridad bloqueada por fase | Restricciones de herramientas por modo (investigación de solo lectura, innovate sin escritura) | Restricciones basadas en skills | Separación de fases | Ninguna |
-| Soporte multi-herramienta | 7 herramientas vía AGENTS.md + nativo | Plugin de Claude Code | 14 runtimes | 1 herramienta |
-| Contexto que se auto-mejora | Context groups enrutados por dominio, se actualiza después de cada feature | Memoria de plugin | Estado persistido en disco | Manual |
-| Colaboración en equipo | Specs, planes y artefactos de revisión compartidos | Solo | Solo | Solo |
-| Sistema de skills | 32 auto-descubiertas, coincidencia por palabra clave en cada prompt | 86 skills componibles | Meta-prompting | 23 role tools |
-| Programas multi-fase | Planes paraguas + bucle de ejecución por fase con verificaciones de regresión | Tarea única | Tarea única | Tarea única |
-| Pipeline de calidad | Cadena de 6 pasos (code-review → test → simplify → security → audit → commit) | Calidad por skill | Sin cadena automática | Sin cadena automática |
-| Instalación | Install de 30s con `curl` + auto-setup | Marketplace de plugins | npx one-liner | git clone |
-| Enrutamiento de contexto | Tabla de enrutamiento por dominio con packs de contexto agrupados | Contexto plano de skill | Contexto plano | Archivo único |
+| Feature                         | agent-skills-kit                                                                               | Superpowers                     | GSD                        | gstack                |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------- | -------------------------- | --------------------- |
+| Ciclo de vida orientado a specs | RIPER-5 completo (investigación → plan → ejecución → verificación)                             | Flujos de trabajo obligatorios  | Corrección de context-rot  | Parcial               |
+| Seguridad bloqueada por fase    | Restricciones de herramientas por modo (investigación de solo lectura, innovate sin escritura) | Restricciones basadas en skills | Separación de fases        | Ninguna               |
+| Soporte multi-herramienta       | 7 herramientas vía AGENTS.md + nativo                                                          | Plugin de Claude Code           | 14 runtimes                | 1 herramienta         |
+| Contexto que se auto-mejora     | Context groups enrutados por dominio, se actualiza después de cada feature                     | Memoria de plugin               | Estado persistido en disco | Manual                |
+| Colaboración en equipo          | Specs, planes y artefactos de revisión compartidos                                             | Solo                            | Solo                       | Solo                  |
+| Sistema de skills               | 32 auto-descubiertas, coincidencia por palabra clave en cada prompt                            | 86 skills componibles           | Meta-prompting             | 23 role tools         |
+| Programas multi-fase            | Planes paraguas + bucle de ejecución por fase con verificaciones de regresión                  | Tarea única                     | Tarea única                | Tarea única           |
+| Pipeline de calidad             | Cadena de 6 pasos (code-review → test → simplify → security → audit → commit)                  | Calidad por skill               | Sin cadena automática      | Sin cadena automática |
+| Instalación                     | Install de 30s con `curl` + auto-setup                                                         | Marketplace de plugins          | npx one-liner              | git clone             |
+| Enrutamiento de contexto        | Tabla de enrutamiento por dominio con packs de contexto agrupados                              | Contexto plano de skill         | Contexto plano             | Archivo único         |
 
 > **Sobre amplitud de runtimes:** GSD soporta 14 runtimes. Nosotros soportamos 7 en profundidad — con harnesses completos de agentes, descubrimiento de skills y hooks de ciclo de vida en cada plataforma. Amplitud vs. profundidad: tú eliges.
 
@@ -645,13 +645,13 @@ El orquestador **nunca hace el trabajo él mismo** — enruta, monitorea y gesti
 
 ### 📊 El Flujo de Trabajo
 
-| Fase | Qué sucede | Tú dices |
-|-------|-------------|---------|
-| 🔍 **RESEARCH** | Recopilación de hechos de solo lectura — codebase + web | *(automático en feature requests)* |
-| 💡 **INNOVATE** | Explorar 2-3 enfoques con trade-offs | `go` |
-| 📋 **PLAN** | Escribir una spec detallada que puedas revisar | `go` |
-| ⚡ **EXECUTE** | Implementar exactamente lo que se planificó | `ENTER EXECUTE MODE` |
-| 🧠 **UPDATE PROCESS** | Capturar aprendizajes, actualizar contexto, archivar plan | *(recomendado después de trabajo no trivial)* |
+| Fase                  | Qué sucede                                                | Tú dices                                      |
+| --------------------- | --------------------------------------------------------- | --------------------------------------------- |
+| 🔍 **RESEARCH**       | Recopilación de hechos de solo lectura — codebase + web   | _(automático en feature requests)_            |
+| 💡 **INNOVATE**       | Explorar 2-3 enfoques con trade-offs                      | `go`                                          |
+| 📋 **PLAN**           | Escribir una spec detallada que puedas revisar            | `go`                                          |
+| ⚡ **EXECUTE**        | Implementar exactamente lo que se planificó               | `ENTER EXECUTE MODE`                          |
+| 🧠 **UPDATE PROCESS** | Capturar aprendizajes, actualizar contexto, archivar plan | _(recomendado después de trabajo no trivial)_ |
 
 > 💡 **Atajos:** `ENTER FAST MODE - [tarea]` comprime RESEARCH+INNOVATE+PLAN en un solo pase — aún hace pausa antes de EXECUTE. Las correcciones triviales (un solo archivo, <15 líneas, sin cambios de schema/auth) van directamente a execute.
 
@@ -839,13 +839,13 @@ flowchart TD
 
 <br>
 
-| Paso | Qué hace |
-|---|---|
-| 🔎 **Self-review** | Verifica cada elemento del checklist contra el plan en busca de desviaciones, las documenta |
-| 🧪 **Tester** | Mapea archivos modificados a archivos de prueba, escala automáticamente a suite completa cuando >70% está mapeado |
-| 🔍 **Code reviewer** | Envía scout de edge cases ANTES de la revisión, verifica queries N+1, rutas de auth, fugas de datos |
-| ✨ **Simplifier** | Refactorización de claridad después de que pasa la revisión — sin cambios de comportamiento |
-| 📦 **Git manager** | Recibe la lista `touched_files`, divide en commits convencionales lógicos, rechaza archivos desconocidos |
+| Paso                 | Qué hace                                                                                                          |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| 🔎 **Self-review**   | Verifica cada elemento del checklist contra el plan en busca de desviaciones, las documenta                       |
+| 🧪 **Tester**        | Mapea archivos modificados a archivos de prueba, escala automáticamente a suite completa cuando >70% está mapeado |
+| 🔍 **Code reviewer** | Envía scout de edge cases ANTES de la revisión, verifica queries N+1, rutas de auth, fugas de datos               |
+| ✨ **Simplifier**    | Refactorización de claridad después de que pasa la revisión — sin cambios de comportamiento                       |
+| 📦 **Git manager**   | Recibe la lista `touched_files`, divide en commits convencionales lógicos, rechaza archivos desconocidos          |
 
 ---
 
@@ -886,7 +886,7 @@ flowchart TD
 
 <br>
 
-> 💡 Seis meses después, cuando alguien pregunte *"¿por qué construimos auth de esta manera?"*, la respuesta está en `completed/`. No perdida en un hilo de Slack.
+> 💡 Seis meses después, cuando alguien pregunte _"¿por qué construimos auth de esta manera?"_, la respuesta está en `completed/`. No perdida en un hilo de Slack.
 
 <br>
 
@@ -969,14 +969,14 @@ flowchart TD
 
 **Características clave:**
 
-| | Característica | Por qué importa |
-|---|---|---|
-| 🔄 | **Re-investigación en cada fase** | Verifica la desviación del código, lee los reportes más recientes, actualiza suposiciones |
-| ✅ | **Puertas de validación** | La fase no es `VERIFIED` hasta que la evidencia lo demuestre. Estado honesto: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` o `BLOCKED` |
-| 📄 | **Reportes duraderos** | Cada fase escribe resultados en disco. El progreso sobrevive la compactación de contexto |
-| 🧠 | **Los aprendizajes se transmiten** | Los descubrimientos de la Fase 1 actualizan el plan de la Fase 2 antes de la ejecución |
-| 🏗️ | **Fundación vs expansión** | Separa explícitamente "demostrar la arquitectura" de "implementar todo" |
-| 🚧 | **Manejo honesto de bloqueos** | Las fases bloqueadas permanecen `BLOCKED` con evidencia. Sin forzar estado verde |
+|     | Característica                     | Por qué importa                                                                                                                            |
+| --- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 🔄  | **Re-investigación en cada fase**  | Verifica la desviación del código, lee los reportes más recientes, actualiza suposiciones                                                  |
+| ✅  | **Puertas de validación**          | La fase no es `VERIFIED` hasta que la evidencia lo demuestre. Estado honesto: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` o `BLOCKED` |
+| 📄  | **Reportes duraderos**             | Cada fase escribe resultados en disco. El progreso sobrevive la compactación de contexto                                                   |
+| 🧠  | **Los aprendizajes se transmiten** | Los descubrimientos de la Fase 1 actualizan el plan de la Fase 2 antes de la ejecución                                                     |
+| 🏗️  | **Fundación vs expansión**         | Separa explícitamente "demostrar la arquitectura" de "implementar todo"                                                                    |
+| 🚧  | **Manejo honesto de bloqueos**     | Las fases bloqueadas permanecen `BLOCKED` con evidencia. Sin forzar estado verde                                                           |
 
 ---
 
@@ -1007,12 +1007,12 @@ process/context/
 
 <br>
 
-| | Cómo funciona |
-|---|---|
-| 🧭 **Patrón router** | Los agentes leen solo lo relevante para su tarea, no todo |
-| 📏 **Auto-promoción** | Los temas con 3+ docs o 800+ líneas obtienen su propio context group |
-| 🔄 **Docs vivos** | Actualizados por `update-process-agent` después de cada feature no trivial |
-| 🧪 **Auditable** | `ag-audit-context` verifica el enrutamiento y la consistencia |
+|                       | Cómo funciona                                                              |
+| --------------------- | -------------------------------------------------------------------------- |
+| 🧭 **Patrón router**  | Los agentes leen solo lo relevante para su tarea, no todo                  |
+| 📏 **Auto-promoción** | Los temas con 3+ docs o 800+ líneas obtienen su propio context group       |
+| 🔄 **Docs vivos**     | Actualizados por `update-process-agent` después de cada feature no trivial |
+| 🧪 **Auditable**      | `ag-audit-context` verifica el enrutamiento y la consistencia              |
 
 ---
 
@@ -1033,12 +1033,12 @@ process/features/{feature}/
 
 <br>
 
-| | Qué sucede |
-|---|---|
-| 🆕 | El trabajo nuevo comienza en `active/` → los reportes se acumulan → el plan se archiva en `completed/` |
-| 📌 | El trabajo aplazado va al `backlog/` — los agentes lo verifican antes de crear planes duplicados |
-| 📦 | La promoción de feature ocurre automáticamente cuando los artefactos generales alcanzan 5+ |
-| 🔍 | Cada feature tiene historial completo y auto-contenido — planes, decisiones, reportes, investigación |
+|     | Qué sucede                                                                                             |
+| --- | ------------------------------------------------------------------------------------------------------ |
+| 🆕  | El trabajo nuevo comienza en `active/` → los reportes se acumulan → el plan se archiva en `completed/` |
+| 📌  | El trabajo aplazado va al `backlog/` — los agentes lo verifican antes de crear planes duplicados       |
+| 📦  | La promoción de feature ocurre automáticamente cuando los artefactos generales alcanzan 5+             |
+| 🔍  | Cada feature tiene historial completo y auto-contenido — planes, decisiones, reportes, investigación   |
 
 ---
 
@@ -1055,27 +1055,27 @@ process/features/{feature}/
 
 **Agentes core del flujo de trabajo** — uno por fase RIPER-5:
 
-| Agente | Rol |
-|-------|------|
-| 🔍 `ag-research-agent` | Investigación de codebase + web, solo lectura. Seguimiento de contradicciones integrado |
-| 💡 `ag-innovate-agent` | Brainstorm de 2-3 enfoques. Debe producir resumen de decisión antes del PLAN |
-| 📋 `ag-plan-agent` | Escribe spec con guardas anti-racionalización. "Ya sé cómo hacerlo" no es un plan |
-| ⚡ `ag-execute-agent` | Implementa según el plan. Check-in del 50%, protocolo de desviación, self-review |
-| ⏩ `ag-fast-mode-agent` | RESEARCH→INNOVATE→PLAN comprimido con pausa de seguridad obligatoria |
+| Agente                       | Rol                                                                                      |
+| ---------------------------- | ---------------------------------------------------------------------------------------- |
+| 🔍 `ag-research-agent`       | Investigación de codebase + web, solo lectura. Seguimiento de contradicciones integrado  |
+| 💡 `ag-innovate-agent`       | Brainstorm de 2-3 enfoques. Debe producir resumen de decisión antes del PLAN             |
+| 📋 `ag-plan-agent`           | Escribe spec con guardas anti-racionalización. "Ya sé cómo hacerlo" no es un plan        |
+| ⚡ `ag-execute-agent`        | Implementa según el plan. Check-in del 50%, protocolo de desviación, self-review         |
+| ⏩ `ag-fast-mode-agent`      | RESEARCH→INNOVATE→PLAN comprimido con pausa de seguridad obligatoria                     |
 | 🧠 `ag-update-process-agent` | Lista de verificación obligatoria de 7 fases que incluye escaneo de artefactos obsoletos |
 
 <br>
 
 **Agentes especialistas** — invocados durante EXECUTE o de forma independiente:
 
-| Agente | Rol |
-|-------|------|
-| 🐛 `ag-debugger` | Evidencia antes de hipótesis. Hipótesis concurrentes, cadenas de eliminación |
-| 🧪 `ag-tester` | Diff-aware. Solo ejecuta pruebas afectadas. Escala automáticamente en cambios de configuración |
-| 🔎 `ag-code-reviewer` | Scout de edge cases ANTES de la revisión. Detección de N+1, validación de rutas de auth |
-| ✨ `ag-code-simplifier` | Refactorización de claridad sin cambio de comportamiento |
-| 🎨 `ag-ui-ux-designer` | Frontend consciente del diseño. Puede lanzar subagente de investigación durante la ejecución |
-| 📦 `ag-git-manager` | Split lógico de commits desde `touched_files`. Rechaza archivos desconocidos |
+| Agente                  | Rol                                                                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------------- |
+| 🐛 `ag-debugger`        | Evidencia antes de hipótesis. Hipótesis concurrentes, cadenas de eliminación                   |
+| 🧪 `ag-tester`          | Diff-aware. Solo ejecuta pruebas afectadas. Escala automáticamente en cambios de configuración |
+| 🔎 `ag-code-reviewer`   | Scout de edge cases ANTES de la revisión. Detección de N+1, validación de rutas de auth        |
+| ✨ `ag-code-simplifier` | Refactorización de claridad sin cambio de comportamiento                                       |
+| 🎨 `ag-ui-ux-designer`  | Frontend consciente del diseño. Puede lanzar subagente de investigación durante la ejecución   |
+| 📦 `ag-git-manager`     | Split lógico de commits desde `touched_files`. Rechaza archivos desconocidos                   |
 
 </details>
 
@@ -1108,15 +1108,15 @@ process/features/{feature}/
 
 ### 🪝 7 Hooks
 
-| Hook | Qué hace |
-|------|-------------|
-| 🔐 **Privacy guardrails** | Bloquea `.env`, credenciales, claves SSH. Requiere aprobación explícita |
-| 🚫 **Scout blocker** | Evita que el agente explore `node_modules/`, `dist/`. Sintaxis gitignore via `.ckignore` |
-| 🧠 **Session init** | Detecta stack, inyecta variables de entorno, recupera puertas de aprobación después de compactación |
-| 💉 **Subagent context** | Inyecta bloque de contexto compacto de ~200 tokens en cada subagente |
-| ✨ **Edit quality** | Después de 5+ ediciones, sugiere ejecutar code-simplifier (no bloqueante, con throttle) |
-| 📛 **Descriptive naming** | Convenciones de nomenclatura de archivos consciente del lenguaje en cada escritura |
-| 📊 **Usage tracking** | Métricas de sesión y conciencia del uso de tokens |
+| Hook                      | Qué hace                                                                                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| 🔐 **Privacy guardrails** | Bloquea `.env`, credenciales, claves SSH. Requiere aprobación explícita                             |
+| 🚫 **Scout blocker**      | Evita que el agente explore `node_modules/`, `dist/`. Sintaxis gitignore via `.ckignore`            |
+| 🧠 **Session init**       | Detecta stack, inyecta variables de entorno, recupera puertas de aprobación después de compactación |
+| 💉 **Subagent context**   | Inyecta bloque de contexto compacto de ~200 tokens en cada subagente                                |
+| ✨ **Edit quality**       | Después de 5+ ediciones, sugiere ejecutar code-simplifier (no bloqueante, con throttle)             |
+| 📛 **Descriptive naming** | Convenciones de nomenclatura de archivos consciente del lenguaje en cada escritura                  |
+| 📊 **Usage tracking**     | Métricas de sesión y conciencia del uso de tokens                                                   |
 
 <br>
 

@@ -11,6 +11,7 @@ metadata:
 Interactive setup for the agent development harness. Works on fresh projects and existing projects with pre-existing `.claude/` or `process/` configs.
 
 The skill adapts its flow based on what it finds:
+
 - **New projects** (no existing process/ or context): detect, ask the user about their project, scaffold, study, validate.
 - **Existing projects** (has process/, context files, or CLAUDE.md): detect, study what exists first, present findings and ask what to keep vs change, scaffold with approval, re-study to fill gaps, validate.
 
@@ -34,6 +35,7 @@ The `install.sh` script handles fetching and installing harness files before ag-
 **If harness files are already present** (`.claude/agents/` and `.claude/skills/` exist with 12+ agents and 20+ skills), skip Phase 0 and proceed directly to Phase 1 DETECT.
 
 **If harness files are NOT present**, tell the user to run the installer first:
+
 ```
 curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/install.sh | bash
 ```
@@ -65,21 +67,25 @@ For projects where the harness is being set up for the first time.
 Start with the basics, then follow up based on their answers:
 
 **Round 1 — Project identity:**
+
 - "What is this project? Give me a brief description in your own words."
 - "Who uses it? Who is the target audience?"
 
 **Round 2 — Architecture and scope** (adapt based on Round 1 answers):
+
 - "What are the main product areas or features?"
 - "How is the codebase organized? Any key services, packages, or modules I should know about?"
 - "What are the most important or complex parts of the codebase?"
 
 **Round 3 — Workflow and conventions** (adapt based on what you've learned):
+
 - "Do you work solo or with a team?"
 - "Any coding conventions, naming patterns, or architectural decisions that are important?"
 - "How do you handle testing? CI/CD? Deployments?"
 - "Any external services, APIs, or integrations that are central to the project?"
 
 **Round 4 — Follow-ups** (ask as many as needed until everything is clear):
+
 - Follow up on anything vague or interesting from previous answers.
 - "You mentioned [X] — can you tell me more about how that works?"
 - "Are there any pain points, tech debt, or things you want agents to be careful about?"
@@ -158,21 +164,23 @@ Create the `process/` directory with seed files and instructional content.
 
 **Merge mode includes automatic layout migration.** Before creating new directories, detect and migrate old layouts:
 
-| Old Layout | Migration Action |
-|------------|-----------------|
-| `process/plans/` exists, `process/general-plans/` does not | Move `process/plans/*` to `process/general-plans/active/`, then remove empty `process/plans/` |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`, then remove empty `process/reports/` |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/references/`, then remove empty `process/skills/` |
-| Example PRDs at old locations (e.g. `process/context/example-*.md` or under `process/context/planning/`) that are not in `process/development-protocols/references/` | Move to `process/development-protocols/references/` |
-| process/context/backlog.md at top of context/ | Move to `process/general-plans/backlog/backlog.md` |
+| Old Layout                                                                                                                                                           | Migration Action                                                                                    |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| `process/plans/` exists, `process/general-plans/` does not                                                                                                           | Move `process/plans/*` to `process/general-plans/active/`, then remove empty `process/plans/`       |
+| `process/reports/` exists at top level                                                                                                                               | Move `process/reports/*` to `process/general-plans/reports/`, then remove empty `process/reports/`  |
+| `process/skills/` exists at top level                                                                                                                                | Move `process/skills/*` to `process/general-plans/references/`, then remove empty `process/skills/` |
+| Example PRDs at old locations (e.g. `process/context/example-*.md` or under `process/context/planning/`) that are not in `process/development-protocols/references/` | Move to `process/development-protocols/references/`                                                 |
+| process/context/backlog.md at top of context/                                                                                                                        | Move to `process/general-plans/backlog/backlog.md`                                                  |
 
 **Migration rules:**
+
 - Never overwrite existing files at the destination. If a file with the same name exists, keep both (rename the migrated copy with a `-migrated` suffix).
 - Print every move action to the user so they can verify.
 - After all moves, remove empty source directories.
 - If `process/plans/` contains files matching date-based patterns (e.g., `2026-05-22-*.md`, `*_PLAN_*.md`), classify completed plans (look for "COMPLETE" or "DONE" in the file) and move them to `completed/` instead of `active/`.
 
 Seed and template handling:
+
 1. Seeds live in `process/_seeds/` (read-only during setup -- never modified by the scaffold process):
    - Files with `.seed` extension: copy with `.seed` removed, replace `{{project_name}}` with the detected project name.
    - Files without `.seed` extension: copy verbatim.

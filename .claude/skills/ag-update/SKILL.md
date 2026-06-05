@@ -42,6 +42,7 @@ git clone --depth 1 https://github.com/ngxccc/agent-skills-kit.git "$TMPDIR"
 ```
 
 If the clone fails (network error, auth error, repo not found):
+
 - Print the error message.
 - Clean up the temp directory if it was partially created.
 - **Stop.** Do not proceed.
@@ -55,6 +56,7 @@ node "$TMPDIR/resolve-manifest.mjs" --root "$TMPDIR" --json
 ```
 
 Parse the JSON output to extract:
+
 - `files` (string[]) -- resolved managed file paths
 - `merge` (string[]) -- files where user customizations are preserved (not overwritten)
 - `copyIfMissing` (string[]) -- files only installed if they don't already exist locally
@@ -62,6 +64,7 @@ Parse the JSON output to extract:
 - `symlinks` (object) -- symlink path -> target mappings
 
 Extract the remote version from the manifest:
+
 ```bash
 node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/ag-manifest.json','utf8')).version)"
 ```
@@ -80,6 +83,7 @@ Compare the remote manifest `version` against `currentVersion`.
 **Read `.ag-installed-files`** from the project root (if it exists). This file contains one file path per line -- the list of files installed by the last update.
 
 **If `.ag-installed-files` does NOT exist** (first update with new system):
+
 1. Build a synthetic snapshot by scanning the user project for files that exist AND match the remote `files` list.
 2. Also check for legacy `deletions` from the v2.0.4 era -- the resolver embeds these as `legacyDeletions` in legacy mode. For any path in the legacy deletions list that still exists locally, mark it for deletion.
 3. Write this synthetic snapshot to `.ag-installed-files` for future updates.
@@ -138,6 +142,7 @@ Summary: 5 modified, 2 new, 1 removal, 1 merge skipped, 45 unchanged
 Do NOT proceed until the user explicitly says "apply" (or a clear affirmative like "yes", "go", "do it").
 
 If the user aborts:
+
 - Remove `$TMPDIR`.
 - Print "Update cancelled. No changes made."
 - **Stop.**
@@ -167,6 +172,7 @@ On user confirmation, apply in this order:
 6. **Clean up**: Remove `$TMPDIR`.
 
 If any copy/delete fails with a permission error:
+
 - Print which file failed and the error.
 - Suggest running `chmod` on the affected path or checking file ownership.
 - Continue with remaining files (do not abort the entire update).

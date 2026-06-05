@@ -28,7 +28,7 @@ Prefer it when:
    node .claude/skills/ag-audit-plans/scripts/validate-plan-inventory.mjs
    ```
 3. Inventory plans in `process/general-plans/active/` and `process/features/*/active/`.
-3.5. Scan sibling `reports/` and `references/` dirs alongside each `active/` dir for artifacts tied to plans classified as Completed or Obsolete. Match by feature slug, date proximity (7 days), or content reference to the plan filename.
+   3.5. Scan sibling `reports/` and `references/` dirs alongside each `active/` dir for artifacts tied to plans classified as Completed or Obsolete. Match by feature slug, date proximity (7 days), or content reference to the plan filename.
 4. Cross-check each plan against the actual codebase with file existence checks and targeted `rg` searches.
 5. Classify each plan as `Completed`, `Partially Done`, `Obsolete`, `Stale`, `Active`, or `Reference`.
 6. Move only clearly completed or obsolete plans to the appropriate `completed/` folder.

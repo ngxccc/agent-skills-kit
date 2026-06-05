@@ -17,8 +17,8 @@
   <img src="../../assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*由世界级工程师打造，为 agent-skillsrs 而生*<br>
-*[flowser.ai](https://flowser.ai) — 带计算机能力的 AI Agents，专注 GTM*
+_由世界级工程师打造，为 agent-skillsrs 而生_<br>
+_[flowser.ai](https://flowser.ai) — 带计算机能力的 AI Agents，专注 GTM_
 
 <br>
 
@@ -33,7 +33,7 @@
   <strong>— �的门炭治郎</strong>
 </p>
 
-*这套 meta harness 把任何 AI 编程 agent 变成一支 spec 驱动的工程团队，能调研、能规划、能交付生产级代码，还能自我进化记忆，哪怕 6 个月后也扛得住 context 腐烂。*
+_这套 meta harness 把任何 AI 编程 agent 变成一支 spec 驱动的工程团队，能调研、能规划、能交付生产级代码，还能自我进化记忆，哪怕 6 个月后也扛得住 context 腐烂。_
 
 🔬 面向 AI agent 的 spec 驱动开发<br>
 📋 自动生成 PRD、管理 backlog、自动路由上下文<br>
@@ -500,13 +500,13 @@ agent 调研你的技术栈，写一份你可以 review 的架构方案，带测
 
 **每份计划包含：**
 
-| 章节 | 用途 |
-|---|---|
-| 📍 **Touchpoints** | 所有要创建或修改的文件，提前列出 |
-| 📜 **Public contracts** | 哪些 API 接口或 interface 会变 |
-| 💥 **Blast radius** | 什么可能挂掉，跑什么测试，注意什么 |
-| ✅ **Verification evidence** | 怎么证明实现是正确的 |
-| 🔄 **Resume handoff** | 足够的上下文让任何 agent 都能半路接手 |
+| 章节                         | 用途                                  |
+| ---------------------------- | ------------------------------------- |
+| 📍 **Touchpoints**           | 所有要创建或修改的文件，提前列出      |
+| 📜 **Public contracts**      | 哪些 API 接口或 interface 会变        |
+| 💥 **Blast radius**          | 什么可能挂掉，跑什么测试，注意什么    |
+| ✅ **Verification evidence** | 怎么证明实现是正确的                  |
+| 🔄 **Resume handoff**        | 足够的上下文让任何 agent 都能半路接手 |
 
 <br>
 
@@ -563,18 +563,18 @@ process/context/
 
 ## 横向对比
 
-| 功能 | agent-skills-kit | Superpowers | GSD | gstack |
-|---------|---------------------|-------------|-----|--------|
-| Spec 驱动的生命周期 | 完整 RIPER-5（调研 → 规划 → 执行 → 验证） | 强制工作流 | 修复 context 腐烂 | 部分 |
-| 阶段锁定的安全机制 | 每个模式有工具限制（调研只读、创新禁写） | 基于 skill 的约束 | 阶段分离 | 无 |
-| 多工具支持 | 7 个工具，通过 AGENTS.md + 原生支持 | Claude Code 插件 | 14 个运行时 | 1 个工具 |
-| 自动进化的 context | 领域路由的 context groups，每次功能完成后更新 | 插件记忆 | 磁盘持久化状态 | 手动 |
-| 团队协作 | 共享的 spec、计划和 review 产物 | 单人 | 单人 | 单人 |
-| Skills 系统 | 32 个自动发现，每次 prompt 关键词匹配 | 86 个可组合 skills | Meta-prompting | 23 个角色工具 |
-| 多阶段程序 | Umbrella plan + 逐阶段执行循环，带回归检查 | 单任务 | 单任务 | 单任务 |
-| 质量流水线 | 6 步链（code-review → test → simplify → security → audit → commit） | 每个 skill 独立质量 | 无自动链 | 无自动链 |
-| 安装 | 30 秒 `curl` 安装 + 自动设置 | 插件市场 | npx 一行命令 | git clone |
-| Context 路由 | 基于领域的路由表，分组 context pack | 扁平 skill context | 扁平 context | 单文件 |
+| 功能                | agent-skills-kit                                                    | Superpowers         | GSD               | gstack        |
+| ------------------- | ------------------------------------------------------------------- | ------------------- | ----------------- | ------------- |
+| Spec 驱动的生命周期 | 完整 RIPER-5（调研 → 规划 → 执行 → 验证）                           | 强制工作流          | 修复 context 腐烂 | 部分          |
+| 阶段锁定的安全机制  | 每个模式有工具限制（调研只读、创新禁写）                            | 基于 skill 的约束   | 阶段分离          | 无            |
+| 多工具支持          | 7 个工具，通过 AGENTS.md + 原生支持                                 | Claude Code 插件    | 14 个运行时       | 1 个工具      |
+| 自动进化的 context  | 领域路由的 context groups，每次功能完成后更新                       | 插件记忆            | 磁盘持久化状态    | 手动          |
+| 团队协作            | 共享的 spec、计划和 review 产物                                     | 单人                | 单人              | 单人          |
+| Skills 系统         | 32 个自动发现，每次 prompt 关键词匹配                               | 86 个可组合 skills  | Meta-prompting    | 23 个角色工具 |
+| 多阶段程序          | Umbrella plan + 逐阶段执行循环，带回归检查                          | 单任务              | 单任务            | 单任务        |
+| 质量流水线          | 6 步链（code-review → test → simplify → security → audit → commit） | 每个 skill 独立质量 | 无自动链          | 无自动链      |
+| 安装                | 30 秒 `curl` 安装 + 自动设置                                        | 插件市场            | npx 一行命令      | git clone     |
+| Context 路由        | 基于领域的路由表，分组 context pack                                 | 扁平 skill context  | 扁平 context      | 单文件        |
 
 > **关于运行时广度：** GSD 支持 14 个运行时。我们深度支持 7 个——每个平台都有完整的 agent harness、skill 发现和生命周期 hooks。广度 vs 深度：由你选择。
 
@@ -643,13 +643,13 @@ orchestrator **自己从不干活**——它只负责路由、监控和管理阶
 
 ### 📊 工作流
 
-| 阶段 | 做什么 | 你说 |
-|-------|-------------|---------|
-| 🔍 **RESEARCH** | 只读的信息收集——代码库 + 网络 | *(功能请求自动触发)* |
-| 💡 **INNOVATE** | 探索 2-3 种方案及其 trade-off | `go` |
-| 📋 **PLAN** | 写一份你可以 review 的详细 spec | `go` |
-| ⚡ **EXECUTE** | 严格按计划实现 | `ENTER EXECUTE MODE` |
-| 🧠 **UPDATE PROCESS** | 捕获经验，更新 context，归档计划 | *(非平凡工作后建议执行)* |
+| 阶段                  | 做什么                           | 你说                     |
+| --------------------- | -------------------------------- | ------------------------ |
+| 🔍 **RESEARCH**       | 只读的信息收集——代码库 + 网络    | _(功能请求自动触发)_     |
+| 💡 **INNOVATE**       | 探索 2-3 种方案及其 trade-off    | `go`                     |
+| 📋 **PLAN**           | 写一份你可以 review 的详细 spec  | `go`                     |
+| ⚡ **EXECUTE**        | 严格按计划实现                   | `ENTER EXECUTE MODE`     |
+| 🧠 **UPDATE PROCESS** | 捕获经验，更新 context，归档计划 | _(非平凡工作后建议执行)_ |
 
 > 💡 **快捷方式：** `ENTER FAST MODE - [task]` 把 RESEARCH+INNOVATE+PLAN 压缩成一步——但在 EXECUTE 前还是会暂停。小修小补（单文件、<15 行、不涉及 schema/auth 变更）直接跳到 execute。
 
@@ -837,13 +837,13 @@ flowchart TD
 
 <br>
 
-| 步骤 | 做什么 |
-|---|---|
-| 🔎 **Self-review** | 对照计划逐条检查 checklist，记录偏差 |
-| 🧪 **Tester** | 映射变更文件到测试文件，变更覆盖率 >70% 时自动升级为全量测试 |
-| 🔍 **Code reviewer** | review 之前先派边界情况侦查兵，检查 N+1 查询、auth 路径、数据泄露 |
-| ✨ **Simplifier** | review 通过后做可读性重构——不改行为 |
-| 📦 **Git manager** | 接收 `touched_files` 列表，拆分为逻辑化的 conventional commits，拒绝未知文件 |
+| 步骤                 | 做什么                                                                       |
+| -------------------- | ---------------------------------------------------------------------------- |
+| 🔎 **Self-review**   | 对照计划逐条检查 checklist，记录偏差                                         |
+| 🧪 **Tester**        | 映射变更文件到测试文件，变更覆盖率 >70% 时自动升级为全量测试                 |
+| 🔍 **Code reviewer** | review 之前先派边界情况侦查兵，检查 N+1 查询、auth 路径、数据泄露            |
+| ✨ **Simplifier**    | review 通过后做可读性重构——不改行为                                          |
+| 📦 **Git manager**   | 接收 `touched_files` 列表，拆分为逻辑化的 conventional commits，拒绝未知文件 |
 
 ---
 
@@ -884,7 +884,7 @@ flowchart TD
 
 <br>
 
-> 💡 六个月后有人问 *"我们当初为什么这样做 auth？"*，答案就在 `completed/` 里。不是埋在 Slack 聊天记录里找不到。
+> 💡 六个月后有人问 _"我们当初为什么这样做 auth？"_，答案就在 `completed/` 里。不是埋在 Slack 聊天记录里找不到。
 
 <br>
 
@@ -967,14 +967,14 @@ flowchart TD
 
 **核心特性：**
 
-| | 特性 | 为什么重要 |
-|---|---|---|
-| 🔄 | **每阶段重新调研** | 检查代码漂移，读取最新报告，更新假设 |
-| ✅ | **验证门** | 阶段没有证据证明完成就不算 `VERIFIED`。真实状态：`PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` 或 `BLOCKED` |
-| 📄 | **持久化报告** | 每个阶段的结果写到磁盘。进度扛得住 context compaction |
-| 🧠 | **经验向前传递** | Phase 1 的发现在执行前更新 Phase 2 的计划 |
-| 🏗️ | **基础 vs 扩展** | 明确拆分"验证架构"和"全面实现" |
-| 🚧 | **诚实的阻塞处理** | 被阻塞的阶段就标 `BLOCKED` 附上证据。不会强行标绿 |
+|     | 特性               | 为什么重要                                                                                                     |
+| --- | ------------------ | -------------------------------------------------------------------------------------------------------------- |
+| 🔄  | **每阶段重新调研** | 检查代码漂移，读取最新报告，更新假设                                                                           |
+| ✅  | **验证门**         | 阶段没有证据证明完成就不算 `VERIFIED`。真实状态：`PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` 或 `BLOCKED` |
+| 📄  | **持久化报告**     | 每个阶段的结果写到磁盘。进度扛得住 context compaction                                                          |
+| 🧠  | **经验向前传递**   | Phase 1 的发现在执行前更新 Phase 2 的计划                                                                      |
+| 🏗️  | **基础 vs 扩展**   | 明确拆分"验证架构"和"全面实现"                                                                                 |
+| 🚧  | **诚实的阻塞处理** | 被阻塞的阶段就标 `BLOCKED` 附上证据。不会强行标绿                                                              |
 
 ---
 
@@ -1005,12 +1005,12 @@ process/context/
 
 <br>
 
-| | 运作方式 |
-|---|---|
-| 🧭 **路由模式** | Agent 只读跟任务相关的内容，不是全部 |
-| 📏 **自动提升** | 3+ 文档或 800+ 行的主题自动获得独立 context group |
-| 🔄 **活文档** | 每次非平凡功能完成后由 `update-process-agent` 更新 |
-| 🧪 **可审计** | `ag-audit-context` 验证路由和一致性 |
+|                 | 运作方式                                           |
+| --------------- | -------------------------------------------------- |
+| 🧭 **路由模式** | Agent 只读跟任务相关的内容，不是全部               |
+| 📏 **自动提升** | 3+ 文档或 800+ 行的主题自动获得独立 context group  |
+| 🔄 **活文档**   | 每次非平凡功能完成后由 `update-process-agent` 更新 |
+| 🧪 **可审计**   | `ag-audit-context` 验证路由和一致性                |
 
 ---
 
@@ -1031,12 +1031,12 @@ process/features/{feature}/
 
 <br>
 
-| | 会发生什么 |
-|---|---|
-| 🆕 | 新工作从 `active/` 开始 → 报告积累 → 计划归档到 `completed/` |
-| 📌 | 延后的工作放到 `backlog/`——agent 在创建重复计划前会先检查 |
-| 📦 | 通用产物达到 5+ 时自动提升为 feature folder |
-| 🔍 | 每个 feature 都有完整的自包含历史——计划、决策、报告、调研 |
+|     | 会发生什么                                                   |
+| --- | ------------------------------------------------------------ |
+| 🆕  | 新工作从 `active/` 开始 → 报告积累 → 计划归档到 `completed/` |
+| 📌  | 延后的工作放到 `backlog/`——agent 在创建重复计划前会先检查    |
+| 📦  | 通用产物达到 5+ 时自动提升为 feature folder                  |
+| 🔍  | 每个 feature 都有完整的自包含历史——计划、决策、报告、调研    |
 
 ---
 
@@ -1053,27 +1053,27 @@ process/features/{feature}/
 
 **核心工作流 agents**——每个 RIPER-5 阶段一个：
 
-| Agent | 职责 |
-|-------|------|
-| 🔍 `ag-research-agent` | 代码库 + 网络调研，只读。内置矛盾追踪 |
-| 💡 `ag-innovate-agent` | 头脑风暴 2-3 种方案。进入 PLAN 前必须产出决策总结 |
-| 📋 `ag-plan-agent` | 写 spec，带反自圆其说防护。"我已经知道怎么做"不算一个计划 |
-| ⚡ `ag-execute-agent` | 按计划实现。50% 进度检查、偏离协议、自审查 |
-| ⏩ `ag-fast-mode-agent` | 压缩的 RESEARCH→INNOVATE→PLAN，带强制安全暂停 |
-| 🧠 `ag-update-process-agent` | 7 阶段强制检查清单，包含陈旧产物扫描 |
+| Agent                        | 职责                                                      |
+| ---------------------------- | --------------------------------------------------------- |
+| 🔍 `ag-research-agent`       | 代码库 + 网络调研，只读。内置矛盾追踪                     |
+| 💡 `ag-innovate-agent`       | 头脑风暴 2-3 种方案。进入 PLAN 前必须产出决策总结         |
+| 📋 `ag-plan-agent`           | 写 spec，带反自圆其说防护。"我已经知道怎么做"不算一个计划 |
+| ⚡ `ag-execute-agent`        | 按计划实现。50% 进度检查、偏离协议、自审查                |
+| ⏩ `ag-fast-mode-agent`      | 压缩的 RESEARCH→INNOVATE→PLAN，带强制安全暂停             |
+| 🧠 `ag-update-process-agent` | 7 阶段强制检查清单，包含陈旧产物扫描                      |
 
 <br>
 
 **专家 agents**——在 EXECUTE 阶段内调用或独立调用：
 
-| Agent | 职责 |
-|-------|------|
-| 🐛 `ag-debugger` | 先证据后假设。竞争假设，排除链 |
-| 🧪 `ag-tester` | Diff 感知。只跑受影响的测试。配置变更时自动升级 |
-| 🔎 `ag-code-reviewer` | review 前先派边界情况侦查兵。N+1 检测、auth 路径验证 |
-| ✨ `ag-code-simplifier` | 不改行为的可读性重构 |
-| 🎨 `ag-ui-ux-designer` | 设计感知的前端。执行期间可生成调研子 agent |
-| 📦 `ag-git-manager` | 从 `touched_files` 做逻辑 commit 拆分。拒绝未知文件 |
+| Agent                   | 职责                                                 |
+| ----------------------- | ---------------------------------------------------- |
+| 🐛 `ag-debugger`        | 先证据后假设。竞争假设，排除链                       |
+| 🧪 `ag-tester`          | Diff 感知。只跑受影响的测试。配置变更时自动升级      |
+| 🔎 `ag-code-reviewer`   | review 前先派边界情况侦查兵。N+1 检测、auth 路径验证 |
+| ✨ `ag-code-simplifier` | 不改行为的可读性重构                                 |
+| 🎨 `ag-ui-ux-designer`  | 设计感知的前端。执行期间可生成调研子 agent           |
+| 📦 `ag-git-manager`     | 从 `touched_files` 做逻辑 commit 拆分。拒绝未知文件  |
 
 </details>
 
@@ -1106,15 +1106,15 @@ process/features/{feature}/
 
 ### 🪝 7 个 Hooks
 
-| Hook | 做什么 |
-|------|-------------|
-| 🔐 **Privacy guardrails** | 阻止访问 `.env`、凭证、SSH 密钥。需要明确批准 |
-| 🚫 **Scout blocker** | 防止 agent 跑到 `node_modules/`、`dist/` 里。支持 gitignore 语法的 `.ckignore` |
-| 🧠 **Session init** | 检测技术栈、注入环境变量、compaction 后恢复审批门 |
-| 💉 **Subagent context** | 给每个子 agent 注入约 200 token 的紧凑上下文块 |
-| ✨ **Edit quality** | 5+ 次编辑后提醒跑 code-simplifier（非阻塞、节流） |
-| 📛 **Descriptive naming** | 每次 Write 时检查语言感知的文件命名规范 |
-| 📊 **Usage tracking** | 会话指标和 token 使用感知 |
+| Hook                      | 做什么                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------ |
+| 🔐 **Privacy guardrails** | 阻止访问 `.env`、凭证、SSH 密钥。需要明确批准                                  |
+| 🚫 **Scout blocker**      | 防止 agent 跑到 `node_modules/`、`dist/` 里。支持 gitignore 语法的 `.ckignore` |
+| 🧠 **Session init**       | 检测技术栈、注入环境变量、compaction 后恢复审批门                              |
+| 💉 **Subagent context**   | 给每个子 agent 注入约 200 token 的紧凑上下文块                                 |
+| ✨ **Edit quality**       | 5+ 次编辑后提醒跑 code-simplifier（非阻塞、节流）                              |
+| 📛 **Descriptive naming** | 每次 Write 时检查语言感知的文件命名规范                                        |
+| 📊 **Usage tracking**     | 会话指标和 token 使用感知                                                      |
 
 <br>
 

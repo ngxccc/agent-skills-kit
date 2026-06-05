@@ -94,20 +94,22 @@ Return:
 ```markdown
 ## Context Audit Summary
 
-| Check | Status | Notes |
-|---|---|---|
-| Router exists | PASS/FAIL | ... |
-| Context files indexed | PASS/FAIL | ... |
-| Group entrypoints | PASS/FAIL | ... |
-| Claude/Codex wiring | PASS/FAIL | ... |
-| Skill discovery | PASS/FAIL | ... |
-| Agent parity | PASS/FAIL | ... |
-| Broken refs | PASS/FAIL | ... |
+| Check                 | Status    | Notes |
+| --------------------- | --------- | ----- |
+| Router exists         | PASS/FAIL | ...   |
+| Context files indexed | PASS/FAIL | ...   |
+| Group entrypoints     | PASS/FAIL | ...   |
+| Claude/Codex wiring   | PASS/FAIL | ...   |
+| Skill discovery       | PASS/FAIL | ...   |
+| Agent parity          | PASS/FAIL | ...   |
+| Broken refs           | PASS/FAIL | ...   |
 
 ### Actions Taken
+
 - ...
 
 ### Decisions Needed
+
 - ...
 ```
 

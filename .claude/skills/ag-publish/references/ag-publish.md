@@ -83,25 +83,25 @@ Maintain harness-only CLAUDE.md and AGENTS.md directly in the kit repo as canoni
 
 ## Error Handling
 
-| Error | When | Action |
-|-------|------|--------|
-| `.ag-publish-config` missing | Step 1 | Ask user for kit repo path interactively |
-| Kit repo path doesn't exist | Step 1 | Print error, stop |
-| Kit repo has no `ag-manifest.json` | Step 2 | Print "not a valid kit repo", stop |
-| Kit repo has uncommitted changes | Step 2 | Warn user, suggest stashing. Do not block. |
-| Resolver script missing or fails | Step 3 | Print error, suggest checking Node >= 22, stop |
-| No changes to publish | Step 5 | Report "nothing to publish", stop |
-| Leak detection finds project content | Step 8 | Print matches, **stop before committing** |
-| Git push fails | Step 10 | Print error, suggest checking access. Commit/tag are local -- user can retry. |
-| Version tag already exists | Step 9 | Print error, suggest bumping to next version |
+| Error                                | When    | Action                                                                        |
+| ------------------------------------ | ------- | ----------------------------------------------------------------------------- |
+| `.ag-publish-config` missing         | Step 1  | Ask user for kit repo path interactively                                      |
+| Kit repo path doesn't exist          | Step 1  | Print error, stop                                                             |
+| Kit repo has no `ag-manifest.json`   | Step 2  | Print "not a valid kit repo", stop                                            |
+| Kit repo has uncommitted changes     | Step 2  | Warn user, suggest stashing. Do not block.                                    |
+| Resolver script missing or fails     | Step 3  | Print error, suggest checking Node >= 22, stop                                |
+| No changes to publish                | Step 5  | Report "nothing to publish", stop                                             |
+| Leak detection finds project content | Step 8  | Print matches, **stop before committing**                                     |
+| Git push fails                       | Step 10 | Print error, suggest checking access. Commit/tag are local -- user can retry. |
+| Version tag already exists           | Step 9  | Print error, suggest bumping to next version                                  |
 
 ## Version Bump Semantics
 
-| Bump | When | Examples |
-|------|------|---------|
-| **Patch** (2.1.0 -> 2.1.1) | Bug fixes, minor doc updates | Hook bugfix, skill doc clarification, prompt tweak |
-| **Minor** (2.1.0 -> 2.2.0) | New features, additive changes | New skill, new agent, new protocol, new seed template |
-| **Major** (2.1.0 -> 3.0.0) | Breaking changes | CLAUDE.md structure change, manifest schema change, removed skills |
+| Bump                       | When                           | Examples                                                           |
+| -------------------------- | ------------------------------ | ------------------------------------------------------------------ |
+| **Patch** (2.1.0 -> 2.1.1) | Bug fixes, minor doc updates   | Hook bugfix, skill doc clarification, prompt tweak                 |
+| **Minor** (2.1.0 -> 2.2.0) | New features, additive changes | New skill, new agent, new protocol, new seed template              |
+| **Major** (2.1.0 -> 3.0.0) | Breaking changes               | CLAUDE.md structure change, manifest schema change, removed skills |
 
 ## Leak Detection Patterns
 
@@ -116,6 +116,7 @@ node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
 ```
 
 Restrict the resolved `files` to:
+
 - `.claude/skills/**` matching `*.md`, `*.cjs`, `*.mjs`, `*.py`, `*.js`, `*.json`
 - `.claude/agents/**` matching `*.md`
 - `.codex/**`

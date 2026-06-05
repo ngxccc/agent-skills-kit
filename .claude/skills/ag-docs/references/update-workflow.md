@@ -28,6 +28,7 @@ Prefer `update-process-agent` when available. Otherwise perform a docs-only upda
 current agent, without changing implementation code.
 
 Pass the gathered context to update the relevant documentation:
+
 - `README.md`: Update README (keep it under 300 lines)
 - `process/context/all-context.md`: Update routing, indexes, group lifecycle, read-when rules, and broad repo context when architecture or conventions changed.
 - `process/context/tests/all-tests.md`: Update the testing contract and links to `process/context/tests/`.
@@ -35,13 +36,15 @@ Pass the gathered context to update the relevant documentation:
 - Topic-specific root or grouped context docs under `process/context/`: Update only when selected by the router.
 
 ## Additional requests
+
 <additional_requests>
-  $ARGUMENTS
+$ARGUMENTS
 </additional_requests>
 
 ## Phase 3: Size Check (Post-Update)
 
 After documentation updates complete:
+
 1. Run `find process/context -name '*.md' -print0 | xargs -0 wc -l | sort -rn` to check LOC
 2. Use `docs.maxLoc` from session context (default: 800)
 3. For files exceeding limit: report and ask user
@@ -49,11 +52,13 @@ After documentation updates complete:
 ## Phase 4: Documentation Validation (Post-Update)
 
 Run validation to detect potential hallucinations:
+
 1. Run: `node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs`
 2. Display validation report (warnings only, non-blocking)
 3. Checks: code references, internal links, config keys
 
 ## Important
+
 - Use `process/context/all-context.md` as the source of truth for documentation discovery.
 - Run `audit-context` after adding, moving, splitting, or grouping context files.
 - **Do not** start implementing.

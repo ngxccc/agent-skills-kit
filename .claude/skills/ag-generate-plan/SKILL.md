@@ -31,13 +31,16 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 8. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
 9. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
 10. If the work is a large multi-phase program, create or update a feature folder plan set:
-   - one umbrella/orchestration plan
-   - one direct plan file per phase
-   - one durable report destination per phase
+
+- one umbrella/orchestration plan
+- one direct plan file per phase
+- one durable report destination per phase
+
 11. Validate the generated artifact:
-   ```bash
-   node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
-   ```
+
+```bash
+node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
+```
 
 ## Important Rules
 

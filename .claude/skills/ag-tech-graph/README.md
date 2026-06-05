@@ -85,15 +85,15 @@ The imported fixtures exercise the local style system across representative diag
 
 ## Styles
 
-| # | Name | Best For |
-|---|------|----------|
-| 1 | Flat Icon | docs, blogs, general architecture |
-| 2 | Dark Terminal | technical flows, README-style visuals, sequence-heavy work |
-| 3 | Blueprint | infrastructure, engineering architecture, state/process visuals |
-| 4 | Notion Clean | wiki docs, internal specs, minimal diagrams |
-| 5 | Glassmorphism | polished presentations, multi-agent views |
-| 6 | Claude Official | warm professional system visuals |
-| 7 | OpenAI Official | clean white API and product integration diagrams |
+| #   | Name            | Best For                                                        |
+| --- | --------------- | --------------------------------------------------------------- |
+| 1   | Flat Icon       | docs, blogs, general architecture                               |
+| 2   | Dark Terminal   | technical flows, README-style visuals, sequence-heavy work      |
+| 3   | Blueprint       | infrastructure, engineering architecture, state/process visuals |
+| 4   | Notion Clean    | wiki docs, internal specs, minimal diagrams                     |
+| 5   | Glassmorphism   | polished presentations, multi-agent views                       |
+| 6   | Claude Official | warm professional system visuals                                |
+| 7   | OpenAI Official | clean white API and product integration diagrams                |
 
 Start with style 1 unless the request or surrounding design language clearly implies another style.
 
@@ -198,13 +198,13 @@ rsvg-convert --version
 
 ## Troubleshooting
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| PNG not generated | `rsvg-convert` not installed | Expected SVG-only mode. Install `librsvg` only if PNG export is required. |
-| PNG is blank or all-black | SVG imports external fonts/resources | Remove external imports and keep everything inline. |
-| Diagram cut off | viewBox too small | Increase width/height or re-space the layout. |
-| Labels collide | layout too dense | Use the layout best-practices reference and widen gutters before adding more content. |
-| Icons do not render | external icon/CDN usage | Use inline SVG paths or semantic shapes from `references/icons.md`. |
+| Symptom                   | Cause                                | Fix                                                                                   |
+| ------------------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
+| PNG not generated         | `rsvg-convert` not installed         | Expected SVG-only mode. Install `librsvg` only if PNG export is required.             |
+| PNG is blank or all-black | SVG imports external fonts/resources | Remove external imports and keep everything inline.                                   |
+| Diagram cut off           | viewBox too small                    | Increase width/height or re-space the layout.                                         |
+| Labels collide            | layout too dense                     | Use the layout best-practices reference and widen gutters before adding more content. |
+| Icons do not render       | external icon/CDN usage              | Use inline SVG paths or semantic shapes from `references/icons.md`.                   |
 
 ## Attribution
 

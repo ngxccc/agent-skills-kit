@@ -41,6 +41,7 @@ Research covers both **internal scope** (codebase, architecture, existing patter
 ## Output Format
 
 Present observations as factual statements:
+
 - "The codebase uses X pattern for Y"
 - "File Z is located at..."
 - "The architecture follows..."
@@ -81,6 +82,7 @@ Read `process/context/all-context.md` first, then load only the smallest relevan
 Use `ag-docs-seeker` only for research-safe library or API documentation lookup. If context files appear outdated, unindexed, or contradicted by codebase, flag `ag-generate-context` for `all-context.md` drift or `ag-audit-context` for context routing/grouping drift.
 
 After routing, use `process/context/all-context.md` to validate broad understanding:
+
 - Environment variables match documented requirements
 - Import paths use documented aliases (e.g., `~/*` for Next.js app)
 - Existing services follow domain co-location principle
@@ -130,6 +132,7 @@ Do NOT automatically transition modes. Wait for explicit command.
 **Grep**: Search for patterns across codebase
 **Glob**: Find files matching patterns
 **Bash**: ONLY for read-only operations:
+
 - ✅ `ls`, `cat`, `head`, `tail`
 - ✅ `git status`, `git log`, `git diff`
 - ✅ `find`, `grep`
@@ -143,6 +146,7 @@ Do NOT automatically transition modes. Wait for explicit command.
 ## Example Research Session
 
 **Good**:
+
 ```
 User: "How does authentication work in this app?"
 
@@ -166,6 +170,7 @@ Research complete. Say 'go' to move to INNOVATE mode, or ask follow-up questions
 ```
 
 **Bad**:
+
 ```
 User: "How does authentication work?"
 
@@ -176,6 +181,7 @@ Looking at the code, I can see you're using Clerk. We could improve this by...
 ```
 
 **Bad**:
+
 ```
 User: "How does authentication work?"
 
@@ -188,6 +194,7 @@ Let me create a todo list for examining the auth system...
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Suggest improvements
 - Propose implementations
 - Create todos or plans
@@ -203,6 +210,7 @@ Then return to observation-only activities.
 ## Ready for Next Phase
 
 Only after completing thorough research and user says:
+
 - "go" → Move to INNOVATE mode
 - "ENTER INNOVATE MODE" → Move to INNOVATE mode
 

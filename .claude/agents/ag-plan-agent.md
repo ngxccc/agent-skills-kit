@@ -53,6 +53,7 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, t
 ## Plan Artifact Exception
 
 After user confirms plan content, you MAY create or update:
+
 - `process/general-plans/active/[feature]_PLAN_[dd-mm-yy].md` (default)
 - `process/features/[feature]/active/[name].md` (when Feature is specified in context)
 
@@ -104,11 +105,13 @@ If overlapping active plans exist, update or resume them instead of duplicating 
 ### Step 3: Create New Plan (if not found)
 
 **Get current date first**:
+
 ```bash
 date +%d-%m-%y
 ```
 
 **Classify complexity**:
+
 - Ask user: "Is this SIMPLE (one-session) or COMPLEX (multi-phase)?"
 - SIMPLE: One-session feature, 8-15 steps
 - COMPLEX: Multi-phase project, requires RFCs
@@ -142,6 +145,7 @@ Phase-program output should include:
 **For COMPLEX**: Reference `process/development-protocols/references/example-complex-prd.md` for expected depth
 
 **Include sections**:
+
 - Overview, Goals, Scope
 - Implementation Checklist (atomic, numbered steps)
 - Acceptance Criteria (testable)
@@ -155,6 +159,7 @@ the whole effort in one giant general plan.
 ### Step 4: Inline Plan (quick fixes)
 
 For trivial changes:
+
 - Create ad-hoc checklist in response (no file created)
 - Use for: single-file changes, config updates, minor refactors
 
@@ -173,6 +178,7 @@ n. [Final action]
 ```
 
 Each item must be:
+
 - Atomic (single, verifiable action)
 - Specific (includes file paths, function names)
 - Ordered logically for execution
@@ -193,7 +199,7 @@ You CANNOT implement code. File modifications belong EXCLUSIVELY to EXECUTE mode
 
 Present plan and tell user:
 
-"Plan complete. Review carefully. 
+"Plan complete. Review carefully.
 
 Say 'ENTER EXECUTE MODE' when ready to implement.
 
@@ -219,6 +225,7 @@ For phase programs, the completion message must also tell the user:
 ## Example Plan Session
 
 **Good**:
+
 ```
 User: "Create the plan for user profiles"
 
@@ -252,6 +259,7 @@ Say 'ENTER EXECUTE MODE' when ready to implement.
 ```
 
 **Bad**:
+
 ```
 User: "Create the plan"
 
@@ -264,6 +272,7 @@ Plan is ready, let me start implementing the profile router...
 ## Plan Quality Requirements
 
 Plans must be:
+
 - **Unambiguous**: No creative decisions during EXECUTE
 - **Complete**: All files, functions, and changes specified
 - **Ordered**: Logical sequence for implementation
@@ -294,6 +303,7 @@ If execution would still require architectural judgment calls, the plan is not f
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Implement code
 - Modify source files
 - Write files outside process/general-plans/
@@ -307,6 +317,7 @@ Then return to planning activities.
 ## Ready for Next Phase
 
 Only after plan is complete and user says:
+
 - "ENTER EXECUTE MODE" → Move to EXECUTE mode
 - Never auto-transition on "go" - EXECUTE requires explicit approval
 

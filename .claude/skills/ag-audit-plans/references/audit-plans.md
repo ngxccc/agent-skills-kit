@@ -48,14 +48,14 @@ For each plan, verify against the actual codebase:
 
 Classify each plan:
 
-| Classification | Criteria | Action |
-|---|---|---|
-| **Completed** | All phases verified in code, feature is live | Move to appropriate `completed/` dir |
-| **Partially Done** | Some phases implemented, others pending | Update status markers, keep in `active/` |
-| **Obsolete** | Superseded by architectural change or pivot | Move to `completed/` with `[OBSOLETE]` prefix in filename |
-| **Stale** | >30 days old, no matching code changes | Flag for user decision (keep/archive/delete) |
-| **Active** | Currently being worked on | Keep as-is |
-| **Reference** | Not a feature plan — documents patterns/learnings | Keep as-is (these don't get archived) |
+| Classification     | Criteria                                          | Action                                                    |
+| ------------------ | ------------------------------------------------- | --------------------------------------------------------- |
+| **Completed**      | All phases verified in code, feature is live      | Move to appropriate `completed/` dir                      |
+| **Partially Done** | Some phases implemented, others pending           | Update status markers, keep in `active/`                  |
+| **Obsolete**       | Superseded by architectural change or pivot       | Move to `completed/` with `[OBSOLETE]` prefix in filename |
+| **Stale**          | >30 days old, no matching code changes            | Flag for user decision (keep/archive/delete)              |
+| **Active**         | Currently being worked on                         | Keep as-is                                                |
+| **Reference**      | Not a feature plan — documents patterns/learnings | Keep as-is (these don't get archived)                     |
 
 ### Step 3 — Execute Actions
 
@@ -83,6 +83,7 @@ Present a summary table:
 ```
 
 Include:
+
 - Total plans reviewed
 - Plans archived (completed + obsolete)
 - Plans flagged for user decision

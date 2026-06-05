@@ -6,13 +6,13 @@ Detailed instructions for each phase of the ag-setup skill, including interactiv
 
 After running DETECT, classify the project before choosing a flow:
 
-| Signal | Classification |
-|--------|---------------|
-| No `process/` directory, no `all-context.md`, no meaningful CLAUDE.md content | **New project** -- use Flow A |
-| Has `process/` directory with any content | **Existing project** -- use Flow B |
-| Has `all-context.md` with real (non-placeholder) content | **Existing project** -- use Flow B |
-| Has CLAUDE.md with project-specific sections (beyond managed protocol) | **Existing project** -- use Flow B |
-| Has `.agent-skills-backup/` (just ran install.sh over an existing setup) | **Existing project** -- use Flow B |
+| Signal                                                                        | Classification                     |
+| ----------------------------------------------------------------------------- | ---------------------------------- |
+| No `process/` directory, no `all-context.md`, no meaningful CLAUDE.md content | **New project** -- use Flow A      |
+| Has `process/` directory with any content                                     | **Existing project** -- use Flow B |
+| Has `all-context.md` with real (non-placeholder) content                      | **Existing project** -- use Flow B |
+| Has CLAUDE.md with project-specific sections (beyond managed protocol)        | **Existing project** -- use Flow B |
+| Has `.agent-skills-backup/` (just ran install.sh over an existing setup)      | **Existing project** -- use Flow B |
 
 When in doubt, treat as existing. It is always safer to study first and ask before changing things.
 
@@ -39,17 +39,20 @@ This is not a checklist — it is an open-ended conversation that continues unti
 Start broad, then go deeper based on answers. Ask follow-ups on anything vague or interesting. Do not move on after a fixed number of questions — keep going until both you and the user are satisfied that nothing important is missing.
 
 **Round 1 — Project identity (always start here):**
+
 - "What is this project? Give me a brief description in your own words."
 - "Who uses it? Who is the target audience?"
 - Purpose: populates the project description in all-context.md. A human description is always better than what a code scan infers.
 
 **Round 2 — Architecture and scope (adapt based on Round 1):**
+
 - "What are the main product areas or features?"
 - "How is the codebase organized? Any key services, packages, or modules I should know about?"
 - "What are the most important or complex parts of the codebase?"
 - Purpose: guides feature folder creation, architecture sections, and STUDY focus areas.
 
 **Round 3 — Workflow and conventions (adapt based on what you've learned):**
+
 - "Do you work solo or with a team?"
 - "Any coding conventions, naming patterns, or architectural decisions that are important?"
 - "How do you handle testing? CI/CD? Deployments?"
@@ -57,6 +60,7 @@ Start broad, then go deeper based on answers. Ask follow-ups on anything vague o
 - Purpose: populates Key Patterns and Conventions, testing context, and infrastructure sections.
 
 **Round 4+ — Follow-ups (as many rounds as needed):**
+
 - Follow up on anything vague: "You mentioned [X] — can you tell me more about how that works?"
 - Probe pain points: "Are there any pain points, tech debt, or things you want agents to be careful about?"
 - Catch-all: "Anything else that is important context for working on this codebase?"
@@ -108,6 +112,7 @@ Before proposing any changes, build a complete picture of what is already there.
 **Produce an internal assessment:**
 
 For each file/directory found, classify it as:
+
 - **Good**: has real, detailed, useful content. Keep as-is.
 - **Stale**: has content but it is outdated, incomplete, or has unfilled placeholders. Candidate for update.
 - **Placeholder**: seed template text with no real content. Candidate for replacement.
@@ -142,6 +147,7 @@ LAYOUT CHANGES (reorganization I would suggest):
 ```
 
 **Wait for the user to respond.** They may:
+
 - Approve everything: "looks good, go ahead"
 - Selectively approve: "update the stale ones but don't add the new feature folders"
 - Reject changes: "leave everything as-is, just validate"
@@ -152,6 +158,7 @@ Respect their choices. Only proceed with approved changes.
 **Then have the full discovery conversation from Flow A (Step 2: ASK),** regardless of how much existing context you found. Existing context files may be stale, incomplete, or written by someone else. The user's live answers are always more current and more valuable.
 
 Start with: "I've read your existing context. Let me verify my understanding and fill in the gaps." Then:
+
 - Summarize what you learned from existing files.
 - Ask: "Is this still accurate? What's changed since these docs were written?"
 - Work through the same Round 1-4 question areas from Flow A, skipping anything the existing context already covers well and the user confirms is current.
@@ -359,12 +366,12 @@ process/
 
 ### Migration Mode Decision Logic
 
-| Signal | Mode |
-|--------|------|
-| No `process/` directory exists | Fresh |
-| `process/` exists but no `development-protocols/` | Merge |
-| `process/` exists with `development-protocols/` | Refresh |
-| `process/context/all-context.md` exists | Merge or Refresh (preserve it) |
+| Signal                                            | Mode                           |
+| ------------------------------------------------- | ------------------------------ |
+| No `process/` directory exists                    | Fresh                          |
+| `process/` exists but no `development-protocols/` | Merge                          |
+| `process/` exists with `development-protocols/`   | Refresh                        |
+| `process/context/all-context.md` exists           | Merge or Refresh (preserve it) |
 
 ### Fresh Mode
 
@@ -385,15 +392,16 @@ Preserve existing content, migrate old layouts, fill gaps (read from `process/_s
 
 Detect old directory layouts and reorganize them into the harness standard structure. **Show every planned move to the user and wait for approval before executing.**
 
-| Old Layout | Migration Action |
-|------------|-----------------|
-| `process/plans/` exists, no `process/general-plans/` | Create `process/general-plans/active/` and `process/general-plans/completed/`. For each file in `process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `process/plans/`. |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`. Remove empty `process/reports/`. |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/references/`. Remove empty `process/skills/`. |
-| Example PRDs at old locations (under `process/context/` or `process/context/planning/`) not yet moved to `process/development-protocols/references/` | Move to `process/development-protocols/references/`. |
-| process/context/backlog.md | Move to `process/general-plans/backlog/backlog.md` |
+| Old Layout                                                                                                                                           | Migration Action                                                                                                                                                                                                                                                |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `process/plans/` exists, no `process/general-plans/`                                                                                                 | Create `process/general-plans/active/` and `process/general-plans/completed/`. For each file in `process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `process/plans/`. |
+| `process/reports/` exists at top level                                                                                                               | Move `process/reports/*` to `process/general-plans/reports/`. Remove empty `process/reports/`.                                                                                                                                                                  |
+| `process/skills/` exists at top level                                                                                                                | Move `process/skills/*` to `process/general-plans/references/`. Remove empty `process/skills/`.                                                                                                                                                                 |
+| Example PRDs at old locations (under `process/context/` or `process/context/planning/`) not yet moved to `process/development-protocols/references/` | Move to `process/development-protocols/references/`.                                                                                                                                                                                                            |
+| process/context/backlog.md                                                                                                                           | Move to `process/general-plans/backlog/backlog.md`                                                                                                                                                                                                              |
 
 **Migration rules:**
+
 - Never overwrite existing files at the destination. If a same-name file exists, keep both (rename the migrated copy with a `-migrated` suffix).
 - Print every move action so the user can verify.
 - After all moves, remove empty source directories.
@@ -422,8 +430,8 @@ Update protocols, preserve user content (read from `process/_seeds/`, never modi
 
 The only placeholder used in seed templates is:
 
-| Placeholder | Source |
-|-------------|--------|
+| Placeholder        | Source                    |
+| ------------------ | ------------------------- |
 | `{{project_name}}` | `package.json` name field |
 
 All other content is populated by the STUDY phase using real codebase analysis, not string replacement.
@@ -453,12 +461,12 @@ Spawn a single subagent that reads all existing `process/` content and produces 
 
 Spawn 4 parallel subagents. Each produces a structured findings report as its output.
 
-| Subagent | Task | Output |
-|----------|------|--------|
+| Subagent                          | Task                                                                                                                              | Output                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | A: Architecture and Stack Scanner | Source directory scan, tech stack detection with versions, import alias mapping, env var cataloging, key patterns and conventions | Structured findings: stack details, directory tree, aliases, entry points, patterns |
-| B: Test and Quality Scanner | Test runners, config files, test directories, test commands per package/workspace | Structured findings: runners, configs, commands, known quirks |
-| C: Context Group Detector | Scan for database, auth, CI/CD, container, UI, workflow signals using the detection table below | List of recommended context groups with evidence for each |
-| D: Feature Area Detector | Route groups, package names, README features, doc structure | List of recommended feature folders with evidence for each |
+| B: Test and Quality Scanner       | Test runners, config files, test directories, test commands per package/workspace                                                 | Structured findings: runners, configs, commands, known quirks                       |
+| C: Context Group Detector         | Scan for database, auth, CI/CD, container, UI, workflow signals using the detection table below                                   | List of recommended context groups with evidence for each                           |
+| D: Feature Area Detector          | Route groups, package names, README features, doc structure                                                                       | List of recommended feature folders with evidence for each                          |
 
 Wait for all Round 1 subagents to complete. Present the combined detection summary to the user. User confirms or adjusts the detected groups and features before Round 2.
 
@@ -466,12 +474,12 @@ Wait for all Round 1 subagents to complete. Present the combined detection summa
 
 Spawn up to 4 parallel subagents. Each writes to a distinct set of files with no overlap.
 
-| Subagent | Consumes | Writes to |
-|----------|----------|-----------|
-| E: all-context.md Writer | Findings from A + C + user answers | `process/context/all-context.md` |
-| F: all-tests.md Writer | Findings from B | `process/context/tests/all-tests.md` |
-| G: Context Group Scaffolder | Findings from C | `process/context/{group}/all-{group}.md` for each group |
-| H: Feature Folder Scaffolder | Findings from D + user answers | `process/features/{feature}/` dirs + `_GUIDE.md` files |
+| Subagent                     | Consumes                           | Writes to                                               |
+| ---------------------------- | ---------------------------------- | ------------------------------------------------------- |
+| E: all-context.md Writer     | Findings from A + C + user answers | `process/context/all-context.md`                        |
+| F: all-tests.md Writer       | Findings from B                    | `process/context/tests/all-tests.md`                    |
+| G: Context Group Scaffolder  | Findings from C                    | `process/context/{group}/all-{group}.md` for each group |
+| H: Feature Folder Scaffolder | Findings from D + user answers     | `process/features/{feature}/` dirs + `_GUIDE.md` files  |
 
 Wait for all Round 2 subagents to complete. Proceed to VALIDATE.
 
@@ -484,11 +492,13 @@ Skip parallel delegation. A single agent can handle the entire STUDY phase seque
 The agent (or Subagent A) must scan and document:
 
 **Source directory scan:**
+
 - List all top-level source directories (src/, lib/, app/, pages/, etc.)
 - For monorepos: list all workspace packages with their purpose
 - Identify entry points (main files, route handlers, server starts)
 
 **Tech stack specifics:**
+
 - Framework + version (e.g., "Next.js 15 with App Router", not just "Next.js")
 - Runtime (Node, Bun, Deno) + version from `package.json` engines or `.node-version`
 - Database (ORM + DB type from dependencies + config files)
@@ -497,16 +507,19 @@ The agent (or Subagent A) must scan and document:
 - API layer (REST/GraphQL/tRPC) from dependencies + route files
 
 **Import alias mapping:**
+
 - Read `tsconfig.json` / `jsconfig.json` paths field
 - Read `vite.config` resolve.alias if present
 - Document every alias -> actual path
 
 **Environment variables:**
+
 - Scan `.env.example`, `.env.local.example`, or env schema files (e.g., `env.ts`, `env.mjs`)
 - Group by category (auth, database, API keys, URLs)
 - List variable names only, never values
 
 **Key patterns:**
+
 - Error handling convention (throws vs result pattern)
 - State management (Redux, Zustand, Jotai, context)
 - API patterns (REST conventions, middleware chains, RPC)
@@ -514,15 +527,15 @@ The agent (or Subagent A) must scan and document:
 
 ### Context Group Detection Table
 
-| Project Signal | Context Group | all-*.md Content |
-|---|---|---|
-| Prisma/Drizzle/TypeORM/Sequelize + DB config | `database/` | Schema location, migration commands, client setup, key models |
-| Docker/Dockerfile/docker-compose present | `container/` | Image structure, services, ports, build commands |
-| Auth dependency (Clerk/NextAuth/Auth.js/Passport/Lucia) | `auth/` | Provider, config location, protected routes pattern |
-| CI/CD config (.github/workflows, .circleci, .gitlab-ci) | `cicd/` | Pipeline stages, deployment targets, required secrets |
-| Infrastructure code (terraform, pulumi, CDK, SST) | `infra/` | Provider, resource types, deployment commands |
-| 3+ UI component directories or design system | `uxui/` | Component library, styling approach, design tokens |
-| Workflow/queue system (BullMQ, Temporal, Inngest, etc.) | `workflows/` | Queue config, worker setup, job types |
+| Project Signal                                          | Context Group | all-\*.md Content                                             |
+| ------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
+| Prisma/Drizzle/TypeORM/Sequelize + DB config            | `database/`   | Schema location, migration commands, client setup, key models |
+| Docker/Dockerfile/docker-compose present                | `container/`  | Image structure, services, ports, build commands              |
+| Auth dependency (Clerk/NextAuth/Auth.js/Passport/Lucia) | `auth/`       | Provider, config location, protected routes pattern           |
+| CI/CD config (.github/workflows, .circleci, .gitlab-ci) | `cicd/`       | Pipeline stages, deployment targets, required secrets         |
+| Infrastructure code (terraform, pulumi, CDK, SST)       | `infra/`      | Provider, resource types, deployment commands                 |
+| 3+ UI component directories or design system            | `uxui/`       | Component library, styling approach, design tokens            |
+| Workflow/queue system (BullMQ, Temporal, Inngest, etc.) | `workflows/`  | Queue config, worker setup, job types                         |
 
 **Rule:** Only create a group when the project has SUBSTANTIAL content for it -- at minimum 2+ source files dedicated to that domain. A single config file is not enough.
 
@@ -538,11 +551,13 @@ Scan these locations for feature identification:
 **Cross-reference with user answers.** If the user named product areas in the ASK step, those are strong signals for feature folders even if the automated scan would not have created them. Ask the user where the code lives if you cannot find it.
 
 **Feature folder creation threshold:**
+
 - Create a feature folder only when the feature has 3+ source files AND is a distinct product area (not a utility)
 - For monorepos: each app or business-logic package is a candidate
 - For single apps: each major route group with its own components/API is a candidate
 
 **Each feature folder gets:**
+
 - `active/`, `completed/`, `backlog/`, `reports/`, `references/` subdirectories
 - `_GUIDE.md` explaining the feature scope, key files, and current state
 
@@ -562,6 +577,7 @@ After scanning (or receiving Round 1 findings), write real content into `all-con
 10. **Environment and Configuration**: List actual env var groups found (names only, never values)
 11. **Context Group Lifecycle**: Keep the generic instructions from the template
 12. **Scan Metadata** (add at bottom):
+
     ```
     ## Scan Metadata
 

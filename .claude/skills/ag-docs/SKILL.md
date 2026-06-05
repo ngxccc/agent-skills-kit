@@ -15,25 +15,26 @@ Analyze codebase and manage project documentation through scouting, analysis, an
 
 If invoked without arguments, use `AskUserQuestion` to present available documentation operations:
 
-| Operation | Description |
-|-----------|-------------|
-| `init` | Analyze codebase & create initial docs |
-| `update` | Analyze changes & update docs |
-| `summarize` | Quick codebase summary |
+| Operation   | Description                            |
+| ----------- | -------------------------------------- |
+| `init`      | Analyze codebase & create initial docs |
+| `update`    | Analyze changes & update docs          |
+| `summarize` | Quick codebase summary                 |
 
 Present as options via `AskUserQuestion` with header "Documentation Operation", question "What would you like to do?".
 
 ## Subcommands
 
-| Subcommand | Reference | Purpose |
-|------------|-----------|---------|
-| `/ag:docs init` | `references/init-workflow.md` | Analyze codebase and create initial documentation |
-| `/ag:docs update` | `references/update-workflow.md` | Analyze codebase and update existing documentation |
-| `/ag:docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary |
+| Subcommand           | Reference                          | Purpose                                            |
+| -------------------- | ---------------------------------- | -------------------------------------------------- |
+| `/ag:docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation  |
+| `/ag:docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation |
+| `/ag:docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary      |
 
 ## Routing
 
 Parse `$ARGUMENTS` first word:
+
 - `init` → Load `references/init-workflow.md`
 - `update` → Load `references/update-workflow.md`
 - `summarize` → Load `references/summarize-workflow.md`

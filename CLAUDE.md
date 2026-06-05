@@ -136,6 +136,7 @@ Global best practices and coding conventions apply:
 - Functions, classes, and abstraction
 - Component architecture
 - Testing and quality standards
+- Markdown formatting: Always format markdown files using Prettier.
 
 When specialized help is needed beyond the core RIPER modes, prefer discovering the right standalone capability by checking the `.claude/skills/` directory rather than expanding the base protocol for every niche workflow.
 

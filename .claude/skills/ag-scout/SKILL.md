@@ -12,6 +12,7 @@ metadata:
 Fast, token-efficient codebase scouting using parallel agents to find files needed for tasks.
 
 ## Arguments
+
 - Default: Scout using local shell search plus optional parallel `research-agent` delegation (`./references/internal-scouting.md`)
 - `ext`: Scout using external Gemini/OpenCode CLI tools in parallel (`./references/external-scouting.md`)
 
@@ -33,30 +34,37 @@ Fast, token-efficient codebase scouting using parallel agents to find files need
 ## Configuration
 
 Read from `.claude/.vc.json` (falls back to legacy `.claude/.ck.json` if present):
+
 - `gemini.model` - Gemini model (default: `gemini-3-flash-preview`)
 
 ## Workflow
 
 ### 1. Analyze Task
+
 - Parse user prompt for search targets
 - Identify key directories, patterns, file types, lines of code
 - Determine optimal SCALE value of subagents to spawn
 
 ### 2. Divide and Conquer
+
 - Split codebase into logical segments per agent
 - Assign each agent specific directories or patterns
 - Ensure no overlap, maximize coverage
 
 ### 3. Register Scout Tasks
+
 - Parallel task registration and external orchestration patterns are optional, not required for normal scouting in this repo
 - See `references/task-management-scouting.md` only when you are intentionally coordinating a larger parallel scout workflow
 
 ### 4. Spawn Parallel Agents
+
 Load appropriate reference based on decision tree:
+
 - **Internal (Default):** `references/internal-scouting.md` (shell search plus optional `research-agent` parallelism)
 - **External:** `references/external-scouting.md` (Gemini/OpenCode)
 
 **Notes:**
+
 - `TaskUpdate` each task to `in_progress` before spawning its agent (skip if Task tools unavailable)
 - Prompt detailed instructions for each subagent with exact directories or files it should read
 - Remember that each subagent has less than 200K tokens of context window
@@ -76,10 +84,12 @@ Load appropriate reference based on decision tree:
 # Scout Report
 
 ## Relevant Files
+
 - `path/to/file.ts` - Brief description
 - ...
 
 ## Unresolved Questions
+
 - Any gaps in findings
 ```
 

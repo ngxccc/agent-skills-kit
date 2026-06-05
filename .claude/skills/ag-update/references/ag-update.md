@@ -38,38 +38,46 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
   "copyIfMissing": [],
   "symlinks": { ".agents/skills": "../.claude/skills" },
   "kitOnly": [
-    "README.md", "README-preview*.html", "CONTRIBUTING.md", "SECURITY.md",
-    "TRADEMARK.md", "LICENSE", "docs/**", "assets/**", ".github/**",
-    "resolve-manifest.mjs", "install.sh"
+    "README.md",
+    "README-preview*.html",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "TRADEMARK.md",
+    "LICENSE",
+    "docs/**",
+    "assets/**",
+    ".github/**",
+    "resolve-manifest.mjs",
+    "install.sh"
   ]
 }
 ```
 
 ### Field Definitions
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `version` | string | Semver version of this release. >= 2.1.0 means glob format. |
-| `include` | string[] | Glob patterns for files managed by the kit. Resolved against the kit repo root. |
-| `exclude` | string[] | Glob patterns to exclude from include matches. Post-filtered by the resolver. |
-| `strip` | string[] | Files needing project-specific content stripped at publish time. Informational for ag-update. |
-| `merge` | string[] | Files where user customizations are preserved (not overwritten on update). |
-| `copyIfMissing` | string[] | Glob patterns for files only installed if they don't already exist locally. |
-| `symlinks` | object | Symlink path -> target mappings to create/verify. |
-| `kitOnly` | string[] | Glob patterns for files in the kit repo but NOT installed into user projects. |
+| Field           | Type     | Description                                                                                   |
+| --------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `version`       | string   | Semver version of this release. >= 2.1.0 means glob format.                                   |
+| `include`       | string[] | Glob patterns for files managed by the kit. Resolved against the kit repo root.               |
+| `exclude`       | string[] | Glob patterns to exclude from include matches. Post-filtered by the resolver.                 |
+| `strip`         | string[] | Files needing project-specific content stripped at publish time. Informational for ag-update. |
+| `merge`         | string[] | Files where user customizations are preserved (not overwritten on update).                    |
+| `copyIfMissing` | string[] | Glob patterns for files only installed if they don't already exist locally.                   |
+| `symlinks`      | object   | Symlink path -> target mappings to create/verify.                                             |
+| `kitOnly`       | string[] | Glob patterns for files in the kit repo but NOT installed into user projects.                 |
 
 ### Legacy Schema (v2.0.x)
 
 Old manifests use explicit file lists instead of glob patterns:
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `version` | string | Semver version (< 2.1.0) |
-| `managed` | string[] | Individual files overwritten on update |
-| `managedDirs` | string[] | Directories synced entirely (rsync-style replace) |
-| `seedsDir` | string | Path to seeds directory (always `process/_seeds/`) |
-| `symlinks` | object | Symlink path -> target mappings |
-| `deletions` | string[] | Paths to delete (accumulated across versions) |
+| Field         | Type     | Description                                        |
+| ------------- | -------- | -------------------------------------------------- |
+| `version`     | string   | Semver version (< 2.1.0)                           |
+| `managed`     | string[] | Individual files overwritten on update             |
+| `managedDirs` | string[] | Directories synced entirely (rsync-style replace)  |
+| `seedsDir`    | string   | Path to seeds directory (always `process/_seeds/`) |
+| `symlinks`    | object   | Symlink path -> target mappings                    |
+| `deletions`   | string[] | Paths to delete (accumulated across versions)      |
 
 The resolver handles both formats transparently. If version >= 2.1.0, it uses glob resolution. Otherwise, it falls back to explicit list resolution.
 
@@ -108,6 +116,7 @@ A snapshot file written to the user project root after each install/update. Cont
 **Purpose:** Enables automatic deletion detection. When ag-update runs, it compares the new resolved file list against this snapshot to find files that should be deleted (present in snapshot but absent from new resolution).
 
 **Example:**
+
 ```
 .claude/agents/ag-code-reviewer.md
 .claude/agents/ag-debugger.md
@@ -120,20 +129,20 @@ A snapshot file written to the user project root after each install/update. Cont
 
 ## Error Handling Matrix
 
-| Error | When | Action |
-|-------|------|--------|
-| Network failure during clone | Step 3 | Print error, clean up temp dir, stop |
-| GitHub auth failure | Step 3 | Print "check SSH keys or HTTPS token", clean up, stop |
-| Repo not found (404) | Step 3 | Print "remote repo not found, check URL in SKILL.md", clean up, stop |
-| Resolver script missing | Step 4 | Fall back to legacy manifest parsing (managed/managedDirs) |
-| Resolver script fails | Step 4 | Print error, suggest checking Node.js version (>= 22), clean up, stop |
-| Malformed ag-manifest.json | Step 4 | Print JSON parse error, clean up, stop |
-| Missing ag-manifest.json | Step 4 | Print "ag-manifest.json not found in remote", clean up, stop |
-| .ag-version missing | Step 2 | Not an error -- treat as `0.0.0` (first update) |
-| .ag-installed-files missing | Step 6 | Build synthetic snapshot from current filesystem, proceed |
-| Permission denied on copy | Step 10 | Print which file, suggest `chmod`, **continue** with remaining |
-| Permission denied on delete | Step 10 | Print which file, suggest `chmod`, **continue** |
-| Symlink creation fails | Step 10 | Print error, suggest checking if target exists, **continue** |
+| Error                        | When    | Action                                                                |
+| ---------------------------- | ------- | --------------------------------------------------------------------- |
+| Network failure during clone | Step 3  | Print error, clean up temp dir, stop                                  |
+| GitHub auth failure          | Step 3  | Print "check SSH keys or HTTPS token", clean up, stop                 |
+| Repo not found (404)         | Step 3  | Print "remote repo not found, check URL in SKILL.md", clean up, stop  |
+| Resolver script missing      | Step 4  | Fall back to legacy manifest parsing (managed/managedDirs)            |
+| Resolver script fails        | Step 4  | Print error, suggest checking Node.js version (>= 22), clean up, stop |
+| Malformed ag-manifest.json   | Step 4  | Print JSON parse error, clean up, stop                                |
+| Missing ag-manifest.json     | Step 4  | Print "ag-manifest.json not found in remote", clean up, stop          |
+| .ag-version missing          | Step 2  | Not an error -- treat as `0.0.0` (first update)                       |
+| .ag-installed-files missing  | Step 6  | Build synthetic snapshot from current filesystem, proceed             |
+| Permission denied on copy    | Step 10 | Print which file, suggest `chmod`, **continue** with remaining        |
+| Permission denied on delete  | Step 10 | Print which file, suggest `chmod`, **continue**                       |
+| Symlink creation fails       | Step 10 | Print error, suggest checking if target exists, **continue**          |
 
 ## Edge Cases
 
@@ -142,6 +151,7 @@ A snapshot file written to the user project root after each install/update. Cont
 ag-update **overwrites** managed files without checking for local modifications (except `merge` and `copyIfMissing` files). This is by design -- managed files are owned by the harness. The dry-run shows exactly what will change, giving the user a chance to back out.
 
 If the user has intentional local changes to a managed file:
+
 1. Copy their changes to a separate file before running ag-update
 2. Re-apply after the update
 3. Or better: move customizations to `process/context/` where they belong
@@ -159,6 +169,7 @@ Files in the `copyIfMissing` list are only installed if they don't already exist
 ### First update with v2.1.0 (no .ag-installed-files)
 
 Users upgrading from v2.0.x have no `.ag-installed-files` snapshot. The algorithm:
+
 1. Builds a synthetic snapshot from the local filesystem (files matching the remote file list that exist locally).
 2. Applies legacy deletions from v2.0.4 (embedded in the resolver).
 3. Writes the synthetic snapshot.

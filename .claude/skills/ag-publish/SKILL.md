@@ -24,7 +24,7 @@ Push harness improvements from the current development repo to the remote kit re
 Create `.ag-publish-config` in the repo root:
 
 ```json
-{"kitRepoPath": "/path/to/agent-skills-kit"}
+{ "kitRepoPath": "/path/to/agent-skills-kit" }
 ```
 
 If this file is missing, ask the user for the kit repo checkout path and offer to create it.
@@ -46,15 +46,19 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
 ### Step 3: Resolve Both File Sets
 
 7. Run the resolver against the **kit repo** to get the kit file list:
+
    ```bash
    node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
    ```
+
    Extract `files` (kit managed files) and `kitOnly` (kit-exclusive files).
 
 8. Run the resolver against the **dev repo** to get the dev file list:
+
    ```bash
    node <kitRepoPath>/resolve-manifest.mjs --root <devRepoRoot> --json
    ```
+
    Extract `files` (dev managed files).
 
    **Note:** The resolver uses the manifest from the `--root` directory. Since the dev repo has a copy of `ag-manifest.json`, the resolver works against it. If the dev repo doesn't have the resolver script, copy it from the kit repo first or use the kit repo's copy with `--root` pointing to the dev repo.
@@ -96,6 +100,7 @@ Total changes: 4 files modified, 1 new, 0 removed
     - Or abort.
 
 Version bump semantics:
+
 - **Patch** (2.1.0 -> 2.1.1): hook fixes, skill doc updates, minor agent prompt tweaks
 - **Minor** (2.1.0 -> 2.2.0): new skills, new agents, new development protocols
 - **Major** (2.1.0 -> 3.0.0): CLAUDE.md structure changes, manifest schema changes, breaking workflow changes

@@ -565,7 +565,7 @@ Every completed feature feeds learnings back into the context system.
 
 ## How This Compares
 
-| Feature                | agent-skills-kit                                                     | Superpowers             | GSD                  | gstack        |
+| Feature                | agent-skills-kit                                                         | Superpowers             | GSD                  | gstack        |
 | ---------------------- | ------------------------------------------------------------------------ | ----------------------- | -------------------- | ------------- |
 | Spec-driven lifecycle  | Full RIPER-5 (research → plan → execute → verify)                        | Mandatory workflows     | Context-rot fix      | Partial       |
 | Phase-locked safety    | Tool restrictions per mode (read-only research, no-write innovate)       | Skill-based constraints | Phase separation     | None          |

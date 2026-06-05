@@ -17,8 +17,8 @@
   <img src="assets/flowser-logo.svg" alt="Flowser" width="120">
 </a>
 
-*Entwickelt von Weltklasse-Ingenieuren, für Vibecoders bei*<br>
-*[flowser.ai](https://flowser.ai) — KI-Agenten mit Computern für GTM*
+_Entwickelt von Weltklasse-Ingenieuren, für Vibecoders bei_<br>
+_[flowser.ai](https://flowser.ai) — KI-Agenten mit Computern für GTM_
 
 <br>
 
@@ -96,7 +96,7 @@
 
 ## 🚀 Installation (30 Sekunden)
 
-> **Führe dies in deinem Projektordner aus.** Öffne ein Terminal und wechsle mit `cd` in das Projekt, in das das Harness installiert werden soll, *bevor* du den Befehl ausführst — es wird in das aktuelle Verzeichnis installiert.
+> **Führe dies in deinem Projektordner aus.** Öffne ein Terminal und wechsle mit `cd` in das Projekt, in das das Harness installiert werden soll, _bevor_ du den Befehl ausführst — es wird in das aktuelle Verzeichnis installiert.
 >
 > Lieber vom Agenten aus steuern? Öffne Claude Code oder Codex **mit diesem Projektordner als Arbeitsverzeichnis** und füge dann den [vollständigen Setup-Prompt](#-full-agent-setup-prompt) unten ein.
 
@@ -502,13 +502,13 @@ Jedes Feature bekommt einen **schriftlichen Plan mit Blast-Radius-Analyse**, bev
 
 **Was in jedem Plan steht:**
 
-| Abschnitt | Zweck |
-|---|---|
-| 📍 **Touchpoints** | Jede Datei, die erstellt oder geändert wird, von Anfang an aufgelistet |
-| 📜 **Öffentliche Verträge** | Welche API-Oberflächen oder Interfaces sich ändern |
-| 💥 **Blast Radius** | Was brechen könnte, welche Tests laufen sollen, was zu beobachten ist |
-| ✅ **Verifikationsnachweise** | Wie bewiesen wird, dass die Implementierung korrekt ist |
-| 🔄 **Resume-Übergabe** | Genug Kontext, damit jeder Agent mitten im Plan einsteigen kann |
+| Abschnitt                     | Zweck                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------- |
+| 📍 **Touchpoints**            | Jede Datei, die erstellt oder geändert wird, von Anfang an aufgelistet |
+| 📜 **Öffentliche Verträge**   | Welche API-Oberflächen oder Interfaces sich ändern                     |
+| 💥 **Blast Radius**           | Was brechen könnte, welche Tests laufen sollen, was zu beobachten ist  |
+| ✅ **Verifikationsnachweise** | Wie bewiesen wird, dass die Implementierung korrekt ist                |
+| 🔄 **Resume-Übergabe**        | Genug Kontext, damit jeder Agent mitten im Plan einsteigen kann        |
 
 <br>
 
@@ -565,18 +565,18 @@ Jedes abgeschlossene Feature speist Erkenntnisse zurück in das Kontextsystem.
 
 ## Vergleich
 
-| Feature | agent-skills-kit | Superpowers | GSD | gstack |
-|---------|---------------------|-------------|-----|--------|
-| Spec-getriebener Lifecycle | Vollständiges RIPER-5 (research → plan → execute → verify) | Verpflichtende Workflows | Context-Rot-Fix | Teilweise |
-| Phasengesperrte Sicherheit | Tool-Einschränkungen pro Modus (read-only research, no-write innovate) | Skill-basierte Einschränkungen | Phasentrennung | Keine |
-| Multi-Tool-Unterstützung | 7 Tools via AGENTS.md + nativ | Claude Code Plugin | 14 Runtimes | 1 Tool |
-| Automatisch verbessernder Kontext | Domain-geroutete Context Groups, Updates nach jedem Feature | Plugin-Speicher | Festplatten-Zustand | Manuell |
-| Teamzusammenarbeit | Gemeinsame Specs, Pläne und Review-Artefakte | Solo | Solo | Solo |
-| Skills-System | 32 automatisch erkannte, keyword-gematchte bei jedem Prompt | 86 kombinierbare Skills | Meta-Prompting | 23 Rollen-Tools |
-| Mehrphasige Programme | Umbrella-Pläne + phasenweise Ausführungsloop mit Regressionsüberprüfungen | Einzelaufgabe | Einzelaufgabe | Einzelaufgabe |
-| Qualitätspipeline | 6-stufige Kette (code-review → test → simplify → security → audit → commit) | Qualität pro Skill | Keine Auto-Kette | Keine Auto-Kette |
-| Installation | 30-Sekunden-`curl`-Install + Auto-Setup | Plugin-Marktplatz | npx one-liner | git clone |
-| Kontext-Routing | Domain-basierte Routing-Tabelle mit gruppierten Context Packs | Flacher Skill-Kontext | Flacher Kontext | Einzelne Datei |
+| Feature                           | agent-skills-kit                                                            | Superpowers                    | GSD                 | gstack           |
+| --------------------------------- | --------------------------------------------------------------------------- | ------------------------------ | ------------------- | ---------------- |
+| Spec-getriebener Lifecycle        | Vollständiges RIPER-5 (research → plan → execute → verify)                  | Verpflichtende Workflows       | Context-Rot-Fix     | Teilweise        |
+| Phasengesperrte Sicherheit        | Tool-Einschränkungen pro Modus (read-only research, no-write innovate)      | Skill-basierte Einschränkungen | Phasentrennung      | Keine            |
+| Multi-Tool-Unterstützung          | 7 Tools via AGENTS.md + nativ                                               | Claude Code Plugin             | 14 Runtimes         | 1 Tool           |
+| Automatisch verbessernder Kontext | Domain-geroutete Context Groups, Updates nach jedem Feature                 | Plugin-Speicher                | Festplatten-Zustand | Manuell          |
+| Teamzusammenarbeit                | Gemeinsame Specs, Pläne und Review-Artefakte                                | Solo                           | Solo                | Solo             |
+| Skills-System                     | 32 automatisch erkannte, keyword-gematchte bei jedem Prompt                 | 86 kombinierbare Skills        | Meta-Prompting      | 23 Rollen-Tools  |
+| Mehrphasige Programme             | Umbrella-Pläne + phasenweise Ausführungsloop mit Regressionsüberprüfungen   | Einzelaufgabe                  | Einzelaufgabe       | Einzelaufgabe    |
+| Qualitätspipeline                 | 6-stufige Kette (code-review → test → simplify → security → audit → commit) | Qualität pro Skill             | Keine Auto-Kette    | Keine Auto-Kette |
+| Installation                      | 30-Sekunden-`curl`-Install + Auto-Setup                                     | Plugin-Marktplatz              | npx one-liner       | git clone        |
+| Kontext-Routing                   | Domain-basierte Routing-Tabelle mit gruppierten Context Packs               | Flacher Skill-Kontext          | Flacher Kontext     | Einzelne Datei   |
 
 > **Zur Laufzeit-Breite:** GSD unterstützt 14 Runtimes. Wir unterstützen 7 tiefgründig — mit vollständigen Agenten-Harnesses, Skill-Discovery und Lifecycle-Hooks auf jeder Plattform. Breite vs. Tiefe: deine Wahl.
 
@@ -645,13 +645,13 @@ Der Orchestrator **erledigt die Arbeit nie selbst** — er leitet weiter, überw
 
 ### 📊 Der Workflow
 
-| Phase | Was passiert | Du sagst |
-|-------|-------------|---------|
-| 🔍 **RESEARCH** | Read-only Faktensammlung — Codebasis + Web | *(automatisch bei Feature-Anfragen)* |
-| 💡 **INNOVATE** | 2-3 Ansätze mit Trade-offs erkunden | `go` |
-| 📋 **PLAN** | Eine detaillierte Spec schreiben, die du prüfen kannst | `go` |
-| ⚡ **EXECUTE** | Genau das implementieren, was geplant wurde | `ENTER EXECUTE MODE` |
-| 🧠 **UPDATE PROCESS** | Erkenntnisse erfassen, Kontext aktualisieren, Plan archivieren | *(empfohlen nach nicht-trivialer Arbeit)* |
+| Phase                 | Was passiert                                                   | Du sagst                                  |
+| --------------------- | -------------------------------------------------------------- | ----------------------------------------- |
+| 🔍 **RESEARCH**       | Read-only Faktensammlung — Codebasis + Web                     | _(automatisch bei Feature-Anfragen)_      |
+| 💡 **INNOVATE**       | 2-3 Ansätze mit Trade-offs erkunden                            | `go`                                      |
+| 📋 **PLAN**           | Eine detaillierte Spec schreiben, die du prüfen kannst         | `go`                                      |
+| ⚡ **EXECUTE**        | Genau das implementieren, was geplant wurde                    | `ENTER EXECUTE MODE`                      |
+| 🧠 **UPDATE PROCESS** | Erkenntnisse erfassen, Kontext aktualisieren, Plan archivieren | _(empfohlen nach nicht-trivialer Arbeit)_ |
 
 > 💡 **Abkürzungen:** `ENTER FAST MODE - [Aufgabe]` komprimiert RESEARCH+INNOVATE+PLAN in einen Durchgang — hält dennoch vor EXECUTE an. Triviale Fixes (einzelne Datei, <15 Zeilen, keine Schema-/Auth-Änderungen) gehen direkt zur Ausführung.
 
@@ -839,13 +839,13 @@ flowchart TD
 
 <br>
 
-| Schritt | Was er tut |
-|---|---|
-| 🔎 **Self-Review** | Prüft jeden Checklistenpunkt gegen den Plan auf Abweichungen, dokumentiert diese |
-| 🧪 **Tester** | Ordnet geänderte Dateien Testdateien zu, eskaliert automatisch zur vollständigen Suite wenn >70% zugeordnet |
-| 🔍 **Code Reviewer** | Startet Edge-Case-Scout VOR dem Review, prüft N+1-Queries, Auth-Pfade, Datenlecks |
-| ✨ **Simplifier** | Verständlichkeits-Refactoring nach bestandenem Review — keine Verhaltensänderungen |
-| 📦 **Git Manager** | Empfängt `touched_files`-Liste, teilt in logische konventionelle Commits auf, lehnt unbekannte Dateien ab |
+| Schritt              | Was er tut                                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| 🔎 **Self-Review**   | Prüft jeden Checklistenpunkt gegen den Plan auf Abweichungen, dokumentiert diese                            |
+| 🧪 **Tester**        | Ordnet geänderte Dateien Testdateien zu, eskaliert automatisch zur vollständigen Suite wenn >70% zugeordnet |
+| 🔍 **Code Reviewer** | Startet Edge-Case-Scout VOR dem Review, prüft N+1-Queries, Auth-Pfade, Datenlecks                           |
+| ✨ **Simplifier**    | Verständlichkeits-Refactoring nach bestandenem Review — keine Verhaltensänderungen                          |
+| 📦 **Git Manager**   | Empfängt `touched_files`-Liste, teilt in logische konventionelle Commits auf, lehnt unbekannte Dateien ab   |
 
 ---
 
@@ -886,7 +886,7 @@ flowchart TD
 
 <br>
 
-> 💡 In sechs Monaten, wenn jemand fragt *„Warum haben wir Auth so gebaut?"*, ist die Antwort in `completed/`. Nicht in einem Slack-Thread verloren.
+> 💡 In sechs Monaten, wenn jemand fragt _„Warum haben wir Auth so gebaut?"_, ist die Antwort in `completed/`. Nicht in einem Slack-Thread verloren.
 
 <br>
 
@@ -969,14 +969,14 @@ flowchart TD
 
 **Hauptmerkmale:**
 
-| | Feature | Warum es wichtig ist |
-|---|---|---|
-| 🔄 | **Re-Recherche in jeder Phase** | Prüft auf Code-Drift, liest neueste Berichte, aktualisiert Annahmen |
-| ✅ | **Validierungs-Gates** | Phase ist nicht `VERIFIED`, bis Beweise es belegen. Ehrlicher Status: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` oder `BLOCKED` |
-| 📄 | **Dauerhafte Berichte** | Jede Phase schreibt Ergebnisse auf die Festplatte. Fortschritt übersteht Context-Komprimierung |
-| 🧠 | **Erkenntnisse fließen vorwärts** | Phase-1-Entdeckungen aktualisieren den Plan von Phase 2 vor der Ausführung |
-| 🏗️ | **Fundament vs. Erweiterung** | Trennt explizit „Architektur beweisen" von „alles implementieren" |
-| 🚧 | **Ehrliche Blocker-Behandlung** | Blockierte Phasen bleiben `BLOCKED` mit Beweisen. Kein Erzwingen eines grünen Status |
+|     | Feature                           | Warum es wichtig ist                                                                                                                  |
+| --- | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| 🔄  | **Re-Recherche in jeder Phase**   | Prüft auf Code-Drift, liest neueste Berichte, aktualisiert Annahmen                                                                   |
+| ✅  | **Validierungs-Gates**            | Phase ist nicht `VERIFIED`, bis Beweise es belegen. Ehrlicher Status: `PLANNED` → `CODE DONE` → `TESTING` → `VERIFIED` oder `BLOCKED` |
+| 📄  | **Dauerhafte Berichte**           | Jede Phase schreibt Ergebnisse auf die Festplatte. Fortschritt übersteht Context-Komprimierung                                        |
+| 🧠  | **Erkenntnisse fließen vorwärts** | Phase-1-Entdeckungen aktualisieren den Plan von Phase 2 vor der Ausführung                                                            |
+| 🏗️  | **Fundament vs. Erweiterung**     | Trennt explizit „Architektur beweisen" von „alles implementieren"                                                                     |
+| 🚧  | **Ehrliche Blocker-Behandlung**   | Blockierte Phasen bleiben `BLOCKED` mit Beweisen. Kein Erzwingen eines grünen Status                                                  |
 
 ---
 
@@ -1007,12 +1007,12 @@ process/context/
 
 <br>
 
-| | Wie es funktioniert |
-|---|---|
-| 🧭 **Router-Muster** | Agenten lesen nur das, was für ihre Aufgabe relevant ist, nicht alles |
-| 📏 **Auto-Promotion** | Themen mit 3+ Docs oder 800+ Zeilen bekommen eine eigene Context Group |
-| 🔄 **Lebende Docs** | Vom `update-process-agent` nach jedem nicht-trivialen Feature aktualisiert |
-| 🧪 **Auditierbar** | `ag-audit-context` verifiziert Routing und Konsistenz |
+|                       | Wie es funktioniert                                                        |
+| --------------------- | -------------------------------------------------------------------------- |
+| 🧭 **Router-Muster**  | Agenten lesen nur das, was für ihre Aufgabe relevant ist, nicht alles      |
+| 📏 **Auto-Promotion** | Themen mit 3+ Docs oder 800+ Zeilen bekommen eine eigene Context Group     |
+| 🔄 **Lebende Docs**   | Vom `update-process-agent` nach jedem nicht-trivialen Feature aktualisiert |
+| 🧪 **Auditierbar**    | `ag-audit-context` verifiziert Routing und Konsistenz                      |
 
 ---
 
@@ -1033,12 +1033,12 @@ process/features/{feature}/
 
 <br>
 
-| | Was passiert |
-|---|---|
-| 🆕 | Neue Arbeit startet in `active/` → Berichte akkumulieren → Plan archiviert in `completed/` |
-| 📌 | Zurückgestellte Arbeit geht in `backlog/` — Agenten prüfen es, bevor sie doppelte Pläne erstellen |
-| 📦 | Feature-Promotion passiert automatisch, wenn allgemeine Artefakte 5+ erreichen |
-| 🔍 | Jedes Feature hat vollständige, in sich geschlossene Historie — Pläne, Entscheidungen, Berichte, Recherchen |
+|     | Was passiert                                                                                                |
+| --- | ----------------------------------------------------------------------------------------------------------- |
+| 🆕  | Neue Arbeit startet in `active/` → Berichte akkumulieren → Plan archiviert in `completed/`                  |
+| 📌  | Zurückgestellte Arbeit geht in `backlog/` — Agenten prüfen es, bevor sie doppelte Pläne erstellen           |
+| 📦  | Feature-Promotion passiert automatisch, wenn allgemeine Artefakte 5+ erreichen                              |
+| 🔍  | Jedes Feature hat vollständige, in sich geschlossene Historie — Pläne, Entscheidungen, Berichte, Recherchen |
 
 ---
 
@@ -1055,27 +1055,27 @@ process/features/{feature}/
 
 **Kern-Workflow-Agenten** — einer pro RIPER-5-Phase:
 
-| Agent | Rolle |
-|-------|------|
-| 🔍 `ag-research-agent` | Codebasis- + Web-Recherche, read-only. Widerspruchs-Tracking eingebaut |
-| 💡 `ag-innovate-agent` | 2-3 Ansätze brainstormen. Muss Entscheidungszusammenfassung vor PLAN liefern |
-| 📋 `ag-plan-agent` | Spec mit Anti-Rationalisierungs-Guards schreiben. „Ich weiß schon wie" ist kein Plan |
-| ⚡ `ag-execute-agent` | Nach Plan implementieren. 50%-Check-in, Abweichungsprotokoll, Self-Review |
-| ⏩ `ag-fast-mode-agent` | Komprimiertes RESEARCH→INNOVATE→PLAN mit Pflicht-Sicherheitspause |
-| 🧠 `ag-update-process-agent` | 7-Phasen-Pflicht-Checkliste inklusive Scan nach veralteten Artefakten |
+| Agent                        | Rolle                                                                                |
+| ---------------------------- | ------------------------------------------------------------------------------------ |
+| 🔍 `ag-research-agent`       | Codebasis- + Web-Recherche, read-only. Widerspruchs-Tracking eingebaut               |
+| 💡 `ag-innovate-agent`       | 2-3 Ansätze brainstormen. Muss Entscheidungszusammenfassung vor PLAN liefern         |
+| 📋 `ag-plan-agent`           | Spec mit Anti-Rationalisierungs-Guards schreiben. „Ich weiß schon wie" ist kein Plan |
+| ⚡ `ag-execute-agent`        | Nach Plan implementieren. 50%-Check-in, Abweichungsprotokoll, Self-Review            |
+| ⏩ `ag-fast-mode-agent`      | Komprimiertes RESEARCH→INNOVATE→PLAN mit Pflicht-Sicherheitspause                    |
+| 🧠 `ag-update-process-agent` | 7-Phasen-Pflicht-Checkliste inklusive Scan nach veralteten Artefakten                |
 
 <br>
 
 **Spezialisten-Agenten** — während EXECUTE oder eigenständig aufgerufen:
 
-| Agent | Rolle |
-|-------|------|
-| 🐛 `ag-debugger` | Beweis-vor-Hypothese. Konkurrierende Hypothesen, Ausschlussketten |
-| 🧪 `ag-tester` | Diff-bewusst. Führt nur betroffene Tests aus. Eskaliert automatisch bei Konfigurationsänderungen |
-| 🔎 `ag-code-reviewer` | Edge-Case-Scout VOR dem Review. N+1-Erkennung, Auth-Pfad-Validierung |
-| ✨ `ag-code-simplifier` | Verständlichkeits-Refactoring ohne Verhaltensänderung |
-| 🎨 `ag-ui-ux-designer` | Design-bewusstes Frontend. Kann Recherche-Subagenten mitten in der Ausführung starten |
-| 📦 `ag-git-manager` | Logisches Commit-Splitting aus `touched_files`. Lehnt unbekannte Dateien ab |
+| Agent                   | Rolle                                                                                            |
+| ----------------------- | ------------------------------------------------------------------------------------------------ |
+| 🐛 `ag-debugger`        | Beweis-vor-Hypothese. Konkurrierende Hypothesen, Ausschlussketten                                |
+| 🧪 `ag-tester`          | Diff-bewusst. Führt nur betroffene Tests aus. Eskaliert automatisch bei Konfigurationsänderungen |
+| 🔎 `ag-code-reviewer`   | Edge-Case-Scout VOR dem Review. N+1-Erkennung, Auth-Pfad-Validierung                             |
+| ✨ `ag-code-simplifier` | Verständlichkeits-Refactoring ohne Verhaltensänderung                                            |
+| 🎨 `ag-ui-ux-designer`  | Design-bewusstes Frontend. Kann Recherche-Subagenten mitten in der Ausführung starten            |
+| 📦 `ag-git-manager`     | Logisches Commit-Splitting aus `touched_files`. Lehnt unbekannte Dateien ab                      |
 
 </details>
 
@@ -1108,15 +1108,15 @@ process/features/{feature}/
 
 ### 🪝 7 Hooks
 
-| Hook | Was er tut |
-|------|-------------|
-| 🔐 **Datenschutz-Leitplanken** | Blockiert `.env`, Anmeldeinformationen, SSH-Schlüssel. Benötigt ausdrückliche Genehmigung |
-| 🚫 **Scout-Blocker** | Verhindert, dass der Agent in `node_modules/`, `dist/` wandert. Gitignore-Syntax `.ckignore` |
-| 🧠 **Session-Init** | Erkennt Stack, injiziert Umgebungsvariablen, stellt Genehmigungsgates nach Komprimierung wieder her |
-| 💉 **Subagent-Kontext** | Injiziert ~200-Token-Kompakt-Kontextblock in jeden Subagenten |
-| ✨ **Edit-Qualität** | Nach 5+ Bearbeitungen wird empfohlen, den code-simplifier auszuführen (nicht-blockierend, gedrosselt) |
-| 📛 **Beschreibende Benennung** | Sprachbewusste Dateibenennungskonventionen bei jedem Schreibvorgang |
-| 📊 **Nutzungsverfolgung** | Sitzungsmetriken und Token-Bewusstsein |
+| Hook                           | Was er tut                                                                                            |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------- |
+| 🔐 **Datenschutz-Leitplanken** | Blockiert `.env`, Anmeldeinformationen, SSH-Schlüssel. Benötigt ausdrückliche Genehmigung             |
+| 🚫 **Scout-Blocker**           | Verhindert, dass der Agent in `node_modules/`, `dist/` wandert. Gitignore-Syntax `.ckignore`          |
+| 🧠 **Session-Init**            | Erkennt Stack, injiziert Umgebungsvariablen, stellt Genehmigungsgates nach Komprimierung wieder her   |
+| 💉 **Subagent-Kontext**        | Injiziert ~200-Token-Kompakt-Kontextblock in jeden Subagenten                                         |
+| ✨ **Edit-Qualität**           | Nach 5+ Bearbeitungen wird empfohlen, den code-simplifier auszuführen (nicht-blockierend, gedrosselt) |
+| 📛 **Beschreibende Benennung** | Sprachbewusste Dateibenennungskonventionen bei jedem Schreibvorgang                                   |
+| 📊 **Nutzungsverfolgung**      | Sitzungsmetriken und Token-Bewusstsein                                                                |
 
 <br>
 

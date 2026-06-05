@@ -14,30 +14,30 @@ Use these prompts to stress-test an adaptation decision before it becomes implem
 
 ## Project-Specific Challenges
 
-| Question | Red Flag | Green Flag |
-| --- | --- | --- |
-| Architecture match? | Different paradigm, lifecycle, or state model | Same or very similar patterns |
-| Coupling? | Spans many unrelated modules | Mostly self-contained |
-| New patterns? | Requires a new ORM, state system, auth stack, or workflow owner | Reuses local patterns |
-| Blast radius? | Touches auth, billing, or core data flows without clear boundaries | Failure is isolated |
-| Runtime model? | Source assumptions conflict with local tenancy, container, or provider boundaries | Operationally compatible |
-| Ownership drift? | Makes `xia` look like a planner or executor | Keeps `xia` as a helper-only research surface |
+| Question            | Red Flag                                                                          | Green Flag                                    |
+| ------------------- | --------------------------------------------------------------------------------- | --------------------------------------------- |
+| Architecture match? | Different paradigm, lifecycle, or state model                                     | Same or very similar patterns                 |
+| Coupling?           | Spans many unrelated modules                                                      | Mostly self-contained                         |
+| New patterns?       | Requires a new ORM, state system, auth stack, or workflow owner                   | Reuses local patterns                         |
+| Blast radius?       | Touches auth, billing, or core data flows without clear boundaries                | Failure is isolated                           |
+| Runtime model?      | Source assumptions conflict with local tenancy, container, or provider boundaries | Operationally compatible                      |
+| Ownership drift?    | Makes `xia` look like a planner or executor                                       | Keeps `xia` as a helper-only research surface |
 
 ## Decision Matrix Template
 
 ```markdown
-| # | Decision | Source's Way | Local Way | Hybrid Option | Risk | Recommendation |
-| --- | --- | --- | --- | --- | --- | --- |
-| 1 | Auth | source auth stack | existing local auth | wrapper | low | local |
-| 2 | Persistence | 5 source tables | current schema | partial reuse | medium | hybrid |
+| #   | Decision    | Source's Way      | Local Way           | Hybrid Option | Risk   | Recommendation |
+| --- | ----------- | ----------------- | ------------------- | ------------- | ------ | -------------- |
+| 1   | Auth        | source auth stack | existing local auth | wrapper       | low    | local          |
+| 2   | Persistence | 5 source tables   | current schema      | partial reuse | medium | hybrid         |
 ```
 
 ## Risk Scoring
 
-| Critical Count | Risk | Action |
-| --- | --- | --- |
-| 0-2 | Low | Proceed with adaptation-prep |
-| 3-4 | Medium | Resolve the critical assumptions first |
-| 5+ | High | Start with `--compare` or stop |
+| Critical Count | Risk   | Action                                 |
+| -------------- | ------ | -------------------------------------- |
+| 0-2            | Low    | Proceed with adaptation-prep           |
+| 3-4            | Medium | Resolve the critical assumptions first |
+| 5+             | High   | Start with `--compare` or stop         |
 
 Treat a risk as critical when being wrong could cause data loss, a security issue, workflow ownership drift, or more than two days of rework.

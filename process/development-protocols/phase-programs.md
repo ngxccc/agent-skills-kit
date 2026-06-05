@@ -480,12 +480,12 @@ When a regression is detected in step 5:
 
 **Classify the regression:**
 
-| Type | Definition | Example |
-|---|---|---|
-| product breakage | previously working product behavior is broken | API endpoint returns 500, container fails to start |
-| test breakage | previously passing test now fails | Vitest suite red, Playwright spec timeout |
-| harness drift | process/agent/skill artifacts are inconsistent | context doc references a deleted file |
-| stale command drift | a previously recorded command no longer works | pnpm script renamed, env var removed |
+| Type                | Definition                                     | Example                                            |
+| ------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| product breakage    | previously working product behavior is broken  | API endpoint returns 500, container fails to start |
+| test breakage       | previously passing test now fails              | Vitest suite red, Playwright spec timeout          |
+| harness drift       | process/agent/skill artifacts are inconsistent | context doc references a deleted file              |
+| stale command drift | a previously recorded command no longer works  | pnpm script renamed, env var removed               |
 
 **Decision tree:**
 
