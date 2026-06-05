@@ -85,4 +85,4 @@ jobs:
           fi
 
       - name: Lint Markdown (non-blocking)
-        run: npx markdownlint-cli2 '**/*.md' '#node_modules' || true
+        run: bunx prettier --check "**/*.md" || true
