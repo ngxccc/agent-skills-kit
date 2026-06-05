@@ -16,7 +16,15 @@
     "useEditorconfig": true,
     "includes": ["**", "!**/node_modules", "!**/.git"]
   },
-  "linter": { "enabled": true, "rules": { "recommended": true } },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "recommended": true,
+      "correctness": {
+        "noInnerDeclarations": "off"
+      }
+    }
+  },
   "javascript": {
     "formatter": {
       "jsxQuoteStyle": "double",
