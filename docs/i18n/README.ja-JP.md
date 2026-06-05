@@ -1176,6 +1176,8 @@ Run ag-update
 
 ### 🙏 クレジット
 
+このプロジェクトは、[@withkynam](https://github.com/withkynam) の [vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) をクローンし、カスタマイズしたものです。
+
 このプロジェクトは [@mrgoonie](https://github.com/mrgoonie) の [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) から恩恵を受けました——特に `ck:xia` などのスキルにインスピレーションを受けています。
 
 違いは：agent-skills-kit はスペック駆動の開発フレームワークと自己改善するコンテキスト組織に焦点を当て、80以上のスキルで肥大化させません。ツールは少なく、構造を重視。

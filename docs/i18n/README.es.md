@@ -1178,6 +1178,8 @@ Run ag-update
 
 ### 🙏 Créditos
 
+Este proyecto es un clon y personalización de [vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) de [@withkynam](https://github.com/withkynam).
+
 Este proyecto se benefició de [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) de [@mrgoonie](https://github.com/mrgoonie) — en particular skills como `ck:xia` que inspiraron algunas de las nuestras.
 
 La diferencia: agent-skills-kit se centra en el framework de desarrollo spec-driven y la organización de contexto auto-mejorable, sin sobrecargarte con 80+ skills. Menos herramientas, más estructura.

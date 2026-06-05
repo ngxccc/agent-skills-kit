@@ -1176,6 +1176,8 @@ Chúng tôi hoan nghênh contributions! Xem [CONTRIBUTING.md](CONTRIBUTING.md) �
 
 ### 🙏 Ghi nhận
 
+Dự án này được clone và tùy chỉnh từ [vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) của [@withkynam](https://github.com/withkynam).
+
 Dự án này được hưởng lợi từ [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) của [@mrgoonie](https://github.com/mrgoonie) — đặc biệt các skill như `ck:xia` đã truyền cảm hứng cho chúng tôi.
 
 Điểm khác biệt: agent-skills-kit tập trung vào framework phát triển theo spec và tổ chức context tự cải tiến, không phình to với 80+ skill. Ít công cụ hơn, nhiều cấu trúc hơn.

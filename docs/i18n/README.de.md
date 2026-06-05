@@ -1178,6 +1178,8 @@ Wir freuen uns über Beiträge! Siehe [CONTRIBUTING.md](CONTRIBUTING.md) für Ri
 
 ### 🙏 Danksagungen
 
+Dieses Projekt wurde von [vibecode-pro-max-kit](https://github.com/withkynam/vibecode-pro-max-kit) von [@withkynam](https://github.com/withkynam) geklont und angepasst.
+
 Dieses Projekt profitierte von [ClaudeKit](https://claudekit.cc/?ref=OEOM7R7G) von [@mrgoonie](https://github.com/mrgoonie) — insbesondere Skills wie `ck:xia`, die einige unserer inspirierten.
 
 Der Unterschied: agent-skills-kit konzentriert sich auf das spec-getriebene Entwicklungsframework und die selbst verbessernde Kontextorganisation, ohne dich mit 80+ Skills zu überwältigen. Weniger Tools, mehr Struktur.
