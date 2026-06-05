@@ -34,7 +34,7 @@ The Conductor has full access to the OMP tool surface, categorized into 6 primar
 | **System & Code**           | `bash`, `eval`, `recipe`, `lsp`                            | Run shell commands, execute JS/Python cells, invoke compiler/Make, query LSP.         |
 | **Web & Graphics**          | `browser`, `web_search`, `generate_image`, `inspect_image` | Automate Chromium via Puppeteer, query search engines, generate/inspect visual specs. |
 | **Concurrency & Debugging** | `task`, `irc`, `job`, `debug`                              | Spawn parallel subagents, send IRC DMs, manage background jobs, run DAP debugger.     |
-| **Management & QA**         | `todo_write`, `github`, `report_tool_issue`                | Live TUI task list tracking, GitHub API integration, report tool bugs.                |
+| **Management & QA**         | `todo`, `github`, `report_tool_issue`                      | Live TUI task list tracking, GitHub API integration, report tool bugs.                |
 
 ---
 
@@ -245,12 +245,12 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ### Group 6: Management & QA
 
-#### `todo_write`
+#### `todo`
 
 - **Purpose**: Updates the live phased todo registry shown in the session TUI.
 - **Examples**:
   ```json
-  todo_write phase="Verification" items=["Run cargo test", "Verify lsp"]
+  todo ops=[{ op: "init", list: [{ phase: "Verification", items: ["Run cargo test", "Verify lsp"] }] }]
   ```
 
 #### `github`
@@ -286,8 +286,8 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 ### Step 2: Formulate the Assignment
 
 - Draft a clear multi-task parallel execution plan.
-- Create a live TUI task list using `todo_write` to keep the user informed.
-- _OMP Tool used_: `todo_write`
+- Create a live TUI task list using `todo` to keep the user informed.
+- _OMP Tool used_: `todo`
 
 ### Step 3: Fan out via Task Spawning
 

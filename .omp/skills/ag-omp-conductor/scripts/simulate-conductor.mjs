@@ -33,7 +33,7 @@ async function main() {
     `${colors.bold}${colors.white}[Step 1: Planning & Task Initialization]${colors.reset}`,
   );
   console.log(
-    `${colors.yellow}* Calling tool: \`todo_write\` to initialize live TUI task list...${colors.reset}`,
+    `${colors.yellow}* Calling tool: \`todo\` to initialize live TUI task list...${colors.reset}`,
   );
   await sleep(1000);
   console.log(
@@ -142,7 +142,7 @@ async function main() {
     `\n${colors.bold}${colors.white}[Step 6: Completion & Reporting]${colors.reset}`,
   );
   console.log(
-    `${colors.yellow}* Calling tool: \`todo_write\` to close tasks...${colors.reset}`,
+    `${colors.yellow}* Calling tool: \`todo\` to close tasks...${colors.reset}`,
   );
   await sleep(1000);
   console.log(
