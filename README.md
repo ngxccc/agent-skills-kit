@@ -1081,10 +1081,10 @@ process/features/{feature}/
 
 <br>
 
-### 50 Skills (auto-discovered)
+### 51 Skills (auto-discovered)
 
 <details>
-<summary>Click to expand skill list (50 skills)</summary>
+<summary>Click to expand skill list (51 skills)</summary>
 
 <br>
 
@@ -1098,7 +1098,7 @@ process/features/{feature}/
 
 **🎨 Frontend** — `ag-frontend-design` · `ag-chrome-devtools` · `ag-agent-browser` · `ag-web-testing` · `ag-nextjs` · `ag-nextjs-bundle-optimizer` · `ag-nextjs-ppr-patterns` · `ag-react-hook-form` · `ag-react-hook-form-audit` · `ag-tailwind` · `ag-tailwind-refactor` · `ag-tailwind-responsive-ui` · `ag-tailwind-ui-refactor` · `ag-ui-design`
 
-**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc` · `ag-code-simplifier` · `ag-implementation-design-patterns` · `ag-implementation-functional-patterns` · `ag-typescript` · `ag-typescript-advanced-patterns` · `ag-typescript-refactor`
+**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc` · `ag-code-simplifier` · `ag-implementation-design-patterns` · `ag-implementation-functional-patterns` · `ag-typescript` · `ag-typescript-advanced-patterns` · `ag-typescript-refactor` · `ag-skill-standard`
 
 </details>
 

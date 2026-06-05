@@ -12,6 +12,14 @@ metadata:
 
 This skill is designed **exclusively for the OMP (oh-my-pi) harness**. It defines the role of the Main Agent (`0-Main`) as the central orchestrator, executing commands across all 22 OMP-specific tools to coordinate, communicate with, and validate parallel subagents.
 
+## When to Apply
+
+Use this skill when:
+- Orchestrating multiple parallel subagents in the OMP environment.
+- Setting up inter-agent communication via the `irc` tool.
+- Validating the merged output of subagents using LSP or AST tools.
+- Driving browser-based E2E tests or vision-based QA in the workspace.
+
 ---
 
 ## 1. Tool Matrix Reference
@@ -274,11 +282,15 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 
 ---
 
-## 4. Configuration & CLI Integration
+## How to Use
 
 This skill is local to `.omp/skills/` and is automatically loaded by the OMP session because it is registered in `ag-manifest.json` under `.omp/**`.
 
-Run the conductor simulation to see how a complex parallel workflow is managed:
+To run the conductor simulation showing how a complex parallel workflow is managed:
 ```bash
 bun run .omp/skills/ag-omp-conductor/scripts/simulate-conductor.mjs
 ```
+
+## References
+
+- [OMP Tool Routing & Subagent Management Guide](references/tool-routing.md)

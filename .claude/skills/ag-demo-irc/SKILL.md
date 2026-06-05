@@ -12,6 +12,13 @@ metadata:
 
 This skill demonstrates how to use the `task` tool to spawn parallel subagents and coordinate them in real-time using the `irc` messaging tool.
 
+## When to Apply
+
+Refer to this demo when:
+- Configuring tasks that execute in parallel and require mutual coordination.
+- Implementing synchronous direct messaging (DMs) between subagents.
+- Designing an asymmetric handshake sequence to safely terminate temporary subagents.
+
 ## Concept Overview
 
 When a parent agent spawns multiple tasks using the `task` tool, they execute concurrently. If one subagent needs data or coordination from another, it can send synchronous direct messages over a local IRC-like bus using the `irc` tool.
@@ -75,10 +82,14 @@ The sender calls `irc` to request information from `1-AuthMap`:
 
 `1-AuthMap` receives the message on its side-channel turn, processes the request, and returns the response.
 
-## Simulation Script
+## How to Use
 
 Run the simulation script to visualize the message-passing timeline and see the console log output of the asymmetric handshake:
 
 ```bash
 bun run .claude/skills/ag-demo-irc/scripts/simulate-irc.mjs
 ```
+
+## References
+
+- [OMP IRC Communication Reference](references/irc-guide.md)
