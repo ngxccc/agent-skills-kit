@@ -1,9 +1,9 @@
 ---
 name: ag-git-commit
-description: Use this skill to commit changes incrementally in logical parts with conventional commit messages. Do not change code during commit, do not push to remote, and stop on logical errors.
+description: Use this skill to commit changes incrementally, push branches to remote, create pull requests with clear titles/descriptions, and merge using only squash or rebase strategies.
 metadata:
   author: agent-skills
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # ag-git-commit
@@ -50,10 +50,34 @@ To stage and commit your changes, follow these steps:
    ```
 8. Repeat Step 3 and 4 for each remaining logical batch.
 
-### Step 5: Verify Final Status
+### Step 5: Push Branch and Create Pull Request
 
-9. Verify that `git status` shows a clean worktree.
-10. **Do NOT run `git push`.** Report the final commit log and status to the user.
+9. Push the local branch to the remote repository:
+   ```bash
+   git push origin <branch_name>
+   ```
+10. Create a pull request on GitHub using the GitHub CLI (`gh` tool) or the specialized `github` tool.
+    - You MUST write a proper, highly descriptive Title and Description (Body) for the Pull Request. Do NOT use simple `--fill` without proper descriptions.
+    - The Title must follow the conventional commits format.
+    - The Body must summarize:
+      - **Changes**: Bulleted list of key features, fixes, or refactors introduced.
+      - **Verification**: List of the tests, lints, and checks run and their results (e.g. `bun test` passed, `bun run lint` passed with 0 errors).
+    - Command example:
+      ```bash
+      gh pr create --title "feat(storefront): integrate database api routes and wrap CldImage" --body "## Changes\n- Migrated storefront api endpoints to database-driven services\n- Resolved client-side hooks in Server Components by wrapping CldImage\n\n## Verification\n- All unit tests passed successfully\n- Monorepo linting completed with 0 errors"
+      ```
+
+### Step 6: PR Merging Strategy
+
+11. When merging the pull request, you MUST ONLY use Squash or Rebase merge strategies. Standard merge commits are strictly PROHIBITED.
+    - Command for squash merge:
+      ```bash
+      gh pr merge --squash
+      ```
+    - Command for rebase merge:
+      ```bash
+      gh pr merge --rebase
+      ```
 
 ## Conventional Commits Convention
 
