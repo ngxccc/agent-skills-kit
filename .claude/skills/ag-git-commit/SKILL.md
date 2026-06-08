@@ -70,4 +70,3 @@ Use the standard prefix format:
 
 - [Conventional Commits Specification](https://www.conventionalcommits.org/)
 - [Git Documentation](https://git-scm.com/doc)
-- [Project Implementation Standards](../../process/development-protocols/implementation-standards.md)
