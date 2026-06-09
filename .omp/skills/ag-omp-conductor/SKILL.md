@@ -167,6 +167,10 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 ### Group 4: Web & Graphics
 
+#### Web Research Prefix (r.jina.ai)
+
+- **Rule**: Always prefix external web URLs with `https://r.jina.ai/` when performing research, reading documentation, or fetching web content (e.g. `read "https://r.jina.ai/https://github.com/sickn33/antigravity-awesome-skills"` or `browser open name="main" url="https://r.jina.ai/https://omp.sh/docs/skills"`). Jina AI converts web pages into clean, LLM-friendly Markdown, bypassing scraping/bot protection and optimizing token consumption.
+
 #### `web_search`
 
 - **Purpose**: Submits queries through the Brave/Tavily/Kagi search engine chain.
@@ -291,7 +295,7 @@ When a large or multi-subsystem task is initiated, the Conductor must follow thi
 
 ### Step 3: Fan out via Task Spawning
 
-- Call the `task` tool to spawn subagents. Ensure tasks with potential conflicts are isolated using `isolated: true` (worktrees). *(Note: Always pass the agent name WITHOUT the `ag-` prefix to the `task` tool, e.g. use `plan-agent` instead of `ag-plan-agent`)*.
+- Call the `task` tool to spawn subagents. Ensure tasks with potential conflicts are isolated using `isolated: true` (worktrees). _(Note: Always pass the agent name WITHOUT the `ag-` prefix to the `task` tool, e.g. use `plan-agent` instead of `ag-plan-agent`)_.
 - _OMP Tool used_: `task`
 
 ### Step 4: IRC Coordination & Monitoring
@@ -315,20 +319,20 @@ This catalog defines all existing agents and skills in the development environme
 
 ### Agents
 
-*(CRITICAL NOTE: Due to Cloud API restrictions, custom agent profiles like `ag-plan-agent` or `ag-research-agent` are NOT provisioned in the Google Cloud backend console, and invoking them via the `task` tool will fail with a 404 or 400 error. Therefore, when spawning subagents via the `task` tool, the Conductor MUST ONLY use the default `"task"` agent for general-purpose reasoning tasks, or `"quick_task"` for cheap mechanical tasks. The custom agent profiles cataloged below serve as conceptual/prose guides only; you should map their roles and system instructions directly into the `assignment` parameter of a `"task"` or `"quick_task"` subagent).*
+_(CRITICAL NOTE: Due to Cloud API restrictions, custom agent profiles like `ag-plan-agent` or `ag-research-agent` are NOT provisioned in the Google Cloud backend console, and invoking them via the `task` tool will fail with a 404 or 400 error. Therefore, when spawning subagents via the `task` tool, the Conductor MUST ONLY use the default `"task"` agent for general-purpose reasoning tasks, or `"quick_task"` for cheap mechanical tasks. The custom agent profiles cataloged below serve as conceptual/prose guides only; you should map their roles and system instructions directly into the `assignment` parameter of a `"task"` or `"quick_task"` subagent)._
 
-- **`ag-code-reviewer`** *(Simulate via `"task"`)*: Comprehensive code review with scout-based edge case detection. Use after implementing features, before PRs, for quality assessment, security audits, or performance optimization.
-- **`ag-code-simplifier`** *(Simulate via `"task"`)*: Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
-- **`ag-debugger`** *(Simulate via `"task"`)*: Use this agent when you need to investigate issues, analyze system behavior, diagnose performance problems, examine database structures, collect and analyze logs from servers or CI/CD pipelines, run tests for debugging purposes, or optimize system performance.
-- **`ag-execute-agent`** *(Simulate via `"task"`)*: EXECUTE MODE - Implementing EXACTLY what was planned. Full tool access. Can only be invoked after explicit user confirmation. Use after plan is approved.
-- **`ag-fast-mode-agent`** *(Simulate via `"task"`)*: FAST MODE - Execute compressed RIPER-5 workflow (RESEARCH + INNOVATE + PLAN) in one session, then pause for EXECUTE confirmation. Use when you want quick end-to-end solution.
-- **`ag-git-manager`** *(Simulate via `"task"`)*: Stage, commit, and push code changes with conventional commits. Use when user says "commit", "push", or finishes a feature/fix.
-- **`ag-innovate-agent`** *(Simulate via `"task"`)*: INNOVATE MODE - Brainstorming and exploring implementation approaches. Discusses possibilities without making decisions. Use after research is complete.
-- **`ag-plan-agent`** *(Simulate via `"task"`)*: PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to process/general-plans/active/ and process/features/*/active/ only. Use after approach is decided.
-- **`ag-research-agent`** *(Simulate via `"task"`)*: RESEARCH MODE - Information gathering only. Use for understanding existing code, architecture, and context. Never suggests implementations or modifications.
-- **`ag-tester`** *(Simulate via `"task"`)*: Use this agent when you need to validate code quality through testing, including running unit and integration tests, analyzing test coverage, validating error handling, checking performance requirements, or verifying build processes.
-- **`ag-ui-ux-designer`** *(Simulate via `"task"`)*: Use this agent when the user needs UI/UX execution support including interface implementation, design-system polish, responsive layouts, animations, accessibility review, or design documentation.
-- **`ag-update-process-agent`** *(Simulate via `"task"`)*: UPDATE PROCESS MODE - Analyze execution, generate rule improvements, update plan files and context. Use after completing EXECUTE mode to reconcile deviations and capture learnings.
+- **`ag-code-reviewer`** _(Simulate via `"task"`)_: Comprehensive code review with scout-based edge case detection. Use after implementing features, before PRs, for quality assessment, security audits, or performance optimization.
+- **`ag-code-simplifier`** _(Simulate via `"task"`)_: Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
+- **`ag-debugger`** _(Simulate via `"task"`)_: Use this agent when you need to investigate issues, analyze system behavior, diagnose performance problems, examine database structures, collect and analyze logs from servers or CI/CD pipelines, run tests for debugging purposes, or optimize system performance.
+- **`ag-execute-agent`** _(Simulate via `"task"`)_: EXECUTE MODE - Implementing EXACTLY what was planned. Full tool access. Can only be invoked after explicit user confirmation. Use after plan is approved.
+- **`ag-fast-mode-agent`** _(Simulate via `"task"`)_: FAST MODE - Execute compressed RIPER-5 workflow (RESEARCH + INNOVATE + PLAN) in one session, then pause for EXECUTE confirmation. Use when you want quick end-to-end solution.
+- **`ag-git-manager`** _(Simulate via `"task"`)_: Stage, commit, and push code changes with conventional commits. Use when user says "commit", "push", or finishes a feature/fix.
+- **`ag-innovate-agent`** _(Simulate via `"task"`)_: INNOVATE MODE - Brainstorming and exploring implementation approaches. Discusses possibilities without making decisions. Use after research is complete.
+- **`ag-plan-agent`** _(Simulate via `"task"`)_: PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to process/general-plans/active/ and process/features/\*/active/ only. Use after approach is decided.
+- **`ag-research-agent`** _(Simulate via `"task"`)_: RESEARCH MODE - Information gathering only. Use for understanding existing code, architecture, and context. Never suggests implementations or modifications.
+- **`ag-tester`** _(Simulate via `"task"`)_: Use this agent when you need to validate code quality through testing, including running unit and integration tests, analyzing test coverage, validating error handling, checking performance requirements, or verifying build processes.
+- **`ag-ui-ux-designer`** _(Simulate via `"task"`)_: Use this agent when the user needs UI/UX execution support including interface implementation, design-system polish, responsive layouts, animations, accessibility review, or design documentation.
+- **`ag-update-process-agent`** _(Simulate via `"task"`)_: UPDATE PROCESS MODE - Analyze execution, generate rule improvements, update plan files and context. Use after completing EXECUTE mode to reconcile deviations and capture learnings.
 
 ### Core Harness Skills
 
