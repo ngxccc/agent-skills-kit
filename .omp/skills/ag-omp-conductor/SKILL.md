@@ -169,7 +169,7 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
 
 #### Web Research Prefix (r.jina.ai)
 
-- **Rule**: Always prefix external web URLs with `https://r.jina.ai/` when performing research, reading documentation, or fetching web content (e.g. `read "https://r.jina.ai/https://github.com/sickn33/antigravity-awesome-skills"` or `browser open name="main" url="https://r.jina.ai/https://omp.sh/docs/skills"`). Jina AI converts web pages into clean, LLM-friendly Markdown, bypassing scraping/bot protection and optimizing token consumption.
+- **Rule**: Always prefix external web URLs with `https://r.jina.ai/` when performing research, reading documentation, or fetching web content (e.g. `read "https://r.jina.ai/https://github.com/sickn33/antigravity-awesome-skills"` or `browser open name="main" url="https://r.jina.ai/https://omp.sh/docs/skills"`). Jina AI converts web pages into clean, LLM-friendly Markdown, bypassing scraping/bot protection and optimizing token consumption. If the Jina AI service fails (e.g. returns a timeout, 5xx error, or fails to parse), fallback immediately to the standard/original URL for reading or browsing.
 
 #### `web_search`
 
