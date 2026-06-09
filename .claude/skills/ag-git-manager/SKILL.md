@@ -1,12 +1,12 @@
 ---
-name: ag-git-commit
+name: ag-git-manager
 description: Use this skill to commit changes incrementally, push branches to remote, create pull requests with clear titles/descriptions, and merge using only squash or rebase strategies.
 metadata:
   author: agent-skills
   version: "1.1.0"
 ---
 
-# ag-git-commit
+# ag-git-manager
 
 Commit workspace changes incrementally in logical parts following the Conventional Commits specification.
 

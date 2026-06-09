@@ -166,6 +166,7 @@ Global best practices and coding conventions apply:
 - Component architecture
 - Testing and quality standards
 - Markdown formatting: Always format markdown files using Prettier.
+- Commenting Standards: Always write comments in English to explain complex, confusing, or non-obvious logic (e.g. database query performance tricks, composite cursors, dynamic tree building, recursion, regex filters, transaction blocks).
 
 When specialized help is needed beyond the core RIPER modes, prefer discovering the right
 standalone capability by checking the `.agents/skills/` directory rather than expanding the
