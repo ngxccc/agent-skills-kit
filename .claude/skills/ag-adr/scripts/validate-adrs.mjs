@@ -79,7 +79,8 @@ for (const file of files) {
     { title: "Status", heading: "## Status" },
     { title: "Context", heading: "## Context" },
     { title: "Decision", heading: "## Decision" },
-    { title: "Consequences", heading: "## Consequences" }
+    { title: "Consequences", heading: "## Consequences" },
+    { title: "Explicit Tradeoffs", heading: "### Explicit Tradeoffs" }
   ];
   
   for (const sec of requiredSections) {

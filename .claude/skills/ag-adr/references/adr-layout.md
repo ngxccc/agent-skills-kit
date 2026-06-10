@@ -51,4 +51,14 @@ Specifies the chosen solution, path, or pattern to resolve the context.
 
 ### 6. Consequences Section (`## Consequences`)
 
-Details the positive and negative tradeoffs resulting from the decision.
+Details the positive and negative outcomes resulting from the decision.
+
+#### Mandatory Subsection: `### Explicit Tradeoffs`
+
+Inside the Consequences section, you MUST provide an explicit tradeoffs subheading:
+
+```markdown
+### Explicit Tradeoffs
+```
+
+This section details the direct tradeoffs (e.g. Speed vs. Payload, DB load vs. Client compute, Complexity vs. Maintainability) of the chosen path.
