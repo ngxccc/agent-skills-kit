@@ -160,9 +160,16 @@ function validateRoadmapPlanLinks() {
     // Skip if it's already a header or separator
     if (trimmed.startsWith("##") || trimmed.startsWith("---")) continue;
 
-    const hasPlanLink = /\]\(process\/(general-plans|features)\/.*\.md\)/.test(line);
+    const hasPlanLink = /\]\((process\/)?(general-plans|features)\/.*\.md\)/.test(line);
     if (!hasPlanLink) {
       fail(`ROADMAP task missing plan link: "${trimmed.substring(0, 80)}..."`);
+    }
+
+    // New rule: Completed task must not link to active plan
+    const isCompleted = trimmed.startsWith("- [x]") || trimmed.startsWith("- [X]");
+    const linksToActive = /\]\((process\/)?(general-plans|features)\/active\/.*\.md\)/.test(line);
+    if (isCompleted && linksToActive) {
+      fail(`Completed task still links to active plan: "${trimmed.substring(0, 80)}..."`);
     }
   }
 }
