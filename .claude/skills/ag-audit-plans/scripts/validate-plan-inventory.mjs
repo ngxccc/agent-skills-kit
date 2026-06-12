@@ -53,10 +53,16 @@ const completedPlans = allPlans.filter((file) => file.includes("/completed/"));
 const duplicateNames = new Map();
 
 const roadmapPath = path.join(root, "process/ROADMAP.md");
+const completedRoadmapPath = path.join(root, "process/roadmap/completed.md");
+
 let roadmapContent = "";
 if (fs.existsSync(roadmapPath)) {
-  roadmapContent = fs.readFileSync(roadmapPath, "utf8");
+  roadmapContent += fs.readFileSync(roadmapPath, "utf8") + "\n";
 }
+if (fs.existsSync(completedRoadmapPath)) {
+  roadmapContent += fs.readFileSync(completedRoadmapPath, "utf8") + "\n";
+}
+
 const roadmapLines = roadmapContent.split("\n");
 
 function getPlanTitle(file) {

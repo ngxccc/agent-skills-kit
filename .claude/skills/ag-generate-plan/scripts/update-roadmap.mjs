@@ -11,6 +11,10 @@ if (!fs.existsSync(roadmapPath)) {
   console.log("ROADMAP.md not found in process directory. Skipping roadmap sync.");
   process.exit(0);
 }
+// Note: Completed milestones are archived in process/roadmap/completed.md
+// to keep the main ROADMAP.md focused on active work.
+// Future versions of this script may support automatically moving
+// completed items from ROADMAP.md to the archive.
 
 // Helper to recursively list files
 function walk(dir, predicate, out = []) {
