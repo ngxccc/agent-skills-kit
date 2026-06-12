@@ -48,7 +48,7 @@ function parsePlan(fullPath) {
     }
   }
 
-  const relativePath = path.relative(root, fullPath).replace(/\\/g, "/");
+  const relativePath = path.relative(path.join(root, "process"), fullPath).replace(/\\/g, "/");
   return { title, isCompleted, planPath: relativePath };
 }
 
