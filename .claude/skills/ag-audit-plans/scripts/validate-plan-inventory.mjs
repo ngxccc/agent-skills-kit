@@ -139,6 +139,35 @@ for (const file of completedPlans) {
     }
   }
 }
+// --- New rule: Every non-Icebox task in ROADMAP must link to a plan ---
+function validateRoadmapPlanLinks() {
+  if (!roadmapContent) return;
+
+  const iceboxIndex = roadmapLines.findIndex(line =>
+    line.includes("Idea Icebox") || line.includes("Backlog")
+  );
+
+  const linesToCheck = iceboxIndex === -1
+    ? roadmapLines
+    : roadmapLines.slice(0, iceboxIndex);
+
+  for (const line of linesToCheck) {
+    const trimmed = line.trim();
+    if (!trimmed.startsWith("- [ ]") && !trimmed.startsWith("- [x]") && !trimmed.startsWith("- [X]")) {
+      continue;
+    }
+
+    // Skip if it's already a header or separator
+    if (trimmed.startsWith("##") || trimmed.startsWith("---")) continue;
+
+    const hasPlanLink = /\]\(process\/(general-plans|features)\/.*\.md\)/.test(line);
+    if (!hasPlanLink) {
+      fail(`ROADMAP task missing plan link: "${trimmed.substring(0, 80)}..."`);
+    }
+  }
+}
+
+validateRoadmapPlanLinks();
 
 const duplicateBasenameGroups = [...duplicateNames.entries()]
   .filter(([, count]) => count > 1)
