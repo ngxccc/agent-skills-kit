@@ -31,15 +31,11 @@ function walk(dir, predicate, out = []) {
 function parsePlan(fullPath) {
   const planContent = fs.readFileSync(fullPath, "utf8");
 
-  // Extract title (first line starting with #)
   const titleLine = planContent.split("\n").find(line => line.trim().startsWith("#"));
   if (!titleLine) return null;
   const title = titleLine.replace(/^#+\s*/, "").trim();
 
-  // Extract status
   let isCompleted = false;
-
-  // If the file path contains '/completed/', consider it completed
   if (fullPath.includes("/completed/")) {
     isCompleted = true;
   } else {
@@ -52,13 +48,11 @@ function parsePlan(fullPath) {
     }
   }
 
-  // Compute relative path from project root for linking
   const relativePath = path.relative(root, fullPath).replace(/\\/g, "/");
-
   return { title, isCompleted, planPath: relativePath };
 }
 
-// Gather all plan files or single target
+// Gather plans
 const plansToProcess = [];
 if (!targetArg || targetArg === "--all") {
   const allPlans = [
@@ -68,9 +62,7 @@ if (!targetArg || targetArg === "--all") {
   for (const file of allPlans) {
     const fullPath = path.join(root, file);
     const parsed = parsePlan(fullPath);
-    if (parsed) {
-      plansToProcess.push(parsed);
-    }
+    if (parsed) plansToProcess.push(parsed);
   }
   console.log(`Scanning all plans: found ${plansToProcess.length} plans to sync.`);
 } else {
@@ -85,6 +77,7 @@ if (!targetArg || targetArg === "--all") {
     process.exit(1);
   }
   plansToProcess.push(parsed);
+}
 
 // Update ROADMAP.md
 let roadmapContent = fs.readFileSync(roadmapPath, "utf8");
@@ -101,60 +94,56 @@ for (const plan of plansToProcess) {
   }
 
   const checkbox = isCompleted ? "[x]" : "[ ]";
-  const planLink = planPath ? ` ([plan](${planPath}))` : "";
+  const planLink = planPath ? `([plan](${planPath}))` : "";
 
   if (titleIndex !== -1) {
-    // Update existing line
-    const line = roadmapLines[titleIndex];
-    roadmapLines[titleIndex] = line.replace(/-\s*\[[ xX]\]/, `- ${checkbox}`) + (planLink ? ` ${planLink}` : "");
+    // Update existing line - replace checkbox and ensure link exists
+    let line = roadmapLines[titleIndex];
+    line = line.replace(/-\s*\[[ xX]\]/, `- ${checkbox}`);
+
+    // Remove any old plan link for this title to avoid duplicates
+    line = line.replace(/\s*\(\[plan\]\([^)]+\)\)/, "");
+
+    if (planLink) {
+      line = `${line} ${planLink}`;
+    }
+    roadmapLines[titleIndex] = line;
     console.log(`Synced existing roadmap item: "${title}" -> ${checkbox}`);
   } else {
-    // Find where to insert the new roadmap item under Active Milestone
+    // Insert new item under Active Milestone
     let activeMilestoneHeaderIndex = -1;
     for (let i = 0; i < roadmapLines.length; i++) {
-      if (roadmapLines[i].includes("Đích đến hiện tại") || roadmapLines[i].includes("Active Milestone")) {
+      if (roadmapLines[i].includes("Active Milestone") || roadmapLines[i].includes("Đích đến hiện tại")) {
         activeMilestoneHeaderIndex = i;
         break;
       }
     }
 
+    const newLine = planLink
+      ? `- ${checkbox} ${title} ${planLink}`
+      : `- ${checkbox} ${title}`;
+
     if (activeMilestoneHeaderIndex === -1) {
-      roadmapLines.push(`- ${checkbox} ${title}${planLink}`);
+      roadmapLines.push(newLine);
     } else {
       let insertIndex = -1;
       let insideList = false;
       for (let i = activeMilestoneHeaderIndex + 1; i < roadmapLines.length; i++) {
-        const line = roadmapLines[i].trim();
-        const isListItem = line.startsWith("- [ ]") || line.startsWith("- [x]") || line.startsWith("- [X]");
-
+        const l = roadmapLines[i].trim();
+        const isListItem = l.startsWith("- [ ]") || l.startsWith("- [x]") || l.startsWith("- [X]");
         if (isListItem) {
           insideList = true;
-        } else if (insideList && line === "") {
-          insertIndex = i;
-          break;
-        } else if (insideList && (line.startsWith("#") || line.startsWith("---"))) {
+        } else if (insideList && (l === "" || l.startsWith("#") || l.startsWith("---"))) {
           insertIndex = i;
           break;
         }
       }
-
-      if (insertIndex === -1) {
-        insertIndex = activeMilestoneHeaderIndex + 3;
-      }
-
-      roadmapLines.splice(insertIndex, 0, `- ${checkbox} ${title}${planLink}`);
-      console.log(`Added new roadmap item: "${title}" -> ${checkbox}`);
+      if (insertIndex === -1) insertIndex = activeMilestoneHeaderIndex + 3;
+      roadmapLines.splice(insertIndex, 0, newLine);
     }
+    console.log(`Added new roadmap item: "${title}" -> ${checkbox}`);
   }
 }
 
 fs.writeFileSync(roadmapPath, roadmapLines.join("\n"), "utf8");
 console.log("ROADMAP.md updated successfully.");
-
-// Execute
-main();
-
-function main() {
-  // The logic above already runs at top level.
-  // This is just to satisfy syntax if needed in future.
-}
