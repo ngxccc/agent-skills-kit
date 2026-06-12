@@ -52,6 +52,37 @@ const activePlans = allPlans.filter((file) => file.includes("/active/"));
 const completedPlans = allPlans.filter((file) => file.includes("/completed/"));
 const duplicateNames = new Map();
 
+const roadmapPath = path.join(root, "process/ROADMAP.md");
+let roadmapContent = "";
+if (fs.existsSync(roadmapPath)) {
+  roadmapContent = fs.readFileSync(roadmapPath, "utf8");
+}
+const roadmapLines = roadmapContent.split("\n");
+
+function getPlanTitle(file) {
+  try {
+    const text = read(file);
+    const titleLine = text.split("\n").find(line => line.trim().startsWith("#"));
+    if (titleLine) {
+      return titleLine.replace(/^#+\s*/, "").trim();
+    }
+  } catch (e) {}
+  return "";
+}
+
+function getRoadmapStatus(title) {
+  if (!title || !roadmapContent) return null;
+  for (const line of roadmapLines) {
+    if (line.includes(title)) {
+      const match = line.match(/-\s*\[([ xX])\]/);
+      if (match) {
+        return match[1].toLowerCase() === "x" ? "completed" : "active";
+      }
+    }
+  }
+  return null;
+}
+
 const samples = {
   nameNotDateStamped: [],
   noPlanInName: [],
@@ -86,6 +117,26 @@ for (const file of activePlans) {
     !/_PLAN_|PLAN/i.test(name)
   ) {
     samples.likelyReferenceInActive.push(file);
+  }
+  const title = getPlanTitle(file);
+  if (title && roadmapContent) {
+    const status = getRoadmapStatus(title);
+    if (!status) {
+      warn(`Active plan not listed in ROADMAP.md: "${title}" (${file})`);
+    } else if (status === "completed") {
+      warn(`Active plan "${title}" (${file}) is marked as completed [x] in ROADMAP.md`);
+    }
+  }
+
+}
+
+for (const file of completedPlans) {
+  const title = getPlanTitle(file);
+  if (title && roadmapContent) {
+    const status = getRoadmapStatus(title);
+    if (status === "active") {
+      warn(`Completed plan "${title}" (${file}) is marked as active [ ] in ROADMAP.md`);
+    }
   }
 }
 

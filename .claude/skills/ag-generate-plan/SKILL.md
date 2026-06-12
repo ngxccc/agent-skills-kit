@@ -42,6 +42,11 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
 ```
 
+12. Synchronize the newly generated or updated plan to `ROADMAP.md` at the project root:
+
+```bash
+node .claude/skills/ag-generate-plan/scripts/update-roadmap.mjs <plan-path>
+```
 ## Important Rules
 
 - For standard work, create exactly one plan file.

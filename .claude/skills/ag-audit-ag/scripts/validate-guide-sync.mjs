@@ -44,50 +44,20 @@ function extractTableAgents(text) {
   return agents;
 }
 
-const guidePath = "README.md";
+const guidePath = "AGENTS.md";
 if (!exists(guidePath)) {
-  fail("README.md does not exist");
+  fail("AGENTS.md does not exist");
 } else {
   const guideText = read(guidePath);
 
-  // Extract agents from README.md tables (Core + Specialists sections)
-  // Extract agents from README.md tables (Core + Specialists sections)
-  const agentsSectionMatch = guideText.match(
-    /#{2,3}\s+(?:\d+\s+)?Agents\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---)/i,
-  );
-  const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : "";
+  // Extract agents from AGENTS.md sections (between Mode Agents and Routing Protocol)
+  const agentsStart = guideText.indexOf("## Mode Agents (Codex Compatibility)");
+  const agentsEnd = guideText.indexOf("## Routing Protocol");
+  const agentsSection = agentsStart !== -1 && agentsEnd !== -1 ? guideText.substring(agentsStart, agentsEnd) : "";
   const guideAgents = extractTableAgents(agentsSection);
 
   // Get disk agents
   const diskAgents = new Set(listAgentNames(".claude/agents", ".md"));
-
-  // Check: every disk agent should be in README.md
-  for (const agent of diskAgents) {
-    if (!guideAgents.has(agent)) {
-      fail(
-        `Agent ${agent} exists on disk but missing from README.md agent tables`,
-      );
-    }
-  }
-
-  // Check: every GUIDE.md agent should exist on disk
-  for (const agent of guideAgents) {
-    if (!diskAgents.has(agent)) {
-      warn(
-        `Agent ${agent} listed in README.md but not found on disk at .claude/agents/${agent}.md`,
-      );
-    }
-  }
-
-  // --- Skill sync ---
-
-  // Extract skills from all README.md skill catalog tables
-  // Extract skills from all README.md skill catalog tables
-  const skillsSectionMatch = guideText.match(
-    /#{2,3}\s+(?:\d+\s+)?Skills\b[\s\S]*?(?=\n#{2,3}\s+(?:\d+\s+)?[^#]|\n---\n\n#{2,3}\s+(?:\d+\s+)?)/i,
-  );
-  const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : "";
-  const guideSkills = extractTableAgents(skillsSection);
 
   // Get disk skills that have a SKILL.md
   const diskSkillDirs = listSkillDirs();
@@ -99,11 +69,36 @@ if (!exists(guidePath)) {
       if (parsed?.fields.name) {
         diskSkills.add(parsed.fields.name);
       }
-      // Also add folder name as alias
       diskSkills.add(skill);
     }
   }
 
+  // Check: every disk agent should be in AGENTS.md
+  for (const agent of diskAgents) {
+    if (!guideAgents.has(agent)) {
+      fail(
+        `Agent ${agent} exists on disk but missing from AGENTS.md agent tables`,
+      );
+    }
+  }
+
+  // Check: every AGENTS.md agent should exist on disk
+  for (const agent of guideAgents) {
+    // Ignore non-agent backticks like tools:
+    if (agent === "tools" || agent === "tools:" || agent.includes(":")) continue;
+    // Ignore if it's actually a workflow skill
+    if (diskSkills.has(agent) || diskSkills.has(`ag-${agent}`)) continue;
+    if (!diskAgents.has(agent)) {
+      warn(
+        `Agent ${agent} listed in AGENTS.md but not found on disk at .claude/agents/${agent}.md`,
+      );
+    }
+  }
+
+  // --- Skill sync ---
+
+  // Extract skills from all sections of AGENTS.md
+  const guideSkills = extractTableAgents(guideText);
   // Build a set of skill folder names for matching
   const diskSkillFolders = new Set(
     diskSkillDirs.filter((skill) => exists(`.claude/skills/${skill}/SKILL.md`)),
@@ -123,12 +118,12 @@ if (!exists(guidePath)) {
       !guideSkills.has(nameWithoutPrefix)
     ) {
       fail(
-        `Skill ${folder} (name: ${name}) exists on disk but missing from README.md skill catalog`,
+        `Skill ${folder} (name: ${name}) exists on disk but missing from AGENTS.md skill catalog`,
       );
     }
   }
 
-  // Check: every GUIDE.md skill should exist on disk
+  // Check: every AGENTS.md skill should exist on disk
   for (const skill of guideSkills) {
     // Also check ag-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
     if (

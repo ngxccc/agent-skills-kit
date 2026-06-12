@@ -1,0 +1,41 @@
+# ROADMAP
+
+> **Mission:** [Define the core purpose of this project in one sentence. E.g., "Build a high-performance B2B e-commerce platform for industrial generators to streamline quote negotiation and ordering."]
+
+---
+
+## Active Milestone
+*Focus on completing this section before looking further down.*
+
+### Milestone 1: [Milestone Name, e.g. Core Flow]
+- [ ] [Task 1, e.g. Design DB schema for core entities]
+- [ ] [Task 2, e.g. Build product listing and detail pages]
+- [ ] [Task 3, e.g. Implement basic shopping cart]
+
+---
+
+## Next 3 Actions
+*Select up to 3 tasks from the Active Milestone to focus on immediately.*
+1. **[In Progress]** [Task in progress]
+2. **[Next]** [Next task]
+3. **[Next]** [Next task]
+
+---
+
+## Future Milestones
+*Upcoming vertical slices of work.*
+
+*   **Milestone 2: [Next Phase, e.g. Checkout & Payments]**
+    *   [Task, e.g. Integrate payment gateway]
+    *   [Task, e.g. Implement order history page]
+*   **Milestone 3: [Future Phase, e.g. User Profiles & Admin Panel]**
+    *   [Task, e.g. Add profile editing]
+    *   [Task, e.g. Build admin dashboard for product management]
+
+---
+
+## Idea Icebox / Backlog
+*A storage area for new ideas. Do not implement immediately to prevent scope creep.*
+
+- [ ] [Idea 1, e.g. Implement AI chatbot recommendation]
+- [ ] [Idea 2, e.g. Add dark mode support]
