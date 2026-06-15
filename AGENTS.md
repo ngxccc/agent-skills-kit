@@ -318,6 +318,7 @@ The active system is intentionally split into four layers:
   - `ag-security`
   - `ag-autoresearch`
   - `ag-zod`
+  - `ag-zustand`
   - `ag-merge-worktree`
   - `ag-second-brain`
 - **Orchestration utility**:
@@ -450,6 +451,7 @@ Skill Registry:
 | `ag-scenario`                           | Edge case generation across 12 dimensions                                                                                        | edge cases, test scenarios, what could go wrong                                                |
 | `ag-security`                           | STRIDE + OWASP security audit                                                                                                    | security, vulnerability, auth, XSS, SQL injection                                              |
 | `ag-autoresearch`                       | Autonomous metric optimization loop                                                                                              | improve coverage, reduce bundle, optimize metric                                               |
+| `ag-brainstorming`                     | You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior | brainstorm, spec, design, approach, requirements, clarify                                       |
 | `ag-predict`                            | 5-persona pre-implementation debate                                                                                              | risks, predict issues, architectural review                                                    |
 | `ag-scout`                              | Fast parallel codebase scouting                                                                                                  | find files, where is, search codebase                                                          |
 | `ag-tech-graph`                         | Publish-grade technical diagrams as SVG or PNG for durable process artifacts                                                     | generate diagram, architecture diagram, flowchart, sequence diagram, system visual             |
@@ -476,6 +478,7 @@ Skill Registry:
 | `ag-publish`                            | Push harness improvements to remote kit repo                                                                                     | publish kit, push harness, release kit, update remote                                          |
 | `ag-audit-ag`                           | Agent harness health audit (agents, skills, README.md, protocol wiring)                                                          | harness, agent parity, skill audit, guide sync                                                 |
 | `ag-zod`                                | Rules and references for Zod schema validation, parsing and database mapping                                                     | validate payload, zod schema, zod custom validation errors, zod validation                     |
+| `ag-zustand`                            | Rules and standards for state management using Zustand in React and Next.js                                                       | zustand, state management, store, persist, localStorage, ssr hydration                        |
 | `ag-demo-irc`                           | Demo of parallel subagents and inter-agent IRC communication                                                                     | parallel subagents, subagent messaging, irc messaging, multi-agent communication, irc demo     |
 | `ag-upstash-ratelimit`                  | Rules, standards, and references for rate limiting in serverless environments using Upstash Ratelimit                            | validate payload, zod schema, upstash ratelimit, redis rate limit, rate limiter                |
 | `ag-ui-design`                          | UI/UX and frontend design best practices guidelines                                                                              | HTML structure, CSS styling, responsive layouts, forms, accessibility                          |
