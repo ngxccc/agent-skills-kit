@@ -501,6 +501,7 @@ Skill Registry:
 | `ag-merge-worktree`                     | Merge a git worktree branch back into the main checkout and clean up the worktree                                                | merge worktree, cleanup worktree, git worktree, finish worktree                                |
 | `ag-second-brain`                       | Use this skill to query, search, update, or add notes in Obsidian second brain                                                   | second brain, obsidian, search notes, add note, update note, memory note                       |
 | `ag-skill-standard`                     | Rules, standards, and validation guides for writing and structure of skills                                                      | skill standard, skill guide, write skill, skill structure, validate skill                      |
+| `ag-strict-config-derivation`           | Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries. | column list, permission, role matrix, form field, status transition, nav item, single source of truth, strict config |
 
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.

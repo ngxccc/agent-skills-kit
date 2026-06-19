@@ -277,6 +277,7 @@ The active system is intentionally split into four layers:
   - `ag-security`
   - `ag-autoresearch`
   - `ag-zod`
+  - `ag-zustand`
 - **Orchestration utility**:
   - `ag-team` coordinates multiple surviving actors/helpers in parallel but is not a competing default workflow owner
 
@@ -417,6 +418,7 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 | `ag-publish`             | Push harness improvements to remote kit repo                                                                    | publish kit, push harness, release kit, update remote                                          |
 | `ag-audit-ag`            | Agent harness health audit (agents, skills, README.md, protocol wiring)                                         | harness, agent parity, skill audit, guide sync                                                 |
 | `ag-zod`                 | Rules and references for Zod schema validation, parsing and database mapping                                    | validate payload, zod schema, zod custom validation errors, zod validation                     |
+| `ag-zustand`             | Rules and standards for state management using Zustand in React and Next.js                                     | zustand, state management, store, persist, localStorage, ssr hydration                        |
 
 **Rule:** When 1+ skills match the request, mention them to the user OR include them in the subagent prompt context. Never silently skip relevant skills.
 

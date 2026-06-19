@@ -98,6 +98,23 @@ In the Implementation Checklist, interleave test steps with code steps:
 
 ---
 
+## Brainstorming & Design Specification Gate (Pre-Planning)
+
+Before finalizing any implementation plan, you MUST verify if an approved design specification is already integrated inside the active plan file. If not, you MUST execute the collaborative Brainstorming phase first:
+
+1. **Explore project context** — check files, docs, recent commits, and current codebase structure.
+2. **Decompose large systems** — if the request describes multiple independent subsystems, flag it and help the user decompose it into sub-projects first.
+3. **Offer visual companion** — if the topic involves visual questions (mockups, layouts, diagrams), offer it once for consent in its own message:
+   > "Some of what we're working on might be easier to explain if I can show it to you in a web browser. I can put together mockups, diagrams, comparisons, and other visuals as we go. This feature is still new and can be token-intensive. Want to try it? (Requires opening a local URL)"
+4. **Ask clarifying questions** — ask one at a time to refine the idea, focusing on purpose, constraints, and success criteria.
+5. **Propose 2-3 approaches** — detail different approaches with trade-offs and your recommendation.
+6. **Present and iterate on the design** — present the design in sections scaled to complexity, covering architecture, components, data flow, error handling, and testing. Get user approval on each.
+7. **Write the design spec** — integrate the validated design specification directly inside the target plan file under a `## Design Specification` section. Commit the plan file to git.
+8. **Spec self-review** — check for placeholders (TBD/TODO), internal inconsistencies, scope, and ambiguity. Fix inline.
+9. **User reviews written spec** — ask the user to review before proceeding:
+   > "Spec written and integrated into the plan file. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
+10. **Transition** — only write the implementation plan after the user approves the spec.
+
 ## How to use this command
 
 - Provide a brief description of your idea/feature/project

@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "plugins": {
+    "superpowers@claude-plugins-official": [
+      {
+        "scope": "project",
+        "installPath": "/home/ngxc/.omp/plugins/cache/plugins/claude-plugins-official___superpowers___5.1.0",
+        "version": "5.1.0",
+        "installedAt": "2026-06-14T05:32:16.088Z",
+        "lastUpdated": "2026-06-14T05:32:16.088Z"
+      }
+    ],
+    "playwright@claude-plugins-official": [
+      {
+        "scope": "project",
+        "installPath": "/home/ngxc/.omp/plugins/cache/plugins/claude-plugins-official___playwright___0.0.0",
+        "version": "0.0.0",
+        "installedAt": "2026-06-14T05:32:16.112Z",
+        "lastUpdated": "2026-06-14T05:32:16.112Z"
+      }
+    ]
+  }
+}

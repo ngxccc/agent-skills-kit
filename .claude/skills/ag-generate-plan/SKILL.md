@@ -21,16 +21,17 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 
 ## Workflow
 
-1. Read `references/generate-plan.md` for the full plan contract.
-2. Run `date +%d-%m-%y` before choosing the filename.
-3. If complexity is not obvious, ask whether the plan is `SIMPLE` or `COMPLEX`.
-4. Save the plan to `process/general-plans/active/` unless the work belongs to an existing `process/features/{feature}/active/` folder.
-5. Read `process/context/all-context.md` when present to choose relevant context docs.
-6. For complex plans, read `process/development-protocols/references/example-complex-prd.md` before writing.
-7. Include automated and manual verification gates from `process/context/tests/all-tests.md`.
-8. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
-9. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
-10. If the work is a large multi-phase program, create or update a feature folder plan set:
+1. **Pre-Planning Brainstorming Gate**: Before finalizing an implementation plan, you MUST execute the collaborative Brainstorming phase first (Explore project context, offer visual companion if visual questions are anticipated, ask clarifying questions one at a time, propose 2-3 approaches with trade-offs, present and iterate on the design, write the design spec directly as a `## Design Specification` section within the active plan file, run a self-review, and get user approval on the spec before writing the implementation plan checklist).
+2. Read `references/generate-plan.md` for the full plan contract.
+3. Run `date +%d-%m-%y` before choosing the filename.
+4. If complexity is not obvious, ask whether the plan is `SIMPLE` or `COMPLEX`.
+5. Save the plan to `process/general-plans/active/` unless the work belongs to an existing `process/features/{feature}/active/` folder.
+6. Read `process/context/all-context.md` when present to choose relevant context docs.
+7. For complex plans, read `process/development-protocols/references/example-complex-prd.md` before writing.
+8. Include automated and manual verification gates from `process/context/tests/all-tests.md`.
+9. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
+10. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
+11. If the work is a large multi-phase program, create or update a feature folder plan set:
 
 - one umbrella/orchestration plan
 - one direct plan file per phase
@@ -42,7 +43,7 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
 ```
 
-12. Synchronize the newly generated or updated plan to `ROADMAP.md` at the project root:
+13. Synchronize the newly generated or updated plan to `ROADMAP.md` at the project root:
 
 ```bash
 node .claude/skills/ag-generate-plan/scripts/update-roadmap.mjs <plan-path>
@@ -60,3 +61,4 @@ node .claude/skills/ag-generate-plan/scripts/update-roadmap.mjs <plan-path>
 - Do not hide a large program inside one giant plan if execution will actually happen phase by phase.
 - Preserve the older complex-plan behavior by keeping pre-phase research and proof gates inside each
   phase plan; the new protocol changes the artifact shape, not the rigor.
+- ALWAYS integrate the brainstorming design spec directly within the plan file under a `## Design Specification` section; do not write code or plans without a completed design/spec phase.
