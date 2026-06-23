@@ -114,10 +114,7 @@ async function compressImageIfNeeded(filePath, maxSizeMB = 5) {
 async function screenshot() {
   const args = parseArgs(process.argv.slice(2));
 
-  if (!args.output) {
-    outputError(new Error("--output is required"));
-    return;
-  }
+  const outputPath = args.output || path.resolve(process.cwd(), ".claude/chrome-devtools/screenshots/screenshot.png");
 
   try {
     const browser = await getBrowser({
@@ -134,11 +131,11 @@ async function screenshot() {
     }
 
     // Ensure output directory exists
-    const outputDir = path.dirname(path.resolve(args.output));
+    const outputDir = path.dirname(outputPath);
     await fs.mkdir(outputDir, { recursive: true });
 
     const screenshotOptions = {
-      path: args.output,
+      path: outputPath,
       type: args.format || "png",
       fullPage: args["full-page"] === "true",
     };
@@ -164,7 +161,7 @@ async function screenshot() {
 
     const result = {
       success: true,
-      output: path.resolve(args.output),
+      output: outputPath,
       size: buffer.length,
       url: page.url(),
     };
@@ -173,7 +170,7 @@ async function screenshot() {
     if (args["no-compress"] !== "true") {
       const maxSize = args["max-size"] ? parseFloat(args["max-size"]) : 5;
       const compressionResult = await compressImageIfNeeded(
-        args.output,
+        outputPath,
         maxSize,
       );
 

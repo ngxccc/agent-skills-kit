@@ -400,7 +400,7 @@ If script fails:
 
 ```bash
 # 1. Capture current state (without navigating to preserve state)
-node "$SKILL_DIR/screenshot.js" --output ./.claude/skills/chrome-devtools/screenshots/debug.png
+node "$SKILL_DIR/screenshot.js" --output ./.claude/chrome-devtools/screenshots/debug.png
 
 # 2. Get console errors
 node "$SKILL_DIR/console.js" --url about:blank --types error --duration 1000

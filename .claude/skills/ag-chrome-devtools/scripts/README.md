@@ -112,7 +112,7 @@ node navigate.js --url https://example.com [--wait-until networkidle2] [--timeou
 
 Take a screenshot with automatic compression.
 
-**Important**: Always save screenshots to `.claude/skills/chrome-devtools/screenshots` directory.
+**Important**: Always save screenshots to the project's `.claude/chrome-devtools/screenshots` directory or a temporary directory.
 
 ```bash
 node screenshot.js --output screenshot.png [--url https://example.com] [--full-page true] [--selector .element] [--max-size 5] [--no-compress]
