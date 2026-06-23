@@ -189,6 +189,25 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
   browser close name="main"
   ```
 
+#### MCP Chrome DevTools Server (mcp__chrome_devtools_*)
+
+- **Purpose**: Direct model-level control over a hosted Chromium browser tab. Ideal for interactive browsing, form filling, and real-time element interaction using semantic uids resolved from page content snapshots.
+- **Key Tools**:
+  - `mcp__chrome_devtools_list_pages`: Returns a list of active tabs/pages in the browser.
+  - `mcp__chrome_devtools_click`: Click on a page element by its `uid`.
+  - `mcp__chrome_devtools_hover`: Hover over a page element by its `uid`.
+  - `mcp__chrome_devtools_fill`: Input values into text inputs, checkboxes, or `<select>` options by its `uid`.
+  - `mcp__chrome_devtools_type_text`: Type text using the keyboard into a focused input, with optional `submitKey` (e.g. `"Enter"`).
+  - `mcp__chrome_devtools_upload_file`: Upload files through input elements.
+  - `mcp__chrome_devtools_drag`: Drag and drop one element onto another.
+  - `mcp__chrome_devtools_emulate`: Emulate device viewports, color schemes (dark/light), network conditions, geolocation, and user agents.
+- **Examples**:
+  ```json
+  mcp__chrome_devtools_list_pages i="list open tabs"
+  mcp__chrome_devtools_click uid="e5" i="click login button"
+  mcp__chrome_devtools_fill uid="e10" value="user@example.com" i="fill email field"
+  ```
+
 #### `generate_image`
 
 - **Purpose**: Structured image generation.
@@ -275,8 +294,27 @@ Here is the exhaustive parameter and syntax reference for all 22 OMP-specific to
   report_tool_issue tool="lsp" description="LSP crash during workspace diagnostics"
   ```
 
----
 
+### Model Context Protocol (MCP) Integration
+
+The OMP environment supports pluggable MCP servers. When these servers are active, the Conductor should prefer using the semantic, model-level tools over raw bash commands for the respective operations.
+
+#### Dynamic Tool Discovery
+To prevent token bloat inside this skill file, the full list of all 79 active MCP tools is defined in a separate reference:
+- **Full MCP Tool Matrix**: Read the reference document at [./references/mcp-tools.md](./references/mcp-tools.md).
+
+If a specific tool is needed or its schema parameters are unknown, the Conductor should query it dynamically using `search_tool_bm25`:
+```json
+search_tool_bm25 query="chrome-devtools"
+search_tool_bm25 query="mcp__github"
+```
+
+#### Active MCP Server Overview
+1. **chrome-devtools** (29 tools): Direct model-level control over a hosted Chromium browser tab. Ideal for interactive web E2E tests, visual audits, and form automation using semantic element `uid`s.
+2. **fetch** (1 tool): Pulls HTML/JSON content from remote web URLs cleanly.
+3. **filesystem** (14 tools): Fine-grained directory listing, file viewing, and modification tools. *(Note: Prefer native OMP `read`, `find`, `write`, `edit` over filesystem MCP when available).*
+4. **github** (26 tools): Full integration with GitHub issues, pull requests, commits, and workflow runs. *(Note: Prefer native OMP `github` tool for local git-worktree checkout/push workflows).*
+5. **memory** (9 tools): Persistent semantic memory storage for saving across-session lessons, context details, and decisions.
 ## 3. Multi-Agent Orchestration Protocol
 
 When a large or multi-subsystem task is initiated, the Conductor must follow this sequence:

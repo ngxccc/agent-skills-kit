@@ -98,4 +98,6 @@ If the subagents implemented UI changes, the Conductor uses `browser` to take sc
 }
 ```
 
-The Conductor can then feed the image to `inspect_image` or a vision model to verify alignment with UI specs.
+Alternatively, for direct interaction with a hosted browser tab without writing custom Puppeteer code, the Conductor can utilize the `mcp__chrome_devtools_*` tool suite (e.g. `mcp__chrome_devtools_click`, `mcp__chrome_devtools_fill`) to interact with DOM nodes using stable uids resolved from page content snapshots.
+
+The Conductor can then feed the captured screenshot image to `inspect_image` or a vision model to verify alignment with UI specs.
