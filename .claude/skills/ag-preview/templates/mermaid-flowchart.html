@@ -292,6 +292,11 @@
       .mermaid .edgeLabel {
         font-family: var(--font-mono);
         font-size: 13px;
+        display: inline-block !important;
+      }
+
+      .mermaid foreignObject {
+        overflow: visible !important;
       }
 
       .mermaid .node rect,
@@ -752,6 +757,22 @@
               return;
             }
 
+            // Adjust foreignObject width to prevent label truncation
+            canvas.querySelectorAll("foreignObject").forEach(fo => {
+              const div = fo.querySelector("div");
+              if (div) {
+                const contentWidth = Math.max(div.scrollWidth, div.getBoundingClientRect().width);
+                if (contentWidth > 0) {
+                  fo.setAttribute("width", Math.ceil(contentWidth + 10));
+                } else {
+                  fo.setAttribute("width", "300");
+                }
+              } else {
+                fo.setAttribute("width", "300");
+              }
+              fo.style.overflow = "visible";
+            });
+
             const size = readSvgNaturalSize(svgNode);
             svgW = size.w;
             svgH = size.h;
@@ -893,7 +914,11 @@
           }
         }).observe(wrap);
 
-        render();
+        if (document.fonts) {
+          document.fonts.ready.then(render);
+        } else {
+          render();
+        }
       }
 
       document.querySelectorAll(".diagram-shell").forEach(initDiagram);
