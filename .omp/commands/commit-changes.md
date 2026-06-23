@@ -1,19 +1,19 @@
 ---
-description: Commit the current unstaged changes in the repository using a conversational, scope-by-scope commit flow.
+description: Commit the current unstaged changes in the repository directly without needing confirmation.
 ---
 
 Process the commit query or instruction provided:
 
 $@
 
-Perform the following conversational, scope-by-scope commit strategy:
+Perform the following direct commit strategy:
 
 ### Commit Strategy
 
 1. **Analyze changes**: Analyze all current unstaged changes in the working directory using `git status` or `git diff`.
 2. **Group changes**: Group the changes logically into separate, clean, scoped commits by function/feature (e.g. database service, UI component, API route, docs).
 3. **Draft commit messages**: Write clear, descriptive commit messages following the project's conventional commit style.
-4. **Conversational approval**: For each logical scope, propose the files to stage and the conventional commit message to the user, and ask for explicit approval before running the commit commands. Do not commit all scopes at once without individual confirmation.
+4. **Direct commit**: For each logical scope, automatically stage the files and run the git commit command with the drafted conventional message. Do not ask for user approval; execute directly.
 
 ### CRITICAL POLICY & SAFETY RULES (MUST)
 
