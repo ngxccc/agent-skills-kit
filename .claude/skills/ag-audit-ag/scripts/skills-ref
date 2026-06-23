@@ -360,10 +360,10 @@ Options:
   --help, -h       Show this help
 
 Examples:
-  .claude/skills/ag-skill-standard/scripts/skills-ref validate .claude/skills/ag-typescript
-  .claude/skills/ag-skill-standard/scripts/skills-ref validate-all
-  .claude/skills/ag-skill-standard/scripts/skills-ref read-properties .claude/skills/ag-typescript
-  .claude/skills/ag-skill-standard/scripts/skills-ref to-prompt .claude/skills/ag-typescript .claude/skills/ag-zod
+  .claude/skills/ag-audit-ag/scripts/skills-ref validate .claude/skills/ag-typescript
+  .claude/skills/ag-audit-ag/scripts/skills-ref validate-all
+  .claude/skills/ag-audit-ag/scripts/skills-ref read-properties .claude/skills/ag-typescript
+  .claude/skills/ag-audit-ag/scripts/skills-ref to-prompt .claude/skills/ag-typescript .claude/skills/ag-zod
 
 Validation Rules:
   - Name: lowercase alphanumeric with hyphens, 1-64 chars

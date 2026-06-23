@@ -1,8 +1,8 @@
 ---
 name: ag-audit-ag
 description: >-
-  Audit agent harness health: Claude/Codex agent parity, skill registry
-  consistency, README.md sync, and protocol file wiring. Use when agents,
+  Audit agent harness health and skill standards: Claude/Codex agent parity, skill registry
+  consistency, skill pattern compliance, README.md sync, and protocol file wiring. Use when agents,
   skills, README.md, or development-protocol files move, split, or drift.
 ---
 
@@ -39,9 +39,17 @@ For context routing, grouping, and discoverability audits, use the `audit-contex
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-kit-portability.mjs
    ```
-7. If any script reports failures, inspect the referenced files and patch the smallest
+7. Run the skill structural pattern validator:
+   ```bash
+   bun run .claude/skills/ag-audit-ag/scripts/validate-skill-patterns.mjs
+   ```
+8. If any script reports failures, inspect the referenced files and patch the smallest
    relevant surface.
-8. Re-run the failed validators until they pass.
+9. Re-run the failed validators until they pass.
+
+## References
+
+- [Standard Skill Layout Specification](references/skill-layout.md)
 
 ## Rules
 

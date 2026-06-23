@@ -1081,14 +1081,14 @@ process/features/{feature}/
 
 <br>
 
-### 51 Skills (auto-discovered)
+### 49 Skills (auto-discovered)
 
 <details>
-<summary>Click to expand skill list (51 skills)</summary>
+<summary>Click to expand skill list (49 skills)</summary>
 
 <br>
 
-**🔧 Contract skills** — `ag-generate-plan` · `ag-generate-context` · `ag-audit-context` · `ag-audit-plans` · `ag-audit-ag` · `ag-setup` · `ag-update` · `ag-publish`
+**🔧 Contract skills** — `ag-generate-plan` · `ag-generate-context` · `ag-audit-context` · `ag-audit-plans` · `ag-audit-ag` · `ag-setup` · `ag-harness-sync`
 
 **🧠 Planning** — `ag-predict` (5-persona debate) · `ag-scenario` (12-dimension edge cases) · `ag-sequential-thinking` · `ag-problem-solving`
 
@@ -1098,7 +1098,7 @@ process/features/{feature}/
 
 **🎨 Frontend** — `ag-frontend-design` · `ag-chrome-devtools` · `ag-agent-browser` · `ag-web-testing` · `ag-nextjs` · `ag-nextjs-bundle-optimizer` · `ag-nextjs-ppr-patterns` · `ag-react-hook-form` · `ag-react-hook-form-audit` · `ag-tailwind` · `ag-tailwind-refactor` · `ag-tailwind-responsive-ui` · `ag-tailwind-ui-refactor` · `ag-ui-design`
 
-**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc` · `ag-code-simplifier` · `ag-implementation-design-patterns` · `ag-implementation-functional-patterns` · `ag-typescript` · `ag-typescript-advanced-patterns` · `ag-typescript-refactor` · `ag-skill-standard`
+**⚙️ Utilities** — `ag-context-engineering` · `ag-mcp-management` · `ag-preview` · `ag-team` (parallel agents) · `ag-tech-graph` · `ag-watzup` (session handoff) · `ag-merge-worktree` · `ag-zod` · `ag-demo-irc` · `ag-code-simplifier` · `ag-implementation-design-patterns` · `ag-implementation-functional-patterns` · `ag-typescript` · `ag-typescript-advanced-patterns` · `ag-typescript-refactor`
 
 </details>
 
@@ -1148,7 +1148,7 @@ your-project/
 Pull the latest harness improvements:
 
 ```
-Run ag-update
+Run ag-harness-sync (Update Flow)
 ```
 
 > 💡 Shows a dry-run diff, waits for confirmation. Your `process/` directory and project-specific content are **never touched**.

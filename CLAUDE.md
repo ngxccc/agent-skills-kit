@@ -255,8 +255,7 @@ The active system is intentionally split into four layers:
   - `ag-audit-context`
   - `ag-audit-plans`
   - `ag-audit-ag`
-  - `ag-update`
-  - `ag-publish`
+  - `ag-harness-sync`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
   - `ag-sequential-thinking`
@@ -414,9 +413,8 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 | `ag-agent-browser`       | AI browser automation CLI                                                                                       | long browser session, browserbase, visual testing                                              |
 | `ag-team`                | Multi-agent parallel collaboration                                                                              | parallel agents, multi-agent, team                                                             |
 | `ag-setup`               | Scaffold agent harness into new project                                                                         | seed, harness, bootstrap, new project, scaffold, setup                                         |
-| `ag-update`              | Pull latest harness from remote kit repo                                                                        | update harness, pull kit, sync harness, upgrade agents                                         |
-| `ag-publish`             | Push harness improvements to remote kit repo                                                                    | publish kit, push harness, release kit, update remote                                          |
-| `ag-audit-ag`            | Agent harness health audit (agents, skills, README.md, protocol wiring)                                         | harness, agent parity, skill audit, guide sync                                                 |
+| `ag-harness-sync`       | Sync and manage agent harness versions (pull updates & publish changes)                                         | update harness, pull kit, sync harness, upgrade agents, publish kit, push harness, release kit, update remote |
+| `ag-audit-ag`            | Agent harness health and skill standard audit (agents, skill structure, README.md, protocol)                     | harness, agent parity, skill audit, guide sync, skill standard, validate skill                |
 | `ag-zod`                 | Rules and references for Zod schema validation, parsing and database mapping                                    | validate payload, zod schema, zod custom validation errors, zod validation                     |
 | `ag-zustand`             | Rules and standards for state management using Zustand in React and Next.js                                     | zustand, state management, store, persist, localStorage, ssr hydration                        |
 

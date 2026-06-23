@@ -195,7 +195,7 @@ Include in your pull request description:
 
 The `ag-manifest.json` file at the repository root tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols, seeds), you must update this manifest.
 
-The manifest is used by `install.sh` and `ag-update` to know which files to copy and sync. If your new file is not listed in the manifest, it will not be included when users install or update the harness.
+The manifest is used by `install.sh` and `ag-harness-sync` (the update workflow) to know which files to copy and sync. If your new file is not listed in the manifest, it will not be included when users install or update the harness.
 
 When modifying the manifest:
 
