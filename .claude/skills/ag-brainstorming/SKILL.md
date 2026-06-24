@@ -79,7 +79,8 @@ digraph brainstorming {
 **Exploring approaches:**
 
 - Propose 2-3 different approaches with trade-offs
-- Present options conversationally with your recommendation and reasoning
+- Apply clear reasoning/thinking frameworks to analyze the options (e.g., first-principles, structured thinking, business alignment)
+- Present options conversationally, providing the business rationale and tradeoffs for each option, demonstrating how they align with the business context
 - Lead with your recommended option and explain why
 
 **Presenting the design:**
