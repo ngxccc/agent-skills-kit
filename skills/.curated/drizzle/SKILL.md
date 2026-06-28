@@ -10,7 +10,7 @@ metadata:
 
 # Drizzle ORM Best Practices
 
-Comprehensive guide for writing type-safe, high-performance database queries and services using Drizzle ORM. Contains 6 rules across 4 categories, prioritized by impact from critical (setup, type safety) to high/medium (query selection, performance).
+Comprehensive guide for writing type-safe, high-performance database queries and services using Drizzle ORM. Contains 11 rules across 7 categories, prioritized by impact from critical (setup, schemas, type safety) to high/medium (query selection, performance).
 
 ## When to Apply
 
@@ -29,9 +29,10 @@ Reference these guidelines when:
 | 1        | DTO & Schema Isolation   | CRITICAL | `dto-`     | 1     |
 | 2        | Type Safety & Unions     | CRITICAL | `type-`    | 1     |
 | 3        | Transactions & Locking   | CRITICAL | `lock-`    | 1     |
-| 4        | Query Selection & YAGNI  | HIGH     | `select-`  | 2     |
-| 5        | Query Style & Performance| HIGH     | `style-`   | 2     |
-| 6        | Error Handling           | MEDIUM   | `error-`   | 1     |
+| 4        | Schema & Relations Config| CRITICAL | `schema-`, `relations-` | 2 |
+| 5        | Query Selection & YAGNI  | HIGH     | `select-`  | 2     |
+| 6        | Query Style & Performance| HIGH     | `style-`   | 3     |
+| 7        | Error Handling           | MEDIUM   | `error-`   | 1     |
 
 ## Quick Reference
 
@@ -47,18 +48,23 @@ Reference these guidelines when:
 
 - [lock-pessimistic-row](references/lock-pessimistic-row.md) - Use pessimistic row locking in transactions to prevent concurrent write hazards.
 
-### 4. Query Selection & YAGNI (HIGH)
+### 4. Schema & Relations Config (CRITICAL)
+
+- [schema-creation](references/schema-creation.md) - Use snakeCase.table for automatic case conversion and mix in baseEntity/fullEntity helpers.
+- [relations-configuration](references/relations-configuration.md) - Centralize table relations using defineRelations with explicit from, to, optional, and alias parameters.
+
+### 5. Query Selection & YAGNI (HIGH)
 
 - [select-yagni-returning](references/select-yagni-returning.md) - Explicitly select columns mapping to DTOs and apply YAGNI to returning clauses.
 - [select-returning-caller-fields](references/select-returning-caller-fields.md) - Select and return only the columns callers actually access; default unused returns to id only.
 
-### 5. Query Style & Performance (HIGH)
+### 6. Query Style & Performance (HIGH)
 
 - [style-query-vs-select](references/style-query-vs-select.md) - Prefer Core select queries for flat lookups and Relational queries for deeply nested relation hydration.
 - [style-where-sql-expression](references/style-where-sql-expression.md) - Never pass raw SQL expressions directly to Relational Query where clauses.
 - [style-conditional-aggregation](references/style-conditional-aggregation.md) - Use conditional aggregation via CASE WHEN to consolidate multiple aggregate queries into a single query.
 
-### 6. Error Handling (MEDIUM)
+### 7. Error Handling (MEDIUM)
 
 - [error-handling-undefined-vs-throw](references/error-handling-undefined-vs-throw.md) - Return undefined for missing records in read-only queries and throw for write/update/invariant failures.
 
@@ -75,6 +81,8 @@ Read individual reference files for detailed guidelines, configurations, and cod
 - [style-where-sql-expression](references/style-where-sql-expression.md)
 - [style-conditional-aggregation](references/style-conditional-aggregation.md)
 - [error-handling-undefined-vs-throw](references/error-handling-undefined-vs-throw.md)
+- [schema-creation](references/schema-creation.md)
+- [relations-configuration](references/relations-configuration.md)
 
 ## Full Compiled Document
 
