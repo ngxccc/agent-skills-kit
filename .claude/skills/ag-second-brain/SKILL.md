@@ -52,4 +52,3 @@ bun /home/ngxc/workspace/agent-skills-kit/.agents/skills/ag-second-brain/scripts
 ## References
 
 - [Obsidian Second Brain Structure Guidelines](https://obsidian.md/)
-- [PARA Method and Zettelkasten Standards](../../my-second-brain/000_System_Structure.md)
