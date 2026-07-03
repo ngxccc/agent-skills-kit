@@ -22,6 +22,13 @@ This skill defines the **only acceptable pattern** for any configuration that co
 
 **Trigger keywords:** column list, permission, role matrix, form field, status transition, nav item, feature flag, single source of truth.
 
+## How to Use
+
+1. **Construct the Const**: Define your runtime configuration list using `as const` to freeze the keys at compile time.
+2. **Derive the Type**: Map over the keys of the typeof const config (e.g. `[K in keyof typeof CONFIG]`) to construct your TypeScript types dynamically.
+3. **Consume in Queries and UI**: Pass the runtime const directly into database queries and validate return values using `satisfies` with the derived type.
+4. **Enforce Clean Comments**: Write self-documenting code and only use comments tagged with the Better Comments Tag Dictionary to explain the *why* of config settings.
+
 ## Core Rule (Strict)
 
 **There must be exactly one source of truth for the list of keys.**
@@ -29,7 +36,6 @@ This skill defines the **only acceptable pattern** for any configuration that co
 ### Correct Pattern (Mandatory)
 
 ```typescript
-// 1. Single source of truth (only place keys are written)
 export const ORDER_PUBLIC_COLUMNS = {
   id: true,
   status: true,
@@ -37,17 +43,14 @@ export const ORDER_PUBLIC_COLUMNS = {
   createdAt: true,
 } as const;
 
-// 2. Derive the type (never manually list keys again)
 export type OrderPublic = {
   [K in keyof typeof ORDER_PUBLIC_COLUMNS]: TOrder[K];
 };
 
-// 3. Reuse the const in the query
 const orders = await db.query.orders.findMany({
   columns: ORDER_PUBLIC_COLUMNS,
 });
 
-// 4. Use satisfies when constructing the return value
 return {
   id: order.id,
   status: order.status,
@@ -63,6 +66,31 @@ return {
 - Defining DTO type first, then duplicating keys in the query
 - Using `as any` or type assertions to bypass derivation
 - Manually maintaining three places (query + DTO + mapper)
+
+## Coding & Commenting Standards (The Zero Semantic Noise Policy)
+
+All code written in this repository must strictly adhere to commenting standards to ensure readability and eliminate redundant text.
+
+### Commenting Rules
+
+1. **ZERO Semantic Noise**: NEVER write comments that explain "WHAT" the code does or translate basic syntax. Clean code must be self-documenting. If the logic is simple, readable, and standard, output **ZERO** comments.
+2. **Explain "WHY", not "WHAT"**: Comments MUST ONLY explain complex algorithms, business logic quirks, system constraints, or architectural trade-offs.
+3. **English only**: All comments must be written in English.
+
+### Better Comments Tag Dictionary
+
+When writing comments, you **MUST** prefix them with one of the following exactly formatted uppercase tags followed by a colon:
+
+- `WHY:` - Explains the business logic, architectural decisions, or why a specific approach was chosen over another.
+- `PERF:` - Highlights Big O Time/Space Complexity or performance optimization details.
+- `HACK:` - Documents workarounds, unconventional solutions, or temporary fixes bypassing system limitations.
+- `BUG:` - Notes known issues, unexpected behaviors, or failing edge cases.
+- `FIXME:` - Marks broken, deprecated, or urgently needing refactoring code.
+- `TODO:` - Indicates planned features, missing implementations, or future improvements.
+- `IDEA:` - Suggests alternative approaches or architectural improvements for future iterations.
+- `INFO:` - Crucial contextual info or external documentation links that the developer must know.
+- `#region [Name]` / `#endregion` - Logically groups large sections of code/variables to keep files scannable.
+
 ## Foundational Engineering Principles
 
 This skill also enforces three core principles that support the config derivation pattern:
