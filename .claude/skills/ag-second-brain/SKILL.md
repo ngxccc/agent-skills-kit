@@ -42,6 +42,49 @@ bun /home/ngxc/workspace/agent-skills-kit/.agents/skills/ag-second-brain/scripts
    - Add backlinks to relevant MOCs (`000_Tech_MOC`, `000_Concepts_MOC`, or `000_Methods_MOC`) and register the link inside those MOC files.
    - Run validation script on the new file: `bun 99_Meta/Scripts/validate_notes.mjs <new_file_path>`.
    - Once successfully validated, delete the raw note from `00_Inbox/`.
+5. **Flashcard Creation & SRS Guidelines**:
+   - **Directory Structure**: Store flashcard files under `50_Flashcards/<DeckName>/` (e.g., `50_Flashcards/Backend/` or `50_Flashcards/Vocabulary/CV/`). Yanki automatically derives the Anki deck name from the folder path.
+   - **File Format Constraints**:
+     * **Frontmatter**: Omit standard atomic note tags to skip standard validation. Keep *only* the `noteId` in the YAML block (e.g., `--- \n noteId: 12345 \n ---`) to preserve Anki's review history and avoid duplicate cards.
+     * **No Headings**: Never write `# Title` headings in the body of the markdown, as Yanki renders headings into the Anki card content.
+     * **Separator Spacing**: The thematic break `---` separating front and back content must be surrounded by an empty line both above and below it.
+   - **Supported Yanki Card Syntax**:
+     * **Basic**:
+       ```markdown
+       Front content
+
+       ---
+
+       Back content
+       ```
+     * **Reversed with Extra**: Use a double `---` to create a reversible card (twice the cards). A third `---` defines an "Extra" section visible on the back of both generated cards:
+       ```markdown
+       Term / Concept A
+
+       ---
+
+       ---
+
+       Definition / Concept B
+
+       ---
+
+       Extra context shown on both sides
+       ```
+     * **Cloze Deletion**: Hide terms with double tildes `~~`, adding optional `_italics_` inside for hints:
+       ```markdown
+       All will be ~~revealed _hint text_~~.
+       ```
+     * **Advanced Cloze Numbering**: Group clozes to reveal simultaneously by adding a number inside the cloze:
+       ```markdown
+       ~~1 Grouped A~~ and ~~1 Grouped B~~.
+       ```
+     * **Type-in-the-Answer**: Emphasize the last line with `_italics_` to force a spelling text-input check in Anki:
+       ```markdown
+       Spell the term:
+
+       _spelling_
+       ```
 
 ### Response Guidelines
 

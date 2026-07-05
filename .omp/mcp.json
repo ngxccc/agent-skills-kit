@@ -36,6 +36,10 @@
     "playwright": {
       "command": "bunx",
       "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "drizzle-kit": {
+      "command": "bunx",
+      "args": ["drizzle-kit", "mcp"]
     }
   }
 }

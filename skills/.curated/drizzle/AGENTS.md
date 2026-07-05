@@ -1,8 +1,8 @@
 # Drizzle ORM & Database Design Best Practices
 
-**Version 1.0.0**
-Drizzle ORM Best Practices and Guidelines
-June 2026
+**Version 1.1.0**
+Drizzle ORM Best Practices, Guidelines, and Tooling Automation
+July 2026
 
 > **Note:**
 > This document is mainly for agents and LLMs to follow when maintaining,
@@ -13,7 +13,7 @@ June 2026
 
 ## Abstract
 
-Comprehensive guide for writing type-safe, high-performance database queries and services using Drizzle ORM. Contains 11 rules across 7 categories, prioritized by impact from critical (DTO boundary isolation, type safety, schemas) to high/medium (query selection, performance optimization, error handling). Each rule includes detailed explanations, real-world examples comparing incorrect vs. correct implementations, and specific impact metrics to guide automated code review and generation.
+Comprehensive guide for writing type-safe, high-performance database queries and services using Drizzle ORM and Drizzle Kit. Contains 14 rules across 8 categories, prioritized by impact from critical (DTO boundary isolation, type safety, schemas) to high/medium (query selection, performance optimization, error handling, tooling automation). Each rule includes detailed explanations, real-world examples comparing incorrect vs. correct implementations, and specific impact metrics to guide automated code review and generation.
 
 ---
 
@@ -35,16 +35,23 @@ Comprehensive guide for writing type-safe, high-performance database queries and
 5. [Query Selection & YAGNI](#5-query-selection--yagni) — **HIGH**
    - 5.1 [select-yagni-returning](references/select-yagni-returning.md) — HIGH (prevents wildcard query memory storms and database write return overhead)
    - 5.2 [select-returning-caller-fields](references/select-returning-caller-fields.md) — HIGH (prevents over-fetching columns and over-returning rows by tracing actual caller field access)
+   - 5.3 [select-insert-from-select](references/select-insert-from-select.md) — HIGH (omits default columns and leverages column-order independence in db.insert().select())
 
 6. [Query Style & Performance](#6-query-style--performance) — **HIGH**
    - 6.1 [style-query-vs-select](references/style-query-vs-select.md) — HIGH (optimizes between query compilation overhead and relational object hydration)
    - 6.2 [style-where-sql-expression](references/style-where-sql-expression.md) — HIGH (prevents runtime crashes in Relational Query builder filters)
    - 6.3 [style-conditional-aggregation](references/style-conditional-aggregation.md) — HIGH (reduces connection roundtrips by collapsing multiple aggregates into a single query via conditional aggregation)
+   - 6.4 [style-typed-sql-nullable](references/style-typed-sql-nullable.md) — HIGH (preserves nullability and enforces type inference on raw SQL mapWith expressions)
 
 7. [Error Handling](#7-error-handling) — **MEDIUM**
    - 7.1 [error-handling-undefined-vs-throw](references/error-handling-undefined-vs-throw.md) — MEDIUM (clarifies the boundary between normal business flow control and actual system errors)
 
----## 1. DTO & Schema Isolation
+8. [Tooling & MCP Automation](#8-tooling--mcp-automation) — **HIGH**
+   - 8.1 [drizzle-kit-cli-mcp](references/drizzle-kit-cli-mcp.md) — HIGH (automates migration lifecycles with --output json, --hints, @drizzle-kit/cli SDK, and stdio MCP server)
+
+---
+
+## 1. DTO & Schema Isolation
 
 ### 1.1 `dto-omit-for-objects`
 
@@ -191,11 +198,9 @@ Use pessimistic row locking (`.for("update", { noWait: true })`) in transaction 
 
 Follow the workspace's custom conventions for database schema creation:
 
-1. **Use `snakeCase.table` (not `pgTable`)** from `drizzle-orm/pg-core`. This automatically translates JavaScript camelCase property names to database snake_case column names, eliminating the need to explicitly define snake_case column names as string arguments in standard column builders (e.g. write `emailVerified: boolean().notNull()` instead of `emailVerified: boolean("email_verified").notNull()`).
-2. **Mix in entity templates** from `./helpers.schema` to handle primary keys, timestamps, and soft deletes consistently across schemas:
-   - `baseEntity`: Adds a UUIDv7-based `id` primary key and timezone-aware timestamps `createdAt` and `updatedAt`.
-   - `fullEntity`: Adds a UUIDv7-based `id` primary key, timezone-aware timestamps `createdAt` and `updatedAt`, and a timezone-aware soft delete timestamp `deletedAt`.
-3. **Use UUIDv7** as the default primary key type. UUIDv7 keys are sortable by time and prevent index fragmentation, unlike traditional random UUIDv4 keys.
+1. **Use `snakeCase.table` (not `pgTable`)** from `drizzle-orm/pg-core`. This automatically translates JavaScript camelCase property names to database snake_case column names, eliminating the need to explicitly define snake_case column names as string arguments in standard column builders.
+2. **Mix in entity templates** from `./helpers.schema` to handle primary keys, timestamps, and soft deletes consistently across schemas (`baseEntity`, `fullEntity`).
+3. **Use UUIDv7** as the default primary key type. UUIDv7 keys are sortable by time and prevent index fragmentation.
 
 - **Incorrect (Using standard pgTable and manual snake_case mappings):**
 
@@ -203,8 +208,6 @@ Follow the workspace's custom conventions for database schema creation:
   import { pgTable, text, timestamp, uuid, boolean } from "drizzle-orm/pg-core";
   import { v4 as uuidv4 } from "uuid";
 
-  // ❌ BAD: Avoid standard pgTable, manually writing snake_case strings for columns,
-  // and manually defining id/timestamps in every schema
   export const products = pgTable("product", {
     id: uuid("id").primaryKey().$defaultFn(uuidv4),
     nameVi: text("name_vi").notNull(),
@@ -226,12 +229,10 @@ Follow the workspace's custom conventions for database schema creation:
   import { fullEntity } from "./helpers.schema";
   import { brands } from "./brand.schema";
 
-  //  GOOD: Uses snakeCase.table to automatically infer column names,
-  // and spreads fullEntity for unified primary key and timestamp fields
   export const products = snakeCase.table(
     "product",
     {
-      ...fullEntity, // Adds id (uuid v7), createdAt, updatedAt, and deletedAt
+      ...fullEntity,
       nameVi: text().notNull(),
       nameEn: text(),
       brandId: uuid().references(() => brands.id, { onDelete: "set null" }),
@@ -250,16 +251,9 @@ Follow the workspace's custom conventions for database schema creation:
 
 Define database relationships centrally in a single file (`relations.ts`) using the `defineRelations` helper rather than defining relations inline inside schema files.
 
-When configuring relations, observe the following conventions:
-
-1. **Explicit Foreign Keys**: Always explicitly configure relation foreign keys using `from` and `to` options inside both `r.one` and `r.many` definitions to ensure strict type-safety and alignment.
-2. **Ambiguity Resolution via `alias`**: If there are multiple relations between the same two tables (e.g. `users` to `users` representing parent/employees, or a table having multiple foreign keys pointing to `users`), specify a unique `alias` parameter on both sides of the relation to resolve ambiguity.
-3. **Nullable vs. Mandatory Relations**: Use the `optional: false` flag inside `r.one` helper configurations to explicitly signal that a relationship is mandatory (not null).
-
 - **Incorrect (Defining inline relations):**
 
   ```typescript
-  // ❌ BAD: Defining relations inline in the schema file or omitting from/to/alias/optional
   import { relations } from "drizzle-orm";
   import { users } from "./auth.schema";
   import { orders } from "./order.schema";
@@ -272,12 +266,9 @@ When configuring relations, observe the following conventions:
 - **Correct (Centralized relations with explicit configurations):**
 
   ```typescript
-  //  GOOD: Centralized relations inside relations.ts using defineRelations,
-  // with explicit from/to fields, aliases for overlapping relations, and optional settings
   import { defineRelations } from "drizzle-orm";
   import { orders, orderItems } from "./order.schema";
   import { accounts, sessions, users } from "./auth.schema";
-  import { creditLimitHistory } from "./credit-limit-history.schema";
 
   export const schemaRelations = defineRelations(
     {
@@ -286,54 +277,12 @@ When configuring relations, observe the following conventions:
       sessions,
       orders,
       orderItems,
-      creditLimitHistory,
     },
     (r) => ({
       users: {
-        // 1. One-to-one mapping with explicit from and to
         cart: r.one.carts({
           from: r.users.id,
           to: r.carts.userId,
-        }),
-        // 2. Self-referencing relationship resolving ambiguity with alias
-        employees: r.many.users({
-          from: r.users.id,
-          to: r.users.parentId,
-          alias: "employees",
-        }),
-        parent: r.one.users({
-          from: r.users.parentId,
-          to: r.users.id,
-          alias: "parent",
-        }),
-        // 3. Multiple relationships to the same table resolving ambiguity with unique alias
-        creditLimitHistory: r.many.creditLimitHistory({
-          alias: "userCreditLimitHistory",
-        }),
-        changedCreditLimits: r.many.creditLimitHistory({
-          alias: "changedByCreditLimitHistory",
-        }),
-      },
-
-      sessions: {
-        // 4. Mandatory relationship (non-nullable foreign key) using optional: false
-        user: r.one.users({
-          from: r.sessions.userId,
-          to: r.users.id,
-          optional: false,
-        }),
-      },
-
-      creditLimitHistory: {
-        user: r.one.users({
-          from: r.creditLimitHistory.userId,
-          to: r.users.id,
-          alias: "userCreditLimitHistory",
-        }),
-        changedByUser: r.one.users({
-          from: r.creditLimitHistory.changedBy,
-          to: r.users.id,
-          alias: "changedByCreditLimitHistory",
         }),
       },
     }),
@@ -346,89 +295,58 @@ When configuring relations, observe the following conventions:
 
 ### 5.1 `select-yagni-returning`
 
-Avoid wildcard queries (`SELECT *`) in database services. Select only the columns needed to satisfy the return DTO. Apply the YAGNI (You Aren't Gonna Need It) principle to `.returning()` clauses of write operations.
-
-- **Incorrect (Wildcard select and returning all columns):**
+- **Incorrect (Wildcard select and returning full object):**
 
   ```typescript
-  // ❌ BAD: Fetches all columns, and writes back all columns in returning()
-  const [repayment] = await db
-    .select()
-    .from(debtRepayments)
-    .where(eq(debtRepayments.id, id));
-
-  const [updated] = await db.update(debtRepayments).set(data).returning();
+  const [newOrder] = await db.insert(orders).values(orderData).returning();
   ```
 
-- **Correct (Explicit columns and minimum returning fields):**
+- **Correct (Selecting only DTO-mapped properties):**
 
   ```typescript
-  //  GOOD: Explicitly fetches only DTO fields and returns only the modified ID
-  const [repayment] = await db
-    .select({
-      id: debtRepayments.id,
-      amount: debtRepayments.amount,
-      status: debtRepayments.status,
-    })
-    .from(debtRepayments)
-    .where(eq(debtRepayments.id, id));
-
-  const [updated] = await db
-    .update(debtRepayments)
-    .set(data)
-    .returning({ id: debtRepayments.id });
+  const [newOrder] = await db
+    .insert(orders)
+    .values(orderData)
+    .returning({ id: orders.id });
   ```
+
+---
 
 ### 5.2 `select-returning-caller-fields`
 
-Select and return only the columns that callers actually access. Apply at two levels:
+Select and return only the columns callers actually access; default unused returns to `id` only.
 
-1. **`.select({ … })`** — fetch only the columns the method body reads. Wildcard `select()` sends every column over the wire even when the code touches two.
-2. **`.returning({ … })`** — return only what the caller uses. Default rule: if no column beyond existence is consumed, return `{ id: <table>.id }` only. Return the full typed row only when the shape must satisfy an interface or the action passes the whole object to the client.
+---
 
-- **Incorrect (Wildcard select fetches all columns; returning sends full row):**
+### 5.3 `select-insert-from-select`
+
+In Drizzle ORM v1.0.0-rc.4+, bulk insert queries built via `db.insert(table).select(...)` no longer require the subquery's selected columns to match the target table's exact column declaration order.
+
+1. **Omit auto-generated default columns**: Do not select primary key columns (`id`), generated timestamps (`createdAt`, `updatedAt`), or default enum values if the target table defines defaults.
+2. **Order Independence**: Select columns in any logical order mapping to target schema keys.
+
+- **Incorrect (Redundantly selecting id/timestamps):**
 
   ```typescript
-  // ❌ BAD: select() downloads every user column; returning() sends back the full order row
-  const [user] = await tx
-    .select()
-    .from(users)
-    .where(eq(users.id, userId))
-    .for("update", { noWait: true });
-  const [order] = await tx
-    .update(orders)
-    .set({ status })
-    .where(eq(orders.id, id))
-    .returning();
+  await db.insert(users).select(
+    db.select({
+      id: tempUsers.id,
+      email: tempUsers.email,
+      name: tempUsers.name,
+      createdAt: tempUsers.createdAt,
+    }).from(tempUsers)
+  );
   ```
 
-- **Correct (Only columns the body reads; returning trimmed to caller usage):**
+- **Correct (Selecting only payload fields):**
 
   ```typescript
-  //  GOOD: Narrow select to exactly the fields consumed
-  const [user] = await tx
-    .select({
-      role: users.role,
-      creditLimit: users.creditLimit,
-      currentDebt: users.currentDebt,
-    })
-    .from(users)
-    .where(eq(users.id, userId))
-    .for("update", { noWait: true });
-
-  //  GOOD: Caller only checks existence — id is enough
-  const [order] = await tx
-    .update(orders)
-    .set({ approvalStatus: "APPROVED" })
-    .where(eq(orders.id, orderId))
-    .returning({ id: orders.id });
-
-  //  GOOD: Caller also reads shippingFee — include it explicitly
-  const [updated] = await tx
-    .update(orders)
-    .set({ shippingFee: bid.quotedPrice })
-    .where(eq(orders.id, orderId))
-    .returning({ id: orders.id, shippingFee: orders.shippingFee });
+  await db.insert(users).select(
+    db.select({
+      name: tempUsers.name,
+      email: tempUsers.email,
+    }).from(tempUsers)
+  );
   ```
 
 ---
@@ -437,105 +355,41 @@ Select and return only the columns that callers actually access. Apply at two le
 
 ### 6.1 `style-query-vs-select`
 
-Choose query builders based on performance and relation requirements:
+- **Core SQL (`db.select().from()`)**: Preferred for flat lookups and high-frequency hot paths.
+- **Relational Queries (`db.query`)**: Preferred when hydrating deeply nested relations.
 
-1. **Use Core SQL queries (`db.select().from()`)** for flat lookups, simple joins, and hot paths (e.g. checking sessions) to minimize CPU runtime SQL compilation overhead. Combine with `.prepare()` for high-frequency lookup statements.
-2. **Use Relational Queries (`db.query`)** only when fetching deeply nested relationships (using the `with` query configuration) to benefit from automatic nested object hydration.
-
-- **Incorrect (Using relational query builder for a hot-path flat lookup):**
-
-  ```typescript
-  // ❌ BAD: Compiles SQL dynamically at runtime for every session check
-  const user = await db.query.users.findFirst({
-    where: { id: userId },
-  });
-  ```
-
-- **Correct (Using Core SQL or Prepared Statement for flat lookup):**
-
-  ```typescript
-  //  GOOD: Translates 1:1 to SQL without relational compilation overhead
-  const [user] = await db
-    .select()
-    .from(users)
-    .where(eq(users.id, userId))
-    .limit(1);
-  ```
+---
 
 ### 6.2 `style-where-sql-expression`
 
-In Drizzle's Relational Query Builder, never pass a raw SQL expression (like `eq()`) directly as the `where` object configuration.
+Never pass raw SQL expressions directly to Relational Query `where` object configuration. Use callback functions or object operator syntax.
 
-Use either:
-
-1. **Callback functions** (when typing permits, e.g. on concrete database instances).
-2. **Object filter mapping** (e.g., `{ role: { eq: filters.role } }`) when compiling through transaction union types (like `TDatabase | TTransaction`) where callback overloads are lost.
-
-- **Incorrect (Passing raw SQL expression to relational where):**
-
-  ```typescript
-  // ❌ BAD: Will crash at runtime with "DrizzleError: Unknown relational filter field: 'decoder'"
-  const user = await db.query.users.findFirst({
-    where: eq(users.id, userId),
-  });
-  ```
-
-- **Correct (Using a callback function or shorthand/operator object):**
-
-  ```typescript
-  //  GOOD: Valid callback syntax for concrete DB instances
-  const user1 = await db.query.users.findFirst({
-    where: (users, { eq }) => eq(users.id, userId),
-  });
-
-  //  GOOD: Valid object operator syntax, compatible with union types (e.g. transactions)
-  const user2 = await db.query.users.findMany({
-    where: {
-      role: { eq: filters.role },
-    },
-  });
-
-  //  GOOD: Valid shorthand syntax for simple equality checks
-  const user3 = await db.query.users.findFirst({
-    where: { id: userId },
-  });
-  ```
+---
 
 ### 6.3 `style-conditional-aggregation`
 
-Avoid executing multiple sequential queries to aggregate metrics from the same table (e.g. total count, sum, counts for specific date ranges, etc.). Instead, use SQL `CASE WHEN` inside Drizzle `sql` expressions to gather multiple metrics in a single table scan. Combine independent queries using `Promise.all` for parallel execution.
+Use SQL `CASE WHEN` inside Drizzle `sql` expressions to gather multiple metrics in a single table scan.
 
-- **Incorrect (Multiple sequential queries on the same table):**
+---
+
+### 6.4 `style-typed-sql-nullable`
+
+In Drizzle ORM v1.0.0-rc.4+, raw SQL expressions built with `sql` support type-inferred `mapWith()` callbacks and explicit nullability chaining via `.nullable()`.
+
+- **Incorrect (Casting callback param to any and omitting nullability):**
 
   ```typescript
-  // ❌ BAD: High connection overhead and redundant table scans
-  const totalOrders = await db.select({ count: sql`count(*)` }).from(orders);
-
-  const activeRevenue = await db
-    .select({ sum: sql`sum(amount)` })
-    .from(orders)
-    .where(ne(orders.status, "CANCELLED"));
-
-  const current30DaysRevenue = await db
-    .select({ sum: sql`sum(amount)` })
-    .from(orders)
-    .where(
-      and(ne(orders.status, "CANCELLED"), gte(orders.createdAt, thirtyDaysAgo)),
-    );
+  export const lowerEmail = (column: any) =>
+    sql<string>`LOWER(${column})`.mapWith((val: any) => String(val));
   ```
 
-- **Correct (Single query with conditional aggregates):**
+- **Correct (Type-safe callback mapping with .nullable()):**
 
   ```typescript
-  //  GOOD: Low overhead and single table scan
-  const [metrics] = await db
-    .select({
-      totalOrders: sql<number>`count(*)::integer`,
-      totalRevenue: sql<string>`coalesce(sum(case when ${orders.status} != 'CANCELLED' then ${orders.totalAmount} else 0 end), '0')`,
-      currentRevenue: sql<string>`coalesce(sum(case when ${orders.status} != 'CANCELLED' and ${orders.createdAt} >= ${thirtyDaysAgo} then ${orders.totalAmount} else 0 end), '0')`,
-      currentOrders: sql<number>`count(case when ${orders.status} != 'CANCELLED' and ${orders.createdAt} >= ${thirtyDaysAgo} then 1 else null end)::integer`,
-    })
-    .from(orders);
+  export const lowerEmail = (column: any) =>
+    sql`LOWER(${column})`
+      .mapWith((val: string) => val.trim().toLowerCase())
+      .nullable();
   ```
 
 ---
@@ -544,43 +398,44 @@ Avoid executing multiple sequential queries to aggregate metrics from the same t
 
 ### 7.1 `error-handling-undefined-vs-throw`
 
-Differentiate between normal query outcomes and system/validation errors:
+Return `undefined` (or `null`) in read-only lookup queries when a record is not found. Throw an exception (`throw new Error`) for database mutations or business logic invariant failures.
 
-1. **Return `undefined`** (or `null`) in read-only lookup queries when a record is not found. This allows standard client-side conditional flow controls without forcing verbose `try/catch` wrapping.
-2. **Throw an exception (`throw new Error`)** for database mutation failures (`INSERT`, `UPDATE`), transactions, webhook reconciliation mismatches, or critical business logic invariants (such as credit limit checks).
+---
 
-- **Incorrect (Throwing error for a simple user existence check):**
+## 8. Tooling & MCP Automation
 
-  ```typescript
-  // ❌ BAD: Forces caller to use try/catch for simple verification
-  async function getProfile(id: string): Promise<UserDTO> {
-    const user = await db.select().from(users).where(eq(users.id, id)).limit(1);
-    if (!user) throw new Error("User not found");
-    return user;
-  }
+### 8.1 `drizzle-kit-cli-mcp`
+
+Drizzle Kit v1.0.0-rc.4 introduces machine-readable JSON output modes (`--output json`), a public programmatic SDK (`@drizzle-kit/cli`), and a native Model Context Protocol (MCP) server (`drizzle-kit mcp`) over stdio for AI agents and non-interactive CI/CD automation.
+
+- **CLI & Script Usage:**
+
+  ```bash
+  drizzle-kit check --output json
+  drizzle-kit push --output json --hints-file ./drizzle-hints.json
   ```
 
-- **Correct (Returning undefined for queries, throwing for modifications):**
+- **Programmatic SDK Example:**
 
   ```typescript
-  //  GOOD: Read queries return undefined on miss
-  async function getProfile(id: string): Promise<UserDTO | undefined> {
-    const [user] = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, id))
-      .limit(1);
-    return user;
-  }
+  import { push, generate } from "drizzle-kit/cli";
 
-  //  GOOD: Modifications or webhooks throw on miss
-  async function updateProfile(id: string, data: UpdateDTO): Promise<UserDTO> {
-    const [updated] = await db
-      .update(users)
-      .set(data)
-      .where(eq(users.id, id))
-      .returning();
-    if (!updated) throw new Error("errors.userNotFound");
-    return updated;
+  const genResult = await generate({
+    schema: "./src/database/schemas",
+    out: "./drizzle",
+    dialect: "postgresql",
+  });
+  ```
+
+- **MCP Server Configuration (`mcp.json`):**
+
+  ```json
+  {
+    "mcpServers": {
+      "drizzle-kit": {
+        "command": "npx",
+        "args": ["drizzle-kit", "mcp"]
+      }
+    }
   }
   ```
