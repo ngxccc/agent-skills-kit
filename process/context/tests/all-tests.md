@@ -162,14 +162,12 @@ pnpm test -- path/to/file.test.ts  # single file
 | ------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------- |
 | statusline/hooks    | Node   | `node .codex/hooks/lib/__tests__/statusline-suite.cjs`                                                                       |
 | watzup scan         | Node   | `node .claude/skills/ag-watzup/scripts/watzup-scan.test.cjs`                                                                 |
-| sequential thinking | Jest   | `cd .claude/skills/ag-sequential-thinking && npm test`                                                                       |
 | docs seeker         | Node   | `cd .claude/skills/ag-docs-seeker && npm test`                                                                               |
 | validation / audit  | Node   | `node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs` (and other scripts under ag-audit-ag / ag-audit-context) |
 
 ## Debugging Quick Reference
 
 - **Node.js require path:** hooks tests use `require` paths relative to their location, run them from the repository root.
-- **Jest environment:** `ag-sequential-thinking` Jest tests run in standard Node environment.
 
 ## Known Gaps
 

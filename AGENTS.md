@@ -132,7 +132,7 @@ Auto-Detection Patterns:
 - Feature requests -> Step 0 skill discovery -> ag-research-agent -> INNOVATE -> PLAN -> EXECUTE
 - Questions -> ag-research-agent for non-trivial investigation or direct answer for trivial conceptual questions
 - Trivial fixes -> ag-execute-agent directly with no plan required
-- Bug/debug -> ag-debugger as the default actor; helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may assist
+- Bug/debug -> ag-debugger as the default actor; helper skill `ag-scout` may assist
 - UI/frontend -> surface ag-frontend-design skill plus ag-research-agent
 - Refactor/simplify -> ag-code-simplifier for pure style or RESEARCH -> PLAN -> EXECUTE for behavioral refactors
 - Missing context -> suggest the `ag-generate-context` skill
@@ -315,15 +315,12 @@ The active system is intentionally split into four layers:
   - `ag-adr`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
-  - `ag-sequential-thinking`
-  - `ag-problem-solving`
   - `ag-preview`
   - `ag-tech-graph`
   - `ag-watzup`
   - `ag-xia`
   - `ag-repomix`
   - `ag-docs-seeker`
-  - `ag-chrome-devtools`
   - `ag-agent-browser`
   - `ag-context-engineering`
   - `ag-web-testing`
@@ -429,14 +426,12 @@ Note: shared review methodology has been absorbed into the `ag-code-reviewer` ag
 
 Cross-phase utilities (skills, not agents):
 
-- `ag-sequential-thinking` - Structured reasoning, usable in any phase
-- `ag-problem-solving` - Cognitive toolkit when stuck in any phase
 - `ag-scout` - Fast codebase scouting, usable in RESEARCH
 - `ag-tech-graph` - Publish-grade SVG/PNG technical diagram generator for durable process artifacts; pair with `ag-preview` for review or explanation after generation
 - `ag-watzup` - Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
 - `ag-xia` - Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` - Repository packing helper for references-only artifacts, audits, and feature-porting prep
-- `ag-chrome-devtools` / `ag-agent-browser` - Browser automation, primarily EXECUTE
+- `ag-agent-browser` - AI Browser automation CLI with Puppeteer & DevTools script capabilities, primarily EXECUTE
 - `ag-context-engineering` - Token optimization guidance, any phase
 - `ag-debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` - Autonomous iterative optimization loop after execute phase for measurable metrics
@@ -481,17 +476,14 @@ Skill Registry:
 | `ag-audit-context`                      | Context routing and discoverability audit                                                                                                                       | context audit, reorganize context, stale context                                                                     |
 | `ag-audit-plans`                        | Active-plan maintenance and cleanup                                                                                                                             | stale plans, cleanup plans, archive plans, plan audit                                                                |
 | `ag-web-testing`                        | Playwright/Vitest/k6 test automation                                                                                                                            | tests, e2e, integration test, performance test                                                                       |
-| `ag-sequential-thinking`                | Step-by-step reasoning                                                                                                                                          | complex problem, think through, analyze step by step                                                                 |
-| `ag-problem-solving`                    | Cognitive unblocking techniques                                                                                                                                 | stuck, can't figure out, complex, spiral                                                                             |
 | `ag-context-engineering`                | Token/context optimization                                                                                                                                      | context limit, token usage, optimize context                                                                         |
 | `ag-preview`                            | Visual diagrams, slides, file viewer                                                                                                                            | diagram, visualize, slides, preview                                                                                  |
 | `ag-mcp-management`                     | MCP server tools                                                                                                                                                | MCP, model context protocol                                                                                          |
-| `ag-chrome-devtools`                    | Puppeteer browser automation                                                                                                                                    | browser, screenshot, scrape, automate browser                                                                        |
-| `ag-agent-browser`                      | AI browser automation CLI                                                                                                                                       | long browser session, browserbase, visual testing                                                                    |
+| `ag-agent-browser`                      | AI browser automation CLI with Puppeteer/DevTools script support                                                                                                | browser, screenshot, scrape, automate browser, visual testing, browserbase                                           |
 | `ag-team`                               | Multi-agent parallel collaboration                                                                                                                              | parallel agents, multi-agent, team                                                                                   |
-| `ag-setup`                              | Scaffold agent harness into new project                                                                                                                         | seed, harness, bootstrap, new project, scaffold, setup                                                               |
+| `ag-setup`                              | Use when setting up or bootstrapping the agent harness. Detects tech stack, scaffolds process directories, deep-scans codebase, and populates context.        | seed, harness, bootstrap, new project, scaffold, setup                                                               |
 | `ag-harness-sync`                       | Sync and manage agent harness versions (pull updates & publish changes)                                                                                         | update harness, pull kit, sync harness, upgrade agents, publish kit, push harness, release kit, update remote        |
-| `ag-audit-ag`                           | Agent harness health and skill standard audit (agents, skill structure, README.md, protocol)                                                                    | harness, agent parity, skill audit, guide sync, skill standard, validate skill                                       |
+| `ag-audit-ag`                           | Audit agent harness health: Claude/Codex agent parity, skill registry consistency, README sync, and protocol wiring. Use when agents or skills drift.          | harness, agent parity, skill audit, guide sync, skill standard, validate skill                                       |
 | `ag-zod`                                | Rules and references for Zod schema validation, parsing and database mapping                                                                                    | validate payload, zod schema, zod custom validation errors, zod validation                                           |
 | `ag-zustand`                            | Rules and standards for state management using Zustand in React and Next.js                                                                                     | zustand, state management, store, persist, localStorage, ssr hydration                                               |
 | `ag-demo-irc`                           | Demo of parallel subagents and inter-agent IRC communication                                                                                                    | parallel subagents, subagent messaging, irc messaging, multi-agent communication, irc demo                           |
@@ -514,9 +506,9 @@ Skill Registry:
 | `ag-typescript`                         | TypeScript fundamentals, skipLibCheck, incrementally build, compile performance                                                                                 | typescript compile, skipLibCheck, incremental build, tsconfig config                                                 |
 | `ag-adr`                                | Use when creating, updating, or validating Architectural Decision Records (ADRs) to ensure structural and formatting consistency                                | ADR, architectural decision, decision record, design doc, architecture record                                        |
 | `ag-merge-worktree`                     | Merge a git worktree branch back into the main checkout and clean up the worktree                                                                               | merge worktree, cleanup worktree, git worktree, finish worktree                                                      |
-| `ag-second-brain`                       | Use this skill to query, search, update, or add notes in Obsidian second brain                                                                                  | second brain, obsidian, search notes, add note, update note, memory note                                             |
+| `ag-second-brain`                       | Use when querying, searching, updating, or adding notes in the Obsidian second brain without fabricating details.                                               | second brain, obsidian, search notes, add note, update note, memory note                                             |
 | `ag-strict-config-derivation`           | Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries. | column list, permission, role matrix, form field, status transition, nav item, single source of truth, strict config |
-| `ag-git-pr`                             | Standardized Git Pull Request creation skill. Enforces Conventional Commits PR title format, structured PR body template, automated assignee/label/project/milestone parameters, ensuring zero deviation across PRs. | git pr, pull request, create pr, standard pr, github pr |
+| `ag-git-pr`                             | Use when creating Git Pull Requests. Enforces Conventional Commits PR title format, structured PR body template, automated assignees, labels, project, milestone | git pr, pull request, create pr, standard pr, github pr                                                              |
 
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.
@@ -538,7 +530,7 @@ Missing Context
 
 Bug Fix / Debug Request (keywords: "fix", "bug", "broken", "debug", "error")
 -> For trivial: delegate to `ag-execute-agent` directly with no plan required.
--> For complex: route to `ag-debugger` agent. Surface helper skills like `ag-scout`, `ag-sequential-thinking`, or `ag-problem-solving` when they are useful to the investigation.
+-> For complex: route to `ag-debugger` agent. Surface helper skill `ag-scout` when useful to the investigation.
 
 Existing Plan File Present
 -> Resume from relevant phase; do not recreate plan.
@@ -557,7 +549,7 @@ Refactor / Simplify (keywords: "refactor", "clean up", "simplify", "reorganize")
 -> Behavioral or architectural refactor: full RESEARCH -> PLAN -> EXECUTE, then `ag-code-simplifier` as cleanup.
 
 Debug / Root Cause (keywords: "debug", "why", "root cause", "investigate")
--> `ag-debugger` agent is the default owner. Helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may be layered in when they help the investigation.
+-> `ag-debugger` agent is the default owner. Helper skill `ag-scout` may be layered in when it helps the investigation.
 
 When multiple intents match, use this precedence:
 

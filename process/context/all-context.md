@@ -202,7 +202,7 @@ agent-skills-kit/
 - **Framework/Structure:** Meta development harness for AI coding agents
 - **Languages:** Node.js (JavaScript, TypeScript), Shell scripting (Bash)
 - **Runtimes:** Node.js v20+, Bash
-- **Test Runners:** Custom test suites (Node), Jest (for `ag-sequential-thinking` skill)
+- **Test Runners:** Custom test suites (Node), Vitest / Bun test
 - **Dependencies:** `puppeteer`, `sharp`, `yargs`, `@modelcontextprotocol/sdk`, `jest` (per-skill and helper-level)
 - **Key CLI Tools:** `resolve-manifest.mjs`
 - **Orchestration:** Monitored workflow using system hooks and markdown protocols

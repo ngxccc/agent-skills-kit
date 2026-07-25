@@ -104,7 +104,7 @@ The complete RIPER-5 protocol is defined in the agent files at `.claude/agents/`
 - Feature requests → Step 0 skill discovery → ag-research-agent → INNOVATE → PLAN → EXECUTE
 - Questions → ag-research-agent (non-trivial) or direct answer (trivial conceptual)
 - Trivial fixes → ag-execute-agent directly (no plan required)
-- Bug/debug → ag-debugger as default owner; helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may assist (see routing table)
+- Bug/debug → ag-debugger as default owner; helper skill `ag-scout` may assist (see routing table)
 - UI/frontend → surface ag-frontend-design skill + ag-research-agent
 - Refactor/simplify → ag-code-simplifier (pure style) or RESEARCH→PLAN→EXECUTE (behavioral)
 - Missing context → suggest the `ag-generate-context` skill
@@ -273,16 +273,12 @@ The active system is intentionally split into four layers:
   - `ag-harness-sync`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
-  - `ag-sequential-thinking`
-  - `ag-problem-solving`
   - `ag-preview`
   - `ag-tech-graph`
   - `ag-watzup`
   - `ag-xia`
   - `ag-repomix`
   - `ag-docs-seeker`
-  - `ag-chrome-devtools`
-  - `ag-agent-browser`
   - `ag-context-engineering`
   - `ag-web-testing`
   - `ag-frontend-design`
@@ -379,14 +375,11 @@ These agents add capabilities beyond the core RIPER-5 workflow. They are invoked
 
 **Cross-phase utilities (skills, not agents):**
 
-- `ag-sequential-thinking` — Structured reasoning, usable in any phase
-- `ag-problem-solving` — Cognitive toolkit when stuck in any phase
 - `ag-scout` — Fast codebase scouting, usable in RESEARCH
 - `ag-tech-graph` — Publish-grade SVG/PNG technical diagram generator for durable process artifacts; pair with `ag-preview` for review or explanation after generation
 - `ag-watzup` — Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
 - `ag-xia` — Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` — Repository packing helper for references-only artifacts, audits, and feature-porting prep
-- `ag-chrome-devtools` / `ag-agent-browser` — Browser automation, primarily EXECUTE
 - `ag-context-engineering` — Token optimization guidance, any phase
 - `ag-debug` — specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` — Autonomous iterative optimization loop. Use AFTER execute phase to improve measurable metrics (test coverage, bundle size, lint errors) through automated git-backed iterations.
@@ -419,12 +412,9 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 | `ag-docs`                | Project documentation management                                                                                | docs, README, document codebase                                                                               |
 | `ag-docs-seeker`         | Library docs via context7                                                                                       | how does X work, API docs, version, syntax                                                                    |
 | `ag-web-testing`         | Playwright/Vitest/k6 test automation                                                                            | tests, e2e, integration test, performance test                                                                |
-| `ag-sequential-thinking` | Step-by-step reasoning                                                                                          | complex problem, think through, analyze step by step                                                          |
-| `ag-problem-solving`     | Cognitive unblocking techniques                                                                                 | stuck, can't figure out, complex, spiral                                                                      |
 | `ag-context-engineering` | Token/context optimization                                                                                      | context limit, token usage, optimize context                                                                  |
 | `ag-preview`             | Visual diagrams, slides, file viewer                                                                            | diagram, visualize, slides, preview                                                                           |
 | `ag-mcp-management`      | MCP server tools                                                                                                | MCP, model context protocol                                                                                   |
-| `ag-chrome-devtools`     | Puppeteer browser automation                                                                                    | browser, screenshot, scrape, automate browser                                                                 |
 | `ag-agent-browser`       | AI browser automation CLI                                                                                       | long browser session, browserbase, visual testing                                                             |
 | `ag-team`                | Multi-agent parallel collaboration                                                                              | parallel agents, multi-agent, team                                                                            |
 | `ag-setup`               | Scaffold agent harness into new project                                                                         | seed, harness, bootstrap, new project, scaffold, setup                                                        |
@@ -454,7 +444,7 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 
 - **Bug Fix / Debug Request** (keywords: "fix", "bug", "broken", "debug", "error")
   → For trivial: delegate to `ag-execute-agent` directly (no plan required)
-  → For complex: Route to `ag-debugger` agent. Surface helper skills like `ag-scout`, `ag-sequential-thinking`, or `ag-problem-solving` when useful.
+  → For complex: Route to `ag-debugger` agent. Surface helper skill `ag-scout` when useful.
 
 - **Existing Plan File Present**
   → Resume from relevant phase, don't recreate plan
@@ -470,7 +460,7 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
   - _Behavioral or architectural refactor_: full RESEARCH → PLAN → EXECUTE, then `ag-code-simplifier` as cleanup
 
 - **Debug / Root Cause** (keywords: "debug", "why", "root cause", "investigate")
-  → `ag-debugger` agent = default owner. Helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may be layered in as needed.
+  → `ag-debugger` agent = default owner. Helper skill `ag-scout` may be layered in as needed.
 
 **When multiple intents match** (e.g., UI bug with docs question), use this precedence:
 

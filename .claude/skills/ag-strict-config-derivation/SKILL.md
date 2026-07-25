@@ -1,6 +1,6 @@
 ---
 name: ag-strict-config-derivation
-description: "Use when defining any configuration list that must exist in both runtime and TypeScript types (columns, permissions, form fields, status transitions, navigation). Enforces the only acceptable modern Single Source of Truth pattern using const + as const + mapped types. MUST be followed for all new and refactored config lists. This is the strict architectural standard for the repository."
+description: "Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries."
 license: MIT
 argument-hint: "[no-args]"
 ---

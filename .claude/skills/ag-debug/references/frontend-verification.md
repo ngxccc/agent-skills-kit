@@ -1,6 +1,6 @@
 # Frontend Verification
 
-Visual verification of frontend implementations using Chrome MCP (Claude Chrome Extension) or `ag-chrome-devtools` skill fallback.
+Visual verification of frontend implementations using Chrome MCP or `ag-agent-browser` agent fallback.
 
 ## Applicability Check
 
@@ -60,24 +60,19 @@ Or navigate and observe any error output from Chrome MCP tool responses.
 chrome__get_content → extract DOM/text to verify rendered output matches expectations
 ```
 
-## Step 2B: Chrome MCP NOT Available — Fallback to chrome-devtools Skill
+## Step 2B: Chrome MCP NOT Available — Fallback to ag-agent-browser Agent
 
-When Chrome MCP is not configured, use `ag-chrome-devtools` skill (Puppeteer with bundled Chromium):
+When Chrome MCP is not configured, use `ag-agent-browser` agent (`agent-browser` CLI or Puppeteer):
 
 ```bash
-SKILL_DIR="$HOME/.claude/skills/chrome-devtools/scripts"
-
-# Install deps if first time
-npm install --prefix "$SKILL_DIR" 2>/dev/null
-
 # Screenshot + console error check
-node "$SKILL_DIR/screenshot.js" --url http://localhost:3000 --output ./verification-screenshot.png
-node "$SKILL_DIR/console.js" --url http://localhost:3000 --types error,pageerror --duration 5000
+agent-browser open http://localhost:3000
+agent-browser screenshot -o ./verification-screenshot.png
 ```
 
-If `ag-chrome-devtools` skill is also unavailable, skip visual verification and note in report:
+If browser verification tools are unavailable, skip visual verification and note in report:
 
-> "Visual verification skipped — no Chrome MCP or chrome-devtools available."
+> "Visual verification skipped — no Chrome MCP or agent-browser available."
 
 ## Step 3: Analyze Results
 

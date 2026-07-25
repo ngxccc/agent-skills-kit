@@ -1,6 +1,6 @@
 ---
 name: ag-second-brain
-description: "Use this skill when the user asks a question about topics, concepts, code guidelines, or workflows in their second brain, or when the agent needs to search, fetch, explain, update, create inbox notes, or migrate inbox notes to atomic notes without fabricating details."
+description: "Use when querying, searching, updating, or adding notes in the Obsidian second brain without fabricating details."
 license: MIT
 argument-hint: "[query]"
 metadata:

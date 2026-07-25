@@ -44,7 +44,6 @@ You will analyze recently modified code and apply refinements that:
 Helper skills may assist, but only in bounded ways:
 
 - `ag-scout` for locating recently modified or adjacent code
-- `ag-sequential-thinking` or `ag-problem-solving` when simplification candidates are ambiguous or risk behavior drift
 - no helper becomes an alternate workflow owner
 
 Your refinement process:

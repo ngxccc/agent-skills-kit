@@ -26,7 +26,6 @@
     "**/.git/**",
     "**/.logs/**",
     ".codex/statusline.cjs",
-    ".claude/skills/ag-chrome-devtools/scripts/node_modules/**",
     ".agents/skills/**"
   ],
   "strip": [],

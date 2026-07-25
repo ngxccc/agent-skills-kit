@@ -1,6 +1,6 @@
 ---
 name: ag-git-pr
-description: "Standardized Enterprise Git Pull Request creation skill. Enforces Conventional Commits PR title format, structured PR body template, automated assignee/label/project/milestone parameters, ensuring zero deviation and strictly no emojis/icons."
+description: "Use when creating Git Pull Requests. Enforces Conventional Commits PR title format, structured PR body template, automated assignees, labels, project, and milestone without emojis."
 argument-hint: "create|validate|template"
 metadata:
   author: Team

@@ -1,6 +1,6 @@
 ---
 name: ag-setup
-description: Interactive agent harness setup for any project. Detects your stack, asks about your project, scaffolds process directories, deep-scans the codebase, and populates context with real content. Works on fresh projects and existing projects with pre-existing configs — always asks before reorganizing.
+description: "Use when setting up or bootstrapping the agent harness. Detects tech stack, scaffolds process directories, deep-scans codebase, and populates context."
 metadata:
   author: agent-skills
   version: "3.2.0"

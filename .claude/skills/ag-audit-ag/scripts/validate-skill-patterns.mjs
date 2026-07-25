@@ -12,12 +12,10 @@ const colors = {
 };
 
 const legacySkills = new Set([
-  "ag-agent-browser",
   "ag-audit-ag",
   "ag-audit-context",
   "ag-audit-plans",
   "ag-autoresearch",
-  "ag-chrome-devtools",
   "ag-context-engineering",
   "ag-debug",
   "ag-docs",
@@ -29,12 +27,10 @@ const legacySkills = new Set([
   "ag-merge-worktree",
   "ag-predict",
   "ag-preview",
-  "ag-problem-solving",
   "ag-repomix",
   "ag-scenario",
   "ag-scout",
   "ag-security",
-  "ag-sequential-thinking",
   "ag-setup",
   "ag-team",
   "ag-tech-graph",

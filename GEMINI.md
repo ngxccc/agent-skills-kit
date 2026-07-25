@@ -146,7 +146,7 @@ Auto-Detection Patterns:
 - Feature requests -> Step 0 skill discovery -> ag-research-agent -> INNOVATE -> PLAN -> EXECUTE
 - Questions -> ag-research-agent for non-trivial investigation or direct answer for trivial conceptual questions
 - Trivial fixes -> ag-execute-agent directly with no plan required
-- Bug/debug -> ag-debugger as the default actor; helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may assist
+- Bug/debug -> ag-debugger as the default actor; helper skill `ag-scout` may assist
 - UI/frontend -> surface ag-frontend-design skill plus ag-research-agent
 - Refactor/simplify -> ag-code-simplifier for pure style or RESEARCH -> PLAN -> EXECUTE for behavioral refactors
 - Missing context -> suggest the `ag-generate-context` skill
@@ -329,15 +329,12 @@ The active system is intentionally split into four layers:
   - `ag-adr`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
-  - `ag-sequential-thinking`
-  - `ag-problem-solving`
   - `ag-preview`
   - `ag-tech-graph`
   - `ag-watzup`
   - `ag-xia`
   - `ag-repomix`
   - `ag-docs-seeker`
-  - `ag-chrome-devtools`
   - `ag-agent-browser`
   - `ag-context-engineering`
   - `ag-web-testing`
@@ -442,14 +439,12 @@ Note: shared review methodology has been absorbed into the `ag-code-reviewer` ag
 
 Cross-phase utilities (skills, not agents):
 
-- `ag-sequential-thinking` - Structured reasoning, usable in any phase
-- `ag-problem-solving` - Cognitive toolkit when stuck in any phase
 - `ag-scout` - Fast codebase scouting, usable in RESEARCH
 - `ag-tech-graph` - Publish-grade SVG/PNG technical diagram generator for durable process artifacts; pair with `ag-preview` for review or explanation after generation
 - `ag-watzup` - Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
 - `ag-xia` - Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` - Repository packing helper for references-only artifacts, audits, and feature-porting prep
-- `ag-chrome-devtools` / `ag-agent-browser` - Browser automation, primarily EXECUTE
+- `ag-agent-browser` - Specialist AI browser automation agent
 - `ag-context-engineering` - Token optimization guidance, any phase
 - `ag-debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` - Autonomous iterative optimization loop after execute phase for measurable metrics
@@ -491,7 +486,7 @@ Missing Context
 
 Bug Fix / Debug Request (keywords: "fix", "bug", "broken", "debug", "error")
 -> For trivial: delegate to `ag-execute-agent` directly with no plan required.
--> For complex: route to `ag-debugger` agent. Surface helper skills like `ag-scout`, `ag-sequential-thinking`, or `ag-problem-solving` when they are useful to the investigation.
+-> For complex: route to `ag-debugger` agent. Surface helper skill `ag-scout` when useful to the investigation.
 
 Existing Plan File Present
 -> Resume from relevant phase; do not recreate plan.
@@ -510,7 +505,7 @@ Refactor / Simplify (keywords: "refactor", "clean up", "simplify", "reorganize")
 -> Behavioral or architectural refactor: full RESEARCH -> PLAN -> EXECUTE, then `ag-code-simplifier` as cleanup.
 
 Debug / Root Cause (keywords: "debug", "why", "root cause", "investigate")
--> `ag-debugger` agent is the default owner. Helper skills like `ag-scout`, `ag-sequential-thinking`, and `ag-problem-solving` may be layered in when they help the investigation.
+-> `ag-debugger` agent is the default owner. Helper skill `ag-scout` may be layered in when it helps the investigation.
 
 When multiple intents match, use this precedence:
 

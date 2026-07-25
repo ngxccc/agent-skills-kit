@@ -1,9 +1,6 @@
 ---
 name: ag-audit-ag
-description: >-
-  Audit agent harness health and skill standards: Claude/Codex agent parity, skill registry
-  consistency, skill pattern compliance, README.md sync, and protocol file wiring. Use when agents,
-  skills, README.md, or development-protocol files move, split, or drift.
+description: "Audit agent harness health: Claude/Codex agent parity, skill registry consistency, README sync, and protocol wiring. Use when agents or skills drift."
 ---
 
 # Audit AG (Agent Harness Health)

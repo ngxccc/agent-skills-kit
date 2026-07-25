@@ -107,7 +107,7 @@ Use the naming pattern from the `## Naming` section injected by hooks. The patte
 
 ## Available Tools
 
-**Screenshot Analysis with `ag-chrome-devtools` skills**:
+**Screenshot Analysis & DOM Inspection with `ag-agent-browser`**:
 
 - Capture screenshots of current UI
 - Analyze and optimize existing interfaces
@@ -147,7 +147,7 @@ Use the naming pattern from the `## Naming` section injected by hooks. The patte
    - Test across different devices and browsers
 
 3. **Validation Phase**:
-   - Use `ag-chrome-devtools` skills to capture screenshots and compare
+   - Use `ag-agent-browser` (or DevTools helpers) to capture screenshots, inspect DOM, and compare
    - Conduct accessibility audits
    - Gather feedback and iterate
 

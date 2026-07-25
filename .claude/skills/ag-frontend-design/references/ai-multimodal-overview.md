@@ -112,9 +112,9 @@ Extract design systems systematically from high-quality references:
 
 Use `aesthetic` for overall design system guidance and quality evaluation framework. Then use `ag-frontend-design` with Claude's built-in multimodal vision for asset generation and analysis that follows those guidelines.
 
-### With `ag-chrome-devtools` Skill
+### With `ag-agent-browser` Agent
 
-Use `ag-chrome-devtools` to capture full-screen screenshots from inspiration websites for design extraction. Capture at actual viewport size, not full-page scrolls.
+Use `ag-agent-browser` agent to capture full-screen screenshots from inspiration websites for design extraction. Capture at actual viewport size, not full-page scrolls.
 
 ### With `ui-styling` Skill
 
