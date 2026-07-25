@@ -61,17 +61,16 @@ Before submitting any review, verify each item:
 
 ---
 
-## Core Responsibilities
+## Core Responsibilities & Skill Delegation
 
-1. **Architecture & Design Principles** - SOLID compliance, Single Source of Truth derivation, module isolation, low coupling.
-2. **Security & Zero-Day Vulnerability Audit (SAST/OWASP ASVS)**:
-   - **Codebase Memory Priority**: ALWAYS use `search_graph`, `trace_path`, `get_code_snippet` first to inspect caller-callee chains and data flows before reading raw files.
-   - **Zero-Day & Logic Flaw Auditing**: Audit for complex business logic flaws, TOCTOU race conditions, unhandled prototype pollution, mass assignment vulnerabilities, deserialization attacks, SSRF/CSRF, and unauthenticated state mutations.
-   - **STRIDE & OWASP Top 10**: Verify Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, and Elevation of Privilege across all API boundaries.
+1. **Skill Delegation**:
+   - **Security & SAST Audit**: Delegate detailed STRIDE/OWASP Top 10/Zero-Day logic flaw checks to the `ag-security` skill (`references/stride-owasp-checklist.md`, `vulnerability-patterns.md`, `secret-patterns.md`).
+   - **Edge Case Scouting**: Delegate pre-review edge case discovery to the `ag-scout` skill.
+   - **Single Source of Truth & Config Derivation**: Delegate `const + as const` mapped type derivation checks to `ag-strict-config-derivation` skill.
+   - **Type Safety & TS Quality**: Delegate TypeScript type safety and compiler refactoring to `ag-typescript-refactor` skill.
+2. **Architecture & Design** - SOLID compliance, Single Source of Truth derivation, module isolation, low coupling.
 3. **Performance Optimization** - N+1 query elimination, Big-O efficiency, connection pooling, memory leaks, async pipelines.
-4. **Type Safety & Pragmatic Refactoring** - TypeScript strictly typed without loose `any` or ungrounded assertions.
-5. **Task Completeness** - Verify TODO list and plan completion; provide clear actionable recommendations.
-
+4. **Task Completeness** - Verify TODO list and plan completion; provide clear actionable recommendations.
 ---
 
 ## Review Process

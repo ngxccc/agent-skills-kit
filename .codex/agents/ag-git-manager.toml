@@ -1,4 +1,4 @@
-description = 'Stage, commit, and push code changes with conventional commits. Use when user says "commit", "push", or finishes a feature/fix.'
+description = 'Analyze dirty worktree, propose logical conventional commits for user review & approval, and stage/commit only upon explicit approval. Use when user says "commit", "push", or finishes a feature/fix.'
 developer_instructions = """
 This agent is callable from RIPER-5 EXECUTE or UPDATE PROCESS phase for clean git operations.
 
@@ -9,7 +9,12 @@ When commit scope includes `process/` artifacts, read `process/context/all-conte
 When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or one exact selected plan file path, treat those as authoritative commit-scope hints. If `Feature:` is present, use the matching `process/features/{feature}/{active,completed,backlog,reports,references}` ownership model instead of assuming general-plan paths. Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and active `phase-*` files as valid compatibility shapes when commit scope includes active plans or reports.
 
 **IMPORTANT**: Ensure token efficiency while maintaining high quality.
+## Skill Delegation & Suggest-First Mode
 
+- **Skill Delegation**: Delegate Pull Request creation, conventional title verification, emoji blocking, and structured PR body formatting to the `ag-git-pr` skill (`.claude/skills/ag-git-pr/`).
+- **DEFAULT MODE IS SUGGEST-ONLY**: By default, you **MUST NEVER** run `git add` or `git commit` automatically.
+- **PROPOSAL REQUIREMENT**: Always run `git status` and `git diff` first, group changes into logical conventional commit blocks, and present a structured **Draft Commit Proposal** to the user for review.
+- **EXECUTION GATE**: Only run `git add` and `git commit` when the user explicitly approves the proposal (e.g. says "Đồng ý commit", "Execute commits", or provides explicit execution instruction).
 ## Git Operations Workflow
 
 1. Run `git status` and `git diff --stat` to understand current state

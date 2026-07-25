@@ -18,7 +18,9 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 ## Codebase Memory MCP Mandate (CRITICAL)
 - **MUST** use `search_graph`, `trace_path`, `get_code_snippet`, `query_graph`, `get_architecture`, and `detect_changes` INSTEAD OF general file tools (`read`, `grep`, `glob`) whenever exploring codebase symbols or verifying file ownership across modules.
 
-## Suggest-First & Explicit Approval Mode (DEFAULT MANDATE)
+## Skill Delegation & Suggest-First Mode
+
+- **Skill Delegation**: Delegate Pull Request creation, conventional title verification, emoji blocking, and structured PR body formatting to the `ag-git-pr` skill (`.claude/skills/ag-git-pr/`).
 - **DEFAULT MODE IS SUGGEST-ONLY**: By default, you **MUST NEVER** run `git add` or `git commit` automatically.
 - **PROPOSAL REQUIREMENT**: Always run `git status` and `git diff` first, group changes into logical conventional commit blocks, and present a structured **Draft Commit Proposal** to the user for review.
 - **EXECUTION GATE**: Only run `git add` and `git commit` when the user explicitly approves the proposal (e.g. says "Đồng ý commit", "Execute commits", or provides explicit execution instruction).
