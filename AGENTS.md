@@ -126,8 +126,9 @@ Key Requirements:
 
 ### Mode Detection & Auto-Orchestration
 
-Auto-Detection Patterns:
+**CRITICAL LLM AUTO-SPAWNING DIRECTIVE**: When operating under Google Gemini or equivalent LLM models in OMP, you MUST NOT attempt to execute research, planning, or code changes inline in your main orchestrator turn for non-trivial requests. You MUST issue a `task` subagent invocation (or `spawn_agent` call) in your VERY FIRST action turn according to the auto-detection rules below:
 
+Auto-Detection Patterns:
 - Feature requests -> Step 0 skill discovery -> ag-research-agent -> INNOVATE -> PLAN -> EXECUTE
 - Questions -> ag-research-agent for non-trivial investigation or direct answer for trivial conceptual questions
 - Trivial fixes -> ag-execute-agent directly with no plan required
@@ -182,6 +183,7 @@ Global best practices and coding conventions apply:
      - `#region [Name]` / `#endregion` - Logically groups large sections of related code or variables to keep the file scannable.
   5. **Execution**: When generating code, scan for areas that are highly complex, prone to misinterpretation, or contain "magic numbers"/quirks. Inject the appropriate tags naturally. Do not over-comment. Maintain a clean, professional, and pragmatic codebase.
 - Second-Brain Policy: Business specifications, architecture designs, critical trade-offs (e.g. concurrency, outbox pattern), and interview preparation notes must be written to `second-brain/` to facilitate future learning and study.
+- Visual Workflow Documentation Policy: Each feature must document its operational and database flow visually (using Mermaid or sequence diagrams) inside its own dedicated note within the `second-brain/Docs/` directory structured by topic (e.g. `second-brain/Docs/Auth/Register_User_Existence_Creation_Workflow.md`). Do NOT consolidate multiple workflows into a single monolithic document to keep documentation distributed, modular, and context-localized.
 
 When specialized help is needed beyond the core RIPER modes, prefer discovering the right
 standalone capability by checking the `.agents/skills/` directory rather than expanding the
@@ -216,12 +218,12 @@ Context discovery rule: read `process/context/all-context.md` first, then load o
 relevant root file or context group. Context groups are durable knowledge domains, not
 feature folders. Every group must have an `all-{group}.md` entrypoint with scope,
 read-when rules, quick procedures, source paths, update triggers, and routing to deeper docs.
-
 Context group lifecycle: create or promote a context group when a topic has 3+ durable docs,
 a single doc exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly
 need only one slice of a large context file. Move/split one group at a time, use `all-*.md`
 entrypoints, update this router and agent prompts in the same patch, and run the
-`ag-audit-context` skill after every context organization change.
+`ag-audit-context` and `ag-audit-ag` skills after every context or protocol organization change.
+Periodic maintenance rule: run `ag-audit-context` and `ag-audit-ag` periodically to prune stale context files and prevent context bloat.
 
 ### `process/features/`
 
@@ -418,6 +420,7 @@ During EXECUTE phase:
 - `ag-tester` - Diff-aware test verification. Maps changed files to test files, runs only affected tests. Invoke after implementation sub-steps complete.
 - `ag-debugger` - Root cause analysis for bugs. Evidence-before-hypothesis methodology. Can also be invoked standalone.
 - `ag-code-reviewer` - Production-readiness review. Edge case scouting, N+1 detection, auth path validation. Invoke as pre-PR quality gate.
+- `ag-security-agent` - Dedicated SAST & Red Team Security Auditor. OWASP ASVS/Top 10, STRIDE threat modeling, zero-day logic flaw detection, and auth/cryptographic boundary verification.
 - `ag-code-simplifier` - Post-implementation refactor for clarity without behavior change. Invoke after code-reviewer passes.
 - `ag-ui-ux-designer` - Design-aware frontend implementation. Invoke for UI/UX tasks within execute phase.
 - `ag-git-manager` - Clean conventional commits. Invoke for git operations.
@@ -513,6 +516,7 @@ Skill Registry:
 | `ag-merge-worktree`                     | Merge a git worktree branch back into the main checkout and clean up the worktree                                                                               | merge worktree, cleanup worktree, git worktree, finish worktree                                                      |
 | `ag-second-brain`                       | Use this skill to query, search, update, or add notes in Obsidian second brain                                                                                  | second brain, obsidian, search notes, add note, update note, memory note                                             |
 | `ag-strict-config-derivation`           | Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries. | column list, permission, role matrix, form field, status transition, nav item, single source of truth, strict config |
+| `ag-git-pr`                             | Standardized Git Pull Request creation skill. Enforces Conventional Commits PR title format, structured PR body template, automated assignee/label/project/milestone parameters, ensuring zero deviation across PRs. | git pr, pull request, create pr, standard pr, github pr |
 
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.
@@ -624,9 +628,10 @@ the plan from ambient state.
 
 EXECUTE -> UPDATE PROCESS:
 
-- After non-trivial implementation complete, always surface a cleanup checkpoint
+- **Automated Subagent Verification Chain**: After `ag-execute-agent` reports `DONE`, the Orchestrator MUST automatically invoke `ag-tester` (or run the project Quality Gate suite: `bun test src/`, `bun run check-types`, `bun run lint`) to verify 100% test pass, 0 type errors, and 0 lint issues BEFORE presenting the UPDATE PROCESS transition to the user.
+- After non-trivial implementation and test verification are complete, surface the cleanup checkpoint.
 - UPDATE PROCESS still requires explicit user command.
-- After ag-execute-agent reports DONE, the orchestrator should present a short closeout packet:
+- After verification passes, the orchestrator should present a short closeout packet:
   - selected plan path
   - closeout classification
   - what was finished
