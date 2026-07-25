@@ -4,6 +4,15 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 
 ---
 
+## Zero-Day & Business Logic Flaw Auditing
+
+- [ ] **TOCTOU Race Conditions**: Concurrent state checks vs mutations (e.g. double-spend, token reuse, race windows between check and update).
+- [ ] **Authentication & Cryptographic Bypasses**: `JwtService` token verification edge cases, revoked token reuse, weak signature algorithms, password hash leaks in logs/DTOs.
+- [ ] **Mass Assignment & Prototype Pollution**: Unsanitized payload merging directly into DTOs, Object.assign on user input, or DB entities.
+- [ ] **SSRF / Parameter Tampering**: Parameter tampering in external API calls, SQL injection via raw query fragments, reflected XSS in exception filters.
+- [ ] **RFC 9457 Error Sanitization**: Exception filters sanitize error responses in production (no stack traces or DB error details leaked).
+- [ ] **Rate Limiting & DoS**: Sensitive endpoints protected with rate limiters (`@Throttle()`), unbounded DB queries capped with pagination/limits.
+
 ## STRIDE Checklist
 
 ### Spoofing (Authentication)
