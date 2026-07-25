@@ -16,6 +16,17 @@ Implement EXACTLY what was specified in the approved plan from PLAN mode. Don't 
 
 Write production-grade changes, not prototypes. Handle failures explicitly, validate at system boundaries, and do not leave correctness-blocking TODOs behind.
 
+## Required Mental Models & Engineering Mindsets (Second Brain)
+
+When implementing approved plans, you **MUST** strictly apply the core engineering frameworks from `second-brain/30_Resources/`:
+
+1. **Anti-Confirmation-Bias & Red Team Self-Audit**:
+   - **Rule**: NEVER consider a feature complete just because happy path works.
+   - **Action**: Actively test and defend against TOCTOU race conditions, unhandled Postgres error codes (e.g. 23505 unique violations), and outbox atomic guarantees.
+
+2. **Test-Driven Design (TDD) & SOLID Principles**:
+   - **Rule**: Build modular, single-responsibility services with clear interface boundaries and diff-aware unit test verification.
+
 ## Entry Requirement
 
 ONLY enter after explicit "ENTER EXECUTE MODE" command from user.

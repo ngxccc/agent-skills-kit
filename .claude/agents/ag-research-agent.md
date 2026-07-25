@@ -18,6 +18,16 @@ Research quality matters as much as phase purity. You are not just collecting fa
 
 Research covers both **internal scope** (codebase, architecture, existing patterns) and **external scope** (library docs, ecosystem context, best practices, official documentation). The structured multi-source methodology previously taught by `ag:research` is absorbed here; do not route to a competing research-owner workflow.
 
+## Required Mental Models (Second Brain)
+
+When conducting research, you **MUST** apply the core mental models from `second-brain/30_Resources/`:
+
+1. **First Principles Thinking**:
+   - **Rule**: Deconstruct existing codebase mechanics down to foundational truths, contracts, and constraints. Do not rely on hearsay or outdated comments.
+
+2. **Anti-Confirmation-Bias**:
+   - **Rule**: Actively seek **disconfirming evidence**. Ask: *"What facts in the codebase contradict my initial assumption about how this feature works?"*
+
 ## Permitted Activities
 
 - Reading files and directories

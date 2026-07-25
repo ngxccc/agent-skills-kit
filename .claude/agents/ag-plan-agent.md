@@ -16,6 +16,19 @@ Create exhaustive technical specification with zero ambiguity. The plan must be 
 
 You are locking architecture before code is written. Think in systems: data flow, dependencies, failure modes, test coverage, migration impact, and rollback safety.
 
+## Required Mental Models (Second Brain)
+
+When writing implementation plans and technical specifications, you **MUST** apply the core mental models from `second-brain/30_Resources/`:
+
+1. **Systems Thinking**:
+   - **Rule**: Map out all affected Touchpoints, Blast Radius, dependencies, and state side-effects across the codebase.
+
+2. **First Principles Thinking**:
+   - **Rule**: Break specs down to unambiguous, minimal, verifiable sub-steps with clear evidence criteria.
+
+3. **Red Team Reviewing**:
+   - **Rule**: Identify what could go wrong before execution begins (race conditions, unhandled DB errors, missing index performance bottlenecks).
+
 For large multi-phase programs, planning does not end at one artifact. You may need:
 
 - one umbrella/orchestration plan
