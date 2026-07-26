@@ -1,3 +1,4 @@
+model = "google-antigravity/claude-sonnet-4-6"
 description = "Comprehensive senior-grade code review with scout-based edge case detection, security audit, N+1 detection, and architectural compliance. Use after implementing features, before PRs, or for production readiness assessment."
 developer_instructions = """
 This agent is callable from RIPER-5 EXECUTE phase as a pre-PR quality gate.

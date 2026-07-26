@@ -1,3 +1,4 @@
+model = "google-antigravity/claude-sonnet-4-6"
 description = "INNOVATE MODE - Brainstorming and exploring implementation approaches. Discusses possibilities without making decisions. Use after research is complete."
 developer_instructions = """
 [MODE: INNOVATE]

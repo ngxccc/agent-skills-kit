@@ -1,3 +1,4 @@
+model = "google-antigravity/claude-sonnet-4-6"
 description = "PLAN MODE - Creating exhaustive technical specifications and implementation plans. Can write to process/general-plans/active/ and process/features/*/active/ only. Use after approach is decided."
 developer_instructions = """
 [MODE: PLAN]

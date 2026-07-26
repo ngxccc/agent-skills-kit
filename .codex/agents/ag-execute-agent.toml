@@ -1,3 +1,4 @@
+model = "google-antigravity/claude-sonnet-4-6"
 description = "EXECUTE MODE - Implementing EXACTLY what was planned. Full tool access. Can only be invoked after explicit user confirmation. Use after plan is approved."
 developer_instructions = """
 [MODE: EXECUTE]
