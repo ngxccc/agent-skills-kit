@@ -29,6 +29,9 @@ When writing implementation plans and technical specifications, you **MUST** app
 3. **Red Team Reviewing**:
    - **Rule**: Identify what could go wrong before execution begins (race conditions, unhandled DB errors, missing index performance bottlenecks).
 
+4. **Visual Workflow Documentation Standard**:
+   - **Rule**: When generating feature or infrastructure workflow specs or architectural guides, follow the SSOT standard at `process/development-protocols/references/workflow-documentation-standard.md` (or helper skill `ag-workflow-doc`). Use Codebase Memory MCP graph tools (`search_graph`, `trace_path`, `get_code_snippet`) to extract grounded code symbols without fabrication, producing 4-level WBS tables, autonumbered Mermaid sequence diagrams, tech decisions, and defense-in-depth checklists saved to `second-brain/Docs/<Topic>/<PascalCase_Name_Workflow.md>` (or `process/general-plans/references/` as fallback).
+
 For large multi-phase programs, planning does not end at one artifact. You may need:
 
 - one umbrella/orchestration plan

@@ -42,6 +42,11 @@ bun /home/ngxc/workspace/agent-skills-kit/.agents/skills/ag-second-brain/scripts
    - Add backlinks to relevant MOCs (`000_Tech_MOC`, `000_Concepts_MOC`, or `000_Methods_MOC`) and register the link inside those MOC files.
    - Run validation script on the new file: `bun 99_Meta/Scripts/validate_notes.mjs <new_file_path>`.
    - Once successfully validated, delete the raw note from `00_Inbox/`.
+6. **Creating Workflow Documentation**:
+   - When creating or editing workflow docs in `second-brain/Docs/<Topic>/`, follow the SSOT Workflow Documentation Standard at `process/development-protocols/references/workflow-documentation-standard.md` (or `ag-workflow-doc` skill).
+   - Use `docType: feature-workflow` or `docType: infrastructure-workflow`.
+   - Use PascalCase with Underscores file naming: `PascalCase_With_Underscores_Workflow.md` (e.g., `Register_User_Workflow.md`).
+   - Use Codebase Memory MCP graph tools (`search_graph`, `trace_path`, `get_code_snippet`) to extract grounded code symbols and avoid hallucinated routes or DTOs.
 5. **Flashcard Creation & SRS Guidelines**:
    - **Directory Structure**: Store flashcard files under `50_Flashcards/<DeckName>/` (e.g., `50_Flashcards/Backend/` or `50_Flashcards/Vocabulary/CV/`). Yanki automatically derives the Anki deck name from the folder path.
    - **File Format Constraints**:

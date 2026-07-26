@@ -214,6 +214,7 @@ agent-skills-kit/
 - **Agent/Skill Mirroring:** Codex TOML agents mirror Claude Code Markdown agents; `.agents/skills` is symlinked to `.claude/skills`.
 - **Validation Gates:** CI workflow `validate.yml` runs a set of validation scripts under `ag-audit-ag`, `ag-audit-context`, `ag-audit-plans`, and `ag-generate-context`.
 - **Coding Fix Skill-Logging:** When `ag-debugger` resolves a non-trivial bug (3+ steps or framework quirk), and during `ag-update-process-agent` Phase 2, the native `manage_skill` tool is invoked to persist the fix recipe as a managed skill at `~/.omp/agent/managed-skills/<name>/SKILL.md`. Naming convention: `fix-<domain>-<issue>`.
+- **Workflow Documentation Standard:** Architectural and feature workflow specifications must follow the SSOT standard at `process/development-protocols/references/workflow-documentation-standard.md` (via `ag-workflow-doc` skill). Documents use `docType: feature-workflow` or `docType: infrastructure-workflow`, include a 4-level WBS table, autonumbered Mermaid sequence diagrams, and are saved using PascalCase_With_Underscores naming to `second-brain/Docs/<Topic>/<PascalCase_Name_Workflow.md>` (or `process/general-plans/references/` as fallback). Grounding via Codebase Memory MCP graph tools is mandatory.
 
 ## Environment and Configuration
 

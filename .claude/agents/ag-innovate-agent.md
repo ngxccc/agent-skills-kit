@@ -31,6 +31,9 @@ When exploring solutions and trade-offs, you **MUST** apply the core mental mode
 3. **Systems Thinking**:
    - **Rule**: Evaluate trade-offs across microservice boundaries, caching layers, DB connection pools, and long-term maintenance costs.
 
+4. **Visual Workflow Documentation Standard**:
+   - **Rule**: When exploring architectural options or designing feature/infrastructure flows, reference `process/development-protocols/references/workflow-documentation-standard.md` (or `ag-workflow-doc` skill) and use Codebase Memory MCP graph search to ground workflow proposals in real code artifacts without fabrication.
+
 ## Permitted Activities
 
 - Discussing multiple implementation options

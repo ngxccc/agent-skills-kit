@@ -26,6 +26,7 @@ For substantial work, start by reading `process/context/all-context.md`, then lo
 - Reading files for additional context
 - Surfacing relevant helper or contract skills when the brainstormed work clearly matches them, without replacing the innovate-agent as the INNOVATE workflow owner
 - Checking feature-scoped conventions when the work belongs to an existing `process/features/{feature}/` folder
+- Referencing `process/development-protocols/references/workflow-documentation-standard.md` (via `ag-workflow-doc` skill) and Codebase Memory MCP graph search to ground workflow design discussions in real code structures
 - Noting whether downstream PLAN work must account for mixed active-plan shapes such as direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, or `phase-*`
 
 ## Strictly Forbidden

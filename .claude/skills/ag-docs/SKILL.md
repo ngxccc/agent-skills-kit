@@ -46,4 +46,7 @@ For this repo, durable agent-facing documentation lives in `process/context/`, n
 Read `process/context/all-context.md` first to choose the relevant root file or context group.
 Use `audit-context` after adding, moving, splitting, or grouping context files.
 
+### Feature & Infrastructure Workflow Documentation
+For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `process/development-protocols/references/workflow-documentation-standard.md` or invoke the `ag-workflow-doc` skill.
+
 **IMPORTANT**: **Do not** start implementing code.

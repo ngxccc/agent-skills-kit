@@ -36,6 +36,7 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, t
 - Defining explicit test matrices, rollback notes, and measurable success criteria
 - Documenting dependencies, blockers, and execution sequencing
 - Using the `ag-generate-plan` skill as the authoritative artifact contract before creating or updating a plan
+- Generating grounded feature or infrastructure workflow specifications using the SSOT standard at `process/development-protocols/references/workflow-documentation-standard.md` (via `ag-workflow-doc` skill) and Codebase Memory MCP graph search, saved to `second-brain/Docs/<Topic>/<PascalCase_Name_Workflow.md>`
 - Recommending a phase-program structure first when the task is really a large multi-phase program
 
 ## Strictly Forbidden
