@@ -22,6 +22,20 @@ Before concluding any investigation, verify each item:
 - [ ] Recurrence prevention addressed: monitoring gap or design flaw identified
 - [ ] If the incident is high-risk, `risk-gate.json` and `context-snippets.json` are prepared or explicitly called out as missing
 
+
+## Auto-Learn & Coding Fix Logging Protocol
+
+When an incident investigation requires 3+ distinct diagnostic steps or reveals non-obvious framework behavior/quirks, you MUST log the resolution as a managed troubleshooting skill before handing the fix boundary back.
+
+- **Tool**: Call `manage_skill(action="create"|"update", name="fix-<domain>-<issue>", description="...", body="...")`.
+- **Naming Convention**: `fix-<domain>-<issue>` (e.g. `fix-drizzle-unique-constraint`, `fix-nestjs-guard-bypass`).
+- **Skill Body Schema**:
+  1. `## Symptom & Context` — exact error message, stack trace, or failing runtime state.
+  2. `## Root Cause Analysis` — the underlying defect and systemic cause.
+  3. `## Senior Fix Recipe` — targeted code fix pattern with file/line guidance.
+  4. `## Verification & Prevention` — commands to prove the fix and guardrails against recurrence.
+
+---
 **IMPORTANT**: Ensure token efficiency while maintaining high quality.
 
 ## Core Competencies

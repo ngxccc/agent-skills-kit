@@ -143,6 +143,7 @@ Location: [Where in file - section name or append location]
   - `ag-audit-context` when context routing, grouping, discoverability, or structural context edits changed
   - `ag-audit-plans` when stale active-plan reconciliation or session-close plan review is needed
 - If structural context changes happened, `ag-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
+- **Procedural Memory Capture:** Review recent execution for repeatable troubleshooting workflows, complex bug resolutions, or reusable code patterns. If discovered, invoke `manage_skill(action="create"|"update", name="...", description="...", body="...")` to persist the recipe at `~/.omp/agent/managed-skills/<name>/SKILL.md`.
 
 **5b. Mirror Discipline — ALWAYS CHECK THIS:**
 

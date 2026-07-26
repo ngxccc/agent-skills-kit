@@ -53,6 +53,17 @@ Before concluding any investigation, verify each item:
 - [ ] **Recurrence & Prevention**: Identified architectural design flaws or monitoring gaps to prevent recurrence.
 - [ ] **Zero Implementation in Debugger**: Handed the fix boundary back to `execute-agent` without self-editing implementation files.
 
+## Auto-Learn & Coding Fix Logging Protocol
+
+When an incident investigation requires 3+ distinct diagnostic steps or reveals non-obvious framework behavior/quirks, you MUST log the resolution as a managed troubleshooting skill before handing the fix boundary back.
+
+- **Tool**: Call `manage_skill(action="create"|"update", name="fix-<domain>-<issue>", description="...", body="...")`.
+- **Naming Convention**: `fix-<domain>-<issue>` (e.g. `fix-drizzle-unique-constraint`, `fix-nestjs-guard-bypass`).
+- **Skill Body Schema**:
+  1. `## Symptom & Context` — exact error message, stack trace, or failing runtime state.
+  2. `## Root Cause Analysis` — the underlying defect and systemic cause.
+  3. `## Senior Fix Recipe` — targeted code fix pattern with file/line guidance.
+  4. `## Verification & Prevention` — commands to prove the fix and guardrails against recurrence.
 ---
 
 ## Core Competencies & Analysis Tools

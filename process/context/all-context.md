@@ -1,6 +1,6 @@
 # agent-skills-kit - All Context
 
-Last updated: 2026-06-05
+Last updated: 2026-07-26
 
 This file is the root context entrypoint for the repo.
 
@@ -213,6 +213,7 @@ agent-skills-kit/
 - **All-\*.md Convention:** Entry points for context (`all-context.md`) and groups (`all-tests.md`, `all-planning.md`) act as quick context routers to keep context windows small.
 - **Agent/Skill Mirroring:** Codex TOML agents mirror Claude Code Markdown agents; `.agents/skills` is symlinked to `.claude/skills`.
 - **Validation Gates:** CI workflow `validate.yml` runs a set of validation scripts under `ag-audit-ag`, `ag-audit-context`, `ag-audit-plans`, and `ag-generate-context`.
+- **Coding Fix Skill-Logging:** When `ag-debugger` resolves a non-trivial bug (3+ steps or framework quirk), and during `ag-update-process-agent` Phase 2, the native `manage_skill` tool is invoked to persist the fix recipe as a managed skill at `~/.omp/agent/managed-skills/<name>/SKILL.md`. Naming convention: `fix-<domain>-<issue>`.
 
 ## Environment and Configuration
 
