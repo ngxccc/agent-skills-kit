@@ -9,54 +9,54 @@ date: 2026-07-26
 version: 1.0.0
 ---
 
-# Quy Chuẩn & Mẫu Viết Tài Liệu Workflow (Workflow Documentation Standard)
+# Workflow Documentation Standard & Templates (Single Source of Truth - SSOT)
 
-Tài liệu này định nghĩa **Chuẩn Cốt Lõi (Single Source of Truth - SSOT)** cho việc biên soạn tất cả các tài liệu mô tả luồng (Workflow Docs) trong thư mục `second-brain/Docs/` hoặc `process/references/`.
+This document defines the **Single Source of Truth (SSOT)** standard for authoring all architectural and business process workflow documents (Workflow Docs) located in `second-brain/Docs/` or `process/references/`.
 
 ---
 
-## 1. Phân Loại Tài Liệu Workflow (Document Archetypes)
+## 1. Document Archetypes
 
-Hệ thống phân chia tài liệu Workflow thành **2 loại chính (Document Types)** thông qua trường Frontmatter `docType`:
+The workflow documentation system categorizes all Workflow Docs into **two core archetypes** defined by the frontmatter property `docType`:
 
-| Trường Frontmatter                 | Loại Tài Liệu               | Đối Tượng Áp Dụng                                                                    | Đặc Điểm Cốt Lõi                                                                                                                                                                   |
+| Frontmatter Property               | Document Archetype          | Applicable Scope                                                                     | Core Characteristics                                                                                                                                                                |
 | :--------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `docType: feature-workflow`        | **Feature Workflow**        | Các tính năng nghiệp vụ (Auth, Booking, Payment, Ticket)                             | Tập trung vào luồng nghiệp vụ, Bảng phân rã WBS 4 cấp, Sơ đồ Sequence, Quyết định DB/Outbox, Phòng thủ nhiều lớp (Defense-in-Depth), và Checklist triển khai.                      |
-| `docType: infrastructure-workflow` | **Infrastructure Workflow** | Các thành phần hạ tầng kỹ thuật (Filters, Interceptors, Guards, Outbox Relay, Pipes) | Tập trung vào kiến trúc hệ thống, Sơ đồ luồng xử lý ngoại lệ/middleware, Bản thiết kế mã nguồn (Blueprint), Kiểm tra rò rỉ dữ liệu (Data Leak Audit), và Checklist kiểm thử/audit. |
+| `docType: feature-workflow`        | **Feature Workflow**        | Business features (Auth, Booking, Payment, Ticket management)                        | Focuses on business domain logic, 4-level WBS breakdown table, autonumbered Sequence diagrams, DB/Outbox transaction decisions, Defense-in-Depth security, and Implementation Checklists. |
+| `docType: infrastructure-workflow` | **Infrastructure Workflow** | Cross-cutting technical infrastructure (Filters, Interceptors, Guards, Outbox Relay) | Focuses on system architecture, Exception/Middleware flow sequence diagrams, Codebase blueprints, Production data leak audits, and Verification checklists.                     |
 
 ---
 
-## 2. Chuẩn Bảng Phân Rã Chức Năng (WBS Table Standard)
+## 2. Work Breakdown Structure (WBS Table Standard)
 
-Mọi tài liệu `feature-workflow` (và `infrastructure-workflow` nếu có phân rã phức tạp) **bắt buộc dùng Bảng Markdown WBS** làm chuẩn phân rã mặc định thay vì Mermaid graph.
+All `feature-workflow` (and complex `infrastructure-workflow`) documents **MUST** use a structured Markdown WBS Table as the primary breakdown format instead of wide Mermaid graphs.
 
-### Lý Do Chọn Bảng Markdown Làm Mặc Định
+### Rationale for Markdown WBS Tables
 
-1. **Phân cấp đánh số rõ ràng**: Hỗ trợ đánh số thứ tự từ L1 đến L4 (`1.0` -> `1.1` -> `1.1.1` -> `1.1.1.1`).
-2. **Tra cứu Artifact chính xác**: Mỗi dòng WBS đều chỉ định rõ file mã nguồn, DTO, Schema hoặc HTTP Status trả về.
-3. **Tiết kiệm Không Gian**: Tránh việc sơ đồ Mermaid quá rộng gây khó đọc trên các màn hình nhỏ.
+1. **Explicit Hierarchical Numbering**: Supports structured numbering from L1 through L4 (`1.0` -> `1.1` -> `1.1.1` -> `1.1.1.1`).
+2. **Precise Artifact Tracking**: Every row explicitly names the target source file, DTO, Database Schema, or HTTP Status code.
+3. **Screen Readability**: Prevents overly horizontal Mermaid diagrams that are difficult to read on smaller displays.
 
-### Khung Cấu Trúc Bảng WBS Mẫu (WBS Table Template)
+### WBS Table Template
 
-| Mã WBS    | Tên Thành Phần / Chức Năng  | Phân Cấp (Level)  | Mô Tả Chi Tiết / Nhiệm Vụ          | Output / Artifact          |
+| WBS Code  | Component / Feature Name    | Level             | Detailed Description / Task        | Output / Artifact          |
 | :-------- | :-------------------------- | :---------------- | :--------------------------------- | :------------------------- |
-| **1.0**   | **[Tên Module]**            | **L1: Module**    | Phân vùng module tổng thể          | `src/modules/[module]`     |
-| **1.1**   | **[Tên Feature/Component]** | **L2: Component** | Chức năng / Thành phần chi tiết    | `[HTTP_METHOD] /api/...`   |
-| **1.1.1** | **[Tên Lớp Logic/Guard]**   | **L3: Logic**     | Xử lý middleware / guard / DTO     | `[file.guard.ts / dto.ts]` |
-| 1.1.1.1   | Task Nhỏ 1                  | L4: Execution     | Logic cụ thể (Validate, Transform) | `src/...`                  |
-| 1.1.1.2   | Task Nhỏ 2                  | L4: Execution     | Xử lý lỗi / Exception              | `src/...`                  |
-| **1.1.2** | **[Tên Service/Database]**  | **L3: Logic**     | Logic nghiệp vụ & Giao dịch DB     | `[service.ts]`             |
+| **1.0**   | **[Module Name]**           | **L1: Module**    | Overall module boundary            | `src/modules/[module]`     |
+| **1.1**   | **[Feature/Component Name]**| **L2: Component** | Detailed feature or component      | `[HTTP_METHOD] /api/...`   |
+| **1.1.1** | **[Logic Layer / Guard]**   | **L3: Logic**     | Middleware / Guard / DTO handling  | `[file.guard.ts / dto.ts]` |
+| 1.1.1.1   | Subtask 1                   | L4: Execution     | Specific logic (Validate/Transform)| `src/...`                  |
+| 1.1.1.2   | Subtask 2                   | L4: Execution     | Exception / Error handling         | `src/...`                  |
+| **1.1.2** | **[Service / Database]**    | **L3: Logic**     | Business logic & DB transactions   | `[service.ts]`             |
 | 1.1.2.1   | Query / Transaction         | L4: Execution     | DB Query / Outbox Event            | `src/database/schemas/...` |
 
 ---
 
-## 3. Template Loại 1: Feature Workflow (`docType: feature-workflow`)
+## 3. Template Type 1: Feature Workflow (`docType: feature-workflow`)
 
-Dành cho các nghiệp vụ như `Register`, `Login`, `Change Password`, `Book Ticket`.
+For business features such as `Register`, `Login`, `Change Password`, or `Book Ticket`.
 
 ```markdown
 ---
-title: <Tên Feature> Workflow & Architecture Spec
+title: <Feature Name> Workflow & Architecture Spec
 tags:
   - type/workflow
   - topic/<module>
@@ -65,27 +65,27 @@ status: draft # draft | approved | implemented
 date: YYYY-MM-DD
 ---
 
-# Phân Tích & Thiết Kế Workflow: <Tên Feature> (<Feature Name> Flow)
+# Workflow Analysis & Architecture Spec: <Feature Name>
 
-**Trạng thái**: ⏳ Draft / ✅ Approved / 🚀 Implemented  
+**Status**: ⏳ Draft / ✅ Approved / 🚀 Implemented  
 **Module**: `src/modules/<module-name>`  
 **Route/Endpoint**: `<HTTP_METHOD> /api/<path>`
 
 ---
 
-## 1. Sơ Đồ Phân Rã Chức Năng (Work Breakdown Structure - WBS)
+## 1. Work Breakdown Structure (WBS)
 
-| Mã WBS    | Thành Phần / Chức Năng  | Mô Tả Chi Tiết / Nhiệm Vụ | Output / Artifact        |
-| :-------- | :---------------------- | :------------------------ | :----------------------- |
-| **1.0**   | **<Module Name>**       | Quản lý ...               | `src/modules/<module>`   |
-| **1.1**   | **<Feature Name>**      | Chức năng ...             | `<HTTP_METHOD> /api/...` |
-| **1.1.1** | **Guard & Validation**  | ...                       | `src/...`                |
-| 1.1.1.1   | Logic Task              | ...                       | `src/...`                |
-| **1.1.2** | **Business Logic & DB** | ...                       | `src/...`                |
+| WBS Code  | Component / Feature Name | Detailed Description / Task | Output / Artifact        |
+| :-------- | :----------------------- | :-------------------------- | :----------------------- |
+| **1.0**   | **<Module Name>**        | Manages ...                 | `src/modules/<module>`   |
+| **1.1**   | **<Feature Name>**       | Feature capability ...      | `<HTTP_METHOD> /api/...` |
+| **1.1.1** | **Guard & Validation**   | ...                         | `src/...`                |
+| 1.1.1.1   | Logic Subtask            | ...                         | `src/...`                |
+| **1.1.2** | **Business Logic & DB**  | ...                         | `src/...`                |
 
 ---
 
-## 2. Sơ Đồ Luồng Tuần Tự (Sequence Diagram)
+## 2. Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -105,35 +105,35 @@ sequenceDiagram
 
 ---
 
-## 3. Quyết Định Kiến Trúc & Thiết Kế Kỹ Thuật (Tech Decisions)
+## 3. Technical Decisions & Code Snippets
 
 ### 3.1 Routing & DTO Schema
 
-- Code Snippet DTO Validation & Transformer.
+- Code snippet for DTO Validation & Transformer.
 
 ### 3.2 Service Logic & Transaction Strategy
 
-- Code Snippet Service / Transaction / Outbox Pattern.
+- Code snippet for Service / Transaction / Outbox Pattern.
 
 ---
 
-## 4. Chiến Lược Bảo Vệ Nhiều Lớp (Defense-in-Depth & Security)
+## 4. Defense-in-Depth & Security Strategy
 
-- **Lớp 1: CDN / Gateway Rate Limit** (Anti-DDoS)
-- **Lớp 2: Application Throttler Guard** (Anti-Bruteforce per IP)
-- **Lớp 3: Business Identity Verification** (Password hashing, Session Revocation)
-
----
-
-## 5. Kế Hoạch Triển Khai (Implementation Checklist)
-
-- [ ] **Bước 1**: Tạo DTO & Validation rules
-- [ ] **Bước 2**: Triển khai Service logic & DB Query
-- [ ] **Bước 3**: Viết Unit Test & Integration Test
+- **Layer 1: Gateway / Rate Limit Guard** (Anti-DDoS)
+- **Layer 2: Application Throttler Guard** (Anti-Bruteforce per IP)
+- **Layer 3: Business Identity Verification** (Password hashing, Session Revocation)
 
 ---
 
-## 6. Tài Liệu Liên Quan
+## 5. Implementation Checklist
+
+- [ ] **Step 1**: Create DTO & Validation rules
+- [ ] **Step 2**: Implement Service logic & DB Query
+- [ ] **Step 3**: Write Unit Tests & Integration Tests
+
+---
+
+## 6. Related Documentation
 
 - [[Link_To_Atomic_Note_1]]
 - [[Link_To_Atomic_Note_2]]
@@ -141,13 +141,13 @@ sequenceDiagram
 
 ---
 
-## 4. Template Loại 2: Infrastructure Workflow (`docType: infrastructure-workflow`)
+## 4. Template Type 2: Infrastructure Workflow (`docType: infrastructure-workflow`)
 
-Dành cho các hạ tầng như `GlobalExceptionFilter`, `JwtAuthGuard`, `LoggingInterceptor`.
+For technical infrastructure such as `GlobalExceptionFilter`, `JwtAuthGuard`, or `LoggingInterceptor`.
 
 ```markdown
 ---
-title: <Tên Lowercase Component> Implementation & Workflow Audit Guide
+title: <Component Name> Implementation & Workflow Audit Guide
 tags:
   - type/infrastructure
   - topic/nestjs
@@ -156,18 +156,18 @@ status: approved
 date: YYYY-MM-DD
 ---
 
-# <Tên Component> Implementation & Workflow Audit Guide
+# <Component Name> Implementation & Workflow Audit Guide
 
-**Trạng thái**: ✅ Approved / 🚀 Implemented  
-**Phạm vi**: Cross-cutting / Global Infrastructure  
-**Vị trí mã nguồn**: `src/common/<type>/<filename>.ts`
+**Status**: ✅ Approved / 🚀 Implemented  
+**Scope**: Cross-cutting / Global Infrastructure  
+**Source Path**: `src/common/<type>/<filename>.ts`
 
 ---
 
-## 1. Executive Summary & Architecture Goal
+## 1. Executive Summary & Architectural Goals
 
-- Mục tiêu kiến trúc & bài toán giải quyết.
-- Tiêu chuẩn tuân thủ (ví dụ: RFC 9457, OpenTelemetry, NestJS Spec).
+- Architectural goal & target problem solved.
+- Standard compliance (e.g. RFC 9457 Problem Details, OpenTelemetry, NestJS Spec).
 
 ---
 
@@ -190,53 +190,53 @@ sequenceDiagram
 
 ## 3. Detailed Implementation Blueprint
 
-### Step 1: Configuration / Bootstrap (`src/main.ts`)
+### Step 1: Bootstrap Configuration (`src/main.ts`)
 
-- Code snippet cấu hình global.
+- Code snippet for global registration.
 
 ---
 
 ### Step 2: Core Class Implementation (`src/common/...`)
 
-- Code snippet của Class chính.
+- Code snippet for the primary class.
 
 ---
 
 ## 4. Security & Data Leak Safeguards
 
-- **Sanitization**: Loại bỏ Stack Trace trên môi trường Production.
-- **SQL Error Shielding**: Ẩn các câu lệnh SQL thô khỏi response client.
-- **Header Enforcement**: Thiết lập Header an toàn (`Content-Type: application/problem+json`).
+- **Sanitization**: Omit Stack Traces in Production environments.
+- **SQL Error Shielding**: Shield raw database query errors from client responses.
+- **Header Enforcement**: Enforce secure response headers (`Content-Type: application/problem+json`).
 
 ---
 
 ## 5. Audit & Verification Checklist
 
-- [ ] **Header Check**: Đảm bảo Content-Type đúng chuẩn.
-- [ ] **Parity Check**: Format nhất quán giữa DTO error và Domain exception.
-- [ ] **Production Leak Audit**: Kiểm tra không rò rỉ thông tin nhạy cảm.
+- [ ] **Header Audit**: Ensure correct response Content-Type headers.
+- [ ] **Parity Check**: Format consistency between DTO errors and Domain exceptions.
+- [ ] **Production Leak Audit**: Confirm zero sensitive data leakage.
 
 ---
 
-## 6. Tài Liệu Liên Quan
+## 6. Related Documentation
 
 - [[Link_To_Atomic_Note_1]]
 ```
 
 ---
 
-## 5. Quy Tắc Đặt Tên File (File Naming Conventions)
+## 5. File Naming Conventions
 
-Tất cả các tệp tài liệu trong `second-brain/Docs/` hoặc `process/references/` **bắt buộc tuân theo quy tắc đặt tên thống nhất**:
+All Workflow Docs in `second-brain/Docs/` or `process/references/` **MUST** follow strict **PascalCase with Underscores**:
 
-| Loại Tài Liệu           | Quy Tắc Cú Pháp Tên File                   | Hậu Tố (Suffix) Bắt Buộc | Ví Dụ Thực Tế                                                       |
-| :---------------------- | :----------------------------------------- | :----------------------- | :------------------------------------------------------------------ |
-| **Workflow / Spec**     | `PascalCase_With_Underscores_Workflow.md`  | `_Workflow.md`           | `Change_Password_Workflow.md`, `Global_Exception_Filter_Workflow.md` |
-| **Deep Dive / Concept** | `PascalCase_With_Underscores_Deep_Dive.md` | `_Deep_Dive.md`          | `RFC_9457_Problem_Details_Deep_Dive.md`                             |
-| **Quy Chuẩn / Standard**| `PascalCase_With_Underscores_Standard.md`  | `_Standard.md`           | `Workflow_Documentation_Standard.md`                                |
-| **Mẫu Bản Vẽ / Template**| `PascalCase_With_Underscores_Template.md`  | `_Template.md`           | `WBS_Table_Template.md`                                             |
+| Document Type           | Syntax Pattern                             | Mandatory Suffix  | Concrete Example                                                    |
+| :---------------------- | :----------------------------------------- | :---------------- | :------------------------------------------------------------------ |
+| **Workflow / Spec**     | `PascalCase_With_Underscores_Workflow.md`  | `_Workflow.md`    | `Change_Password_Workflow.md`, `Global_Exception_Filter_Workflow.md` |
+| **Deep Dive / Concept** | `PascalCase_With_Underscores_Deep_Dive.md` | `_Deep_Dive.md`   | `RFC_9457_Problem_Details_Deep_Dive.md`                             |
+| **Standard**            | `PascalCase_With_Underscores_Standard.md`  | `_Standard.md`    | `Workflow_Documentation_Standard.md`                                |
+| **Template**            | `PascalCase_With_Underscores_Template.md`  | `_Template.md`    | `WBS_Table_Template.md`                                             |
 
-### Quy tắc định dạng:
-1. Dùng **`PascalCase`** cho các từ tiếng Anh và nối nhau bằng **dấu gạch dưới `_`** (Underscore).
-2. Không dùng dấu gạch ngang `-` trong tên file để tránh nhầm lẫn với slug URL.
-3. Ưu tiên lưu file vào thư mục `second-brain/Docs/<Topic>/` nếu có sẵn trong dự án; nếu không có, lưu vào `process/general-plans/references/` hoặc `process/features/<topic>/references/`.
+### Formatting Rules:
+1. Use **`PascalCase`** for words, separated by **underscores `_`**.
+2. Never use hyphens `-` in file names to avoid URL slug ambiguity.
+3. Destination Priority: Prefer `second-brain/Docs/<Topic>/`; fallback to `process/features/<topic>/references/` or `process/general-plans/references/`.
