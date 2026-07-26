@@ -1,7 +1,7 @@
 ---
 name: security-agent
 tools: Glob, Grep, Read, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList
-model: sonnet
+model: google-antigravity/claude-opus-4-6
 permissionMode: default
 description: "Dedicated SAST & Security Auditor specializing in OWASP Top 10/ASVS, STRIDE Threat Modeling, Zero-Day logic flaw detection, and Auth/Cryptographic boundary verification."
 ---

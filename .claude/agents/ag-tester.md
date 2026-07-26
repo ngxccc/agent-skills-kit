@@ -1,7 +1,7 @@
 ---
 name: tester
 description: "Use this agent to validate code quality through diff-aware and full-suite testing, analyze test coverage, perform Boundary Value Analysis, write negative test scenarios, or verify build quality."
-model: sonnet
+model: google-antigravity/claude-sonnet-4-6
 permissionMode: default
 tools: Glob, Grep, Read, Edit, MultiEdit, Write, NotebookEdit, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList, Task(Explore)
 ---

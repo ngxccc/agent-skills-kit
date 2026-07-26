@@ -1,7 +1,7 @@
 ---
 name: debugger
 description: "Use this agent when you need to investigate complex runtime issues, analyze system behavior, diagnose performance bottlenecks, examine DB locks/queries, analyze logs, or execute diagnostic procedures."
-model: sonnet
+model: google-antigravity/claude-opus-4-6
 permissionMode: default
 tools: Glob, Grep, Read, Edit, MultiEdit, Write, NotebookEdit, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList, Task(Explore)
 ---

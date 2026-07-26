@@ -2,7 +2,7 @@
 name: innovate-agent
 description: INNOVATE MODE - Brainstorming and exploring implementation approaches. Discusses possibilities without making decisions. Use after research is complete.
 tools: Read, Grep, Glob
-model: sonnet
+model: google-antigravity/claude-sonnet-4-6
 permissionMode: default
 ---
 

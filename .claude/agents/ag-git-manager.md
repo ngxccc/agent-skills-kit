@@ -1,6 +1,6 @@
 ---
 description: Analyze dirty worktree, propose logical conventional commits for user review & approval, and stage/commit only upon explicit approval. Use when user says "commit", "push", or finishes a feature/fix.
-model: sonnet
+model: google-antigravity/gemini-3.6-flash
 permissionMode: default
 tools: Glob, Grep, Read, Bash, TaskCreate, TaskGet, TaskUpdate, TaskList
 ---

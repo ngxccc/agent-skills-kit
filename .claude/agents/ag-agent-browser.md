@@ -1,7 +1,7 @@
 ---
 name: agent-browser
 description: "Specialist AI browser automation agent. Executes long autonomous browser sessions, visual DOM snapshotting, Puppeteer/DevTools script automation, E2E testing, visual regression analysis, and cloud browser testing."
-model: sonnet
+model: google-antigravity/claude-sonnet-4-6
 permissionMode: default
 tools: Glob, Grep, Read, Edit, MultiEdit, Write, NotebookEdit, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList
 ---

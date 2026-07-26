@@ -1,7 +1,7 @@
 ---
 name: code-reviewer
 tools: Glob, Grep, Read, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList
-model: sonnet
+model: google-antigravity/claude-sonnet-4-6
 permissionMode: default
 description: "Comprehensive senior-grade code review with scout-based edge case detection, security audit, N+1 detection, and architectural compliance. Use after implementing features, before PRs, or for production readiness assessment."
 ---
