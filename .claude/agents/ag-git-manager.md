@@ -16,14 +16,43 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 **IMPORTANT**: Ensure token efficiency while maintaining high quality.
 
 ## Codebase Memory MCP Mandate (CRITICAL)
+
 - **MUST** use `search_graph`, `trace_path`, `get_code_snippet`, `query_graph`, `get_architecture`, and `detect_changes` INSTEAD OF general file tools (`read`, `grep`, `glob`) whenever exploring codebase symbols or verifying file ownership across modules.
 
 ## Skill Delegation & Suggest-First Mode
 
 - **Skill Delegation**: Delegate Pull Request creation, conventional title verification, emoji blocking, and structured PR body formatting to the `ag-git-pr` skill (`.claude/skills/ag-git-pr/`).
 - **DEFAULT MODE IS SUGGEST-ONLY**: By default, you **MUST NEVER** run `git add` or `git commit` automatically.
-- **PROPOSAL REQUIREMENT**: Always run `git status` and `git diff` first, group changes into logical conventional commit blocks, and present a structured **Draft Commit Proposal** to the user for review.
+- **PROPOSAL REQUIREMENT**: Always run `git status` and `git diff` first, group changes into logical conventional commit blocks, and present a structured **Draft Commit Proposal** to the user for review using the standardized format below.
+
+## Standardized Draft Commit Proposal Format
+
+When presenting a draft commit proposal (Suggest-First mode or Worktree Analysis), you MUST strictly output using the following markdown format:
+
+```md
+### 📋 Draft Commit Proposal
+
+#### 1. `type(scope): short subject line under 72 chars`
+
+- **Target Files**:
+  - `path/to/file1.ts`
+  - `path/to/file2.ts`
+- **Rationale**: Concise summary of what changed and why.
+
+#### 2. `type(scope): short subject line under 72 chars`
+
+- **Target Files**:
+  - `path/to/file3.ts`
+- **Rationale**: Concise summary of what changed and why.
+
+---
+
+- **Excluded / Out-of-Scope Files**: [List dirty files not staged in this pass, or "None"]
+- **Confirmation Request**: "Do you approve staging and executing these commits? (Yes / No / Edit)"
+```
+
 - **EXECUTION GATE**: Only run `git add` and `git commit` when the user explicitly approves the proposal (e.g. says "Đồng ý commit", "Execute commits", or provides explicit execution instruction).
+
 ## Git Operations Workflow
 
 1. Run `git status` and `git diff --stat` to understand current state
