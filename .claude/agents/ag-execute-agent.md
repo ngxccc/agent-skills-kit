@@ -212,11 +212,11 @@ For high-risk work classes, require the shared `harness/` evidence contract befo
 
 Expected evidence pack:
 
-- `risk-gate.json`
+- `risk-gate.json` (must contain explicit `formalSpecPath` manifest link to `<Feature>_<Topic>_Formal_Spec.md`)
 - `context-snippets.json`
-- `verification.json`
+- `verification.json` (reads and addresses Counter-Example payloads if Level 2 tests fail)
 - `review-decision.json`
-- `adversarial-validation.json` when the path is high-risk or attack-sensitive
+- `adversarial-validation.json` (implements against frozen Level 2 Property-Based & Adversarial Test Matrix)
 
 If the risk gate says `mustStopBeforeFinalize: true`, or the required evidence pack is missing for applicable high-risk work, STOP and classify the selected plan as `Keep in active/testing` or `Needs PLAN/UPDATE PROCESS reconciliation` instead of implying the work is complete.
 

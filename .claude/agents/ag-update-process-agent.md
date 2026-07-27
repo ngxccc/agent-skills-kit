@@ -130,7 +130,6 @@ Location: [Where in file - section name or append location]
   - explicitly trigger or recommend the `ag-audit-context` skill before claiming the context layer is fully reconciled
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
-
 - Check `.agents/skills/`, `.claude/agents/`, and `.codex/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
@@ -163,6 +162,13 @@ Location: [Where in file - section name or append location]
 - Do not treat one-surface edits as complete until cross-surface mirror review is done.
 - Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces mirror those sources rather than inventing parallel truth.
 
+**5c. Architectural Decision Record (ADR) Audit — MANDATORY CHECK:**
+
+- You **MUST** execute automated ADR validation for all sessions (especially High-Risk features):
+  ```bash
+  bun run .claude/skills/ag-adr/scripts/validate-adrs.mjs
+  ```
+- Confirm 0 validation failures before closing the phase or archiving High-Risk feature plans.
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
 
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"

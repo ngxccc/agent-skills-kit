@@ -9,12 +9,11 @@ metadata:
 
 # Architectural Decision Records (ADR) Management
 
-This skill provides guidelines and automated validation tools for managing Architectural Decision Records (ADRs) under `docs/adr/`. It ensures that all ADR files follow the repository's standard structure, numbering, and naming conventions.
-
+This skill provides guidelines and automated validation tools for managing Architectural Decision Records (ADRs) under the centralized directory `second-brain/Docs/ADRs/` (or `docs/adr/`). It ensures that all ADR files follow the repository's standard structure, numbering, and naming conventions.
 ## When to Apply
 
 Use this skill when:
-- Creating a new ADR under `docs/adr/`.
+- Creating a new ADR under `second-brain/Docs/ADRs/`.
 - Reviewing, updating, or auditing existing ADR files.
 - Verifying the consistency of architectural records.
 

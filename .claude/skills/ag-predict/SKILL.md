@@ -42,14 +42,13 @@ Five expert personas independently analyze a proposed change, then debate confli
 
 ## Debate Protocol
 
-1. **Read** the proposed change/feature description from the argument
+1. **Read** the proposed change/feature description from the argument. For High-Risk features, read `<Feature>_<Topic>_Formal_Spec.md` if available.
 2. **Read relevant code** if file paths are provided (grep for affected areas)
 3. **Each persona analyzes independently** — do not let personas influence each other during this phase
 4. **Identify agreements** — points where all (or 4+) personas align
 5. **Identify conflicts** — points where personas meaningfully disagree
 6. **Weigh tradeoffs** — for each conflict, evaluate which concern has higher impact
-7. **Produce verdict** — GO / CAUTION / STOP with actionable recommendations
-
+7. **Produce verdict** — GO / CAUTION / STOP with actionable recommendations and populate `process/features/{feature}/reports/harness/adversarial-validation.json` for High-Risk features.
 ---
 
 ## Output Format
@@ -104,10 +103,10 @@ Five expert personas independently analyze a proposed change, then debate confli
 
 | Workflow Step                    | Skill                          | How                                                                  |
 | -------------------------------- | ------------------------------ | -------------------------------------------------------------------- |
+| Freeze Level 2 Verifier Matrix   | `ag-tester` / `ag-security`    | Map Risk Summary into `adversarial-validation.json`                   |
 | Deepen risk scenarios            | `ag-scenario`                  | Feed Risk Summary rows as feature description                        |
-| Create implementation plan       | `generate-plan` / `plan-agent` | Attach Recommendations as constraints to the canonical planning path |
-| High-risk feature implementation | `execute-agent`                | Reference CAUTION/STOP items as acceptance gates                     |
-
+| Create implementation plan       | `ag-generate-plan` / `plan-agent` | Attach Recommendations as constraints to the canonical planning path |
+| High-risk feature implementation | `ag-execute-agent`             | Reference CAUTION/STOP items as acceptance gates                     |
 ---
 
 ## Example Invocations

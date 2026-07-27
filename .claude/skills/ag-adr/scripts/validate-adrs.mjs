@@ -11,7 +11,9 @@ const colors = {
   cyan: "\x1b[36m",
 };
 
-const adrDir = path.resolve("docs/adr");
+const primaryAdrDir = path.resolve("second-brain/Docs/ADRs");
+const fallbackAdrDir = path.resolve("docs/adr");
+const adrDir = fs.existsSync(primaryAdrDir) ? primaryAdrDir : (fs.existsSync(fallbackAdrDir) ? fallbackAdrDir : primaryAdrDir);
 let failures = 0;
 
 function logError(file, message) {
@@ -24,8 +26,7 @@ function logSuccess(file, message) {
 }
 
 if (!fs.existsSync(adrDir)) {
-  console.error(`${colors.red}Error: ADR directory docs/adr does not exist.${colors.reset}`);
-  process.exit(1);
+  fs.mkdirSync(adrDir, { recursive: true });
 }
 
 const files = fs.readdirSync(adrDir).filter(f => f.endsWith(".md"));

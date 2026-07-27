@@ -51,11 +51,11 @@ Not all 12 apply to every feature. Identify relevant dimensions first, then gene
 
 ## Workflow
 
-1. **Read** target file(s) or parse feature description from argument
+1. **Read** target file(s) or parse feature description. For High-Risk features, read `<Feature>_<Topic>_Formal_Spec.md` first to extract System Invariants (`INV-1`) and Pre/Post-conditions as the scenario baseline.
 2. **Filter dimensions** — mark which of the 12 apply; skip irrelevant ones explicitly
-3. **Generate 3–5 scenarios** per relevant dimension
+3. **Generate 3–5 scenarios** per relevant dimension based on System Invariants
 4. **Categorize severity** — Critical / High / Medium / Low
-5. **Output** as structured table (see format below)
+5. **Output** as structured table and populate the frozen test matrix in `process/features/{feature}/reports/harness/adversarial-validation.json` for High-Risk features.
 6. **Summarize** total scenario count by severity
 
 ### Severity Criteria
@@ -97,10 +97,10 @@ Dimensions skipped: [list + reason]
 
 | Next Step                          | Skill                          | How                                            |
 | ---------------------------------- | ------------------------------ | ---------------------------------------------- |
-| Generate test cases from scenarios | `ag-test`                      | Pass scenario table as input context           |
-| Inform implementation plan risks   | `generate-plan` / `plan-agent` | Paste Critical/High rows into risk assessment  |
+| Consume Formal Specification       | `ag-brainstorming` / `ag-workflow-doc` | Read `<Feature>_<Topic>_Formal_Spec.md` System Invariants |
+| Freeze Level 2 Verifier Matrix     | `ag-tester`                    | Save scenario matrix to `adversarial-validation.json` |
+| Inform implementation plan risks   | `ag-generate-plan` / `plan-agent` | Link Critical/High scenarios into risk assessment |
 | Deep persona debate on top risks   | `ag-predict`                   | Feed Critical scenarios as the change proposal |
-
 ---
 
 ## Example Invocations

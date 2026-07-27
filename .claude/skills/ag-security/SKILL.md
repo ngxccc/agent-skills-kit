@@ -39,10 +39,9 @@ Runs a structured STRIDE + OWASP security audit on a given scope. Produces a sev
 
 ## Audit Methodology
 
-### 1. Scope Resolution
+### 1. Scope Resolution & Formal Spec Grounding
 
-Expand the provided glob or `full` keyword into a file list. Read all in-scope files before analysis.
-
+Expand the provided glob or `full` keyword into a file list. For High-Risk features, read `formalSpecPath` from `risk-gate.json` (pointing to `<Feature>_<Topic>_Formal_Spec.md`) and use System Invariants (`INV-1`) as the STRIDE baseline.
 ### 2. STRIDE Analysis
 
 Evaluate each threat category systematically:
@@ -79,9 +78,7 @@ Assign each finding a severity level (see Severity Definitions below).
 
 ## Output Format
 
-```
-## Security Audit Report
-
+For High-Risk verification runs, write security violations as Counter-Example payloads directly into `process/features/{feature}/reports/harness/verification.json`:
 ### Summary
 - Files scanned: N
 - Findings: X critical, Y high, Z medium, W low, V info
@@ -127,11 +124,12 @@ When `--fix` is provided, apply fixes iteratively after the audit:
 
 ## Integration with Other Skills
 
+- Read `formalSpecPath` from `risk-gate.json` for High-Risk Formal Spec grounding
+- Output Counter-Example JSON payloads to `verification.json` for the AI Coder feedback loop
 - Run after `ag-predict` when the security persona flags concerns
 - Feed Critical/High findings into `ag-autoresearch --fix` for automated remediation
 - Use `ag-scenario` with `--focus authorization` for deeper auth flow testing
-- Pair with `generate-plan` / `plan-agent` to schedule Medium/Low findings as sprint tasks
-
+- Pair with `ag-generate-plan` / `plan-agent` to schedule Medium/Low findings as sprint tasks
 ---
 
 ## Example Invocations

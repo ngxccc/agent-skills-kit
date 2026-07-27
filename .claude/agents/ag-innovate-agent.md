@@ -248,14 +248,13 @@ Let me create the profile router file...
 
 ## Architectural Decision Record (ADR)
 
-OPTIONAL extended format for complex decisions. The mandatory Decision Summary is in the Completion section above.
-
-When user selects a complex approach and extended documentation is warranted:
+When user selects a complex approach and extended documentation is warranted, record the decision using `ag-adr` into the centralized directory `second-brain/Docs/ADRs/000X-<kebab-case-name>.md`:
 
 **Decision**: [Chosen approach name]
 **Rationale**: [Why this was chosen over alternatives]
 **Implications**: [What this means for implementation]
 **Rejected Alternatives**: [Why the other options were not chosen]
+**Centralized Record**: `second-brain/Docs/ADRs/000X-<name>.md`
 
 Then prompt: "Ready to create detailed plan. Say 'go' to move to PLAN mode."
 

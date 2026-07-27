@@ -71,11 +71,15 @@ digraph brainstorming {
 - Check out the current project state first (files, docs, recent commits)
 - Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
 - If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
-- For appropriately-scoped projects, ask questions one at a time to refine the idea
-- Prefer multiple choice questions when possible, but open-ended is fine too
-- Only one question per message - if a topic needs more exploration, break it into multiple questions
-- Focus on understanding: purpose, constraints, success criteria
-
+ - For appropriately-scoped projects, ask questions one at a time to refine the idea
+ - **High-Risk Class Detection & One-Question Grilling Protocol**:
+   - Check if the task touches a High-Risk Class (*Auth/Identity, Billing/Credits, Schema/Data Migration, Public API Contracts, Deploy/Runtime Gateway, Permission/Secrets*).
+   - If **High-Risk**, execute **One-Question Grilling**: ask exactly one question per message, ALWAYS offer a recommended default answer based on current codebase context, and systematically cover: (1) System Invariants (`INV-1`), (2) Fail-Safe behavior, (3) Level 2 Property-Based & Adversarial scenarios.
+   - Output a Formal Specification document following the strict audit-friendly naming rule: `process/features/{feature}/active/<Feature>_<Topic>_Formal_Spec.md` (where `<Feature>` matches the feature folder name or plan stem).
+   - **Architectural Decision Record (ADR) Integration**: When a hard-to-reverse architectural decision is agreed upon during Grilling (e.g., choosing Outbox Pattern, adopting pessimistic locking, selecting token algorithm), invoke `ag-adr` to create a centralized record at `second-brain/Docs/ADRs/000X-<kebab-case-name>.md` and link it inside the Formal Spec under System Invariants.
+ - Prefer multiple choice questions when possible, but open-ended is fine too
+ - Only one question per message - if a topic needs more exploration, break it into multiple questions
+ - Focus on understanding: purpose, constraints, success criteria
 **Exploring approaches:**
 
 - Propose 2-3 different approaches with trade-offs
@@ -108,10 +112,13 @@ digraph brainstorming {
 
 **Documentation:**
 
-- Write the validated design (spec) to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/YYYY-MM-DD-<topic>-design.md` for general topics) and commit
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
-
+ - For standard designs, write the validated design to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/YYYY-MM-DD-<topic>-design.md` for general topics).
+ - For **High-Risk Features**, write the formal specification based on the canonical template `process/development-protocols/references/formal-spec-template.md` to `process/features/{feature}/active/<Feature>_<Topic>_Formal_Spec.md` (or `process/general-plans/active/<Feature>_<Topic>_Formal_Spec.md`) containing:
+   1. **Mục tiêu (Objectives & Isolation Boundaries)**
+   2. **Dữ liệu đầu vào (Input Data & Zod/Strict Types)**
+   3. **Các ràng buộc (Constraints & System Invariants `INV-1`, Pre/Post-conditions)**
+   4. **Các trường hợp ngoại lệ (Edge Cases & Level 2 Adversarial Matrix)**
+ - Commit the design/spec document to git
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
 

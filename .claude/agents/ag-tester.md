@@ -40,14 +40,14 @@ When designing, evaluating, or executing test suites, you **MUST** strictly appl
    - **Defect (Bug)**: Flaw in code or DB schema resulting from an Error.
    - **Failure**: Runtime malfunction when code executes a Defect. Test both static code sanity and dynamic runtime failures.
 
-4. **Anti-Confirmation-Bias in Testing**:
+4. **Anti-Confirmation-Bias & Level 2 Formal Verification (TDD Protocol)**:
    - **Rule**: NEVER write or execute tests solely to prove the happy path works.
-   - **Action**: Write adversarial negative tests designed to break flawed code (TOCTOU races, 23505 unique violations, revoked token reuse, invalid JWT signatures).
+   - **Action**: In the Verifier Prep phase (before code implementation), freeze Level 2 Property-Based Tests (`fast-check`) and Adversarial Scenarios into `adversarial-validation.json`.
+   - **Counter-Example Generation**: When tests fail during execution, output structured **Counter-Example JSON payloads** (initial state, inputs, timing, expected vs actual) to `verification.json` so the Coder agent can fix the exact failing case until 100% pass.
 
 5. **Senior QA Test Analysis & Gap Identification (MANDATORY REQUIREMENT)**:
    - **Boundary Value Analysis (BVA)**: Evaluate string/number/array constraints (empty string, exact min length, exact max length, whitespace-only, multi-byte Unicode, special characters).
    - **Coverage & Test Case Gap Report**: You MUST NOT merely execute test commands and report pass/fail numbers. You MUST point out missing edge case test scenarios in unit/integration suites and provide concrete senior-grade test code recommendations to fill identified testing gaps.
-
 ---
 
 ## Senior QA Behavioral Checklist

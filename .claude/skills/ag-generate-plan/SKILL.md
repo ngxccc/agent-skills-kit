@@ -29,8 +29,9 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 6. Read `process/context/all-context.md` when present to choose relevant context docs.
 7. For complex plans, read `process/development-protocols/references/example-complex-prd.md` before writing.
 8. Include automated and manual verification gates from `process/context/tests/all-tests.md`.
-9. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
-10. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
+9. For High-Risk features (*Auth, Billing, DB Schema, API Contract, Gateway, Secrets*), explicitly link the formal specification path (`formalSpecPath: process/features/{feature}/active/<Feature>_<Topic>_Formal_Spec.md`) in the Plan header and in `risk-gate.json`.
+10. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
+11. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
 11. If the work is a large multi-phase program, create or update a feature folder plan set:
 
 - one umbrella/orchestration plan

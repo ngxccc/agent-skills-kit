@@ -19,11 +19,10 @@ Before drafting any section, you MUST query the project's Codebase Knowledge Gra
 
 If MCP tools return no results or MCP is unavailable, fallback to surgical grep/glob reads, but NEVER invent routes, DTO names, or file paths.
 
-### 2. Determine Document Type (`docType`)
+### 2. Determine Document Archetype & Phase Stage
 Select the appropriate document archetype from `process/development-protocols/references/workflow-documentation-standard.md`:
-- `docType: feature-workflow` — Business features (Auth, Booking, Payment, User management).
-- `docType: infrastructure-workflow` — System cross-cutting concerns (Global Exception Filters, Interceptors, Guards, Outbox Relay).
-
+- **Pre-Implementation Formal Spec (High-Risk)**: When invoked before coding on a High-Risk feature, produce `<Feature>_<Topic>_Formal_Spec.md` in `process/features/{feature}/active/` containing `docType: formal-spec`, System Invariants (`INV-1`), Pre/Post-conditions, and Level 2 Verifier Requirements.
+- **Post-Implementation SSOT Operational Doc**: When invoked after verification, produce `<Feature>_<Topic>_Workflow.md` in `second-brain/Docs/<Topic>/` (or feature references) containing `docType: feature-workflow` or `docType: infrastructure-workflow`.
 ### 3. Apply SSOT Markdown Template
 Load the exact template from `process/development-protocols/references/workflow-documentation-standard.md`:
 1. **Frontmatter**: Include `title`, `tags`, `docType`, `status`, `date`.
@@ -38,6 +37,5 @@ Follow the strict **PascalCase with Underscores** naming convention:
 - Syntax: `PascalCase_With_Underscores_Workflow.md` (e.g. `Register_User_Workflow.md`, `Global_Exception_Filter_Workflow.md`).
 
 **Destination Priority**:
-1. `second-brain/Docs/<Topic>/<File_Name_Workflow.md>` (if `second-brain/` directory exists in the repo workspace).
-2. `process/features/<topic>/references/<File_Name_Workflow.md>` (if working within a feature scope).
-3. `process/general-plans/references/<File_Name_Workflow.md>` (fallback).
+1. Pre-Implementation Formal Spec: `process/features/<topic>/active/<Feature>_<Topic>_Formal_Spec.md` (or `process/general-plans/active/`).
+2. Post-Implementation SSOT Operational Doc: `second-brain/Docs/<Topic>/<Feature>_<Topic>_Workflow.md` (or `process/features/<topic>/references/`).
