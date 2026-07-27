@@ -322,7 +322,6 @@ The active system is intentionally split into four layers:
   - `ag-repomix`
   - `ag-docs-seeker`
   - `ag-agent-browser`
-  - `ag-context-engineering`
   - `ag-web-testing`
   - `ag-frontend-design`
   - `ag-predict`
@@ -432,7 +431,6 @@ Cross-phase utilities (skills, not agents):
 - `ag-xia` - Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` - Repository packing helper for references-only artifacts, audits, and feature-porting prep
 - `ag-agent-browser` - AI Browser automation CLI with Puppeteer & DevTools script capabilities, primarily EXECUTE
-- `ag-context-engineering` - Token optimization guidance, any phase
 - `ag-debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` - Autonomous iterative optimization loop after execute phase for measurable metrics
 
@@ -477,7 +475,6 @@ Skill Registry:
 | `ag-audit-context`                      | Context routing and discoverability audit                                                                                                                       | context audit, reorganize context, stale context                                                                     |
 | `ag-audit-plans`                        | Active-plan maintenance and cleanup                                                                                                                             | stale plans, cleanup plans, archive plans, plan audit                                                                |
 | `ag-web-testing`                        | Playwright/Vitest/k6 test automation                                                                                                                            | tests, e2e, integration test, performance test                                                                       |
-| `ag-context-engineering`                | Token/context optimization                                                                                                                                      | context limit, token usage, optimize context                                                                         |
 | `ag-preview`                            | Visual diagrams, slides, file viewer                                                                                                                            | diagram, visualize, slides, preview                                                                                  |
 | `ag-mcp-management`                     | MCP server tools                                                                                                                                                | MCP, model context protocol                                                                                          |
 | `ag-agent-browser`                      | AI browser automation CLI with Puppeteer/DevTools script support                                                                                                | browser, screenshot, scrape, automate browser, visual testing, browserbase                                           |

@@ -1,61 +1,63 @@
-<p align="center">
-  <a href="SECURITY.md"><strong>English</strong></a> |
-  <a href="docs/i18n/SECURITY.zh-CN.md">简体中文</a> |
-  <a href="docs/i18n/SECURITY.ja-JP.md">日本語</a> |
-  <a href="docs/i18n/SECURITY.ko-KR.md">한국어</a> |
-  <a href="docs/i18n/SECURITY.vi-VN.md">Tiếng Việt</a> |
-  <a href="docs/i18n/SECURITY.pt-BR.md">Portugues</a>
-</p>
-
 # Security Policy
 
-## Supported Versions
+> **Agent Skills Kit Security Model & Vulnerability Disclosure Policy**
 
-| Version        | Supported |
-| -------------- | --------- |
-| Latest release | Yes       |
-| Older versions | No        |
+---
 
-## Reporting a Vulnerability
+## 🛡️ Supported Versions
+
+| Version | Supported | Notes |
+| :--- | :--- | :--- |
+| **Latest (`main` branch)** | ✅ Yes | Active security patches and updates |
+| Older releases / commits | ❌ No | Please upgrade to latest `main` |
+
+---
+
+## 🔒 Reporting a Vulnerability
 
 **Do NOT open a public issue for security vulnerabilities.**
 
-Instead, use GitHub Security Advisories to report vulnerabilities privately:
+To report a vulnerability privately, please use GitHub Private Vulnerability Reporting:
 
-[Report a vulnerability](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)
-
-> **Note:** Private Vulnerability Reporting must be enabled in repository settings for the "Report a vulnerability" button to appear.
+👉 **[Report a Security Vulnerability](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)**
 
 ### Response Timeline
+- **Acknowledgment:** Within 48 hours.
+- **Severity Assessment:** Within 7 days.
+- **Patch & Fix:** Target resolution within 30 days.
 
-- **48-hour** acknowledgment of your report
-- **7-day** initial assessment and severity classification
-- We will keep you informed of progress throughout the process
+---
 
-## Scope
+## 🎯 Scope
 
 ### In Scope
-
-- **Hook scripts** (`privacy-block.cjs`, `scout-block.cjs`) — bypass vulnerabilities that allow agents to access blocked resources
-- **install.sh** — supply chain attacks, command injection, or path traversal
-- **Agent prompts** — prompt injection that bypasses phase-locking or tool restrictions
-- **Privacy leaks** — agent accessing credentials, API keys, or sensitive files despite guardrails
-- **System-reminder / subagent-init injection** — context injection attacks that manipulate agent behavior
+- **Hook Scripts (`.claude/hooks/`, `.codex/hooks/`)**: Bypass flaws in `privacy-block.cjs` or `scout-block.cjs` that allow unauthorized access to sensitive files or secrets.
+- **Installer Script (`install.sh`)**: Command injection, supply chain issues, or unsafe file operations.
+- **Agent Governance & Prompts (`.claude/agents/`, `.codex/agents/`)**: Prompt injection vulnerabilities that bypass RIPER-5 phase-locking, tool permissions, or formal spec risk gates.
+- **Secret & Credential Leakage**: Flaws in the harness that expose `.env` secrets, API keys, or private tokens to agent context unexpectedly.
+- **ADR & Spec Verification Scripts**: Vulnerabilities in automated validators (`validate-adrs.mjs`, `validate-agent-parity.mjs`).
 
 ### Out of Scope
+- Vulnerabilities in upstream AI CLI tools (Claude Code, OpenAI Codex, Antigravity).
+- Vulnerabilities in application code outside the harness directory.
+- Denial of Service (DoS) against local developer workstations.
 
-- Vulnerabilities in Claude Code or Codex themselves (report to Anthropic or OpenAI respectively)
-- Issues in user project code (not the harness)
-- Social engineering attacks against maintainers
+---
 
-## Disclosure Timeline
+## 🤖 Harness Security & Automated Verification
 
-- We aim to fix confirmed vulnerabilities within **30 days**
-- Coordinated disclosure after the fix is released
-- Credit given to the reporter in release notes (unless you prefer anonymity)
+The `agent-skills-kit` enforces strict security boundaries during agent execution:
 
-## Safe Harbor
+1. **High-Risk Security Baseline (`ag-security`)**:
+   - Automated STRIDE & OWASP ASVS scans for High-Risk features (Auth, Billing, Secrets, Public APIs).
+   - Formal Spec Invariant validation (`INV-1`) before implementation approval.
+2. **Privacy Block Hook**:
+   - Intercepts unsafe file access attempts to prevent secret leakage.
+3. **Formal Verifier Matrix**:
+   - Security personas flag vulnerabilities into `adversarial-validation.json` and block phase closure if unverified.
 
-We consider security research conducted in good faith to be authorized. We will not pursue legal action against researchers who act in good faith and follow this policy.
+---
 
-If you are unsure whether your research qualifies, please reach out before testing — we are happy to clarify scope.
+## 📜 Safe Harbor
+
+We consider good-faith security research authorized. We will not take legal action against researchers who report vulnerabilities according to this policy without exploiting them or exposing user data.

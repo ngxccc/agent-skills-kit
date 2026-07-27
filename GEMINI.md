@@ -336,7 +336,6 @@ The active system is intentionally split into four layers:
   - `ag-repomix`
   - `ag-docs-seeker`
   - `ag-agent-browser`
-  - `ag-context-engineering`
   - `ag-web-testing`
   - `ag-frontend-design`
   - `ag-predict`
@@ -445,7 +444,6 @@ Cross-phase utilities (skills, not agents):
 - `ag-xia` - Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` - Repository packing helper for references-only artifacts, audits, and feature-porting prep
 - `ag-agent-browser` - Specialist AI browser automation agent
-- `ag-context-engineering` - Token optimization guidance, any phase
 - `ag-debug` - Specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` - Autonomous iterative optimization loop after execute phase for measurable metrics
 

@@ -280,7 +280,6 @@ The active system is intentionally split into four layers:
   - `ag-xia`
   - `ag-repomix`
   - `ag-docs-seeker`
-  - `ag-context-engineering`
   - `ag-web-testing`
   - `ag-frontend-design`
   - `ag-predict`
@@ -381,7 +380,6 @@ These agents add capabilities beyond the core RIPER-5 workflow. They are invoked
 - `ag-watzup` — Read-only repo, local/remote ref, worktree, and active-plan handoff summary helper with advisory-only selected-plan hints
 - `ag-xia` — Repo comparison and adaptation-prep helper with recon, map, analyze, and challenge stages that stops before planning or coding
 - `ag-repomix` — Repository packing helper for references-only artifacts, audits, and feature-porting prep
-- `ag-context-engineering` — Token optimization guidance, any phase
 - `ag-debug` — specialist root-cause-analysis helper, usable alongside `ag-debugger`
 - `ag-autoresearch` — Autonomous iterative optimization loop. Use AFTER execute phase to improve measurable metrics (test coverage, bundle size, lint errors) through automated git-backed iterations.
 
@@ -414,7 +412,6 @@ Before routing, scan `.claude/skills/` directory names and match keywords from t
 | `ag-workflow-doc`       | Grounded feature & infrastructure workflow documentation using Codebase Memory MCP and SSOT standard   | workflow doc, feature workflow, infrastructure workflow, sequence diagram, WBS table, second brain workflow   |
 | `ag-docs-seeker`         | Library docs via context7                                                                                       | how does X work, API docs, version, syntax                                                                    |
 | `ag-web-testing`         | Playwright/Vitest/k6 test automation                                                                            | tests, e2e, integration test, performance test                                                                |
-| `ag-context-engineering` | Token/context optimization                                                                                      | context limit, token usage, optimize context                                                                  |
 | `ag-preview`             | Visual diagrams, slides, file viewer                                                                            | diagram, visualize, slides, preview                                                                           |
 | `ag-mcp-management`      | MCP server tools                                                                                                | MCP, model context protocol                                                                                   |
 | `ag-agent-browser`       | AI browser automation CLI                                                                                       | long browser session, browserbase, visual testing                                                             |
