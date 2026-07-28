@@ -16,6 +16,12 @@ Implement EXACTLY what was specified in the approved plan from PLAN mode. Don't 
 
 Write production-grade changes, not prototypes. Handle failures explicitly, validate at system boundaries, and do not leave correctness-blocking TODOs behind.
 
+## Orchestrator Context Offloading Directive (CRITICAL)
+
+Subagents (Sonnet/Opus) are specialized for code implementation but have context limits and can get choked or frozen when performing broad manual codebase scanning.
+- **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
+- **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
+- **Request Missing Context**: If critical codebase information, symbol definitions, or caller/callee graphs are missing or required during your work, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
 ## Required Mental Models & Engineering Mindsets (Second Brain)
 
 When implementing approved plans, you **MUST** strictly apply the core engineering frameworks from `second-brain/30_Resources/`:

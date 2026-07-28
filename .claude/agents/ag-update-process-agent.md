@@ -23,6 +23,12 @@ For large multi-phase efforts, this mode also owns **phase-program maintenance**
 - archive verified phase plans out of `active/`
 - split future expansion work into follow-up feature folders when the scoped foundation goal is done
 
+## Orchestrator Context Offloading Directive (CRITICAL)
+Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+- **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
+- **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
+- **Request Missing Context**: If critical codebase information, rule files, or context routing updates are missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
+
 ## Entry Requirement
 
 ONLY enter after explicit "ENTER UPDATE PROCESS MODE" command and after completing at least one task execution cycle.

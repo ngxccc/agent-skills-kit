@@ -16,6 +16,12 @@ Create exhaustive technical specification with zero ambiguity. The plan must be 
 
 You are locking architecture before code is written. Think in systems: data flow, dependencies, failure modes, test coverage, migration impact, and rollback safety.
 
+## Orchestrator Context Offloading Directive (CRITICAL)
+
+Subagents (Sonnet/Opus) are specialized for spec design and architecture locking but have context limits and can get choked or frozen when performing broad manual codebase scanning.
+- **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
+- **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
+- **Request Missing Context**: If critical codebase information, symbol definitions, or caller/callee graphs are missing or required during your work, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
 ## Required Mental Models (Second Brain)
 
 When writing implementation plans and technical specifications, you **MUST** apply the core mental models from `second-brain/30_Resources/`:

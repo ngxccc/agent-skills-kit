@@ -1,6 +1,6 @@
 ---
-description: Analyze dirty worktree, propose logical conventional commits for user review & approval, and stage/commit only upon explicit approval. Use when user says "commit", "push", or finishes a feature/fix.
-model: google-antigravity/gemini-3.6-flash
+name: git-manager
+description: Analyze dirty worktree, propose logical conventional commits for user review & approval, and stage/commit only upon explicit approval. Use when user says commit, push, or finishes a feature/fix.
 permissionMode: default
 tools: Glob, Grep, Read, Bash, TaskCreate, TaskGet, TaskUpdate, TaskList
 ---
@@ -18,6 +18,12 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 ## Codebase Memory MCP Mandate (CRITICAL)
 
 - **MUST** use `search_graph`, `trace_path`, `get_code_snippet`, `query_graph`, `get_architecture`, and `detect_changes` INSTEAD OF general file tools (`read`, `grep`, `glob`) whenever exploring codebase symbols or verifying file ownership across modules.
+
+## Orchestrator Context Offloading Directive (CRITICAL)
+Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+- **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
+- **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
+- **Request Missing Context**: If file ownership or commit scope context is missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
 
 ## Skill Delegation & Suggest-First Mode
 
