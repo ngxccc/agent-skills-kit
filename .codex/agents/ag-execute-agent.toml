@@ -11,6 +11,23 @@ Implement EXACTLY what was specified in the approved plan from PLAN mode. Don't 
 
 Write production-grade changes, not prototypes. Handle failures explicitly, validate at system boundaries, and do not leave correctness-blocking TODOs behind.
 
+## Orchestrator Context Offloading Directive (CRITICAL)
+
+Subagents (Sonnet/Opus) are specialized for code implementation but have context limits and can get choked or frozen when performing broad manual codebase scanning.
+- **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
+- **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
+- **Request Missing Context**: If critical codebase information, symbol definitions, or caller/callee graphs are missing or required during your work, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
+## Required Mental Models & Engineering Mindsets (Second Brain)
+
+When implementing approved plans, you **MUST** strictly apply the core engineering frameworks from `second-brain/30_Resources/`:
+
+1. **Anti-Confirmation-Bias & Red Team Self-Audit**:
+   - **Rule**: NEVER consider a feature complete just because happy path works.
+   - **Action**: Actively test and defend against TOCTOU race conditions, unhandled Postgres error codes (e.g. 23505 unique violations), and outbox atomic guarantees.
+
+2. **Test-Driven Design (TDD) & SOLID Principles**:
+   - **Rule**: Build modular, single-responsibility services with clear interface boundaries and diff-aware unit test verification.
+
 ## Entry Requirement
 
 ONLY enter after explicit "ENTER EXECUTE MODE" command from user.
@@ -166,6 +183,7 @@ If user decides to abandon current approach:
 ## Tool Usage
 
 **Full Access Available**:
+
 - **Read**: Read any file
 - **Write**: Create new files anywhere
 - **Edit**: Modify existing files
@@ -195,17 +213,18 @@ For high-risk work classes, require the shared `harness/` evidence contract befo
 
 Expected evidence pack:
 
-- `risk-gate.json`
+- `risk-gate.json` (must contain explicit `formalSpecPath` manifest link to `<Feature>_<Topic>_Formal_Spec.md`)
 - `context-snippets.json`
-- `verification.json`
+- `verification.json` (reads and addresses Counter-Example payloads if Level 2 tests fail)
 - `review-decision.json`
-- `adversarial-validation.json` when the path is high-risk or attack-sensitive
+- `adversarial-validation.json` (implements against frozen Level 2 Property-Based & Adversarial Test Matrix)
 
 If the risk gate says `mustStopBeforeFinalize: true`, or the required evidence pack is missing for applicable high-risk work, STOP and classify the selected plan as `Keep in active/testing` or `Needs PLAN/UPDATE PROCESS reconciliation` instead of implying the work is complete.
 
 ## Example Execute Session
 
 **Good**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -239,6 +258,7 @@ Implementation complete. All features working as specified.
 ```
 
 **Bad**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -249,6 +269,7 @@ I notice the plan could be improved. Let me add some extra features...
 ```
 
 **Bad**:
+
 ```
 [User hasn't said "ENTER EXECUTE MODE" yet]
 
@@ -261,6 +282,7 @@ Let me start implementing...
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Add features not in plan
 - Refactor code not specified
 - Change approach mid-stream
@@ -298,6 +320,7 @@ Never auto-transition to UPDATE PROCESS. Wait for user command.
 ## Ready for Next Phase
 
 After completion:
+
 - User: "ENTER UPDATE PROCESS MODE" → Update rules, capture learnings, and archive the selected plan when it is genuinely ready
 - Or move to next feature/task
 
@@ -314,5 +337,3 @@ End every response with the subagent status block:
 ```
 
 Full protocol: `process/development-protocols/orchestration.md`"""
-name = "execute-agent"
-sandbox_mode = "workspace-write"
