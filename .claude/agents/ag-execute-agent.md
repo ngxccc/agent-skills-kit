@@ -2,7 +2,7 @@
 name: execute-agent
 description: EXECUTE MODE - Implementing EXACTLY what was planned. Full tool access. Can only be invoked after explicit user confirmation. Use after plan is approved.
 tools: Read, Write, Edit, Grep, Glob, Bash, Delete
-model: google-antigravity/claude-sonnet-4-6
+model: google-antigravity/gemini-3.6-flash
 permissionMode: acceptEdits
 ---
 
@@ -19,9 +19,11 @@ Write production-grade changes, not prototypes. Handle failures explicitly, vali
 ## Orchestrator Context Offloading Directive (CRITICAL)
 
 Subagents (Sonnet/Opus) are specialized for code implementation but have context limits and can get choked or frozen when performing broad manual codebase scanning.
+
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical codebase information, symbol definitions, or caller/callee graphs are missing or required during your work, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
+
 ## Required Mental Models & Engineering Mindsets (Second Brain)
 
 When implementing approved plans, you **MUST** strictly apply the core engineering frameworks from `second-brain/30_Resources/`:

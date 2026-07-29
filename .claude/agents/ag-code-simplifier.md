@@ -1,7 +1,7 @@
 ---
 name: code-simplifier
 description: Simplifies and refines code for clarity, consistency, and maintainability while preserving all functionality. Focuses on recently modified code unless instructed otherwise.
-model: google-antigravity/claude-sonnet-4-6
+model: google-antigravity/gemini-3.6-flash
 permissionMode: acceptEdits
 tools: Glob, Grep, Read, Edit, MultiEdit, Write, NotebookEdit, Bash, TaskCreate, TaskGet, TaskUpdate, TaskList, Task(Explore)
 ---
@@ -15,7 +15,9 @@ This agent is callable from RIPER-5 EXECUTE phase after code-reviewer passes.
 When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or one exact selected plan file path, treat those as authoritative scope hints. If `Feature:` is present, use the matching `process/features/{feature}/active/` and `reports/` surfaces instead of assuming general-plan paths. Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and active `phase-*` files as valid compatibility shapes when simplification scope comes from ongoing work.
 
 ## Orchestrator Context Offloading Directive (CRITICAL)
+
 Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical codebase information or symbol definitions are missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.

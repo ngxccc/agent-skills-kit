@@ -2,7 +2,7 @@
 name: update-process-agent
 description: UPDATE PROCESS MODE - Analyze execution, generate rule improvements, update plan files and context. Use after completing EXECUTE mode to reconcile deviations and capture learnings.
 tools: Read, Write, Edit, Grep, Glob, Bash
-model: google-antigravity/claude-sonnet-4-6
+model: google-antigravity/gemini-3.6-flash
 permissionMode: default
 ---
 
@@ -24,7 +24,9 @@ For large multi-phase efforts, this mode also owns **phase-program maintenance**
 - split future expansion work into follow-up feature folders when the scoped foundation goal is done
 
 ## Orchestrator Context Offloading Directive (CRITICAL)
+
 Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical codebase information, rule files, or context routing updates are missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
@@ -136,6 +138,7 @@ Location: [Where in file - section name or append location]
   - explicitly trigger or recommend the `ag-audit-context` skill before claiming the context layer is fully reconciled
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
+
 - Check `.agents/skills/`, `.claude/agents/`, and `.codex/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
@@ -171,11 +174,13 @@ Location: [Where in file - section name or append location]
 **5c. Architectural Decision Record (ADR) Audit — MANDATORY CHECK:**
 
 - You **MUST** execute automated ADR validation for all sessions (especially High-Risk features):
+
   ```bash
   bun run .claude/skills/ag-adr/scripts/validate-adrs.mjs
   ```
+
 - Confirm 0 validation failures before closing the phase or archiving High-Risk feature plans.
-**6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
+  **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
 
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"
 - Look for phrases like: "skip for now", "we'll do this later", "not in scope", "defer", "parking this", "out of scope", "TODO", "future work"
@@ -271,10 +276,13 @@ For each approved improvement:
 - Read `process/context/all-context.md` first to identify the owning root file or context group.
 - Use `process/context/tests/all-tests.md` as the verification router whenever test commands, runner selection, or validation-gate truth changed.
 - Scan `process/context/` to identify ALL context files and groups:
+
   ```bash
   find process/context -maxdepth 2 -name '*.md' | sort
   ```
+
 - For each context file affected by the current task, spawn a **dedicated subagent** to handle the update:
+
   ```
   Agent: research-agent (or general-purpose for writes)
   Task: "Update process/context/{file}.md with the following changes from the recent task:
@@ -282,6 +290,7 @@ For each approved improvement:
         Read process/context/all-context.md first, then read the target file.
         Make targeted edits only, do not restructure unless the user approved context grouping work."
   ```
+
 - Spawn subagents in **parallel** when multiple context files need updating (independent edits)
 - Each subagent focuses on one file — keeps edits scoped and reviewable
 - Before finishing, summarize:
@@ -290,19 +299,20 @@ For each approved improvement:
   - what durable knowledge was moved out of chat and into docs
 
 **Context router and registry** (auto-maintained — see rule below):
-| Entry | Covers |
-|---|---|
-| `all-context.md` | Root context entrypoint, architecture, API surface, conventions, env vars, monorepo layout |
-| `tests/all-tests.md` | Testing quick-start, runner selection, commands, debugging procedures, and routing |
-| container context doc | Docker container lifecycle, plugin deployment, local dev commands, service ports |
-| `cf-workflows.md` | Cloudflare Workers workflow context and patterns |
-| `uiux.md` | UI/UX design patterns, component conventions, styling guidelines |
-| `process/development-protocols/references/example-simple-prd.md` | Reference template for simple plan structure |
-| `process/development-protocols/references/example-complex-prd.md` | Reference template for complex plan depth |
-| `tests/browser-automation.md` | Browser automation test patterns, `chrome-debug` workflows, and browser debugging |
-| skill-system context doc | skill system context, skill.json format, deployment |
-| `infra.md` | Infrastructure context: VPS, Docker, deployment, networking |
-| `skill-apps.md` | Vite skill apps infrastructure, gateway proxy, supervisord lifecycle |
+
+| Entry                                                             | Covers                                                                                     |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| `all-context.md`                                                  | Root context entrypoint, architecture, API surface, conventions, env vars, monorepo layout |
+| `tests/all-tests.md`                                              | Testing quick-start, runner selection, commands, debugging procedures, and routing         |
+| container context doc                                             | Docker container lifecycle, plugin deployment, local dev commands, service ports           |
+| `cf-workflows.md`                                                 | Cloudflare Workers workflow context and patterns                                           |
+| `uiux.md`                                                         | UI/UX design patterns, component conventions, styling guidelines                           |
+| `process/development-protocols/references/example-simple-prd.md`  | Reference template for simple plan structure                                               |
+| `process/development-protocols/references/example-complex-prd.md` | Reference template for complex plan depth                                                  |
+| `tests/browser-automation.md`                                     | Browser automation test patterns, `chrome-debug` workflows, and browser debugging          |
+| skill-system context doc                                          | skill system context, skill.json format, deployment                                        |
+| `infra.md`                                                        | Infrastructure context: VPS, Docker, deployment, networking                                |
+| `skill-apps.md`                                                   | Vite skill apps infrastructure, gateway proxy, supervisord lifecycle                       |
 
 **Registry auto-update rule**: After every UPDATE PROCESS session, run:
 

@@ -2,7 +2,7 @@
 name: fast-mode-agent
 description: FAST MODE - Execute compressed RIPER-5 workflow (RESEARCH + INNOVATE + PLAN) in one session, then pause for EXECUTE confirmation. Use when you want quick end-to-end solution.
 tools: Read, Write, Edit, Grep, Glob, Bash, Delete
-model: google-antigravity/claude-sonnet-4-6
+model: google-antigravity/gemini-3.6-flash
 permissionMode: acceptEdits
 ---
 
@@ -17,7 +17,9 @@ Combining RESEARCH + INNOVATE + PLAN + EXECUTE in compressed timeframe, with **m
 FAST mode is a compressed worker flow, not a separate orchestrator. It must still respect repo routing, selected-plan handoff rules, feature-scoped storage, and the same approval gates as the normal RIPER path.
 
 ## Orchestrator Context Offloading Directive (CRITICAL)
+
 Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical codebase information, symbol definitions, or caller/callee graphs are missing during FAST mode research/plan, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.

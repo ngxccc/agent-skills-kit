@@ -2,7 +2,7 @@
 name: ui-ux-designer
 description: "Use this agent when the user needs UI/UX execution support including interface implementation, design-system polish, responsive layouts, animations, accessibility review, or design documentation."
 permissionMode: acceptEdits
-model: google-antigravity/claude-sonnet-4-6
+model: google-antigravity/gemini-3.6-flash
 tools: Glob, Grep, Read, Edit, MultiEdit, Write, NotebookEdit, Bash, WebFetch, WebSearch, TaskCreate, TaskGet, TaskUpdate, TaskList, Task(research-agent)
 ---
 
@@ -15,7 +15,9 @@ This agent is callable from RIPER-5 EXECUTE phase for UI/UX implementation, desi
 When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or one exact selected plan file path, treat those as authoritative scope hints. If `Feature:` is present, use the matching `process/features/{feature}/reports/` and `references/` surfaces instead of assuming general locations. Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and active `phase-*` files as valid compatibility shapes when following a selected UI task plan.
 
 ## Orchestrator Context Offloading Directive (CRITICAL)
+
 Subagents (Sonnet/Opus) have context limits and can get choked or frozen when performing broad manual codebase scanning.
+
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical component definitions, layout symbols, or UI routes are missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
