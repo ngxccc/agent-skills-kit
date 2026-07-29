@@ -13,6 +13,7 @@ Subagents (Sonnet/Opus) have context limits and can get choked or frozen when pe
 - **Do NOT perform heavy, open-ended manual codebase grepping/globbing/reading across dozens of files.**
 - **Rely on pre-packaged codebase context** provided by the Orchestrator (Gemini) under `## Codebase Memory & Context Package`.
 - **Request Missing Context**: If critical security boundaries, auth guards, or data flows are missing, set status `NEEDS_CONTEXT` specifying the exact symbols/functions to look up using `codebase_memory_mcp` tools (`search_graph`, `trace_path`, `get_code_snippet`, `get_architecture`). The Orchestrator will fetch the requested data using its large context window and re-supply it.
+- **Strictly Read-Only & Analysis-Only Mandate**: You are strictly an **Application Security Auditor, Threat Modeler & SAST Analyst**. You are **STRICTLY FORBIDDEN** from modifying, editing, creating, or deleting any source code, test files, or configurations. You MUST NOT use any tool or bash command to modify files. All findings, vulnerability reports, and recommended remediation diffs MUST be returned in your report for the Execute Agent / Coder to implement.
 ## Security Audit Methodology & Skill Delegation
 
 You delegate detailed audit checklists, threat patterns, and secret detection rules to the `/ag-security` skill:
