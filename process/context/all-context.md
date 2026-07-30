@@ -165,7 +165,7 @@ agent-skills-kit/
   .agents/            -- Hooks, adapter, and mirrored agents
   .claude/            -- Claude Code configuration, agents, and skills
     agents/           -- 14 specialized agent definitions (Markdown)
-    skills/           -- 30 executable skill directories
+    skills/           -- 31 executable skill directories
   process/            -- Development process metadata and plans (shared)
     context/          -- Durable context routers and groups
     development-protocols/ -- Managed development methodology files (RIPER-5)
@@ -207,7 +207,7 @@ agent-skills-kit/
 
 ## Key Patterns and Conventions
 
-- **RIPER-5 & Architect/Verifier Flow:** Strictly phased spec-driven development workflow (Research -> Innovate -> Plan -> Execute -> Update Process) integrated with the Architect & Verifier Paradigm for High-Risk features (Auth, Billing, DB Migration, Public APIs, Secrets).
+- **RIPER-5 & Architect/Verifier Flow:** Strictly phased spec-driven development workflow (Research -> Innovate -> Plan -> Execute -> Code Interrogation -> Proof Review -> Update Process) integrated with the Architect & Verifier Paradigm for High-Risk features (Auth, Billing, DB Migration, Public APIs, Secrets) and Socratic Code Interrogation (`ag-code-interrogation`).
 - **Level 2 TDD & Counter-Example Verification:** High-Risk features freeze property-based & adversarial tests into `adversarial-validation.json` (TDD RED) and fix bugs driven by `verification.json` counter-example payloads (TDD GREEN).
 - **Centralized ADR Management:** Architectural Decision Records are stored in `second-brain/Docs/ADRs/000X-<name>.md` and validated automatically via `validate-adrs.mjs` upon phase closure.
 - **All-\*.md Convention:** Entry points for context (`all-context.md`) and groups (`all-tests.md`, `all-planning.md`) act as quick context routers to keep context windows small.
