@@ -84,6 +84,7 @@ These are patterns LLMs gravitate toward by default. Treat them as "overused AI 
 - Unstyled/default shadcn components — always customize radii, colors, and shadows
 - Generic card (border + shadow + white bg) at high visual density — use spacing/dividers instead
 - Standard Lucide/Feather icons as the only icon set — try Phosphor, Heroicons, or custom SVG for differentiation
+- **STRICT BAN ON RAW EMOJI ICONS & DECORATIVE DOT BULLETS:** NEVER use raw emoji characters (e.g. `🔍`, `🔥`, `✨`, `🛒`, `👤`) or arbitrary decorative dot bullets (e.g. `h-1.5 w-1.5 rounded-full bg-primary` or `●`) inside UI badges and pills. ALWAYS use a proper icon component (`lucide-react`, e.g. `<Sparkles>`, `<Layers>`) or omit the decorative icon completely.
 - Rocketship for "Launch", shield for "Security" — avoid cliché icon metaphors
 - 3-card carousel testimonials with dots — masonry wall, embedded posts, or single rotating quote
 - Pill-shaped "New"/"Beta" badges everywhere — try square badges or plain text labels
