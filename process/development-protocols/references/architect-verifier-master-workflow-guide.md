@@ -18,11 +18,12 @@
 
 ```mermaid
 flowchart TD
-    Phase0["0. BRAINSTORMING (ag-brainstorming)\n- One-Question Grilling\n- Tạo <Feature>_<Topic>_Formal_Spec.md\n- Ghi ADR vào second-brain/Docs/ADRs/"] --> Phase1["1. PLAN (ag-plan-agent / ag-generate-plan)\n- Tạo Plan file\n- Khai báo formalSpecPath trong risk-gate.json"]
-    Phase1 --> Phase2["2. VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n- Đóng băng Level 2 Tests vào adversarial-validation.json"]
-    Phase2 --> Phase3["3. EXECUTE - TDD GREEN (ag-execute-agent)\n- Thực thi code\n- Sửa lỗi theo Counter-Example JSON trong verification.json"]
-    Phase3 --> Phase4["4. PROOF REVIEW (ag-code-reviewer / ag-security)\n- Xác nhận 100% Invariants Verified -> review-decision.json"]
-    Phase4 --> Phase5["5. UPDATE PROCESS & SSOT (ag-update-process-agent)\n- Run MANDATORY: bun run .claude/skills/ag-adr/scripts/validate-adrs.mjs\n- Xuất second-brain/Docs/<Topic>/<Feature>_<Topic>_Workflow.md"]
+    Phase0["0. BRAINSTORMING (ag-brainstorming)\n• One-Question Grilling\n• Tạo <Feature>_<Topic>_Formal_Spec.md\n• Ghi ADR vào second-brain/Docs/ADRs/"] --> Phase1["1. PLAN (ag-plan-agent / ag-generate-plan)\n• Tạo Plan file\n• Khai báo formalSpecPath trong risk-gate.json"]
+    Phase1 --> Phase2["2. VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n• Đóng băng Level 2 Tests vào adversarial-validation.json"]
+    Phase2 --> Phase3["3. EXECUTE - TDD GREEN (ag-execute-agent)\n• Thực thi code\n• Sửa lỗi theo Counter-Example JSON trong verification.json"]
+    Phase3 --> Phase4["4. CODE INTERROGATION (ag-code-interrogation)\n• Continuous Socratic Loop based on 5-Layer Cognitive Stack\n• Interrogate developer on AI code, system invariants, failure modes"]
+    Phase4 --> Phase5["5. PROOF REVIEW (ag-code-reviewer / ag-security)\n• Xác nhận 100% Invariants Verified -> review-decision.json"]
+    Phase5 --> Phase6["6. UPDATE PROCESS & SSOT (ag-update-process-agent)\n• Run MANDATORY: bun run .claude/skills/ag-adr/scripts/validate-adrs.mjs\n• Xuất second-brain/Docs/<Topic>/<Feature>_<Topic>_Workflow.md"]
 ```
 
 ### 🔹 Prompt Phase 0: ARCHITECT (One-Question Grilling & Formal Spec)
@@ -101,7 +102,27 @@ Yêu cầu đối với ag-execute-agent:
 
 ---
 
-### 🔹 Prompt Phase 4: PROOF REVIEW (Thẩm Định Bằng Chứng)
+### 🔹 Prompt Phase 4: CODE INTERROGATION (Socratic Review & Cognitive Validation)
+
+> **Copy and paste this prompt into chat:**
+
+```text
+Activate Socratic Code Interrogation for feature: [feature-slug]
+
+Requirements for ag-code-interrogation:
+1. Inspect the actual git diff and the Formal Spec file at formalSpecPath.
+2. Conduct a continuous open-ended Socratic Q&A loop structured across the Embedded 5-Layer Cognitive Stack:
+   * Layer 1 (Intuition & Bias Filtering): Challenge Confirmation Bias and Sunk Cost Fallacy regarding AI-generated code.
+   * Layer 2 (Inquiry & Deconstruction): Probe First Principles and core System Invariants.
+   * Layer 3 (Systems Thinking & Second-Order Effects): Interrogate downstream impacts on memory, concurrency, IO, and API callers.
+   * Layer 4 (Innovation & Divergent Thinking): Evaluate Trade-off Analysis and Inversion failure scenarios.
+   * Layer 5 (Execution & Proof): Inspect concrete verification evidence and execution logs.
+3. Transition to Proof Review / Update Process ONLY when the developer demonstrates mastery and achieves Gate PASS (or types "stop").
+```
+
+---
+
+### 🔹 Prompt Phase 5: PROOF REVIEW (Thẩm Định Bằng Chứng)
 
 > **Copy và dán prompt này vào chat:**
 
@@ -117,7 +138,7 @@ Yêu cầu đối với ag-code-reviewer và ag-security:
 
 ---
 
-### 🔹 Prompt Phase 5: UPDATE PROCESS (Kiểm Định ADR & SSOT Archival)
+### 🔹 Prompt Phase 6: UPDATE PROCESS (Kiểm Định ADR & SSOT Archival)
 
 > **Copy và dán prompt này vào chat:**
 
