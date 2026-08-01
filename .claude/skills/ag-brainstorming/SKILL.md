@@ -1,6 +1,6 @@
 ---
 name: ag-brainstorming
-description: Interactive brainstorming skill for exploring requirements, discovering codebase conventions via MCP tools, evaluating trade-offs, discovering system invariants, defining fail-safe boundaries, and writing formal specs/ADRs before implementation.
+description: Interactive brainstorming skill for exploring requirements, evaluating foundational engineering domains (Domain A-G: Security, UI/UX, Performance, Reliability, Maintainability, Observability, Compliance) with dynamic domain inference, discovering codebase conventions via MCP tools, evaluating trade-offs, discovering system invariants, defining fail-safe boundaries, and writing formal specs/ADRs before implementation.
 ---
 
 # Interactive Brainstorming Protocol (`ag-brainstorming`)
@@ -12,6 +12,7 @@ description: Interactive brainstorming skill for exploring requirements, discove
 ## 1. Trigger Conditions & Applicability
 
 This skill MUST be used:
+
 - Before any creative work: creating features, building components, adding functionality, or modifying core behavior.
 - In **Phase 0 (ARCHITECT)** of the Architect & Verifier Master Workflow.
 - When explicitly requested via keywords: `brainstorm`, `spec`, `design`, `approach`, `requirements`, `clarify`, `architect`.
@@ -31,7 +32,7 @@ Before asking the user any questions, agents MUST inspect the living codebase to
    - Check recent ADRs in `docs/adr/` for relevant architectural decisions.
 3. **The Zero-Duplicate-Convention Rule:**
    - NEVER propose a second competing convention beside an existing codebase pattern.
-   - Explicitly state: *"We follow the pattern established in `<file/module>`, so our design will extend that convention unless a deliberate architectural shift is requested."*
+   - Explicitly state: _"We follow the pattern established in `<file/module>`, so our design will extend that convention unless a deliberate architectural shift is requested."_
 
 ---
 
@@ -43,39 +44,92 @@ To prevent cognitive overload and ensure systematic discovery, agents MUST adher
 2. **One Question Per Turn:** Ask exactly ONE focused question per message. Do NOT stack multiple questions.
 3. **Structured Trade-Off Matrix:** When presenting design choices, provide 2-4 distinct options formatted as a Trade-off Matrix:
 
-| Option | Approach Description | Pros | Cons | Risk Class | Recommendation |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Option A** | *Summary of Approach A* | *Key benefits* | *Drawbacks & operational cost* | Low | **Recommended** |
-| **Option B** | *Summary of Approach B* | *Key benefits* | *Drawbacks & operational cost* | Medium | Alternative |
+| Option       | Approach Description    | Pros           | Cons                           | Risk Class | Recommendation  |
+| :----------- | :---------------------- | :------------- | :----------------------------- | :--------- | :-------------- |
+| **Option A** | _Summary of Approach A_ | _Key benefits_ | _Drawbacks & operational cost_ | Low        | **Recommended** |
+| **Option B** | _Summary of Approach B_ | _Key benefits_ | _Drawbacks & operational cost_ | Medium     | Alternative     |
 
 4. **Layered Socratic Questioning Taxonomy:**
    - **Layer 1 (Clarification):** Scope boundaries, core user goal, constraints.
    - **Layer 2 (Probing Assumptions):** Challenge implicit defaults, scalability assumptions, data consistency expectations.
    - **Layer 3 (Perspective Shifts):** Evaluate design from 5 personas (`ag-predict` style): Architect, Security Auditor, Performance Engineer, 6-Month Maintainer, and Adversary.
-   - **Layer 4 (Hypothetical & Counterfactuals):** *"What happens if service X fails mid-transaction?"*
+   - **Layer 4 (Hypothetical & Counterfactuals):** _"What happens if service X fails mid-transaction?"_
 
 ---
 
-## 4. Core Discovery Protocol (System Limits & Fail-Safes)
+## 4. Engineering & Architecture Evaluation Framework (Baseline Domains A–G & Dynamic Inference)
+
+During Stage 1 and Stage 2 of brainstorming, agents MUST systematically evaluate the design using the **7 Foundational Baseline Domains (Domain A through Domain G)** while dynamically inferring additional feature-specific domains as needed:
+
+### Foundational Baseline Domains (A – G)
+
+1. **Domain A: Security & Data Privacy**
+   - AuthN/AuthZ boundaries, Principle of Least Privilege, Zero Trust access controls.
+   - Input validation (Zod schemas), protection against OWASP Top 10 (SQLi, XSS, CSRF).
+   - Sensitive data encryption (at rest & in transit), PII handling, audit logging.
+
+2. **Domain B: UI/UX & Usability**
+   - Interaction design, user flows, visual hierarchy, layout responsiveness (Tailwind).
+   - Accessibility (WCAG standards, keyboard navigation, ARIA attributes).
+   - Loading/empty states, optimistic UI, clear error feedback messaging.
+
+3. **Domain C: Performance & Scalability**
+   - Latency budgets, throughput targets, rendering/page load time optimization.
+   - Database query efficiency (N+1 query elimination, indexing, pagination).
+   - Asset & bundle size optimization, caching strategy (Redis, HTTP Cache-Control), rate limiting.
+
+4. **Domain D: Reliability & Resilience**
+   - System stability, idempotency guarantees (`INV-2`), fail-safe boundaries.
+   - Retry strategies with exponential backoff, transaction boundaries, DB fallback mechanisms.
+   - Data integrity, graceful degradation under unexpected failures.
+
+5. **Domain E: Maintainability & Architecture**
+   - Zero-Duplicate-Convention compliance, clean architecture & separation of concerns.
+   - Design pattern selection (GoF / Functional patterns), strict type safety (TypeScript DTOs).
+   - Modularity, low coupling, clarity for the 6-month maintainer.
+
+6. **Domain F: Observability & Operations**
+   - Structured logging, error telemetry (Sentry), key operational metrics (RED/USE signals).
+   - Operational runbooks, deployment strategy, feature flags, health checks.
+
+7. **Domain G: Business & Compliance**
+   - Business invariants (`INV-1`), domain rules, state machine transitions.
+   - Regulatory compliance (GDPR, PCI-DSS, licensing), SLA commitments, operational cost limits.
+
+---
+
+### Open-Ended Dynamic Domain Inference Rule
+
+> **Agent Dynamic Reasoning Directive:** The 7 baseline domains above (Domain A–G) are a foundational guide, NOT a closed ceiling. Depending on the feature context, agents MUST dynamically extrapolate, infer, and evaluate additional specialized domains as needed (e.g., _Domain H: Offline-First Sync_, _Domain I: LLM Safety & Prompt Guardrails_, _Domain J: Real-time WebSockets / Streaming_, _Domain K: i18n / Localization_).
+
+---
+
+## 5. Core Discovery Protocol (System Limits & Fail-Safes)
 
 The agent MUST explore and lock in three core structural elements:
 
 ### 1. System Invariants
+
 Non-negotiable logic rules that MUST NEVER be violated under any execution state or error condition.
-- *Example:* `INV-1: User wallet balance cannot drop below zero.`
-- *Example:* `INV-2: Webhook payloads with duplicate event_id MUST be idempotently ignored.`
+
+- _Example:_ `INV-1: User wallet balance cannot drop below zero.`
+- _Example:_ `INV-2: Webhook payloads with duplicate event_id MUST be idempotently ignored.`
 
 ### 2. Fail-Safe Boundary
+
 Safe fallback state when unexpected system failures, timeouts, DB partitions, or network exceptions occur.
-- *Example:* `If payment gateway times out after 5s, transition transaction state to PENDING_VERIFICATION and enqueue background check job.`
+
+- _Example:_ `If payment gateway times out after 5s, transition transaction state to PENDING_VERIFICATION and enqueue background check job.`
 
 ### 3. Level 2 Edge Cases & Adversarial Matrix
+
 Race conditions, boundary limits, corrupted inputs, and concurrent state mutations.
-- *Example:* `Two concurrent withdrawal requests of $100 arriving within 1ms when initial balance is $100.`
+
+- _Example:_ `Two concurrent withdrawal requests of $100 arriving within 1ms when initial balance is $100.`
 
 ---
 
-## 5. Incremental Design Presentation & Approval Gates
+## 6. Incremental Design Presentation & Approval Gates
 
 Do NOT dump the entire technical specification at once. Present the design incrementally section-by-section:
 
@@ -84,11 +138,11 @@ Do NOT dump the entire technical specification at once. Present the design incre
 3. **Section 3:** Fail-Safe Boundaries, Execution Flow & Error Handling.
 4. **Section 4:** Edge Cases & Adversarial Test Scenarios.
 
-After presenting each section, ask the user: *"Does this section look correct, or should we refine it before moving to the next section?"*
+After presenting each section, ask the user: _"Does this section look correct, or should we refine it before moving to the next section?"_
 
 ---
 
-## 6. Spec Self-Review Checklist & User Review Gate
+## 7. Spec Self-Review Checklist & User Review Gate
 
 Before finalizing deliverables and writing files, the agent MUST run an internal **Spec Self-Review Checklist**:
 
@@ -98,11 +152,12 @@ Before finalizing deliverables and writing files, the agent MUST run an internal
 - [ ] **Codebase Alignment:** Does the design strictly follow existing patterns found in Stage 0?
 
 Once self-review passes, write the spec file, present the path to the user, and enforce an **Explicit User Review Gate**:
-> *"Formal Specification has been written to `<path>`. Please review the document and confirm if you approve before we transition to Phase 1 (PLAN / `ag-generate-plan`)."*
+
+> _"Formal Specification has been written to `<path>`. Please review the document and confirm if you approve before we transition to Phase 1 (PLAN / `ag-generate-plan`)."_
 
 ---
 
-## 7. Deliverable Artifacts & File Standard
+## 8. Deliverable Artifacts & File Standard
 
 Upon completing the brainstorming loop and reaching agreement, the agent MUST write the following artifacts:
 
@@ -119,11 +174,11 @@ Upon completing the brainstorming loop and reaching agreement, the agent MUST wr
 
 ---
 
-## 8. End-to-End Workflow Architecture
+## 9. End-to-End Workflow Architecture
 
 ```mermaid
 flowchart TD
-    Stage0["Stage 0: CONVENTION DISCOVERY\n• Query MCP tools (search_graph, get_architecture)\n• Inspect process/context/all-context.md & docs/adr/\n• Lock in zero-duplicate-convention rule"] --> Probe["Stage 1: SOCRATIC & ONE-QUESTION GRILLING\n• Offer Visual Companion\n• Ask single question per turn\n• Present Trade-off Matrix (Pros/Cons/Risk)"]
+    Stage0["Stage 0: CONVENTION DISCOVERY\n• Query MCP tools (search_graph, get_architecture)\n• Inspect process/context/all-context.md & docs/adr/\n• Lock in zero-duplicate-convention rule"] --> Probe["Stage 1: SOCRATIC & DYNAMIC DOMAIN EVALUATION\n• Offer Visual Companion\n• Pre-seeded Domains A-G + Dynamic Extrapolation\n• Ask single question per turn\n• Present Trade-off Matrix (Pros/Cons/Risk)"]
     Probe --> Core["Stage 2: CORE DISCOVERY\n• Discover System Invariants (INV-1, INV-2)\n• Define Fail-Safe Boundaries\n• Map Level 2 Edge Cases & Adversarial Matrix"]
     Core --> Incremental["Stage 3: INCREMENTAL DESIGN PRESENTATION\n• Present Objectives -> Invariants -> Schemas -> Errors\n• Require per-section user approval pause"]
     Incremental --> SelfReview["Stage 4: SPEC SELF-REVIEW & USER GATE\n• Run 4-point self-review checklist\n• Write [feature-slug]-[topic-slug]-formal-spec.md\n• Record ADR in docs/adr/\n• Pause for explicit user approval before PLAN"]
