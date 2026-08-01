@@ -1,282 +1,166 @@
-<p align="center">
-  <a href="CONTRIBUTING.md"><strong>English</strong></a> |
-  <a href="docs/i18n/CONTRIBUTING.zh-CN.md">简体中文</a> |
-  <a href="docs/i18n/CONTRIBUTING.ja-JP.md">日本語</a> |
-  <a href="docs/i18n/CONTRIBUTING.ko-KR.md">한국어</a> |
-  <a href="docs/i18n/CONTRIBUTING.vi-VN.md">Tiếng Việt</a> |
-  <a href="docs/i18n/CONTRIBUTING.pt-BR.md">Portugues</a>
-</p>
-
 # Contributing to agent-skills-kit
 
-Thank you for your interest in contributing to agent-skills-kit! This project provides a ready-to-use agent harness for Claude Code and Codex, and we welcome contributions from everyone.
+Thank you for your interest in contributing to **agent-skills-kit**! This project provides a production-grade agent harness for Claude Code, Codex, Antigravity, Cursor, and Windsurf. We welcome contributions from everyone.
 
 By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ---
 
-## Communication Channels
+## 💬 Communication Channels
 
 - **WhatsApp (primary):** [Join our community group](https://chat.whatsapp.com/E42ySo6iGmuAyeh25eAXuu?s=cl&p=i&mlu=1)
 - **GitHub Issues:** Bug reports, feature requests, and task tracking
-- **GitHub Discussions:** Questions, ideas, and general conversation
+- **GitHub Discussions:** Architectural questions, ideas, and general conversation
 
-> This is our only community channel -- we do not use Discord, Slack, or other platforms.
+> This is our official community channel — we do not use Discord, Slack, or other platforms.
 
 ---
 
-## Development Prerequisites
+## 🛠️ Development Prerequisites
 
-Before contributing, make sure you have the following installed:
+Before contributing, ensure you have:
 
-- **Node.js** >= 20
+- **Node.js** >= 20 or **Bun** >= 1.1
 - **bash** or **zsh** shell
 - **git** >= 2.30
 - **Operating system:** macOS, Linux, or Windows with WSL2
 
-No additional package managers or runtimes are required. The harness is designed to be zero-dependency.
+The harness is designed to be zero-dependency for core execution, with lightweight Node/Bun validation scripts for audit checks.
 
 ---
 
-## Types of Contributions
+## 🧩 Types of Contributions
 
-We welcome many kinds of contributions:
-
-### Skills
-
-Skills are reusable capability modules that live under `.claude/skills/`. Each skill must:
-
+### 1. Skills (`.claude/skills/`)
+Skills are reusable capability modules that live under `.claude/skills/`. Each skill MUST:
 - Have its own directory (e.g., `.claude/skills/my-skill/`)
-- Contain a `SKILL.md` file with YAML frontmatter (name, description, triggers)
-- **Not** use the `ag-` prefix -- that prefix is reserved for official harness skills
-- Include any helper scripts under a `scripts/` subdirectory if needed
+- Contain a `SKILL.md` file with valid YAML frontmatter (`name`, `description`)
+- **Not** use the `ag-` prefix unless submitting an official core harness skill
+- Include helper scripts under a `scripts/` subdirectory if required
 
-### Agents
+### 2. Agents (`.claude/agents/` and `.codex/agents/`)
+Agent definitions provide specialized personas for workflow phases. Each agent MUST:
+- Maintain strict 1:1 parity between `.claude/agents/<agent-name>.md` (Claude Code) and `.codex/agents/<agent-name>.toml` (Codex)
+- Follow existing naming conventions and prompt structure
 
-Agent definitions provide specialized personas for different workflow phases. Each agent must:
+### 3. Hooks (`.claude/hooks/`)
+Pre- and post-execution lifecycle hooks that run automatically during agent sessions.
 
-- Have both a `.claude/agents/` version (for Claude Code) and a `.codex/agents/` version (for Codex)
-- Maintain parity between the two versions
-- Follow the existing naming conventions
+### 4. Protocols & Playbooks (`process/development-protocols/`)
+Development standards, phase rules, and master workflow guides.
 
-### Hooks
-
-Pre- and post-execution hooks that live under `.claude/hooks/`. These run automatically at specific lifecycle points in Claude Code sessions.
-
-### Protocols
-
-Development protocol documents under `process/development-protocols/` that define shared workflow rules and conventions.
-
-### Translations
-
-Localized versions of documentation and skill descriptions to make the harness accessible to more developers.
-
-### Documentation
-
-Improvements to README.md, CLAUDE.md, AGENTS.md, inline comments, or any other documentation.
-
-### Bug Fixes
-
-Fixes for validation scripts, install logic, seed templates, or any other existing functionality.
+### 5. Documentation & Second Brain (`README.md`, `second-brain/Docs/`)
+Improvements to system guides, ADRs, workflow standards, and translation files.
 
 ---
 
-## Getting Started
+## 🚀 Getting Started Workflow
 
-1. **Fork** the repository on GitHub
-
+1. **Fork** the repository on GitHub.
 2. **Clone** your fork locally:
-
    ```bash
    git clone https://github.com/<your-username>/agent-skills-kit.git
    cd agent-skills-kit
    ```
-
-3. **Install** the harness into a test project to verify everything works:
-
+3. **Install** the harness into a test project to verify execution:
    ```bash
-   # From a test project directory
    bash /path/to/agent-skills-kit/install.sh
    ```
-
-4. **Run the setup skill** to verify the installed harness:
-
+4. **Run Audit Suite** to confirm your environment is clean:
    ```bash
-   # Inside a Claude Code session in the test project
-   # Invoke the ag-setup skill
+   ./scripts/run-audit-parallel.mjs
    ```
-
-5. **Run validation scripts** to confirm your environment is correct:
-
-   ```bash
-   node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
-   node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
-   ```
-
-   All validations should pass before you start making changes.
+   All 12 audit validators should pass with 0 failures before you start making changes.
 
 ---
 
-## Architecture Overview
+## 🏛️ Architecture Overview
 
-The harness follows a dual-surface architecture for Claude Code and Codex compatibility:
+The harness uses a dual-surface architecture for Claude Code and Codex compatibility:
 
 ```
 .claude/
   agents/          # Claude Code agent definitions (*.md)
-  skills/          # Shared skill modules (each skill is a directory with SKILL.md)
-  hooks/           # Pre/post execution hooks
+  skills/          # Shared skill modules (each directory contains SKILL.md)
+  hooks/           # Session lifecycle hooks
 .codex/
-  agents/          # Codex agent definitions (mirrored from .claude/agents/)
+  agents/          # Codex agent definitions (*.toml, mirrored from .claude/agents/)
 process/
-  development-protocols/   # Shared workflow rules and conventions
-  context/                 # Project knowledge and context docs
-  _seeds/                  # Template seeds for new project scaffolding
+  development-protocols/ # Shared workflow rules, master guides & PRD references
+  context/               # Authoritative project context entrypoints (all-context.md)
+second-brain/
+  Docs/
+    ADRs/          # Architectural Decision Records (000X-<name>.md)
+    <Topic>/       # Operational SSOT Workflow Documentation
 ```
 
-Skills are shared between both surfaces via the `.agents/skills` symlink that Codex uses to discover `.claude/skills/`.
-
-See CLAUDE.md and AGENTS.md for full architecture details.
+Skills are shared between surfaces via the `.agents/skills` symlink that Codex uses to discover `.claude/skills/`.
 
 ---
 
-## Pull Request Guidelines
+## 🔀 Enterprise Git Flow & Pull Request Guidelines
 
-### Scope
+This repository enforces the **Enterprise Git Flow** standard (`ag-git-flow`).
 
-- Keep pull requests focused: **one contribution type per PR**
-- A single skill addition, a single agent pair, a single bug fix, etc.
-- If your change touches multiple areas, split it into separate PRs
-- Target size: **200-400 lines** of meaningful changes
+### Conventional Commits Title Format
 
-### AI-Assisted Contributions
+All PR titles and commit messages MUST follow Conventional Commits:
 
-AI-assisted contributions are welcome and encouraged. This is an AI agent harness -- it makes sense to use AI tools to build it. Just make sure you review and understand what you are submitting.
-
-### Commit Messages
-
-Use conventional commit format:
-
-- `feat:` -- New skill, agent, hook, or capability
-- `fix:` -- Bug fix in existing functionality
-- `docs:` -- Documentation-only changes
-- `chore:` -- Maintenance, refactoring, or tooling changes
+- `feat:` — New skill, agent, hook, or capability
+- `fix:` — Bug fix in existing functionality or script
+- `docs:` — Documentation or protocol updates
+- `refactor:` — Code/prompt restructuring without behavior change
+- `chore:` — Maintenance, manifest updates, or tooling changes
 
 Examples:
-
-```
-feat: add code-coverage skill with lcov parsing
-fix: correct symlink detection in install.sh on WSL2
-docs: add examples to ag-generate-plan SKILL.md
-chore: update validate-skills.mjs to check frontmatter
-```
-
-### Branch Naming
-
-Use descriptive branch names:
-
-```
-feat/my-new-skill
-fix/install-symlink-wsl
-docs/contributing-guide
+```text
+feat(skills): add code-interrogation skill with 5-layer cognitive stack
+fix(install): correct symlink detection in install.sh on WSL2
+docs(protocols): update architect-verifier master workflow guide
+chore(manifest): register new skills in ag-manifest.json
 ```
 
-### PR Description
+### PR Requirements
 
-Include in your pull request description:
-
-- What the change does and why
-- How you tested it (which validation scripts you ran)
-- Any breaking changes or migration notes
-
----
-
-## ag-manifest.json
-
-The `ag-manifest.json` file at the repository root tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols, seeds), you must update this manifest.
-
-The manifest is used by `install.sh` and `ag-harness-sync` (the update workflow) to know which files to copy and sync. If your new file is not listed in the manifest, it will not be included when users install or update the harness.
-
-When modifying the manifest:
-
-- Add your new file paths to the appropriate section
-- Keep entries sorted alphabetically within each section
-- Run the validation scripts after updating to confirm consistency
-
----
-
-## Skill Contribution Checklist
-
-Before submitting a new skill, verify:
-
-- [ ] Skill lives in its own directory under `.claude/skills/<skill-name>/`
-- [ ] `SKILL.md` exists with valid YAML frontmatter (name, description, at minimum)
-- [ ] Skill name does **not** use the `ag-` prefix (reserved for official skills)
-- [ ] Any helper scripts are under a `scripts/` subdirectory
-- [ ] `ag-manifest.json` is updated with all new file paths
-- [ ] Validation passes:
-
+- **Scope:** Keep PRs focused: **one contribution type per PR** (target 200-400 lines of meaningful change).
+- **Audit Requirement:** All 12 parallel audit validators MUST pass:
   ```bash
-  node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
+  ./scripts/run-audit-parallel.mjs
+  bun run .claude/skills/ag-docs/scripts/validate-docs.mjs
   ```
+- **Manifest Sync:** If adding or moving files, update `ag-manifest.json`.
 
 ---
 
-## Agent Contribution Checklist
+## 📋 Manifest Sync (`ag-manifest.json`)
 
-Before submitting a new agent, verify:
-
-- [ ] Agent definition exists in `.claude/agents/<agent-name>.md`
-- [ ] Matching definition exists in `.codex/agents/<agent-name>.md`
-- [ ] Both versions are functionally equivalent (same purpose, same tool restrictions)
-- [ ] Agent parity validation passes:
-
-  ```bash
-  node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
-  ```
+The `ag-manifest.json` file tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols):
+1. Add the file path to `ag-manifest.json` under the appropriate section.
+2. Keep entries sorted alphabetically within each section.
+3. Run `./scripts/run-audit-parallel.mjs` to confirm kit portability and manifest integrity.
 
 ---
 
-## Review Process
+## ✅ Contribution Checklists
 
-After you submit a pull request:
+### Skill Checklist
+- [ ] Skill lives under `.claude/skills/<skill-name>/`
+- [ ] `SKILL.md` exists with valid YAML frontmatter (`name`, `description`)
+- [ ] Any helper scripts are placed under `scripts/`
+- [ ] File paths registered in `ag-manifest.json`
+- [ ] Validation passes: `node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs`
 
-- A maintainer will review your PR within **48 business hours** (soft target, not a guarantee)
-- CI validation scripts must pass before review
-- At least **one maintainer approval** is required to merge
-- **No CLA** is required -- your contribution is governed by the repository's MIT license
-
-If changes are requested, please address them in follow-up commits (do not force-push over review comments).
-
----
-
-## Recognition
-
-All contributors are recognized:
-
-- **README Contributors section** -- Auto-generated via [contrib.rocks](https://contrib.rocks) (visual banner)
-- **Detailed contributor table** -- Managed via [all-contributors](https://allcontributors.org/) bot, which recognizes all contribution types (code, docs, design, ideas, testing, bug reports). The bot auto-updates README via PR when contributors are added.
-- **GitHub Release notes** -- Contributors credited in each release
-- **Skill/Agent credits** -- Your name in the `metadata.author` field of your contribution
-
-See `.all-contributorsrc` for bot configuration (created when the bot is first initialized).
-
-### Contributor Ladder
-
-- **Contributor** -- Anyone who has a merged PR
-- **Reviewer** -- Regular contributors invited to review PRs
-- **Maintainer** -- Trusted contributors with merge access
-
-Advancement is based on quality and consistency of contributions, not volume.
+### Agent Checklist
+- [ ] Claude agent definition exists in `.claude/agents/<agent-name>.md`
+- [ ] Codex agent mirror exists in `.codex/agents/<agent-name>.toml`
+- [ ] Parity validation passes: `node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs`
 
 ---
 
-## Contribution Policy
+## ⚖️ Review & Code of Conduct
 
-PRs should reference an existing issue. Drive-by PRs without context may be closed.
+- PRs are reviewed by maintainers within **48 business hours**.
+- At least **one maintainer approval** is required before merging.
+- No CLA is required — contributions are licensed under the [MIT License](LICENSE).
 
-Top contributors may be invited as maintainers.
-
----
-
-Thank you for helping make agent-skills-kit better for everyone!
+Thank you for helping build a world-class AI agent harness!
