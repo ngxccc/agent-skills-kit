@@ -44,9 +44,9 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 
 Categorize potential improvements by target rule file:
 
-- **Code Standards / Tech Stack** → `process/development-protocols/implementation-standards.md`
-- **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `CLAUDE.md` or `AGENTS.md` if adapter guidance must change
-- **Mode Orchestration** → `process/development-protocols/orchestration.md`
+- **Code Standards / Tech Stack** → `process/context/all-context.md`
+- **RIPER-5 Process / tool adapters** → `AGENTS.md` or `CLAUDE.md` if adapter guidance must change
+- **Mode Orchestration** → `AGENTS.md` / `CLAUDE.md`
 - **Agents** → `.claude/agents/` and `.codex/agents/`
 - **Skills** → `.agents/skills/`
 
@@ -148,7 +148,7 @@ Location: [Where in file - section name or append location]
 **5b. Mirror Discipline — ALWAYS CHECK THIS:**
 
 - If shared workflow behavior changed, explicitly review all of:
-  - `process/development-protocols/`
+  - `process/context/all-context.md`
   - `AGENTS.md`
   - `README.md`
   - `CLAUDE.md`
@@ -161,13 +161,13 @@ Location: [Where in file - section name or append location]
 - If `.claude/agents/*.md` changes, verify whether `.codex/agents/*.toml` must change too.
 - If a shared skill contract changes, verify whether Codex discovery guidance or agent prompts need updating too.
 - Do not treat one-surface edits as complete until cross-surface mirror review is done.
-- Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces mirror those sources rather than inventing parallel truth.
+- Canonical repo truth lives in `process/context/all-context.md`; adapter surfaces mirror those sources rather than inventing parallel truth.
 
 **5c. Architectural Decision Record (ADR) Audit — MANDATORY CHECK:**
 
 - You **MUST** execute automated ADR validation for all sessions (especially High-Risk features):
   ```bash
-  bun run .claude/skills/ag-adr/scripts/validate-adrs.mjs
+  bun run .claude/skills/ag-docs/scripts/validate-docs.mjs
   ```
 - Confirm 0 validation failures before closing the phase or archiving High-Risk feature plans.
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
@@ -467,7 +467,7 @@ Analyzing task execution for user-profiles feature:
    - Add "What's Functional Now": User profiles fully functional
    - Archive to completed/ folder
 
-2. Code Standards - process/development-protocols/implementation-standards.md
+2. Code Standards - process/context/all-context.md
    Summary: Add tRPC router co-location pattern
    Context: User-profiles implementation established this pattern
    Text to add: "tRPC routers should co-locate validators..."
@@ -488,7 +488,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 **Phase 4: Implementation**
 
 ✅ 1. Updated and archived user-profiles_PLAN_01-12-25.md
-✅ 2. Updated process/development-protocols/implementation-standards.md with tRPC pattern
+✅ 2. Updated process/context/all-context.md with tRPC pattern
 ✅ 3. Updated all-context.md with API surface changes
 ✅ Created memory: "tRPC Router Co-location Pattern"
 
@@ -496,7 +496,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 
 Changes made:
 - Memory entries: 1 (tRPC Router Co-location Pattern)
-- Rule files modified: process/development-protocols/implementation-standards.md
+- Rule files modified: process/context/all-context.md
 - Plan archived: completed_user-profiles_PLAN_01-12-25.md
 - Context updated: all-context.md (API Surface section)
 

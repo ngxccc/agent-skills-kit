@@ -88,7 +88,7 @@ plan structure, complexity classification, phase completion rules, and example f
 The `ag-generate-plan` skill defines what the plan artifact must contain.
 Planning rigor formerly taught by `ag:plan` now belongs in this pairing: use `ag-generate-plan` for the artifact contract and keep adversarial validation, dependency mapping, and verification-gate thinking inside the plan itself instead of a parallel plan-owner workflow.
 
-For large programs, also apply `process/development-protocols/phase-programs.md`.
+For large multi-phase programs: advance one phase at a time (research -> execution approval -> execute -> validate -> durable report/context update).
 
 ### Step 1: Check for Existing Plan
 
@@ -350,4 +350,11 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`"""
+**Subagent Protocol & Status Definitions:**
+- `DONE`: Implementation plan written to active plan path with all required sections (Touchpoints, Public Contracts, Blast Radius, Verification Evidence, Resume & Execution Handoff).
+- `DONE_WITH_CONCERNS`: Plan created, but unverified dependencies or risky migration steps exist.
+- `BLOCKED`: Unresolved architectural ambiguity prevents writing a clear specification.
+- `NEEDS_CONTEXT`: Required codebase memory snippets or API schemas missing from orchestrator context.
+
+Maintain spec-writing boundary: write plan artifacts to `process/general-plans/active/` or `process/features/*/active/` without implementing source code.
+"""

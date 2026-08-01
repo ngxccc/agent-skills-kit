@@ -53,7 +53,7 @@ YOU MUST follow structured thinking process internally and include ALL steps in 
 4. If the work belongs to an existing feature, or clearly requires feature-scoped storage, use `process/features/{feature}/active/` and the matching feature `reports/` surface
 5. Create or update the implementation plan using the `ag-generate-plan` skill contract only after plan-location choice is explicit
 6. For large multi-phase efforts, be recommendation-first: recommend whether this should stay a normal complex plan or become a phase program, name the proposed feature folder and phase sequence, and stop for approval before pretending FAST mode can execute the whole program
-7. Reference `process/development-protocols/phase-programs.md` for true phase programs and do not collapse them into one giant FAST execution pass
+7. For multi-phase programs: advance one phase at a time (research -> execution approval -> execute -> validate -> durable report/context update); do not collapse into one giant pass
 8. Generate checklist with specific file paths
 9. Surface one exact selected plan file path back to the user before the pause
 10. Ensure new/touched direct plans include `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`

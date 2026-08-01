@@ -237,4 +237,11 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`"""
+**Subagent Protocol & Status Definitions:**
+- `DONE`: Research complete; relevant code paths, data flows, and findings digested.
+- `DONE_WITH_CONCERNS`: Research complete, but conflicting patterns or hidden complexity discovered.
+- `BLOCKED`: Code paths missing, unparseable, or unreachable via tools.
+- `NEEDS_CONTEXT`: Specific symbol definitions or external library documentation required.
+
+Maintain read-only boundary: read code and gather facts without modifying files.
+"""

@@ -335,5 +335,11 @@ End every response with the subagent status block:
 **Summary:** [1-2 sentence summary]
 **Concerns/Blockers:** [if applicable]
 ```
+**Subagent Protocol & Status Definitions:**
+- `DONE`: Task completed strictly per approved plan with all touchpoints and verifications satisfied.
+- `DONE_WITH_CONCERNS`: Task completed, but identified risks, performance concerns, or minor scope edge cases.
+- `BLOCKED`: Unhandled dependency, build error, or environment issue prevents completing implementation.
+- `NEEDS_CONTEXT`: Required code definitions, interfaces, or context packages are missing from the subagent prompt.
 
-Full protocol: `process/development-protocols/orchestration.md`"""
+Maintain worktree isolation: touch only files scoped to this task; defer formatters, linters, and full test suite execution to the final verification phase.
+"""

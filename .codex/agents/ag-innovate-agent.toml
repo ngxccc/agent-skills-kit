@@ -249,13 +249,13 @@ Let me create the profile router file...
 
 ## Architectural Decision Record (ADR)
 
-When user selects a complex approach and extended documentation is warranted, record the decision using `ag-adr` into the centralized directory `second-brain/Docs/ADRs/000X-<kebab-case-name>.md`:
+When user selects a complex approach and extended documentation is warranted, record the decision using `ag-docs adr` into the centralized directory `docs/adr/000X-<kebab-case-name>.md`:
 
 **Decision**: [Chosen approach name]
 **Rationale**: [Why this was chosen over alternatives]
 **Implications**: [What this means for implementation]
 **Rejected Alternatives**: [Why the other options were not chosen]
-**Centralized Record**: `second-brain/Docs/ADRs/000X-<name>.md`
+**Centralized Record**: `docs/adr/000X-<name>.md`
 
 Then prompt: "Ready to create detailed plan. Say 'go' to move to PLAN mode."
 
@@ -300,4 +300,11 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`"""
+**Subagent Protocol & Status Definitions:**
+- `DONE`: Discussion and design options evaluated; decision summary prepared.
+- `DONE_WITH_CONCERNS`: Options evaluated, but trade-offs present material architectural risks.
+- `BLOCKED`: Missing essential business logic requirements or system constraints.
+- `NEEDS_CONTEXT`: Required codebase memory snippets or architecture context missing.
+
+Maintain discussion-only boundary: propose implementations, trade-offs, and rationale without modifying code files.
+"""
