@@ -10,10 +10,10 @@
 
 Before executing any request, agents MUST evaluate the task scope against this matrix to determine the execution mode.
 
-| Task Class          | Trigger Conditions                                                                                                                                                                                                                                                       | Mandatory Workflow Mode                                                                  | Required Harness Artifacts                                                                                                                                                                                                             |
-| :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Task Class          | Trigger Conditions                                                                                                                                                                                                                                                       | Mandatory Workflow Mode                                                                  | Required Harness Artifacts                                                                                                                                                                                                                       |
+| :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `docs/adr/` |
-| **Low-Risk Class**  | • Minor bug fixes (< 15 lines of code)<br>• UI / CSS / Formatting tweaks<br>• Typo fixes & non-logic configuration updates                                                                                                                                               | **Lightweight RIPER-5 / Fast Mode**<br>(Bypass Formal Spec & Heavyweight Gate)           | • Active Plan file or Fast Mode Plan                                                                                                                                                                                                   |
+| **Low-Risk Class**  | • Minor bug fixes (< 15 lines of code)<br>• UI / CSS / Formatting tweaks<br>• Typo fixes & non-logic configuration updates                                                                                                                                               | **Lightweight RIPER-5 / Fast Mode**<br>(Bypass Formal Spec & Heavyweight Gate)           | • Active Plan file or Fast Mode Plan                                                                                                                                                                                                             |
 
 ---
 
@@ -31,15 +31,15 @@ flowchart TD
 
 ### State Transition Preconditions & Deliverable Gates
 
-| From State                   | To State                     | Gate Condition / Prerequisite                                                               | Verified By                 |
-| :--------------------------- | :--------------------------- | :------------------------------------------------------------------------------------------ | :-------------------------- |
+| From State                   | To State                     | Gate Condition / Prerequisite                                                                         | Verified By                 |
+| :--------------------------- | :--------------------------- | :---------------------------------------------------------------------------------------------------- | :-------------------------- |
 | **Phase 0 (ARCHITECT)**      | **Phase 1 (PLAN)**           | Formal Spec written to `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` | `ag-brainstorming`          |
-| **Phase 1 (PLAN)**           | **Phase 2 (VERIFIER PREP)**  | WBS Plan created and `risk-gate.json` initialized with `formalSpecPath`                     | `ag-plan-agent`             |
-| **Phase 2 (VERIFIER PREP)**  | **Phase 3 (EXECUTE)**        | Level 2 tests frozen into `adversarial-validation.json` with status `RED`                   | `ag-tester` / `ag-security` |
-| **Phase 3 (EXECUTE)**        | **Phase 4 (INTERROGATION)**  | All frozen tests PASS; `verification.json` status is `PASS` (0 failures)                    | `ag-execute-agent`          |
-| **Phase 4 (INTERROGATION)**  | **Phase 5 (PROOF REVIEW)**   | 5-Layer Socratic Interrogation passed; `interrogation-report.json` emitted                  | `ag-code-interrogation`     |
-| **Phase 5 (PROOF REVIEW)**   | **Phase 6 (UPDATE PROCESS)** | `review-decision.json` contains `mustStopBeforeFinalize: false` & `verdict: "APPROVED"`     | `ag-code-reviewer`          |
-| **Phase 6 (UPDATE PROCESS)** | **COMPLETED**                | Docs audit passes 100%; operational SSOT exported to `docs/design/`                         | `ag-update-process-agent`   |
+| **Phase 1 (PLAN)**           | **Phase 2 (VERIFIER PREP)**  | WBS Plan created and `risk-gate.json` initialized with `formalSpecPath`                               | `ag-plan-agent`             |
+| **Phase 2 (VERIFIER PREP)**  | **Phase 3 (EXECUTE)**        | Level 2 tests frozen into `adversarial-validation.json` with status `RED`                             | `ag-tester` / `ag-security` |
+| **Phase 3 (EXECUTE)**        | **Phase 4 (INTERROGATION)**  | All frozen tests PASS; `verification.json` status is `PASS` (0 failures)                              | `ag-execute-agent`          |
+| **Phase 4 (INTERROGATION)**  | **Phase 5 (PROOF REVIEW)**   | 5-Layer Socratic Interrogation passed; `interrogation-report.json` emitted                            | `ag-code-interrogation`     |
+| **Phase 5 (PROOF REVIEW)**   | **Phase 6 (UPDATE PROCESS)** | `review-decision.json` contains `mustStopBeforeFinalize: false` & `verdict: "APPROVED"`               | `ag-code-reviewer`          |
+| **Phase 6 (UPDATE PROCESS)** | **COMPLETED**                | Docs audit passes 100%; operational SSOT exported to `docs/design/`                                   | `ag-update-process-agent`   |
 
 ---
 
@@ -153,7 +153,7 @@ flowchart TD
 
 ### Directory Standard
 
-````
+```
 process/features/{feature-slug}/
 ├── active/
 │   ├── [feature-slug]-[topic-slug]-formal-spec.md   <-- Formal Spec (Pre-Implementation)
@@ -169,96 +169,18 @@ process/features/{feature-slug}/
 └── completed/                                  <-- Archived Spec location upon completion
 
 docs/adr/
+docs/rfc/
 docs/design/
 └── <feature-slug>-<topic-slug>-workflow.md        <-- Operational SSOT Document (kebab-case)
 
-### JSON Schemas & Templates
+### JSON Schemas & Reference Specification (SSOT)
 
-#### 1. `risk-gate.json`
-```json
-{
-  "featureSlug": "payment-webhook",
-  "riskClass": "Billing",
-  "formalSpecPath": "process/features/payment-webhook/active/payment-webhook-formal-spec.md",
-  "mustStopBeforeFinalize": true,
-  "createdAt": "2026-08-01T00:00:00Z"
-}
-````
+> **Canonical Schema Specification:** All harness JSON artifacts MUST strictly comply with the **Harness JSON Artifacts Schema & Specification (SSOT v2.0.0)** defined at:
+> [`process/development-protocols/references/harness-schemas.md`](process/development-protocols/references/harness-schemas.md)
 
-#### 2. `adversarial-validation.json`
-
-```json
-{
-  "featureSlug": "payment-webhook",
-  "frozenAt": "2026-08-01T00:00:00Z",
-  "testMatrix": [
-    {
-      "id": "ADV-1",
-      "scenarioType": "RACE_CONDITION",
-      "invariantBound": "INV-1 (Idempotency)",
-      "description": "Dual concurrent webhook payload delivery with identical event ID within 1ms",
-      "testFilePath": "tests/payment/webhook-race.test.ts",
-      "status": "RED"
-    }
-  ]
-}
-```
-
-#### 3. `verification.json` (Counter-Example Payload Contract)
-
-```json
-{
-  "status": "FAIL",
-  "totalTestsRun": 12,
-  "passCount": 11,
-  "failCount": 1,
-  "counterExamples": [
-    {
-      "violatedInvariant": "INV-1 (Idempotency)",
-      "counterExample": {
-        "initialState": { "orderStatus": "pending" },
-        "inputs": [
-          { "action": "processWebhook", "eventId": "evt_9981" },
-          { "action": "processWebhook", "eventId": "evt_9981" }
-        ],
-        "timing": "concurrent_1ms",
-        "expectedOutput": "200 OK (Idempotent IGNORED)",
-        "actualOutput": "Processed twice"
-      },
-      "instructionForCoder": "Enforce atomic DB unique constraint on event_id or acquire Redis lock."
-    }
-  ]
-}
-```
-
-#### 4. `interrogation-report.json`
-
-```json
-{
-  "featureSlug": "payment-webhook",
-  "interrogatedAt": "2026-08-01T00:00:00Z",
-  "layersEvaluated": [
-    "L1_BIAS",
-    "L2_INVARIANTS",
-    "L3_SYSTEMS",
-    "L4_INVERSION",
-    "L5_PROOF"
-  ],
-  "invariantsVerified": ["INV-1"],
-  "gateVerdict": "PASS",
-  "summaryNotes": "Agent demonstrated mastery of distributed lock semantics under concurrency."
-}
-```
-
-#### 5. `review-decision.json`
-
-```json
-{
-  "featureSlug": "payment-webhook",
-  "mustStopBeforeFinalize": false,
-  "reviewedBy": ["ag-code-reviewer", "ag-security"],
-  "invariantsVerified": 4,
-  "verdict": "APPROVED",
-  "reviewedAt": "2026-08-01T00:00:00Z"
-}
+Refer to [`harness-schemas.md`](process/development-protocols/references/harness-schemas.md) for the complete JSON Schema (Draft-07 compliant) definitions and rich production templates for:
+1. **`risk-gate.json`**: Risk classification, System Invariants, formal specification links, and verification gates.
+2. **`adversarial-validation.json`**: Frozen Level 2 Property-Based, Adversarial Matrix & Edge Case test suites.
+3. **`verification.json`**: Execution test results, layer-by-layer coverage maps, and Counter-Example payload contracts.
+4. **`review-decision.json`**: Gatekeeper verification report, verdict, and manifest references before finalize.
 ```
