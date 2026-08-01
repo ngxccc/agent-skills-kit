@@ -16,5 +16,12 @@ node_modules/
 /process/features/**
 !/process/features/.gitkeep
 
+docs/adr
+!docs/adr/.gitkeep
+docs/rfc
+!docs/rfc/.gitkeep
+docs/design
+!docs/design/.gitkeep
+
 /.omp/skills/**
 !/.omp/skills/ag-*
