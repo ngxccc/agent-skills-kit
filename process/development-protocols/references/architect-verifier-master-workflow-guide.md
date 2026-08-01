@@ -12,7 +12,7 @@ Before executing any request, agents MUST evaluate the task scope against this m
 
 | Task Class | Trigger Conditions | Mandatory Workflow Mode | Required Harness Artifacts |
 | :--- | :--- | :--- | :--- |
-| **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `second-brain/Docs/ADRs/` |
+| **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `docs/adr/` |
 | **Low-Risk Class** | • Minor bug fixes (< 15 lines of code)<br>• UI / CSS / Formatting tweaks<br>• Typo fixes & non-logic configuration updates | **Lightweight RIPER-5 / Fast Mode**<br>(Bypass Formal Spec & Heavyweight Gate) | • Active Plan file or Fast Mode Plan |
 
 ---
@@ -21,12 +21,12 @@ Before executing any request, agents MUST evaluate the task scope against this m
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n• One-Question Grilling Algorithm\n• Author <Feature>_<Topic>_Formal_Spec.md\n• Record ADR in second-brain/Docs/ADRs/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n• Decompose 3-Column WBS Plan\n• Write risk-gate.json manifest"]
+    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n• One-Question Grilling Algorithm\n• Author <Feature>_<Topic>_Formal_Spec.md\n• Record ADR in docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n• Decompose 3-Column WBS Plan\n• Write risk-gate.json manifest"]
     Phase1 --> Phase2["Phase 2: VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n• Freeze Level 2 Tests into adversarial-validation.json (status: RED)"]
     Phase2 --> Phase3["Phase 3: EXECUTE - TDD GREEN (ag-execute-agent)\n• Implement source code\n• Resolve bugs via verification.json Counter-Example Loop"]
     Phase3 --> Phase4["Phase 4: CODE INTERROGATION (ag-code-interrogation)\n• Execute 5-Layer Cognitive Stack Interrogation Loop\n• Emit interrogation-report.json"]
     Phase4 --> Phase5["Phase 5: PROOF REVIEW (ag-code-reviewer / ag-security)\n• Cross-examine diff vs Formal Spec & verification.json\n• Emit review-decision.json (mustStopBeforeFinalize: false)"]
-    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT (ag-update-process-agent)\n• Validate docs: bun run .claude/skills/ag-docs/scripts/validate-docs.mjs\n• Archive Spec & Export second-brain/Docs/<Topic>/<Feature>_<Topic>_Workflow.md"]
+    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT (ag-update-process-agent)\n• Validate docs: bun run .claude/skills/ag-docs/scripts/validate-docs.mjs\n• Archive Spec & Export docs/design/<feature-slug>-<topic-slug>-workflow.md"]
 ```
 
 ### State Transition Preconditions & Deliverable Gates
@@ -39,7 +39,7 @@ flowchart TD
 | **Phase 3 (EXECUTE)** | **Phase 4 (INTERROGATION)** | All frozen tests PASS; `verification.json` status is `PASS` (0 failures) | `ag-execute-agent` |
 | **Phase 4 (INTERROGATION)** | **Phase 5 (PROOF REVIEW)** | 5-Layer Socratic Interrogation passed; `interrogation-report.json` emitted | `ag-code-interrogation` |
 | **Phase 5 (PROOF REVIEW)** | **Phase 6 (UPDATE PROCESS)** | `review-decision.json` contains `mustStopBeforeFinalize: false` & `verdict: "APPROVED"` | `ag-code-reviewer` |
-| **Phase 6 (UPDATE PROCESS)** | **COMPLETED** | Docs audit passes 100%; operational SSOT exported to `second-brain/Docs/` | `ag-update-process-agent` |
+| **Phase 6 (UPDATE PROCESS)** | **COMPLETED** | Docs audit passes 100%; operational SSOT exported to `docs/design/` | `ag-update-process-agent` |
 
 ---
 
@@ -56,7 +56,7 @@ flowchart TD
      * **Fail-Safe Boundary:** Safe fallback behavior under unexpected exceptions.
      * **Level 2 Edge Cases:** Concurrency, race conditions, adversarial payloads.
   3. Author the Formal Spec file at `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md` using template `process/development-protocols/references/formal-spec-template.md`.
-  4. If architectural decisions were made, write an ADR to `second-brain/Docs/ADRs/000X-[kebab-case-name].md`.
+  4. If architectural decisions were made, write an ADR to `docs/adr/000X-[kebab-case-name].md`.
 * **Output Deliverables:** `[Feature]_[Topic]_Formal_Spec.md`, optional ADR file.
 
 ---
@@ -144,8 +144,8 @@ flowchart TD
      `bun run .claude/skills/ag-docs/scripts/validate-docs.mjs`
   2. Archive Formal Spec: Move `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md` to `process/features/[feature]/completed/`.
   3. Synthesize operational evidence using `ag-workflow-doc` and export SSOT operational doc to:
-     `second-brain/Docs/[Topic]/[Feature]_[Topic]_Workflow.md` (conforming to `workflow-documentation-standard.md`).
-* **Output Deliverables:** Validated docs, archived spec, `second-brain/Docs/[Topic]/[Feature]_[Topic]_Workflow.md`.
+     `docs/design/<feature-slug>-<topic-slug>-workflow.md` (conforming to `workflow-documentation-standard.md`).
+* **Output Deliverables:** Validated docs, archived spec, `docs/design/<feature-slug>-<topic-slug>-workflow.md`.
 
 ---
 
@@ -168,12 +168,12 @@ process/features/{feature-slug}/
 │           └── review-decision.json            <-- Proof Verification Gate Report
 └── completed/                                  <-- Archived Spec location upon completion
 
+docs/design/
+└── <feature-slug>-<topic-slug>-workflow.md        <-- Operational SSOT Document (kebab-case)
+
 second-brain/Docs/
-├── ADRs/
-│   └── 000X-<kebab-case-name>.md              <-- Centralized ADR Directory
-└── <Topic>/
-    └── <Feature>_<Topic>_Workflow.md          <-- Operational SSOT Document
-```
+└── ADRs/
+    └── 000X-<kebab-case-name>.md              <-- Centralized ADR Directory
 
 ### JSON Schemas & Templates
 

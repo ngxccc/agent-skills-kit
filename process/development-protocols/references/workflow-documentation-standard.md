@@ -11,7 +11,7 @@ version: 1.0.0
 
 # Workflow Documentation Standard & Templates (Single Source of Truth - SSOT)
 
-This document defines the **Single Source of Truth (SSOT)** standard for authoring all architectural and business process workflow documents (Workflow Docs) located in `second-brain/Docs/` or `process/references/`.
+This document defines the **Single Source of Truth (SSOT)** standard for authoring all architectural and business process workflow documents (Workflow Docs) located in `docs/design/`.
 
 ---
 
@@ -227,16 +227,15 @@ sequenceDiagram
 
 ## 5. File Naming Conventions
 
-All Workflow Docs in `second-brain/Docs/` or `process/references/` **MUST** follow strict **PascalCase with Underscores**:
+All Workflow Docs in `docs/design/` **MUST** follow strict **kebab-case**:
 
-| Document Type           | Syntax Pattern                             | Mandatory Suffix  | Concrete Example                                                    |
-| :---------------------- | :----------------------------------------- | :---------------- | :------------------------------------------------------------------ |
-| **Workflow / Spec**     | `PascalCase_With_Underscores_Workflow.md`  | `_Workflow.md`    | `Change_Password_Workflow.md`, `Global_Exception_Filter_Workflow.md` |
-| **Deep Dive / Concept** | `PascalCase_With_Underscores_Deep_Dive.md` | `_Deep_Dive.md`   | `RFC_9457_Problem_Details_Deep_Dive.md`                             |
-| **Standard**            | `PascalCase_With_Underscores_Standard.md`  | `_Standard.md`    | `Workflow_Documentation_Standard.md`                                |
-| **Template**            | `PascalCase_With_Underscores_Template.md`  | `_Template.md`    | `WBS_Table_Template.md`                                             |
+| Document Type           | Syntax Pattern                        | Mandatory Suffix | Concrete Example                                              |
+| :---------------------- | :------------------------------------ | :--------------- | :------------------------------------------------------------ |
+| **Workflow / Spec**     | `<kebab-case>-workflow.md`            | `-workflow.md`   | `change-password-workflow.md`, `global-exception-filter-workflow.md` |
+| **Deep Dive / Concept** | `<kebab-case>-deep-dive.md`           | `-deep-dive.md`  | `rfc-9457-problem-details-deep-dive.md`                        |
+| **Standard**            | `<kebab-case>-standard.md`            | `-standard.md`   | `workflow-documentation-standard.md`                          |
+| **Template**            | `<kebab-case>-template.md`            | `-template.md`   | `wbs-table-template.md`                                       |
 
 ### Formatting Rules:
-1. Use **`PascalCase`** for words, separated by **underscores `_`**.
-2. Never use hyphens `-` in file names to avoid URL slug ambiguity.
-3. Destination Priority: Prefer `second-brain/Docs/<Topic>/`; fallback to `process/features/<topic>/references/` or `process/general-plans/references/`.
+1. Use **`kebab-case`** (lowercase letters, digits, and hyphens `-`).
+2. Canonical Destination: `docs/design/`.

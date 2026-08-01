@@ -21,7 +21,7 @@ _A production-grade meta harness for AI coding agents (Claude Code, Codex, Antig
 
 🔬 **Spec-Driven & Verification-First** for AI agents<br>
 🛡️ **Risk-Based Tiering**: High-Risk formal verification vs Low-Risk fast mode<br>
-🧠 **Centralized ADRs & SSOT Knowledge Base** (`second-brain/Docs/ADRs/`)<br>
+🧠 **Centralized ADRs & SSOT Knowledge Base** (`docs/adr/`)<br>
 ⚡ **Autonomous Counter-Example Loops** (TDD RED-GREEN via `verification.json`)<br>
 🧩 **5-Layer Socratic Code Interrogation** (`ag-code-interrogation`)<br>
 🤝 **Cross-Agent Compatibility** (Claude Code, Codex, Antigravity)
@@ -52,19 +52,19 @@ This harness operates on the **Architect & Verifier Paradigm** integrated with t
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n- One-Question Grilling Algorithm\n- Generate <Feature>_<Topic>_Formal_Spec.md\n- Record ADR in second-brain/Docs/ADRs/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n- Create 3-Column WBS Plan File\n- Link formalSpecPath in risk-gate.json"]
+    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n- One-Question Grilling Algorithm\n- Generate <Feature>_<Topic>_Formal_Spec.md\n- Record ADR in docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n- Create 3-Column WBS Plan File\n- Link formalSpecPath in risk-gate.json"]
     Phase1 --> Phase2["Phase 2: VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n- Freeze Level 2 Property Tests & Adversarial Matrix into\n  adversarial-validation.json (status: RED)"]
     Phase2 --> Phase3["Phase 3: EXECUTE - TDD GREEN (ag-execute-agent)\n- Implement Source Code\n- Fix bugs via Counter-Example JSON in verification.json"]
     Phase3 --> Phase4["Phase 4: CODE INTERROGATION (ag-code-interrogation)\n- Execute 5-Layer Cognitive Stack Socratic Loop\n- Emit interrogation-report.json (gateVerdict: PASS)"]
     Phase4 --> Phase5["Phase 5: PROOF REVIEW (ag-code-reviewer / ag-security)\n- Cross-examine diff vs Formal Spec & verification.json\n- Emit review-decision.json (mustStopBeforeFinalize: false)"]
-    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT (ag-update-process-agent)\n- Run MANDATORY Doc Audit: validate-docs.mjs\n- Export Operational SSOT in second-brain/Docs/<Topic>/"]
+    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT (ag-update-process-agent)\n- Run MANDATORY Doc Audit: validate-docs.mjs\n- Export Operational SSOT in docs/design/"]
 ```
 
 ### Risk-Based Tiering Decision Matrix
 
 | Risk Class | Domain & Triggers | Mandatory Protocol & Verification | Required Harness Artifacts |
 | :--- | :--- | :--- | :--- |
-| **High-Risk Class** | Auth, Billing, DB Schema Migrations, Public APIs, Gateway/Proxy, Secrets, Security Boundaries | **Autonomous Architect & Verifier Protocol** (Phases 0 $\rightarrow$ 6 State Machine, One-Question Grilling, Invariant Freeze, TDD RED-GREEN Counter-Examples, 5-Layer Interrogation) | `<Feature>_<Topic>_Formal_Spec.md`, `risk-gate.json`, `adversarial-validation.json`, `verification.json`, `interrogation-report.json`, `review-decision.json`, `second-brain/Docs/ADRs/` |
+| **High-Risk Class** | Auth, Billing, DB Schema Migrations, Public APIs, Gateway/Proxy, Secrets, Security Boundaries | **Autonomous Architect & Verifier Protocol** (Phases 0 $\rightarrow$ 6 State Machine, One-Question Grilling, Invariant Freeze, TDD RED-GREEN Counter-Examples, 5-Layer Interrogation) | `<Feature>_<Topic>_Formal_Spec.md`, `risk-gate.json`, `adversarial-validation.json`, `verification.json`, `interrogation-report.json`, `review-decision.json`, `docs/adr/` |
 | **Low-Risk Class** | Formatting, Typos, Cosmetic CSS, Simple UI Components (< 15 lines of code) | **Lightweight FAST MODE** (Direct planning & execution bypass) | Direct plan file |
 
 ---
@@ -110,7 +110,7 @@ your-project/
 - **`ag-code-interrogation`**: 5-Layer Cognitive Stack Socratic interrogation verifying mental models and AI code understanding.
 - **`ag-tester` / `ag-security` / `ag-scenario`**: Level 2 Property-Based Testing (`fast-check`), STRIDE security audits, and Adversarial Matrix freeze (`adversarial-validation.json`).
 - **`ag-code-reviewer`**: Proof Review gatekeeper emitting `review-decision.json`.
-- **`ag-docs`**: Unified documentation management & validation targeting `second-brain/Docs/ADRs/` and workflow specs.
+- **`ag-docs`**: Unified documentation management & validation targeting `docs/adr/` and workflow specs.
 - **`ag-workflow-doc`**: Dual-stage documentation (Pre-implementation Formal Spec & Post-implementation SSOT Operational Workflow).
 - **`ag-second-brain`**: Obsidian Second Brain integration for durable knowledge management.
 

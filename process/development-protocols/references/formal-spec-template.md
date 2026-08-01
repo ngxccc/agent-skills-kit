@@ -55,8 +55,8 @@ export type InputData = z.infer<typeof InputDataSchema>;
 
 *Những điều kiện toán học/logic MUST ALWAYS HOLD TRUE trong mọi thời điểm (Pre, During, Post execution):*
 
-- `INV-1 (Data Consistency)`: [Ví dụ: Balance_after = Balance_before - Amount — Xem ADR chi tiết tại `second-brain/Docs/ADRs/0003-wallet-outbox-pattern.md`]
-- `INV-2 (Security Boundary)`: [Ví dụ: UserRole == 'ADMIN' mới được phép thực hiện hành động — Xem ADR chi tiết tại `second-brain/Docs/ADRs/0004-rbac-policy.md`]
+- `INV-1 (Data Consistency)`: [Ví dụ: Balance_after = Balance_before - Amount — Xem ADR chi tiết tại `docs/adr/0003-wallet-outbox-pattern.md`]
+- `INV-2 (Security Boundary)`: [Ví dụ: UserRole == 'ADMIN' mới được phép thực hiện hành động — Xem ADR chi tiết tại `docs/adr/0004-rbac-policy.md`]
 - `INV-3 (State Machine Transition)`: [Ví dụ: PENDING -> PROCESSING -> COMPLETED/FAILED, tuyệt đối không được nhảy cóc]
 ### Contract Details (Hợp Đồng Hàm):
 - **Pre-conditions (Điều kiện tiên quyết)**:
