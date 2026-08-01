@@ -12,7 +12,7 @@ Before executing any request, agents MUST evaluate the task scope against this m
 
 | Task Class          | Trigger Conditions                                                                                                                                                                                                                                                       | Mandatory Workflow Mode                                                                  | Required Harness Artifacts                                                                                                                                                                                                             |
 | :------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `docs/adr/` |
+| **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `docs/adr/` |
 | **Low-Risk Class**  | • Minor bug fixes (< 15 lines of code)<br>• UI / CSS / Formatting tweaks<br>• Typo fixes & non-logic configuration updates                                                                                                                                               | **Lightweight RIPER-5 / Fast Mode**<br>(Bypass Formal Spec & Heavyweight Gate)           | • Active Plan file or Fast Mode Plan                                                                                                                                                                                                   |
 
 ---
@@ -21,7 +21,7 @@ Before executing any request, agents MUST evaluate the task scope against this m
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n• One-Question Grilling Algorithm\n• Author <Feature>_<Topic>_Formal_Spec.md\n• Record ADR in docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n• Decompose 3-Column WBS Plan\n• Write risk-gate.json manifest"]
+    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n• One-Question Grilling Algorithm\n• Author <feature-slug>-<topic-slug>-formal-spec.md\n• Record ADR in docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n• Decompose 3-Column WBS Plan\n• Write risk-gate.json manifest"]
     Phase1 --> Phase2["Phase 2: VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n• Freeze Level 2 Tests into adversarial-validation.json (status: RED)"]
     Phase2 --> Phase3["Phase 3: EXECUTE - TDD GREEN (ag-execute-agent)\n• Implement source code\n• Resolve bugs via verification.json Counter-Example Loop"]
     Phase3 --> Phase4["Phase 4: CODE INTERROGATION (ag-code-interrogation)\n• Execute 5-Layer Cognitive Stack Interrogation Loop\n• Emit interrogation-report.json"]
@@ -33,7 +33,7 @@ flowchart TD
 
 | From State                   | To State                     | Gate Condition / Prerequisite                                                               | Verified By                 |
 | :--------------------------- | :--------------------------- | :------------------------------------------------------------------------------------------ | :-------------------------- |
-| **Phase 0 (ARCHITECT)**      | **Phase 1 (PLAN)**           | Formal Spec written to `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md` | `ag-brainstorming`          |
+| **Phase 0 (ARCHITECT)**      | **Phase 1 (PLAN)**           | Formal Spec written to `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` | `ag-brainstorming`          |
 | **Phase 1 (PLAN)**           | **Phase 2 (VERIFIER PREP)**  | WBS Plan created and `risk-gate.json` initialized with `formalSpecPath`                     | `ag-plan-agent`             |
 | **Phase 2 (VERIFIER PREP)**  | **Phase 3 (EXECUTE)**        | Level 2 tests frozen into `adversarial-validation.json` with status `RED`                   | `ag-tester` / `ag-security` |
 | **Phase 3 (EXECUTE)**        | **Phase 4 (INTERROGATION)**  | All frozen tests PASS; `verification.json` status is `PASS` (0 failures)                    | `ag-execute-agent`          |
@@ -55,19 +55,19 @@ flowchart TD
      - **System Invariants:** Non-negotiable logic rules (e.g., `INV-1: Balance cannot drop below zero`).
      - **Fail-Safe Boundary:** Safe fallback behavior under unexpected exceptions.
      - **Level 2 Edge Cases:** Concurrency, race conditions, adversarial payloads.
-  3. Author the Formal Spec file at `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md` using template `process/development-protocols/references/formal-spec-template.md`.
+  3. Author the Formal Spec file at `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` using template `process/development-protocols/references/formal-spec-template.md`.
   4. If architectural decisions were made, write an ADR to `docs/adr/000X-[kebab-case-name].md`.
-- **Output Deliverables:** `[Feature]_[Topic]_Formal_Spec.md`, optional ADR file.
+- **Output Deliverables:** `[feature-slug]-[topic-slug]-formal-spec.md`, optional ADR file.
 
 ---
 
 ### 🔹 Phase 1: PLAN (`ag-plan-agent` / `ag-generate-plan`)
 
 - **Executing Agent:** `ag-plan-agent` / `ag-generate-plan`.
-- **Input Prerequisites:** Active Formal Spec at `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md`.
+- **Input Prerequisites:** Active Formal Spec at `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md`.
 - **Autonomous Execution Algorithm:**
   1. Parse the Formal Spec; extract all System Invariants (`INV-1`, `INV-2`, etc.).
-  2. Create active Plan file at `process/features/[feature]/active/[feature]_PLAN_[dd-mm-yy].md`.
+  2. Create active Plan file at `process/features/[feature]/active/[feature-slug]-plan-[dd-mm-yy].md`.
   3. Include `formalSpecPath` in the Plan header.
   4. Decompose work into a 3-column Primitive Atomic WBS Table (Phase, Task, Acceptance Criteria).
   5. Initialize `risk-gate.json` at `process/features/[feature]/reports/harness/[planSlug]/risk-gate.json`.
@@ -142,7 +142,7 @@ flowchart TD
 - **Autonomous Execution Algorithm:**
   1. Run mandatory doc audit script:
      `bun run .claude/skills/ag-docs/scripts/validate-docs.mjs`
-  2. Archive Formal Spec: Move `process/features/[feature]/active/[Feature]_[Topic]_Formal_Spec.md` to `process/features/[feature]/completed/`.
+  2. Archive Formal Spec: Move `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` to `process/features/[feature]/completed/`.
   3. Synthesize operational evidence using `ag-workflow-doc` and export SSOT operational doc to:
      `docs/design/<feature-slug>-<topic-slug>-workflow.md` (conforming to `workflow-documentation-standard.md`).
 - **Output Deliverables:** Validated docs, archived spec, `docs/design/<feature-slug>-<topic-slug>-workflow.md`.
@@ -156,8 +156,8 @@ flowchart TD
 ````
 process/features/{feature-slug}/
 ├── active/
-│   ├── [Feature]_[Topic]_Formal_Spec.md        <-- Formal Spec (Pre-Implementation)
-│   └── [feature]_PLAN_[dd-mm-yy].md           <-- Active Plan file
+│   ├── [feature-slug]-[topic-slug]-formal-spec.md   <-- Formal Spec (Pre-Implementation)
+│   └── [feature-slug]-plan-[dd-mm-yy].md           <-- Active Plan file
 ├── reports/
 │   └── harness/
 │       └── [planSlug]/
@@ -179,7 +179,7 @@ docs/design/
 {
   "featureSlug": "payment-webhook",
   "riskClass": "Billing",
-  "formalSpecPath": "process/features/payment-webhook/active/Payment_Webhook_Formal_Spec.md",
+  "formalSpecPath": "process/features/payment-webhook/active/payment-webhook-formal-spec.md",
   "mustStopBeforeFinalize": true,
   "createdAt": "2026-08-01T00:00:00Z"
 }

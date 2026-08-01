@@ -31,12 +31,12 @@ Keywords: `high risk`, `architect verifier`, `formal spec`, `verification loop`,
 ### Phase 0: ARCHITECT (`ag-brainstorming`)
 
 - Conduct One-Question Grilling. Discover System Invariants, Fail-Safe Boundaries, Edge Cases.
-- Output: `[Feature]_[Topic]_Formal_Spec.md` and ADR in `docs/adr/`.
+- Output: `[feature-slug]-[topic-slug]-formal-spec.md` and ADR in `docs/adr/`.
 
 ### Phase 1: PLAN (`ag-plan-agent`)
 
 - Parse invariants, decompose 3-column WBS plan.
-- Output: `[feature]_PLAN_[dd-mm-yy].md` and `risk-gate.json`.
+- Output: `[feature-slug]-plan-[dd-mm-yy].md` and `risk-gate.json`.
 
 ### Phase 2: VERIFIER PREP - TDD RED (`ag-tester` / `ag-security` / `ag-scenario`)
 

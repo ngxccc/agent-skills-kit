@@ -184,7 +184,7 @@ Global best practices and coding conventions apply:
      - `#region [Name]` / `#endregion` - Logically groups large sections of related code or variables to keep the file scannable.
   5. **Execution**: When generating code, scan for areas that are highly complex, prone to misinterpretation, or contain "magic numbers"/quirks. Inject the appropriate tags naturally. Do not over-comment. Maintain a clean, professional, and pragmatic codebase.
 - Second-Brain Policy: Business specifications, architecture designs, critical trade-offs (e.g. concurrency, outbox pattern), and interview preparation notes must be written to `second-brain/` to facilitate future learning and study.
-- Visual Workflow Documentation Policy: Each feature or infrastructure component must document its operational and database flow using the SSOT Workflow Documentation Standard at `process/development-protocols/references/workflow-documentation-standard.md` (or helper skill `ag-workflow-doc`). Documents must specify `docType: feature-workflow` or `docType: infrastructure-workflow`, include a 4-level WBS table, autonumbered Mermaid sequence diagrams, and be saved using PascalCase_With_Underscores naming to `second-brain/Docs/<Topic>/<PascalCase_Name_Workflow.md>` (or `process/general-plans/references/` as fallback). Do NOT consolidate multiple workflows into a single monolithic document.
+- Visual Workflow Documentation Policy: Each feature or infrastructure component must document its operational and database flow using the SSOT Workflow Documentation Standard at `process/development-protocols/references/workflow-documentation-standard.md` (or helper skill `ag-workflow-doc`). Documents must specify `docType: feature-workflow` or `docType: infrastructure-workflow`, include a 4-level WBS table, autonumbered Mermaid sequence diagrams, and be saved using kebab-case naming to `docs/design/<feature-topic>-workflow.md` (or `process/general-plans/references/` as fallback). Do NOT consolidate multiple workflows into a single monolithic document.
 
 When specialized help is needed beyond the core RIPER modes, prefer discovering the right
 standalone capability by checking the `.agents/skills/` directory rather than expanding the
@@ -200,12 +200,12 @@ Codex and Claude share the `process/` directory:
 
 ### `process/general-plans/`
 
-Default new feature plans use date-stamped naming: `[feature]_PLAN_[dd-mm-yy].md`
+Default new feature plans use date-stamped kebab-case naming: `[feature-slug]-plan-[dd-mm-yy].md`
 
 - Plans are system-agnostic and work across tools
 - Date stamps prevent conflicts
 - Completed plans archived to `process/general-plans/completed/`
-- Current active inventory is mixed: direct `*_PLAN_*.md` files are the default, but legacy `PLAN.md`, `plan.md`, and `phase-*.md` layouts still exist and must be treated as compatibility shapes during audits/resume flows
+- Current active inventory is mixed: direct `*-plan-*.md` files are the default, but legacy `PLAN.md`, `plan.md`, and `phase-*.md` layouts still exist and must be treated as compatibility shapes during audits/resume flows
 
 ### `process/context/`
 

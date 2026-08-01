@@ -208,6 +208,7 @@ agent-skills-kit/
 - **RIPER-5 & Architect/Verifier Flow:** Strictly phased spec-driven development workflow (Research -> Innovate -> Plan -> Execute -> Code Interrogation -> Proof Review -> Update Process) integrated with the Architect & Verifier Paradigm for High-Risk features (Auth, Billing, DB Migration, Public APIs, Secrets) and Socratic Code Interrogation (`ag-code-interrogation`).
 - **Level 2 TDD & Counter-Example Verification:** High-Risk features freeze property-based & adversarial tests into `adversarial-validation.json` (TDD RED) and fix bugs driven by `verification.json` counter-example payloads (TDD GREEN).
 - **Centralized ADR Management:** Architectural Decision Records are stored in `docs/adr/000X-<name>.md` and validated automatically via `validate-docs.mjs` upon phase closure.
+- **Kebab-Case Naming Standard:** All repository artifacts (skills, ADRs, RFCs, design/workflow docs, feature folders, active plans like `[feature-slug]-plan-[dd-mm-yy].md`, and formal specs like `[feature-slug]-[topic-slug]-formal-spec.md`) strictly use kebab-case.
 - **All-\*.md Convention:** Entry points for context (`all-context.md`) and groups (`all-tests.md`, `all-planning.md`) act as quick context routers to keep context windows small.
 - **Agent/Skill Mirroring:** Codex TOML agents mirror Claude Code Markdown agents; `.agents/skills` is symlinked to `.claude/skills`.
 - **Validation Gates:** CI workflow `validate.yml` runs a set of validation scripts under `ag-audit-ag`, `ag-audit-context`, `ag-audit-plans`, and `ag-generate-context`.

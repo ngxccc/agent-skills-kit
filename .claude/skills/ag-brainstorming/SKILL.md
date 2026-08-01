@@ -61,7 +61,7 @@ Race conditions, boundary limits, corrupted inputs, and concurrent state mutatio
 Upon completing the brainstorming loop and reaching agreement, the agent MUST write the following artifacts:
 
 1. **Formal Specification File:**
-   - Path: `process/features/[feature-slug]/active/[Feature]_[Topic]_Formal_Spec.md`
+   - Path: `process/features/[feature-slug]/active/[feature-slug]-[topic-slug]-formal-spec.md`
    - Formatted according to `process/development-protocols/references/formal-spec-template.md`.
 
 2. **Architectural Decision Record (ADR):**
