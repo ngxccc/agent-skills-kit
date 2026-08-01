@@ -4,7 +4,7 @@ description: Rules, standards, and references for rate limiting in serverless en
 license: MIT
 argument-hint: '[--limit <number>] [--window <string>]'
 metadata:
-  author: Team
+  author: ngxc
   version: 1.0.0
 ---
 

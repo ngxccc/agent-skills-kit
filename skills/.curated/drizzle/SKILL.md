@@ -4,7 +4,7 @@ description: Rules, standards, and references for Drizzle ORM query styles, perf
 license: MIT
 argument-hint: '[--table <string>] [--query-type <string>]'
 metadata:
-  author: Team
+  author: ngxc
   version: 1.1.0
 ---
 

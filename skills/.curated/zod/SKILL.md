@@ -4,7 +4,7 @@ description: Zod v4 schema validation best practices. Use when defining schemas,
 license: MIT
 argument-hint: '[schema-file-path or query]'
 metadata:
-  author: Team
+  author: ngxc
   version: 4.0.0
 ---
 

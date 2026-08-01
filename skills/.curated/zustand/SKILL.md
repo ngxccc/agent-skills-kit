@@ -4,7 +4,7 @@ description: "Rules and standards for state management using Zustand in React an
 license: MIT
 argument-hint: "[no-args]"
 metadata:
-  author: Team
+  author: ngxc
   version: "1.0.0"
 ---
 

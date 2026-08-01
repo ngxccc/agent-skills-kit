@@ -4,7 +4,7 @@ description: "Trigger keywords: <keywords>. Brief explanation of what this skill
 license: MIT
 argument-hint: "[no-args]"
 metadata:
-  author: Team
+  author: ngxc
   version: "1.0.0"
 ---
 
