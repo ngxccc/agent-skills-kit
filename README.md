@@ -37,25 +37,15 @@ _A production-grade meta harness for AI coding agents (Claude Code, Codex, Antig
 </div>
 
 ---
-
 ## 🚀 Quick Start (30 Seconds)
 
-Run this inside your target project directory:
+Run the raw CLI binary directly inside your target project directory:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/bin/ag-cli -o /tmp/ag-cli && chmod +x /tmp/ag-cli && /tmp/ag-cli -y
 ```
 
-Then open your AI agent (Claude Code, Codex, or Antigravity) and say:
-
-```text
-Run ag-setup
-```
-
-The setup skill detects your technology stack, scaffolds the process directory structure, scans your codebase, and populates authoritative context entrypoints (`process/context/all-context.md`).
-
----
-
+The CLI automatically detects your technology stack, scaffolds the process directory structure, copies all agent/skill layers, and populates authoritative context entrypoints (`process/context/all-context.md`).
 ## 🏛️ Architecture: Architect & Verifier Paradigm
 
 This harness operates on the **Architect & Verifier Paradigm** integrated with the **RIPER-5 Spec-Driven Development System**:
