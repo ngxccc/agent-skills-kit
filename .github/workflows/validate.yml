@@ -91,3 +91,13 @@ jobs:
 
       - name: Lint Markdown (non-blocking)
         run: bunx prettier --check "**/*.md" || true
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Run Go Unit Tests
+        run: go test -v ./cmd/ag-cli/...
+
+      - name: Build Go CLI Binary Check
+        run: go build -o bin/ag-cli ./cmd/ag-cli

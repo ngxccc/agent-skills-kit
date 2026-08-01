@@ -45,7 +45,7 @@
     "assets/**",
     ".github/**",
     "resolve-manifest.mjs",
-    "install.sh",
+    "cmd/ag-cli/**",
     "package.json",
     "package-lock.json",
     "tsconfig.json",

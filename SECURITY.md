@@ -35,7 +35,7 @@ To report a vulnerability privately, please use GitHub Private Vulnerability Rep
 - **Installer Script (`install.sh`)**: Command injection, supply chain issues, or unsafe file operations.
 - **Agent Governance & Prompts (`.claude/agents/`, `.codex/agents/`)**: Prompt injection vulnerabilities that bypass RIPER-5 phase-locking, tool permissions, or formal spec risk gates.
 - **Secret & Credential Leakage**: Flaws in the harness that expose `.env` secrets, API keys, or private tokens to agent context unexpectedly.
-- **ADR & Spec Verification Scripts**: Vulnerabilities in automated validators (`validate-adrs.mjs`, `validate-agent-parity.mjs`).
+- **ADR & Spec Verification Scripts**: Vulnerabilities in automated validators (`validate-docs.mjs`, `validate-agent-parity.mjs`).
 
 ### Out of Scope
 - Vulnerabilities in upstream AI CLI tools (Claude Code, OpenAI Codex, Antigravity).

@@ -326,7 +326,7 @@ The active system is intentionally split into four layers:
   - `ag-audit-plans`
   - `ag-audit-ag`
   - `ag-harness-sync`
-  - `ag-adr`
+  - `ag-docs`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
   - `ag-preview`

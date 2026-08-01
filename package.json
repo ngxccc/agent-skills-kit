@@ -3,10 +3,14 @@
   "version": "2.4.2",
   "description": "Meta development harness for AI coding agents",
   "main": "resolve-manifest.mjs",
+  "bin": {
+    "ag-cli": "./bin/ag-cli"
+  },
   "type": "module",
   "scripts": {
     "test": "bun .codex/hooks/lib/__tests__/statusline-suite.cjs",
     "validate": "bun .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs && bun .claude/skills/ag-audit-ag/scripts/validate-skills.mjs && bun .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs && bun .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs && bun .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs && bun .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs && bun .claude/skills/ag-generate-context/scripts/validate-all-context.mjs && bun .claude/skills/ag-audit-ag/scripts/validate-conductor-catalog.mjs",
+    "audit": "./scripts/run-audit-parallel.mjs",
     "format": "bunx biome format --write ."
   },
   "devDependencies": {

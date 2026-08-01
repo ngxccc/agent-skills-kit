@@ -21,7 +21,7 @@ _A production-grade meta harness for AI coding agents (Claude Code, Codex, Antig
 
 🔬 **Spec-Driven & Verification-First** for AI agents<br>
 🛡️ **Risk-Based Tiering**: High-Risk formal verification vs Low-Risk fast mode<br>
-🧠 **Centralized ADRs & SSOT Knowledge Base** (`second-brain/Docs/ADRs/`)<br>
+🧠 **Centralized ADRs & SSOT Knowledge Base** (`docs/adr/`)<br>
 ⚡ **Autonomous Counter-Example Loops** (TDD RED-GREEN via `verification.json`)<br>
 🤝 **Cross-Agent Compatibility** (Claude Code, Codex, Antigravity)
 
@@ -61,18 +61,18 @@ This harness operates on the **Architect & Verifier Paradigm** combined with the
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n- One-Question Grilling\n- Generate <Feature>_<Topic>_Formal_Spec.md\n- Log ADRs to second-brain/Docs/ADRs/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n- Create Plan File\n- Link formalSpecPath in risk-gate.json"]
+    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n- One-Question Grilling\n- Generate <Feature>_<Topic>_Formal_Spec.md\n- Log ADRs to docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n- Create Plan File\n- Link formalSpecPath in risk-gate.json"]
     Phase1 --> Phase2["Phase 2: VERIFIER PREP (ag-tester / ag-security / ag-scenario)\n- Freeze Level 2 Property Tests & Adversarial Matrix into\n  adversarial-validation.json (TDD RED)"]
     Phase2 --> Phase3["Phase 3: EXECUTE (ag-execute-agent)\n- Implement Code (TDD GREEN)\n- Fix bugs via Counter-Example JSON in verification.json"]
     Phase3 --> Phase4["Phase 4: PROOF REVIEW (ag-code-reviewer / ag-security)\n- Verify 100% System Invariants -> review-decision.json"]
-    Phase4 --> Phase5["Phase 5: UPDATE PROCESS (ag-update-process-agent)\n- Run MANDATORY ADR audit: validate-adrs.mjs\n- Produce Operational SSOT in second-brain/Docs/<Topic>/"]
+    Phase4 --> Phase5["Phase 5: UPDATE PROCESS (ag-update-process-agent)\n- Run MANDATORY Documentation audit: validate-docs.mjs\n- Produce Operational SSOT in docs/design/"]
 ```
 
 ### Risk-Based Tiering (Option B)
 
 | Risk Class        | Targets / Domain                                                  | Protocol & Verification                                                                                          | Key Artifacts                                                                                                                       |
 | :---------------- | :---------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| **High-Risk**     | Auth, Billing, DB Migrations, Public APIs, Gateway/Proxy, Secrets | **Formal Specification & Verification** (One-Question Grilling, Invariants, TDD Frozen Matrix, Counter-Examples) | `<Feature>_<Topic>_Formal_Spec.md`, `risk-gate.json`, `adversarial-validation.json`, `verification.json`, `second-brain/Docs/ADRs/` |
+| **High-Risk**     | Auth, Billing, DB Migrations, Public APIs, Gateway/Proxy, Secrets | **Formal Specification & Verification** (One-Question Grilling, Invariants, TDD Frozen Matrix, Counter-Examples) | `<Feature>_<Topic>_Formal_Spec.md`, `risk-gate.json`, `adversarial-validation.json`, `verification.json`, `docs/adr/` |
 | **Low-Risk / UI** | Formatting, Typo, Cosmetic CSS, Simple UI Components              | **Lightweight FAST MODE** (Direct planning & implementation)                                                     | Direct plan file                                                                                                                    |
 
 ---
@@ -106,16 +106,16 @@ your-project/
 ### Core RIPER-5 Agents
 
 - **`ag-research-agent`**: Information gathering (Read-only).
-- **`ag-innovate-agent`**: Exploration of technical approaches & architectural decision logging via `ag-adr`.
+- **`ag-innovate-agent`**: Exploration of technical approaches & architectural decision logging via `ag-docs adr`.
 - **`ag-plan-agent`**: Writes structured execution plans linked to `formalSpecPath`.
 - **`ag-execute-agent`**: Code implementation driven by TDD RED-GREEN counter-example feedback loops (`verification.json`).
 - **`ag-fast-mode-agent`**: Compressed workflow for low-risk features.
-- **`ag-update-process-agent`**: Post-execution process reconciliation, mandatory ADR validation (`validate-adrs.mjs`), and SSOT archival.
+- **`ag-update-process-agent`**: Post-execution process reconciliation, mandatory documentation validation (`validate-docs.mjs`), and SSOT archival.
 
 ### Specialist Verification Agents & Helpers
 
 - **`ag-brainstorming`**: Architect Phase gate with One-Question Grilling & Formal Spec creation.
-- **`ag-adr`**: Centralized ADR creation & verification targeting `second-brain/Docs/ADRs/`.
+- **`ag-docs`**: Unified documentation management & validation targeting `docs/adr/`, `docs/rfc/`, and `docs/design/`.
 - **`ag-tester` / `ag-security` / `ag-scenario`**: Level 2 Property-Based Testing (`fast-check`), STRIDE audits, and Adversarial Matrix freeze into `adversarial-validation.json`.
 - **`ag-workflow-doc`**: Dual-stage documentation (Pre-impl Formal Spec & Post-impl SSOT Operational Workflow).
 - **`ag-second-brain`**: Obsidian Second Brain integration for durable knowledge management.
