@@ -11,24 +11,6 @@
   "skillCount": 30,
   "skills": [
     {
-      "folder": "ag-adr",
-      "name": "ag-adr",
-      "description": "Use when creating, updating, or validating Architectural Decision Records (ADRs) to ensure structural and formatting consistency.",
-      "aliases": [
-        "ag-adr"
-      ],
-      "normalizedName": "agadr",
-      "routedFrom": [
-        "AGENTS.md"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [
-        "references/adr-layout.md"
-      ],
-      "mentionedSkills": []
-    },
-    {
       "folder": "ag-audit-ag",
       "name": "ag-audit-ag",
       "description": "Audit agent harness health: Claude/Codex agent parity, skill registry consistency, README sync, and protocol wiring. Use when agents or skills drift.",
@@ -122,9 +104,23 @@
       "allowlisted": false,
       "allowlistReason": null,
       "relativeReferences": [],
-      "mentionedSkills": [
-        "ag-adr"
-      ]
+      "mentionedSkills": []
+    },
+    {
+      "folder": "ag-code-interrogation",
+      "name": "ag-code-interrogation",
+      "description": "Trigger keywords: interrogation, Socratic review, code interview, mental models, auto-pilot prevention, verify understanding, code challenge, critical thinking. Use when verifying if a developer or AI agent truly understands recent codebase changes or AI-generated code.",
+      "aliases": [
+        "ag-code-interrogation"
+      ],
+      "normalizedName": "agcodeinterrogation",
+      "routedFrom": [
+        "AGENTS.md"
+      ],
+      "allowlisted": false,
+      "allowlistReason": null,
+      "relativeReferences": [],
+      "mentionedSkills": []
     },
     {
       "folder": "ag-debug",
@@ -161,7 +157,7 @@
     {
       "folder": "ag-docs",
       "name": "ag-docs",
-      "description": "Use when you need to analyze a codebase and initialize, update, or summarize project documentation.",
+      "description": "Use when you need to create, update, or validate project documentation (ADRs, RFCs, System Design Docs, and Workflow Specs).",
       "aliases": [
         "ag-docs"
       ],
@@ -173,13 +169,15 @@
       "allowlisted": false,
       "allowlistReason": null,
       "relativeReferences": [
+        "references/adr-layout.md",
+        "references/design-doc-layout.md",
         "references/init-workflow.md",
+        "references/rfc-layout.md",
         "references/summarize-workflow.md",
-        "references/update-workflow.md"
+        "references/update-workflow.md",
+        "scripts/validate-docs.mjs"
       ],
-      "mentionedSkills": [
-        "ag-workflow-doc"
-      ]
+      "mentionedSkills": []
     },
     {
       "folder": "ag-docs-seeker",
@@ -205,7 +203,7 @@
     {
       "folder": "ag-frontend-design",
       "name": "ag-frontend-design",
-      "description": "Create polished frontend interfaces from designs/screenshots/videos. Use for web components, 3D experiences, replicating UI designs, quick prototypes, immersive interfaces, avoiding AI slop.",
+      "description": "Trigger keywords: frontend design, UI design, redesign, anti-AI-slop, 60-30-10 rule, studio UI, bento layout, responsive UI. Guidance for creating distinctive, studio-grade, human-crafted web interfaces with opinionated 60-30-10 color proportions, tactile micro-interactions, LEGO reference assembly, Figma diff loops, and zero generic boilerplate.",
       "aliases": [
         "ag-frontend-design"
       ],
@@ -216,7 +214,12 @@
       ],
       "allowlisted": false,
       "allowlistReason": null,
-      "relativeReferences": [],
+      "relativeReferences": [
+        "references/anti-slop-rules.md",
+        "references/color-palette-guide.md",
+        "references/premium-design-patterns.md",
+        "references/tactile-interaction-protocol.md"
+      ],
       "mentionedSkills": []
     },
     {
@@ -258,20 +261,20 @@
       "mentionedSkills": []
     },
     {
-      "folder": "ag-git-pr",
-      "name": "ag-git-pr",
-      "description": "Use when creating Git Pull Requests. Enforces Conventional Commits PR title format, structured PR body template, automated assignees, labels, project, and milestone without emojis.",
+      "folder": "ag-git-flow",
+      "name": "ag-git-flow",
+      "description": "Unified Enterprise Git Workflow Manager for Pull Requests (PRs) and Issues. Enforces Conventional Commits title format, structured PR and Issue body templates (bug, feature, task, docs, security), automated assignees, labels, project, and milestone without emojis.",
       "aliases": [
-        "ag-git-pr"
+        "ag-git-flow"
       ],
-      "normalizedName": "aggitpr",
+      "normalizedName": "aggitflow",
       "routedFrom": [
         "AGENTS.md"
       ],
       "allowlisted": false,
       "allowlistReason": null,
       "relativeReferences": [
-        "references/pr-template.md"
+        "references/git-flow-templates.md"
       ],
       "mentionedSkills": []
     },

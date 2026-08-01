@@ -62,6 +62,12 @@ Use this file when you need to:
 (No deeper test docs yet. Add routing entries here as they are created.)
 
 ## Quick Decision Guide
+### Use `Supertest` when
+
+- Testing NestJS / Express / Node.js HTTP REST API endpoints E2E.
+- Validating HTTP status codes (200, 201, 400, 401, 403, 500) and response DTO schemas.
+- Verifying System Invariants (`INV-1`, `INV-2`) and Auth/Tenant boundaries via real HTTP requests.
+- Code pattern: `import request from 'supertest'; request(app.getHttpServer()).post('/api/...').expect(201)`.
 
 <!-- STUDY: Replace with actual test runner names and when to use each. -->
 <!-- For monorepos with multiple runners, list each runner with its scope. -->

@@ -24,8 +24,6 @@ process/context/
   all-context.md                      <-- THIS FILE: root router
   planning/
     all-planning.md                   <-- group router for planning
-    example-simple-prd.md             <-- deep doc within the group
-    example-complex-prd.md            <-- deep doc within the group
   tests/
     all-tests.md                      <-- group router for tests
     debugging-and-pitfalls.md         <-- deep doc within the group
@@ -106,7 +104,7 @@ Do not create a group when:
 - the content is a plan or execution artifact
 - the topic is feature-specific and belongs in `process/features/...`
 
-Move or split one group at a time. Use `all-{group}.md` entrypoints. Run the `audit-context` skill after every context organization change.
+Move or split one group at a time. Use `all-{group}.md` entrypoints (copied from `process/context/_group-template.md`). Run the `audit-context` skill after every context organization change.
 
 ## Naming Convention
 
@@ -172,7 +170,7 @@ agent-skills-kit/
     general-plans/    -- Cross-cutting feature plans (active, completed, backlog)
     features/         -- Feature-scoped storage folders
   docs/               -- Project documentation and settings
-  install.sh          -- Installation script
+  cmd/ag-cli/main.go  -- Interactive Harness Customizer Go CLI
   resolve-manifest.mjs -- Glob-based manifest resolver
   ag-manifest.json    -- Installation and packaging manifest file
 ```
@@ -209,12 +207,12 @@ agent-skills-kit/
 
 - **RIPER-5 & Architect/Verifier Flow:** Strictly phased spec-driven development workflow (Research -> Innovate -> Plan -> Execute -> Code Interrogation -> Proof Review -> Update Process) integrated with the Architect & Verifier Paradigm for High-Risk features (Auth, Billing, DB Migration, Public APIs, Secrets) and Socratic Code Interrogation (`ag-code-interrogation`).
 - **Level 2 TDD & Counter-Example Verification:** High-Risk features freeze property-based & adversarial tests into `adversarial-validation.json` (TDD RED) and fix bugs driven by `verification.json` counter-example payloads (TDD GREEN).
-- **Centralized ADR Management:** Architectural Decision Records are stored in `second-brain/Docs/ADRs/000X-<name>.md` and validated automatically via `validate-adrs.mjs` upon phase closure.
+- **Centralized ADR Management:** Architectural Decision Records are stored in `docs/adr/000X-<name>.md` and validated automatically via `validate-docs.mjs` upon phase closure.
 - **All-\*.md Convention:** Entry points for context (`all-context.md`) and groups (`all-tests.md`, `all-planning.md`) act as quick context routers to keep context windows small.
 - **Agent/Skill Mirroring:** Codex TOML agents mirror Claude Code Markdown agents; `.agents/skills` is symlinked to `.claude/skills`.
 - **Validation Gates:** CI workflow `validate.yml` runs a set of validation scripts under `ag-audit-ag`, `ag-audit-context`, `ag-audit-plans`, and `ag-generate-context`.
 - **Coding Fix Skill-Logging:** When `ag-debugger` resolves a non-trivial bug (3+ steps or framework quirk), and during `ag-update-process-agent` Phase 2, the native `manage_skill` tool is invoked to persist the fix recipe as a managed skill at `~/.omp/agent/managed-skills/<name>/SKILL.md`. Naming convention: `fix-<domain>-<issue>`.
-- **Workflow Documentation Standard:** Architectural and feature workflow specifications must follow the SSOT standard at `process/development-protocols/references/workflow-documentation-standard.md` (via `ag-workflow-doc` skill). Documents use `docType: feature-workflow` or `docType: infrastructure-workflow`, include a 4-level WBS table, autonumbered Mermaid sequence diagrams, and are saved using PascalCase_With_Underscores naming to `second-brain/Docs/<Topic>/<PascalCase_Name_Workflow.md>` (or `process/general-plans/references/` as fallback). Grounding via Codebase Memory MCP graph tools is mandatory.
+- **Workflow Documentation Standard:** Architectural and feature workflow specifications must follow the SSOT standard at `process/development-protocols/references/workflow-documentation-standard.md` (via `ag-workflow-doc` skill). Documents use `docType: feature-workflow` or `docType: infrastructure-workflow`, include a 4-level WBS table, autonumbered Mermaid sequence diagrams, and are saved using PascalCase_With_Underscores naming to `docs/design/<PascalCase_Name_Workflow.md>` (or `process/features/{feature}/references/` as fallback). Grounding via Codebase Memory MCP graph tools is mandatory.
 ## Environment and Configuration
 
 - **Config Files:** `ag-manifest.json` (defines paths included/excluded/copied/symlinked), `.markdownlint.json`, `process/development-protocols/` files.

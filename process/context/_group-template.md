@@ -8,7 +8,7 @@ Use it after `process/context/all-context.md` when the task needs {{group_scope_
 
 ## How to Use This Template
 
-This is a seed template for creating `all-{group}.md` entrypoints when a new context group is created.
+This is the standard template for creating `all-{group}.md` entrypoints when a new context group is created.
 
 To use: copy this file to `process/context/{group}/all-{group}.md`, then replace:
 - `{{group_name}}` with the display name (e.g., "Database", "Auth", "Infrastructure")
@@ -36,24 +36,6 @@ It does not cover:
 - (e.g., "feature-specific migration plans -- those belong in process/features/...")
 - (e.g., "CI/CD pipeline config -- that belongs in the infra/ group")
 
-<!-- Example filled in for a "database" group: -->
-
-<!--
-This group covers:
-
-- Prisma schema conventions, model relationships, and enum patterns
-- Migration workflow (create, apply, rollback, production deploy)
-- Database client setup and connection pooling
-- Key models and their relationships
-- Seeding procedures for development and testing
-
-It does not cover:
-
-- Feature-specific migration plans (those belong in process/features/...)
-- Database hosting/infrastructure (that belongs in the infra/ group)
-- Test database setup (that belongs in the tests/ group)
--->
-
 ## Read When
 
 <!-- When should an agent load this group? Be action-oriented. -->
@@ -64,17 +46,6 @@ Read this entrypoint when:
 - (describe another task)
 - (describe another task)
 
-<!-- Example filled in for a "database" group: -->
-
-<!--
-Read this entrypoint when:
-
-- adding or modifying Prisma models or relations
-- running or creating database migrations
-- debugging database connection or query issues
-- understanding how models relate to API routers
--->
-
 ## Quick Routing
 
 <!-- Route to deeper docs within this group. This is the key value of the entrypoint. -->
@@ -82,14 +53,6 @@ Read this entrypoint when:
 
 - use `process/context/{{group}}/file-one.md` for (description of what it covers)
 - use `process/context/{{group}}/file-two.md` for (description of what it covers)
-
-<!-- Example filled in for a "database" group: -->
-
-<!--
-- use `process/context/database/schema-guide.md` for model conventions, relationships, enum patterns, and naming rules
-- use `process/context/database/migration-procedures.md` for step-by-step migration workflow, rollback, and production deploy
-- use `process/context/database/seeding.md` for development and test seeding procedures
--->
 
 ## Source Paths
 
@@ -107,21 +70,6 @@ Update this group when:
 - (describe another trigger)
 - (describe another trigger)
 
-<!-- Example filled in for a "database" group: -->
-
-<!--
-Update this group when:
-
-- Prisma schema conventions or model patterns change
-- Migration workflow or tooling changes
-- Database hosting provider or connection setup changes
-- The group grows enough to split into more durable subdomains
--->
-
 ## Canonical Notes
 
 <!-- Any group-specific operational notes that don't fit elsewhere. -->
-<!-- Remove this section if empty after filling in. -->
-
-- use `process/context/{{group}}/all-{{group}}.md` as the entrypoint
-- (list deeper reference files)
