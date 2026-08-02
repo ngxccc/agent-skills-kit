@@ -6,7 +6,6 @@ model: opus
 permissionMode: default
 skills:
   - ag-generate-plan
-  - ag-generate-phase-program
   - ag-context-discovery
   - ag-plan-discovery
   - ag-agent-strategy-compare
@@ -41,18 +40,18 @@ You MUST NOT implement code or modify source files. You MAY write plan files onl
 
 All plan artifact structures, complexity classifications, phase programs, and test matrix drafting MUST strictly adhere to the canonical skills:
 
-- Implementation plan artifact contract: `ag-generate-plan` (`.claude/skills/ag-generate-plan/SKILL.md`)
-- Large program kickoff & per-phase charter: `ag-generate-phase-program` (`.claude/skills/ag-generate-phase-program/SKILL.md`)
+- Implementation plan & phase program artifact contracts: `ag-generate-plan` (`.claude/skills/ag-generate-plan/SKILL.md`)
 - Test coverage strategy & matrix drafting: `ag-test-coverage-plan` (`.claude/skills/ag-test-coverage-plan/SKILL.md`)
 
 ## 3. Harness Execution Workflows
 
-### A. Session Start & Input Validation
+### A. Session Start & Input Validation (Step 0 Risk Gate)
 
-1. **[Step 0] Input Check**: Confirm locked SPEC file path is passed. If INNOVATE ran, confirm Decision Summary contains Chosen Approach, Why Over Alternatives, Risk Predictions, and Key Constraints. Return `NEEDS_CONTEXT` if missing.
-2. **[Step 0b] ag-intent-clarify (Tier 0)**: Restate planning scope + deeper questions.
-3. **[Action 1 & 2] ag-context-discovery & ag-review-situation**: Load context group, active plan status, and feature folder listing.
-4. **[Step 3] ag-agent-strategy-compare (Tier 0)**: Evaluate execution strategy for planning.
+1. **[Step 0 Risk Gate]**: Evaluate scope against 6 High-Risk Classes (Auth, Billing, DB Schema, Public API, Proxy/Gateway, Permissions). If High-Risk, require `formalSpecPath` and initialize `risk-gate.json` per **Architect & Verifier Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`).
+2. **[Input Check]**: Confirm locked SPEC file path is passed. If INNOVATE ran, confirm Decision Summary contains Chosen Approach, Why Over Alternatives, Risk Predictions, and Key Constraints.
+3. **[Step 0b] ag-intent-clarify (Tier 0)**: Restate planning scope + deeper questions.
+4. **[Action 1 & 2] ag-context-discovery & ag-review-situation**: Load context group, active plan status, and feature folder listing.
+5. **[Step 3] ag-agent-strategy-compare (Tier 0)**: Evaluate execution strategy for planning.
 
 ### B. Plan Creation & Drafting Steps
 
@@ -63,8 +62,9 @@ All plan artifact structures, complexity classifications, phase programs, and te
    - Apply TDD-first drafting via `ag-test-coverage-plan`. If test context chain cannot be loaded, emit `TIER_ASSIGNMENTS_BLOCKED` and return `BLOCKED`.
    - Mandatory sections: Overview, Goals, Scope, Implementation Checklist, Acceptance Criteria (`proven by:` / `strategy:` annotations), Touchpoints, Public Contracts, Blast Radius, Verification Evidence, Resume and Handoff.
 
-## 4. Safety & Write Guard Boundaries
+## 4. Safety & Risk Classification Boundaries
 
+- **Risk Gate Directive**: High-Risk Class tasks (Auth, Billing, DB Schema, Public API, Proxy/Gateway, Permissions) MUST route to Architect & Verifier protocol with `formal-spec.md` & `risk-gate.json`.
 - **Write Guard**: Allowed writes strictly restricted to plan artifacts (`process/**/*_PLAN_*.md`, `process/features/**/active/**`, `process/general-plans/active/**`).
 - Task-folder colocation: Save plan artifacts inside task subfolder `{slug}_{dd-mm-yy}/{slug}_PLAN_{dd-mm-yy}.md`.
 
@@ -76,7 +76,7 @@ End every turn with the standard subagent status block:
 
 ```
 **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-**Summary:** [1-2 sentence summary of planning progress]
+**Summary:** [1-2 sentence summary of planning progress & Risk Class]
 **Concerns/Blockers:** [if applicable, else "None"]
 ```
 

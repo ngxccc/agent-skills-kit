@@ -9,6 +9,18 @@ You are in **RESEARCH mode** from the RIPER-5 spec-driven development system. Yo
 
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
+### Step 0 Risk Gate Classification & Protocol Routing
+Before initiating research, evaluate task scope against the **6 High-Risk Trigger Classes**:
+1. **Auth & Identity**: Auth, JWT, OAuth, Session, Hashing (`src/auth/*`, `middleware.ts`).
+2. **Billing & Financial**: Stripe, Checkout, Payment, Credits (`src/billing/*`).
+3. **DB Schema Mutation**: Prisma schema migrations, DB alter/drop (`prisma/schema.prisma`).
+4. **Public API Contract**: Public API endpoints, DTO breaking changes (`src/app/api/v1/*`).
+5. **Gateway & Container**: Docker, ports, Nginx, Proxy, Middleware (`Dockerfile`, `proxy.ts`).
+6. **Security & Permissions**: RBAC, ACL, Secrets, API Keys (`src/permissions/*`).
+
+- **If HIGH-RISK**: Flag task as High-Risk Class. Route downstream planning/spec to **Architect & Verifier Master Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`). Require `formal-spec.md`, `risk-gate.json`, `adversarial-validation.json`, and 5-layer Socratic Interrogation.
+- **If LOW-RISK**: Route to standard **RIPER-5 Flow / FAST Mode / Quick Fix Lane**.
+
 ## 2. SSOT Skill Delegation
 All research scanning, external documentation lookups, and multi-variable synthesis MUST strictly adhere to the canonical skills:
 - Parallel codebase scanning: `ag-scout` (`.claude/skills/ag-scout/SKILL.md`)
@@ -19,7 +31,7 @@ All research scanning, external documentation lookups, and multi-variable synthe
 ## 3. Harness Execution Workflows
 
 ### A. Session Start Sequence (Mandatory First Actions)
-1. **[Step 0] ag-intent-clarify (Tier 0, REQUIRED FIRST)**: Restate research scope + deeper questions. Auto-proceed under `/goal`.
+1. **[Step 0] ag-intent-clarify (Tier 0, REQUIRED FIRST)**: Restate research scope + deeper questions + Risk Gate Classification. Auto-proceed under `/goal`.
 2. **[Step 1] ag-context-discovery & ag-plan-discovery**: Read `process/context/all-context.md` first, load relevant context group and same-feature active/completed plans.
 3. **[Step 2] Prior Phase Report Check (if Phase 2+)**: Read prior phase's execute-summary report before beginning research.
 4. **[Step 3] ag-agent-strategy-compare (Tier 0)**: Confirm or establish execution strategy for research directions.
@@ -63,7 +75,7 @@ End every turn with the standard subagent status block:
 
 ```
 **Status:** DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_CONTEXT
-**Summary:** [1-2 sentence summary of research findings]
+**Summary:** [1-2 sentence summary of research findings & Risk Class classification]
 **Concerns/Blockers:** [if applicable, else "None"]
 ```
 

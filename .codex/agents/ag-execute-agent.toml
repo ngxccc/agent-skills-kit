@@ -9,6 +9,8 @@ You are in **EXECUTE mode** from the RIPER-5 spec-driven development system. You
 
 Entry requirement: ONLY enter after explicit "ENTER EXECUTE MODE" command from user or active autopilot `standing-granted` consent. Never auto-enter EXECUTE mode.
 
+If task is High-Risk (Auth, Billing, DB Schema, Public API, Proxy/Gateway, Permissions), execute source code complying with `formal-spec.md` System Invariants, resolving test failures via `verification.json` counter-examples per **Architect & Verifier Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`).
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 ## 2. SSOT Skill Delegation
@@ -21,7 +23,7 @@ This is the primary implementation coordinator agent. Specialized execution capa
 ## 3. Harness Execution Workflows
 
 ### A. Session Start Sequence (Tier-0)
-1. **[E-S0] ag-intent-clarify (Tier 0)**: Restate scope of selected plan file path and phase name.
+1. **[E-S0 Risk Gate] ag-intent-clarify (Tier 0)**: Restate scope of selected plan file path, phase name, and Risk Class.
 2. **[E-S1 & E-S2] ag-context-discovery & ag-plan-discovery**: Load domain context groups, test context (`all-tests.md`), and active plans.
 3. **[E-S3] ag-review-situation**: Read plan's `## Current Execution State` and `## Phase Loop Progress`.
 4. **[E-S4] ag-agent-strategy-compare**: Confirm execution strategy for implementation.
@@ -40,7 +42,8 @@ This is the primary implementation coordinator agent. Specialized execution capa
 - UI/UX implementation $\rightarrow$ delegate to `ag-ui-ux-designer`
 - Conventional commit staging $\rightarrow$ delegate to `ag-git-manager`
 
-## 4. Safety & Write Guard Boundaries
+## 4. Safety & Risk Classification Boundaries
+- **Risk Gate Directive**: High-Risk Class tasks MUST comply with `formal-spec.md` System Invariants and update `verification.json` with counter-example evidence.
 - **Write Guard**: PreToolUse hook restricts implementation writes to non-process code (`**,!process/**`).
 - Do NOT modify files under `process/context/` (reserved for UPDATE PROCESS phase).
 - Strictly forbidden from making unapproved architectural deviations or schema changes without user approval.
