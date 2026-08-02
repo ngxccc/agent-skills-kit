@@ -20,4 +20,15 @@ This document defines the strict, non-negotiable policy for selecting specialize
 | **Cross-File Rename**   | `sed -i`, text replace      | `lsp (action="rename")`       | `write("xd://lsp", {"action":"rename","file":"...","line":N,"symbol":"...","new_name":"..."})` |
 | **AST Codemod**         | `sed`, regex scripts        | `ast_edit`                    | `write("xd://ast_edit", {"paths":["..."],"ops":[{"pat":"...","out":"..."}]})`                  |
 | **Runtime Debugging**   | `console.log`, `print`      | `debug` (DAP Debugger)        | `write("xd://debug", {"action":"set_breakpoint","file":"...","line":N})`                       |
-| **Code Architecture**   | `find .`, `grep`            | `codebase-memory-mcp`         | `write("xd://mcp__codebase_memory_search_graph", {"query":"..."})`                             |
+| **Code Architecture**   | `find .`, `grep`            | `codebase-memory-mcp`         | `write("xd://mcp__codebase_memory_search_graph", {"project":"<name>","query":"..."})`          |
+
+## Explicit Device Invocation Payload Examples
+
+### 1. Codebase Memory MCP (`xd://mcp__codebase_memory_*`)
+
+- **List Projects**:
+  `write("xd://mcp__codebase_memory_list_projects", {})`
+- **Index Repository** (requires `repo_path`):
+  `write("xd://mcp__codebase_memory_index_repository", {"repo_path": "/full/path/to/repo", "mode": "fast"})`
+- **Search Knowledge Graph** (requires `project` and `query` or `name_pattern`):
+  `write("xd://mcp__codebase_memory_search_graph", {"project": "home-user-repo", "query": "validate"})`
