@@ -1,11 +1,10 @@
 # Frontend Verification
 
-Visual verification of frontend implementations using Chrome MCP or `ag-agent-browser` agent fallback.
+Visual verification of frontend implementations using Chrome MCP (Claude Chrome Extension) or `ag-agent-browser` skill fallback.
 
 ## Applicability Check
 
 **Skip entirely if task is NOT frontend-related.** Frontend indicators:
-
 - Files modified: `*.tsx`, `*.jsx`, `*.vue`, `*.svelte`, `*.html`, `*.css`, `*.scss`
 - Changes to: components, layouts, pages, styles, DOM structure, UI behavior
 - Keywords: render, display, layout, responsive, animation, visual, UI, UX
@@ -14,7 +13,7 @@ If none match, skip this technique.
 
 ## Step 1: Detect Chrome MCP Availability
 
-Check if Chrome MCP server is available via `ag-mcp-management` skill or `ListMcpResourcesTool`:
+Check if Chrome MCP server is available via `ListMcpResourcesTool` directly:
 
 ```
 Use ListMcpResourcesTool to check for Chrome MCP tools.
@@ -22,7 +21,7 @@ Look for tools prefixed with "chrome__" (e.g., chrome__navigate, chrome__screens
 ```
 
 **Available** → Proceed to Step 2A (Chrome MCP)
-**Not available** → Proceed to Step 2B (chrome-devtools fallback)
+**Not available** → Proceed to Step 2B (`ag-agent-browser` fallback)
 
 ## Step 2A: Chrome MCP Available — Direct Verification
 
@@ -39,12 +38,11 @@ Use Chrome MCP tools to verify the implementation in the user's actual browser. 
 ### Visual Inspection Checklist
 
 After capturing screenshot, verify:
-
 1. **Layout** — Elements positioned correctly, no overflow/overlap
 2. **Content** — Text, images, data rendered as expected
 3. **Responsiveness** — Resize viewport if MCP supports it
-4. **Interactions** — Use chrome**click / chrome**type to test interactive elements
-5. **Console errors** — Use chrome\_\_evaluate to check `console.error` output
+4. **Interactions** — Use chrome__click / chrome__type to test interactive elements
+5. **Console errors** — Use chrome__evaluate to check `console.error` output
 
 ### Console Error Check
 
@@ -60,24 +58,27 @@ Or navigate and observe any error output from Chrome MCP tool responses.
 chrome__get_content → extract DOM/text to verify rendered output matches expectations
 ```
 
-## Step 2B: Chrome MCP NOT Available — Fallback to ag-agent-browser Agent
+## Step 2B: Chrome MCP NOT Available — Fallback to `ag-agent-browser`
 
-When Chrome MCP is not configured, use `ag-agent-browser` agent (`agent-browser` CLI or Puppeteer):
+When Chrome MCP is not configured, use `ag-agent-browser` skill (CLI browser automation with bundled Puppeteer helpers):
 
 ```bash
+SKILL_DIR="$HOME/.claude/skills/ag-agent-browser/scripts"
+
+# Install deps if first time
+npm install --prefix "$SKILL_DIR" 2>/dev/null
+
 # Screenshot + console error check
-agent-browser open http://localhost:3000
-agent-browser screenshot -o ./verification-screenshot.png
+node "$SKILL_DIR/screenshot.js" --url http://localhost:3000 --output ./verification-screenshot.png
+node "$SKILL_DIR/console.js" --url http://localhost:3000 --types error,pageerror --duration 5000
 ```
 
-If browser verification tools are unavailable, skip visual verification and note in report:
-
-> "Visual verification skipped — no Chrome MCP or agent-browser available."
+If `ag-agent-browser` is also unavailable, skip visual verification and note in report:
+> "Visual verification skipped — no Chrome MCP or ag-agent-browser available."
 
 ## Step 3: Analyze Results
 
 After capture:
-
 1. **Read screenshot** — Use Read tool on the PNG to visually inspect
 2. **Check console output** — Zero errors = pass; errors = investigate before claiming done
 3. **Compare with expected** — Match against design specs or user description
@@ -92,10 +93,9 @@ Standard verification → Tests pass → Build succeeds → Frontend visual veri
 ```
 
 Report format:
-
 ```
 ## Frontend Verification
-- Method: [Chrome MCP | chrome-devtools | skipped]
+- Method: [Chrome MCP | ag-agent-browser | skipped]
 - Screenshot: ./verification-screenshot.png
 - Console errors: [none | list]
 - Visual check: [pass | issues found]

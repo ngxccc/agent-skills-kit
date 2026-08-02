@@ -72,10 +72,10 @@ node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --check
 For agent/skill harness validators (agent parity, skill frontmatter, README.md sync, protocol wiring), see the `audit-vc` skill:
 
 ```bash
-node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
-node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
-node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs
-node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs
+node .claude/skills/ag-audit-vc/scripts/validate-agent-parity.mjs
+node .claude/skills/ag-audit-vc/scripts/validate-skills.mjs
+node .claude/skills/ag-audit-vc/scripts/validate-guide-sync.mjs
+node .claude/skills/ag-audit-vc/scripts/validate-protocol-wiring.mjs
 ```
 
 Interpret `failures` as required fixes. Interpret `warnings` as audit findings that may be
@@ -94,22 +94,20 @@ Return:
 ```markdown
 ## Context Audit Summary
 
-| Check                 | Status    | Notes |
-| --------------------- | --------- | ----- |
-| Router exists         | PASS/FAIL | ...   |
-| Context files indexed | PASS/FAIL | ...   |
-| Group entrypoints     | PASS/FAIL | ...   |
-| Claude/Codex wiring   | PASS/FAIL | ...   |
-| Skill discovery       | PASS/FAIL | ...   |
-| Agent parity          | PASS/FAIL | ...   |
-| Broken refs           | PASS/FAIL | ...   |
+| Check | Status | Notes |
+|---|---|---|
+| Router exists | PASS/FAIL | ... |
+| Context files indexed | PASS/FAIL | ... |
+| Group entrypoints | PASS/FAIL | ... |
+| Claude/Codex wiring | PASS/FAIL | ... |
+| Skill discovery | PASS/FAIL | ... |
+| Agent parity | PASS/FAIL | ... |
+| Broken refs | PASS/FAIL | ... |
 
 ### Actions Taken
-
 - ...
 
 ### Decisions Needed
-
 - ...
 ```
 

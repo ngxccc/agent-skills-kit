@@ -4,10 +4,10 @@ Track optional parallel scout worker execution via task metadata when your runti
 
 ## When to Create Tasks
 
-| Agents | Create Tasks? | Rationale                                    |
-| ------ | ------------- | -------------------------------------------- |
-| ≤ 2    | No            | Overhead exceeds benefit, finishes quickly   |
-| ≥ 3    | Yes           | Meaningful coordination, progress monitoring |
+| Agents | Create Tasks? | Rationale |
+|--------|--------------|-----------|
+| ≤ 2    | No           | Overhead exceeds benefit, finishes quickly |
+| ≥ 3    | Yes          | Meaningful coordination, progress monitoring |
 
 ## Task Registration Flow
 
@@ -111,7 +111,6 @@ Scout tasks are **independent** from planning/execution phase tasks — NOT pare
 **Rationale:** Different lifecycle. Scout completes before the parent planning workflow continues. Mixing creates confusion in TaskList.
 
 **Sequence when a planning workflow spawns scout:**
-
 1. Plan workflow Step 2 → spawns `plan-agent` → `plan-agent` spawns scout
 2. Scout registers its own tasks (Step 3), executes (Step 4-5)
 3. Scout returns aggregated report → `plan-agent` continues

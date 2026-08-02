@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
-import {
-  exists,
-  listSkillDirs,
-  parseFrontmatter,
-} from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
+import { parseFrontmatter, listSkillDirs, exists, abs } from "../../ag-audit-context/scripts/shared-skill-utils.mjs";
 
 const root = process.cwd();
 const failures = [];
@@ -36,28 +32,58 @@ function listAgentNames(dir, extension) {
 }
 
 function extractTableAgents(text) {
-  // Match backtick-wrapped names in markdown
+  // Match backtick-wrapped agent/skill names in markdown table rows like: | `agent-name` | ... |
+  // or: | 🔍 `agent-name` | ... | (with emoji prefix)
   const agents = new Set();
-  for (const match of text.matchAll(/`([a-z0-9:-]+)`/g)) {
+  for (const match of text.matchAll(/\|\s*[^|`]*`([a-z0-9_:-]+)`\s*\|/g)) {
     agents.add(match[1]);
   }
   return agents;
 }
 
-const guidePath = "AGENTS.md";
+function extractInlineBackticks(text) {
+  // Match any backtick-wrapped name in text (tables OR inline like `ag-foo` · `ag-bar`)
+  const names = new Set();
+  for (const match of text.matchAll(/`([a-z0-9_:-]+)`/g)) {
+    names.add(match[1]);
+  }
+  return names;
+}
+
+const guidePath = "README.md";
 if (!exists(guidePath)) {
-  fail("AGENTS.md does not exist");
+  fail("README.md does not exist");
 } else {
   const guideText = read(guidePath);
 
-  // Extract agents from AGENTS.md sections (between Mode Agents and Routing Protocol)
-  const agentsStart = guideText.indexOf("## Mode Agents (Codex Compatibility)");
-  const agentsEnd = guideText.indexOf("## Routing Protocol");
-  const agentsSection = agentsStart !== -1 && agentsEnd !== -1 ? guideText.substring(agentsStart, agentsEnd) : "";
+  // Extract agents from README.md tables (Core + Specialists sections)
+  const agentsSectionMatch = guideText.match(/#{2,3} \d* ?Agents\b[\s\S]*?(?=\n#{2,3} [^#]|\n---)/);
+  const agentsSection = agentsSectionMatch ? agentsSectionMatch[0] : "";
   const guideAgents = extractTableAgents(agentsSection);
 
   // Get disk agents
   const diskAgents = new Set(listAgentNames(".claude/agents", ".md"));
+
+  // Check: every disk agent should be in README.md
+  for (const agent of diskAgents) {
+    if (!guideAgents.has(agent)) {
+      fail(`Agent ${agent} exists on disk but missing from README.md agent tables`);
+    }
+  }
+
+  // Check: every GUIDE.md agent should exist on disk
+  for (const agent of guideAgents) {
+    if (!diskAgents.has(agent)) {
+      warn(`Agent ${agent} listed in README.md but not found on disk at .claude/agents/${agent}.md`);
+    }
+  }
+
+  // --- Skill sync ---
+
+  // Extract skills from all README.md skill catalog section (skills listed inline, not as tables)
+  const skillsSectionMatch = guideText.match(/#{2,3} \d+ Skills\b[\s\S]*?(?=\n#{2,3} [^#]|\n---\n\n#{2,3} )/);
+  const skillsSection = skillsSectionMatch ? skillsSectionMatch[0] : "";
+  const guideSkills = extractInlineBackticks(skillsSection);
 
   // Get disk skills that have a SKILL.md
   const diskSkillDirs = listSkillDirs();
@@ -66,71 +92,35 @@ if (!exists(guidePath)) {
     const skillFile = `.claude/skills/${skill}/SKILL.md`;
     if (exists(skillFile)) {
       const parsed = parseFrontmatter(skillFile);
-      if (parsed?.fields.name) {
+      if (parsed && parsed.fields.name) {
         diskSkills.add(parsed.fields.name);
       }
+      // Also add folder name as alias
       diskSkills.add(skill);
     }
   }
 
-  // Check: every disk agent should be in AGENTS.md
-  for (const agent of diskAgents) {
-    if (!guideAgents.has(agent)) {
-      fail(
-        `Agent ${agent} exists on disk but missing from AGENTS.md agent tables`,
-      );
-    }
-  }
-
-  // Check: every AGENTS.md agent should exist on disk
-  for (const agent of guideAgents) {
-    // Ignore non-agent backticks like tools:
-    if (agent === "tools" || agent === "tools:" || agent.includes(":")) continue;
-    // Ignore if it's actually a workflow skill
-    if (diskSkills.has(agent) || diskSkills.has(`ag-${agent}`)) continue;
-    if (!diskAgents.has(agent)) {
-      warn(
-        `Agent ${agent} listed in AGENTS.md but not found on disk at .claude/agents/${agent}.md`,
-      );
-    }
-  }
-
-  // --- Skill sync ---
-
-  // Extract skills from all sections of AGENTS.md
-  const guideSkills = extractTableAgents(guideText);
   // Build a set of skill folder names for matching
-  const diskSkillFolders = new Set(
-    diskSkillDirs.filter((skill) => exists(`.claude/skills/${skill}/SKILL.md`)),
-  );
+  const diskSkillFolders = new Set(diskSkillDirs.filter((skill) => exists(`.claude/skills/${skill}/SKILL.md`)));
 
   // Check: every disk skill with a SKILL.md should be in README.md
   for (const folder of diskSkillFolders) {
     const skillFile = `.claude/skills/${folder}/SKILL.md`;
     const parsed = parseFrontmatter(skillFile);
     const name = parsed?.fields?.name || folder;
-    // Strip ag- prefix for matching (README.md uses folder names, not ag-prefixed names)
+    // Strip ag- prefix for matching (README.md uses folder names, not ag--prefixed names)
     const nameWithoutPrefix = name.startsWith("ag-") ? name.slice(3) : name;
     // Check if the skill folder name, frontmatter name, or stripped name appears in README.md
-    if (
-      !guideSkills.has(folder) &&
-      !guideSkills.has(name) &&
-      !guideSkills.has(nameWithoutPrefix)
-    ) {
-      fail(
-        `Skill ${folder} (name: ${name}) exists on disk but missing from AGENTS.md skill catalog`,
-      );
+    if (!guideSkills.has(folder) && !guideSkills.has(name) && !guideSkills.has(nameWithoutPrefix)) {
+      fail(`Skill ${folder} (name: ${name}) exists on disk but missing from README.md skill catalog`);
     }
   }
 
-  // Check: every AGENTS.md skill should exist on disk
+  // Check: every GUIDE.md skill should exist on disk
   for (const skill of guideSkills) {
-    // Also check ag-prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
-    if (
-      !diskSkillFolders.has(skill) &&
-      !diskSkills.has(skill) &&
-      !diskSkills.has(`ag-${skill}`)
-    ) {
+    // Also check ag--prefixed variant (README.md may list "code-reviewer" which is an agent, not a skill folder)
+    if (!diskSkillFolders.has(skill) && !diskSkills.has(skill) && !diskSkills.has(`ag-${skill}`)) {
+      warn(`Skill ${skill} listed in README.md but not found on disk`);
     }
   }
 }

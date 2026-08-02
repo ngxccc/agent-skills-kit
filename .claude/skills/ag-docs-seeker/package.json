@@ -9,7 +9,12 @@
     "test:fetch": "node scripts/tests/test-fetch-docs.js",
     "test:analyze": "node scripts/tests/test-analyze-llms.js"
   },
-  "keywords": ["documentation", "llms.txt", "context7", "docs-discovery"],
+  "keywords": [
+    "documentation",
+    "llms.txt",
+    "context7",
+    "docs-discovery"
+  ],
   "author": "ClaudeKit",
   "license": "MIT",
   "dependencies": {},

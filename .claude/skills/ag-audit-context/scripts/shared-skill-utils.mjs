@@ -1,7 +1,15 @@
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 
-export const root = process.cwd();
+let root;
+try {
+  root = execSync('git rev-parse --show-toplevel', { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+} catch {
+  // Not a git repository — fall back to process.cwd() so the script still works on new projects.
+  root = process.cwd();
+}
+export { root };
 
 export function abs(relPath) {
   return path.join(root, relPath);
@@ -30,8 +38,8 @@ export function parseFrontmatterText(text) {
     if (rawValue === ">-" || rawValue === "|" || rawValue === ">") {
       const blockLines = [];
       let cursor = index + 1;
-      while (cursor < lines.length && /^ {2}/.test(lines[cursor])) {
-        blockLines.push(lines[cursor].replace(/^ {2}/, ""));
+      while (cursor < lines.length && /^  /.test(lines[cursor])) {
+        blockLines.push(lines[cursor].replace(/^  /, ""));
         cursor += 1;
       }
       fields[key] = blockLines.join(" ").trim();
@@ -49,8 +57,7 @@ export function parseFrontmatter(file) {
 }
 
 export function loadRoutingPolicy() {
-  const policyPath =
-    ".claude/skills/ag-audit-context/references/skill-routing-policy.json";
+  const policyPath = ".claude/skills/ag-audit-context/references/skill-routing-policy.json";
   if (!exists(policyPath)) {
     return {
       path: policyPath,
@@ -64,18 +71,16 @@ export function loadRoutingPolicy() {
     canonicalRoutingSurfaces: Array.isArray(parsed.canonicalRoutingSurfaces)
       ? parsed.canonicalRoutingSurfaces
       : [],
-    allowlistedSkills:
-      parsed.allowlistedSkills && typeof parsed.allowlistedSkills === "object"
-        ? parsed.allowlistedSkills
-        : {},
+    allowlistedSkills: parsed.allowlistedSkills && typeof parsed.allowlistedSkills === "object"
+      ? parsed.allowlistedSkills
+      : {},
   };
 }
 
 export function listSkillDirs() {
   const skillsDir = abs(".claude/skills");
   if (!fs.existsSync(skillsDir)) return [];
-  return fs
-    .readdirSync(skillsDir, { withFileTypes: true })
+  return fs.readdirSync(skillsDir, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
     .sort();
@@ -99,12 +104,7 @@ export function loadSkillInventory() {
 
     const routedFrom = [];
     for (const [surface, content] of surfaceTexts.entries()) {
-      if (
-        [...aliases].some(
-          (alias) =>
-            content.includes(`\`${alias}\``) || content.includes(alias),
-        )
-      ) {
+      if ([...aliases].some((alias) => content.includes(`\`${alias}\``) || content.includes(alias))) {
         routedFrom.push(surface);
       }
     }
@@ -116,7 +116,7 @@ export function loadSkillInventory() {
       frontmatter: fields,
       frontmatterKeys: parsed?.keys || [],
       aliases: [...aliases],
-      allowlisted: Object.hasOwn(policy.allowlistedSkills, skill),
+      allowlisted: Object.prototype.hasOwnProperty.call(policy.allowlistedSkills, skill),
       allowlistReason: policy.allowlistedSkills[skill] || null,
       routedFrom,
     };
@@ -131,9 +131,7 @@ export function normalizeSkillName(name) {
 }
 
 export function levenshtein(a, b) {
-  const matrix = Array.from({ length: a.length + 1 }, () =>
-    Array(b.length + 1).fill(0),
-  );
+  const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
   for (let row = 0; row <= a.length; row += 1) matrix[row][0] = row;
   for (let col = 0; col <= b.length; col += 1) matrix[0][col] = col;
   for (let row = 1; row <= a.length; row += 1) {

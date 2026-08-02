@@ -4,21 +4,10 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 
 ---
 
-## Zero-Day & Business Logic Flaw Auditing
-
-- [ ] **TOCTOU Race Conditions**: Concurrent state checks vs mutations (e.g. double-spend, token reuse, race windows between check and update).
-- [ ] **Authentication & Cryptographic Bypasses**: `JwtService` token verification edge cases, revoked token reuse, weak signature algorithms, password hash leaks in logs/DTOs.
-- [ ] **Mass Assignment & Prototype Pollution**: Unsanitized payload merging directly into DTOs, Object.assign on user input, or DB entities.
-- [ ] **SSRF / Parameter Tampering**: Parameter tampering in external API calls, SQL injection via raw query fragments, reflected XSS in exception filters.
-- [ ] **RFC 9457 Error Sanitization**: Exception filters sanitize error responses in production (no stack traces or DB error details leaked).
-- [ ] **Rate Limiting & DoS**: Sensitive endpoints protected with rate limiters (`@Throttle()`), unbounded DB queries capped with pagination/limits.
-
 ## STRIDE Checklist
 
 ### Spoofing (Authentication)
-
 > **Note (example project):** This project uses Clerk for externalized auth. Local password hashing (bcrypt/argon2) does not apply — password security is managed by Clerk. Focus checks on Clerk session validation, webhook signature verification, and Clerk-issued JWT handling.
-
 - [ ] All endpoints require authentication (unless intentionally public)
 - [ ] Passwords hashed with bcrypt/argon2 — not MD5 or SHA1 (N/A for Clerk-auth projects)
 - [ ] JWT tokens have expiration (`exp`) and are validated server-side
@@ -28,7 +17,6 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 - [ ] Default credentials removed from all services and dependencies
 
 ### Tampering (Integrity)
-
 - [ ] Input validation on all user-supplied data (type, length, format)
 - [ ] Parameterized queries used — no string concatenation for SQL/NoSQL
 - [ ] CSRF tokens present on all state-changing forms
@@ -38,7 +26,6 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 - [ ] HTTP methods restricted per endpoint (no GET for mutations)
 
 ### Repudiation (Logging)
-
 - [ ] Authentication events logged: login, logout, failures
 - [ ] Authorization failures logged with user/resource context
 - [ ] Data modification events logged with actor and timestamp
@@ -47,7 +34,6 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 - [ ] Logs retained per compliance requirements (90 days minimum)
 
 ### Information Disclosure
-
 - [ ] Error messages do not leak stack traces in production
 - [ ] API responses exclude internal IDs, system paths, or version strings
 - [ ] Sensitive data encrypted at rest (AES-256 or equivalent)
@@ -57,7 +43,6 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 - [ ] API responses filtered to minimum necessary fields (no over-fetching)
 
 ### Denial of Service
-
 - [ ] Rate limiting on authentication and sensitive endpoints
 - [ ] Request body size limits configured at server/gateway level
 - [ ] Pagination enforced on all list endpoints (no unbounded queries)
@@ -67,7 +52,6 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 - [ ] Background jobs have concurrency limits and dead-letter queues
 
 ### Elevation of Privilege
-
 - [ ] Role-based access control (RBAC) enforced server-side, not client-side
 - [ ] Horizontal privilege checks: user A cannot access user B's resources (IDOR)
 - [ ] Admin endpoints have separate, stricter auth middleware
@@ -79,18 +63,18 @@ Reference checklist for `ag-security` audits. Use during Step 2 (STRIDE Analysis
 
 ## OWASP Top 10 Quick Reference
 
-| #   | Category                  | What to Check                                                                    |
-| --- | ------------------------- | -------------------------------------------------------------------------------- |
-| A01 | Broken Access Control     | Missing auth checks, IDOR vulnerabilities, CORS misconfiguration, path traversal |
-| A02 | Cryptographic Failures    | Weak hashing (MD5/SHA1), plaintext storage, missing TLS, weak cipher suites      |
-| A03 | Injection                 | SQL, NoSQL, OS command, LDAP, template injection via unsanitized input           |
-| A04 | Insecure Design           | Missing threat model, business logic flaws, no abuse-case testing                |
-| A05 | Security Misconfiguration | Default credentials, verbose error pages, unnecessary features/ports enabled     |
-| A06 | Vulnerable Components     | Outdated dependencies, known CVEs, unpatched libraries                           |
-| A07 | Auth Failures             | Brute force possible, credential stuffing, session fixation, weak tokens         |
-| A08 | Data Integrity Failures   | Unsigned updates, unverified deserialization, CI/CD pipeline compromise          |
-| A09 | Logging Failures          | Missing security event logs, no alerting, insufficient monitoring coverage       |
-| A10 | SSRF                      | Unvalidated user-supplied URLs, internal service access via fetch/curl           |
+| # | Category | What to Check |
+|---|----------|---------------|
+| A01 | Broken Access Control | Missing auth checks, IDOR vulnerabilities, CORS misconfiguration, path traversal |
+| A02 | Cryptographic Failures | Weak hashing (MD5/SHA1), plaintext storage, missing TLS, weak cipher suites |
+| A03 | Injection | SQL, NoSQL, OS command, LDAP, template injection via unsanitized input |
+| A04 | Insecure Design | Missing threat model, business logic flaws, no abuse-case testing |
+| A05 | Security Misconfiguration | Default credentials, verbose error pages, unnecessary features/ports enabled |
+| A06 | Vulnerable Components | Outdated dependencies, known CVEs, unpatched libraries |
+| A07 | Auth Failures | Brute force possible, credential stuffing, session fixation, weak tokens |
+| A08 | Data Integrity Failures | Unsigned updates, unverified deserialization, CI/CD pipeline compromise |
+| A09 | Logging Failures | Missing security event logs, no alerting, insufficient monitoring coverage |
+| A10 | SSRF | Unvalidated user-supplied URLs, internal service access via fetch/curl |
 
 ---
 
@@ -135,11 +119,11 @@ sk_(live|test)_[A-Za-z0-9]{24,}
 
 Run the appropriate command for the detected stack and include output in the findings report:
 
-| Stack      | Command                       |
-| ---------- | ----------------------------- |
-| Node.js    | `pnpm audit --json`           |
-| Python     | `pip-audit --format json`     |
-| Go         | `govulncheck ./...`           |
-| Ruby       | `bundle audit check --update` |
-| Java/Maven | `mvn dependency-check:check`  |
-| Rust       | `cargo audit`                 |
+| Stack | Command |
+|-------|---------|
+| Node.js | `pnpm audit --json` |
+| Python | `pip-audit --format json` |
+| Go | `govulncheck ./...` |
+| Ruby | `bundle audit check --update` |
+| Java/Maven | `mvn dependency-check:check` |
+| Rust | `cargo audit` |

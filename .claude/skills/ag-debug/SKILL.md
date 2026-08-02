@@ -3,12 +3,16 @@ name: ag-debug
 description: "Debug systematically with root-cause analysis before fixes. Use for bugs, test failures, unexpected behavior, performance issues, CI failures, or system investigation."
 languages: all
 argument-hint: "[error or issue description]"
+trigger_keywords: debug, root cause, investigate, why is this
+layer: helper
 metadata:
   author: claudekit
   version: "4.0.0"
 ---
 
 # Debugging & System Investigation
+
+> **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Comprehensive framework combining systematic debugging, root cause tracing, defense-in-depth validation, verification protocols, and system-level investigation (logs, CI/CD, databases, performance).
 
@@ -82,7 +86,7 @@ Track investigation pipelines via Claude Native Tasks (TaskCreate, TaskUpdate, T
 
 ### 10. Frontend Verification (`references/frontend-verification.md`)
 
-Visual verification of frontend implementations via Chrome MCP or `ag-agent-browser` agent fallback. Detect if frontend-related → check Chrome availability → screenshot + console error check → report. Skip if not frontend.
+Visual verification of frontend implementations via Chrome MCP (Claude Chrome Extension) or `ag-agent-browser` skill fallback. Detect if frontend-related → check Chrome MCP availability → screenshot + console error check → report. Skip if not frontend.
 
 **Load when:** Implementation touches frontend files (tsx/jsx/vue/svelte/html/css), UI bugs, visual regressions
 
@@ -108,12 +112,12 @@ Frontend fix   → frontend-verification.md (Chrome/devtools)
 - **CI/CD:** `gh` CLI for GitHub Actions logs and pipeline debugging
 - **Codebase:** `ag-docs-seeker` skill for package/plugin docs; `ag-scout` skill for codebase exploration
 - **Scouting:** `/ag-scout` or `/ag-scout ext` for finding relevant files
-- **Frontend:** Chrome browser or `ag-agent-browser` agent for visual verification (screenshots, console, network)
+- **Frontend:** Chrome browser or `ag-agent-browser` skill for visual verification (screenshots, console, network)
+- **Skills:** Activate `ag-problem-solving` skill when stuck on complex issues
 
 ## Red Flags
 
 Stop and follow process if thinking:
-
 - "Quick fix for now, investigate later"
 - "Just try changing X and see if it works"
 - "It's probably X, let me fix that"

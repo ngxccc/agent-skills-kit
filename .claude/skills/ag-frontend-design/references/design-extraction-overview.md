@@ -21,46 +21,42 @@ Reverse-engineer design principles from existing images or videos to establish d
 ## Quick Workflows
 
 ### Single Image Analysis
-
 ```bash
 python scripts/gemini_batch_process.py \
   --files docs/inspiration/reference-design.png \
   --task analyze \
   --prompt "[see extraction-prompts.md for detailed prompt]" \
-  --output process/features/<feature>/references/extracted-design-system.md \
+  --output process/features/<feature>/active/{task-folder}/extracted-design-system.md \
   --model gemini-2.5-flash
 ```
 
 ### Multi-Screen System Extraction
-
 ```bash
 python scripts/gemini_batch_process.py \
   --files docs/inspiration/home.png docs/inspiration/about.png \
   --task analyze \
   --prompt "[see extraction-prompts.md for multi-screen prompt]" \
-  --output process/features/<feature>/references/complete-design-system.md \
+  --output process/features/<feature>/active/{task-folder}/complete-design-system.md \
   --model gemini-2.5-flash
 ```
 
 ### Video Motion Analysis
-
 ```bash
 python scripts/gemini_batch_process.py \
   --files docs/inspiration/interaction-demo.mp4 \
   --task analyze \
   --prompt "[see extraction-prompts.md for motion prompt]" \
-  --output process/features/<feature>/references/motion-system.md \
+  --output process/features/<feature>/active/{task-folder}/motion-system.md \
   --model gemini-2.5-flash
 ```
 
 ### Competitive Analysis
-
 ```bash
 python scripts/gemini_batch_process.py \
   --files competitor-a.png competitor-b.png competitor-c.png \
   --task analyze \
   --prompt "[see extraction-prompts.md for competitive prompt]" \
-  --output process/features/<feature>/references/competitive-analysis.md \
+  --output process/features/<feature>/active/{task-folder}/competitive-analysis.md \
   --model gemini-2.5-flash
 ```
 

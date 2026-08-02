@@ -1,8 +1,15 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 
-const root = process.cwd();
+let root;
+try {
+  root = execSync('git rev-parse --show-toplevel', { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+} catch {
+  // Not a git repository — fall back to process.cwd() so the script still works on new projects.
+  root = process.cwd();
+}
 const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
@@ -16,7 +23,7 @@ function warn(message) {
   else warnings.push(message);
 }
 
-function _exists(relPath) {
+function exists(relPath) {
   return fs.existsSync(path.join(root, relPath));
 }
 
@@ -76,16 +83,10 @@ function normalizeDescription(text) {
 function normalize(text) {
   return text
     .replace(/\r\n/g, "\n")
-    .replace(
-      /\.claude\/CLAUDE\.md|CLAUDE\.md|AGENTS\.md/g,
-      "{TOP_LEVEL_INSTRUCTIONS}",
-    )
+    .replace(/\.claude\/CLAUDE\.md|CLAUDE\.md|AGENTS\.md/g, "{TOP_LEVEL_INSTRUCTIONS}")
     .replace(/\.claude\/skills\/|\.agents\/skills\//g, "{SKILLS}/")
     .replace(/\.claude\/agents\/|\.codex\/agents\//g, "{AGENTS}/")
-    .replace(
-      /`\{SKILLS\}\/`, `\{AGENTS\}\/`, and `\{AGENTS\}\/`/g,
-      "`{SKILLS}/` and `{AGENTS}/`",
-    )
+    .replace(/`\{SKILLS\}\/`, `\{AGENTS\}\/`, and `\{AGENTS\}\/`/g, "`{SKILLS}/` and `{AGENTS}/`")
     .replace(/`\{AGENTS\}\/` and `\{AGENTS\}\/`/g, "`{AGENTS}/`")
     .replace(/\{AGENTS\}\/ and \{AGENTS\}\//g, "{AGENTS}/")
     .replace(/[ \t]+$/gm, "")
@@ -116,40 +117,26 @@ for (const agent of claudeAgents.filter((name) => codexAgents.includes(name))) {
   if (
     claude.description &&
     codex.description &&
-    normalizeDescription(claude.description) !==
-      normalizeDescription(codex.description)
+    normalizeDescription(claude.description) !== normalizeDescription(codex.description)
   ) {
     warn(`${agent} descriptions differ between Claude and Codex`);
   }
   if (claudeMode !== codexMode) {
-    fail(
-      `${agent} mode mismatch: Claude=${claudeMode || "missing"} Codex=${codexMode || "missing"}`,
-    );
+    fail(`${agent} mode mismatch: Claude=${claudeMode || "missing"} Codex=${codexMode || "missing"}`);
   }
-  if (
-    !claude.body.includes("process/context/all-context.md") &&
-    !["git-manager", "innovate-agent"].includes(agent)
-  ) {
+  if (!claude.body.includes("process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
     warn(`${claudeFile} does not mention process/context/all-context.md`);
   }
-  if (
-    !codex.body.includes("process/context/all-context.md") &&
-    !["git-manager", "innovate-agent"].includes(agent)
-  ) {
+  if (!codex.body.includes("process/context/all-context.md") && !["git-manager", "innovate-agent"].includes(agent)) {
     warn(`${codexFile} does not mention process/context/all-context.md`);
   }
 
   const normalizedClaude = normalize(claude.body);
   const normalizedCodex = normalize(codex.body);
   if (normalizedClaude !== normalizedCodex) {
-    const lengthDelta = Math.abs(
-      normalizedClaude.length - normalizedCodex.length,
-    );
-    const larger =
-      Math.max(normalizedClaude.length, normalizedCodex.length) || 1;
-    warn(
-      `${agent} normalized body differs (${Math.round((lengthDelta / larger) * 100)}% length delta)`,
-    );
+    const lengthDelta = Math.abs(normalizedClaude.length - normalizedCodex.length);
+    const larger = Math.max(normalizedClaude.length, normalizedCodex.length) || 1;
+    warn(`${agent} normalized body differs (${Math.round((lengthDelta / larger) * 100)}% length delta)`);
   }
 
   compared.push(agent);

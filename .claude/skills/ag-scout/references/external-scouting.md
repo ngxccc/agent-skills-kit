@@ -13,7 +13,6 @@ SCALE >= 6  → Use internal scouting instead
 ## Configuration
 
 Read from `.claude/.vc.json` (falls back to legacy `.claude/.ck.json` if present):
-
 ```json
 {
   "gemini": {
@@ -27,13 +26,11 @@ Default model: `gemini-3-flash-preview`
 ## Gemini CLI (SCALE <= 3)
 
 ### Command
-
 ```bash
 gemini -y -m <model> "[prompt]"
 ```
 
 ### Example
-
 ```bash
 gemini -y -m gemini-3-flash-preview "Search src/ for authentication files. List paths with brief descriptions."
 ```
@@ -41,13 +38,11 @@ gemini -y -m gemini-3-flash-preview "Search src/ for authentication files. List 
 ## OpenCode CLI (SCALE 4-5)
 
 ### Command
-
 ```bash
 opencode run "[prompt]" --model opencode/grok-code
 ```
 
 ### Example
-
 ```bash
 opencode run "Find all payment-related files in lib/ and api/" --model opencode/grok-code
 ```
@@ -55,14 +50,12 @@ opencode run "Find all payment-related files in lib/ and api/" --model opencode/
 ## Installation Check
 
 Before using, verify tools installed:
-
 ```bash
 which gemini
 which opencode
 ```
 
 If not installed, ask user:
-
 1. **Yes** - Provide installation instructions (may need manual auth steps)
 2. **No** - Fall back to internal shell scouting (`internal-scouting.md`)
 
@@ -90,7 +83,6 @@ Aggregate the resulting file lists before moving on to deeper reads.
 User: "Find database migration files"
 
 Run 3 parallel external searches if worker delegation is available:
-
 ```
 Worker 1: gemini -y -m gemini-3-flash-preview "Search db/, migrations/ for migration files"
 Worker 2: gemini -y -m gemini-3-flash-preview "Search lib/, src/ for database schema files"
@@ -102,18 +94,15 @@ Worker 3: gemini -y -m gemini-3-flash-preview "Search config/ for database confi
 When needing to read file content, use chunking to stay within context limits (<150K tokens safe zone).
 
 ### Step 1: Get Line Counts
-
 ```bash
 wc -l path/to/file1.ts path/to/file2.ts path/to/file3.ts
 ```
 
 ### Step 2: Calculate Chunks
-
 - **Target:** ~500 lines per chunk (safe for most files)
 - **Max files per agent:** 3-5 small files OR 1 large file chunked
 
 **Chunking formula:**
-
 ```
 chunks = ceil(total_lines / 500)
 lines_per_chunk = ceil(total_lines / chunks)
@@ -122,14 +111,12 @@ lines_per_chunk = ceil(total_lines / chunks)
 ### Step 3: Run Parallel Reads If Available
 
 **Small files (<500 lines each):**
-
 ```
 Worker 1: cat file1.ts file2.ts
 Worker 2: cat file3.ts file4.ts
 ```
 
 **Large file (>500 lines) - use sed for ranges:**
-
 ```
 Worker 1: sed -n '1,500p' large-file.ts
 Worker 2: sed -n '501,1000p' large-file.ts
@@ -137,7 +124,6 @@ Worker 3: sed -n '1001,1500p' large-file.ts
 ```
 
 ### Chunking Decision Tree
-
 ```
 File < 500 lines     → Read entire file
 File 500-1500 lines  → Split into 2-3 chunks

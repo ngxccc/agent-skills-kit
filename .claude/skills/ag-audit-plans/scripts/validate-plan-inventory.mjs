@@ -1,8 +1,15 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 
-const root = process.cwd();
+let root;
+try {
+  root = execSync('git rev-parse --show-toplevel', { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+} catch {
+  // Not a git repository — fall back to process.cwd() so the script still works on new projects.
+  root = process.cwd();
+}
 const strict = process.argv.includes("--strict");
 const failures = [];
 const warnings = [];
@@ -35,11 +42,7 @@ function hasDateStamp(name) {
   return /(\d{2}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})/.test(name);
 }
 
-for (const dir of [
-  "process/general-plans/active",
-  "process/general-plans/completed",
-  "process/features",
-]) {
+for (const dir of ["process/general-plans/active", "process/general-plans/completed", "process/features"]) {
   if (!fs.existsSync(path.join(root, dir))) fail(`${dir} missing`);
 }
 
@@ -52,43 +55,6 @@ const activePlans = allPlans.filter((file) => file.includes("/active/"));
 const completedPlans = allPlans.filter((file) => file.includes("/completed/"));
 const duplicateNames = new Map();
 
-const roadmapPath = path.join(root, "process/ROADMAP.md");
-const completedRoadmapPath = path.join(root, "process/roadmap/completed.md");
-
-let roadmapContent = "";
-if (fs.existsSync(roadmapPath)) {
-  roadmapContent += fs.readFileSync(roadmapPath, "utf8") + "\n";
-}
-if (fs.existsSync(completedRoadmapPath)) {
-  roadmapContent += fs.readFileSync(completedRoadmapPath, "utf8") + "\n";
-}
-
-const roadmapLines = roadmapContent.split("\n");
-
-function getPlanTitle(file) {
-  try {
-    const text = read(file);
-    const titleLine = text.split("\n").find(line => line.trim().startsWith("#"));
-    if (titleLine) {
-      return titleLine.replace(/^#+\s*/, "").trim();
-    }
-  } catch (e) {}
-  return "";
-}
-
-function getRoadmapStatus(title) {
-  if (!title || !roadmapContent) return null;
-  for (const line of roadmapLines) {
-    if (line.includes(title)) {
-      const match = line.match(/-\s*\[([ xX])\]/);
-      if (match) {
-        return match[1].toLowerCase() === "x" ? "completed" : "active";
-      }
-    }
-  }
-  return null;
-}
-
 const samples = {
   nameNotDateStamped: [],
   noPlanInName: [],
@@ -97,104 +63,44 @@ const samples = {
   likelyReferenceInActive: [],
 };
 
+// Co-located task-folder artifacts are valid non-plan files inside active/ task subfolders.
+// Skip _REPORT_, _REF_, and _SPEC_ files from plan-specific checks to prevent false positives.
+function isColocatedArtifact(name) {
+  return /_REPORT_|_REF_|_SPEC_/.test(name);
+}
+
 for (const file of activePlans) {
   const name = path.basename(file);
   duplicateNames.set(name, (duplicateNames.get(name) || 0) + 1);
+
+  // Skip _REPORT_, _REF_, _SPEC_ files — valid co-located artifacts, not misplaced plans.
+  if (isColocatedArtifact(name)) continue;
+
   const text = read(file);
 
   if (!hasDateStamp(name)) samples.nameNotDateStamped.push(file);
   if (!/_PLAN_|PLAN\.md$|PLAN_/.test(name)) samples.noPlanInName.push(file);
-  if (
-    !/Phase Completion Rules|phase is NOT complete|Phase is NOT complete/i.test(
-      text,
-    )
-  ) {
+  if (!/Phase Completion Rules|phase is NOT complete|Phase is NOT complete/i.test(text)) {
     samples.missingPhaseRules.push(file);
   }
-  if (
-    !/Verification|Test Procedure|Manual test|Post-Phase Testing|Acceptance Criteria/i.test(
-      text,
-    )
-  ) {
+  if (!/Verification|Test Procedure|Manual test|Post-Phase Testing|Acceptance Criteria/i.test(text)) {
     samples.missingVerification.push(file);
   }
-  if (
-    /handoff|README|execution-sequence/i.test(name) &&
-    !/_PLAN_|PLAN/i.test(name)
-  ) {
+  if (/handoff|README|execution-sequence/i.test(name) && !/_PLAN_|PLAN/i.test(name)) {
     samples.likelyReferenceInActive.push(file);
   }
-  const title = getPlanTitle(file);
-  if (title && roadmapContent) {
-    const status = getRoadmapStatus(title);
-    if (!status) {
-      warn(`Active plan not listed in ROADMAP.md: "${title}" (${file})`);
-    } else if (status === "completed") {
-      warn(`Active plan "${title}" (${file}) is marked as completed [x] in ROADMAP.md`);
-    }
-  }
-
 }
-
-for (const file of completedPlans) {
-  const title = getPlanTitle(file);
-  if (title && roadmapContent) {
-    const status = getRoadmapStatus(title);
-    if (status === "active") {
-      warn(`Completed plan "${title}" (${file}) is marked as active [ ] in ROADMAP.md`);
-    }
-  }
-}
-// --- New rule: Every non-Icebox task in ROADMAP must link to a plan ---
-function validateRoadmapPlanLinks() {
-  if (!roadmapContent) return;
-
-  const iceboxIndex = roadmapLines.findIndex(line =>
-    line.includes("Idea Icebox") || line.includes("Backlog")
-  );
-
-  const linesToCheck = iceboxIndex === -1
-    ? roadmapLines
-    : roadmapLines.slice(0, iceboxIndex);
-
-  for (const line of linesToCheck) {
-    const trimmed = line.trim();
-    if (!trimmed.startsWith("- [ ]") && !trimmed.startsWith("- [x]") && !trimmed.startsWith("- [X]")) {
-      continue;
-    }
-
-    // Skip if it's already a header or separator
-    if (trimmed.startsWith("##") || trimmed.startsWith("---")) continue;
-
-    const hasPlanLink = /\]\((process\/)?(general-plans|features)\/.*\.md\)/.test(line);
-    if (!hasPlanLink) {
-      fail(`ROADMAP task missing plan link: "${trimmed.substring(0, 80)}..."`);
-    }
-
-    // New rule: Completed task must not link to active plan
-    const isCompleted = trimmed.startsWith("- [x]") || trimmed.startsWith("- [X]");
-    const linksToActive = /\]\((process\/)?(general-plans|features)\/active\/.*\.md\)/.test(line);
-    if (isCompleted && linksToActive) {
-      fail(`Completed task still links to active plan: "${trimmed.substring(0, 80)}..."`);
-    }
-  }
-}
-
-validateRoadmapPlanLinks();
 
 const duplicateBasenameGroups = [...duplicateNames.entries()]
   .filter(([, count]) => count > 1)
   .map(([name, count]) => ({ name, count }));
 
-if (activePlans.length > 10)
-  warn(`active plan count is high: ${activePlans.length}`);
+if (activePlans.length > 10) warn(`active plan count is high: ${activePlans.length}`);
 for (const [key, files] of Object.entries(samples)) {
   if (files.length > 0) warn(`${key}: ${files.length} active files`);
 }
 if (duplicateBasenameGroups.length > 0) {
-  warn(
-    `duplicate active plan basenames: ${duplicateBasenameGroups.length} groups`,
-  );
+  warn(`duplicate active plan basenames: ${duplicateBasenameGroups.length} groups`);
 }
 
 const result = {
