@@ -27,40 +27,59 @@ Before executing any request, agents MUST evaluate the task scope against this m
 | **High-Risk Class** | • Auth, JWT, OAuth & Identity boundaries<br>• Billing, Checkout & Payment Transactions<br>• DB Schema Migration / Destructive Mutation<br>• Public API Contract & DTO Changes<br>• Runtime / Gateway / Proxy / Middleware<br>• Permission Matrices & Security Boundaries | **Autonomous Architect & Verifier Protocol**<br>(Phases 0 $\rightarrow$ 6 State Machine) | • `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md`<br>• `risk-gate.json`<br>• `adversarial-validation.json`<br>• `verification.json`<br>• `interrogation-report.json`<br>• `review-decision.json`<br>• `docs/adr/` |
 | **Low-Risk Class**  | • Minor bug fixes (< 15 lines of code)<br>• UI / CSS / Formatting tweaks<br>• Typo fixes & non-logic configuration updates                                                                                                                                               | **Lightweight RIPER-5 / Fast Mode**<br>(Bypass Formal Spec & Heavyweight Gate)           | • Active Plan file or Fast Mode Plan                                                                                                                                                                                                             |
 
----
+### 1.1 Harness Entity Classification: Agents vs. Skills
+
+To prevent confusion during orchestration, the harness strictly distinguishes between **Agents** (Autonomous Workers) and **Skills** (Protocol Instructions):
+
+- **Agents (Subagents / Actors):** Independent AI sub-processes spawned via the `task` tool (e.g. `agent: "plan-agent"`). They run in isolated contexts with dedicated system prompts and tool permissions.
+- **Skills (Protocols / Guidelines / Automation Scripts):** Reusable knowledge, step-by-step methodologies, and validation scripts read or executed by an active agent (e.g. `skill://ag-code-interrogation`). **Skills DO NOT spawn new agent processes.**
+
+| Entity Name               | Entity Type | How to Trigger / Activate                       | Operational Purpose                                                                             |
+| :------------------------ | :---------- | :---------------------------------------------- | :---------------------------------------------------------------------------------------------- |
+| `ag-brainstorming`        | **Skill**   | Load `skill://ag-brainstorming`                 | Protocol for Socratic design, trade-off matrix, and Formal Spec creation                        |
+| `ag-plan-agent`           | **Agent**   | Spawn via `task(agent: "plan-agent")`           | Actor agent for generating WBS plans and manifests                                              |
+| `ag-generate-plan`        | **Skill**   | Load `skill://ag-generate-plan`                 | Contract skill defining SIMPLE/COMPLEX plan formats                                             |
+| `ag-tester`               | **Agent**   | Spawn via `task(agent: "tester")`               | Actor agent for generating Property-Based & Level 2 TDD RED test suites                         |
+| `ag-scenario`             | **Skill**   | Load `skill://ag-scenario`                      | Helper skill for generating edge-case scenarios across 12 dimensions                            |
+| `ag-security`             | **Skill**   | Load `skill://ag-security`                      | Helper skill for STRIDE/OWASP threat scanning and SAST guidelines                               |
+| `ag-execute-agent`        | **Agent**   | Spawn via `task(agent: "execute-agent")`        | Actor agent for implementing code and counter-example bug fixing                                |
+| `ag-code-interrogation`   | **Skill**   | Load `skill://ag-code-interrogation`            | Protocol skill executing 5-Layer Cognitive Stack Q&A & Socratic Gate                            |
+| `ag-code-reviewer`        | **Agent**   | Spawn via `task(agent: "code-reviewer")`        | Actor agent for Proof Review Gate & pre-PR quality checks                                       |
+| `ag-update-process-agent` | **Agent**   | Spawn via `task(agent: "update-process-agent")` | Actor agent for archiving specs, validating docs, and exporting SSOT                            |
+| `ag-docs`                 | **Skill**   | Load `skill://ag-docs`                          | Contract skill for managing project documentation, design docs (`docs/design/`), ADRs, and RFCs |
 
 ## 2. End-to-End State Machine Architecture
 
 ```mermaid
 flowchart TD
-    Phase0["Phase 0: ARCHITECT (ag-brainstorming)\n• One-Question Grilling Algorithm\n• Author <feature-slug>-<topic-slug>-formal-spec.md\n• Record ADR in docs/adr/"] --> Phase1["Phase 1: PLAN (ag-plan-agent / ag-generate-plan)\n• Decompose 3-Column WBS Plan\n• Write risk-gate.json manifest"]
-    Phase1 --> Phase2["Phase 2: VERIFIER PREP - TDD RED (ag-tester / ag-security / ag-scenario)\n• Freeze Level 2 Tests into adversarial-validation.json (status: RED)"]
-    Phase2 --> Phase3["Phase 3: EXECUTE - TDD GREEN (ag-execute-agent)\n• Implement source code\n• Resolve bugs via verification.json Counter-Example Loop"]
-    Phase3 --> Phase4["Phase 4: CODE INTERROGATION (ag-code-interrogation)\n• Execute 5-Layer Cognitive Stack Interrogation Loop\n• Emit interrogation-report.json"]
-    Phase4 --> Phase5["Phase 5: PROOF REVIEW (ag-code-reviewer / ag-security)\n• Cross-examine diff vs Formal Spec & verification.json\n• Emit review-decision.json (mustStopBeforeFinalize: false)"]
-    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT (ag-update-process-agent)\n• Validate docs: bun run .claude/skills/ag-docs/scripts/validate-docs.mjs\n• Archive Spec & Export docs/design/<feature-slug>-<topic-slug>-workflow.md"]
+    Phase0["Phase 0: ARCHITECT\n• Executing Agent: Orchestrator\n• Invoked Skill: ag-brainstorming\n• Deliverable: <feature-slug>-<topic-slug>-formal-spec.md & ADR"] --> Phase1["Phase 1: PLAN\n• Executing Agent: ag-plan-agent [Agent]\n• Invoked Skill: ag-generate-plan [Skill]\n• Deliverable: WBS Plan & risk-gate.json"]
+    Phase1 --> Phase2["Phase 2: VERIFIER PREP - TDD RED\n• Executing Agent: ag-tester [Agent]\n• Invoked Skills: ag-scenario, ag-security [Skills]\n• Deliverable: adversarial-validation.json (status: RED)"]
+    Phase2 --> Phase3["Phase 3: EXECUTE - TDD GREEN\n• Executing Agent: ag-execute-agent [Agent]\n• Invoked Skills: Domain Capability Stack [Skills]\n• Deliverable: Source Code & verification.json (status: PASS)"]
+    Phase3 --> Phase4["Phase 4: CODE INTERROGATION\n• Executing Agent: Orchestrator / Verifier\n• Invoked Skill: ag-code-interrogation [Skill]\n• Deliverable: interrogation-report.json"]
+    Phase4 --> Phase5["Phase 5: PROOF REVIEW\n• Executing Agent: ag-code-reviewer [Agent]\n• Invoked Skill: ag-security [Skill]\n• Deliverable: review-decision.json (verdict: APPROVED)"]
+    Phase5 --> Phase6["Phase 6: UPDATE PROCESS & SSOT\n• Executing Agent: ag-update-process-agent [Agent]\n• Invoked Skill: ag-docs [Skill]\n• Deliverable: docs/design/<feature-slug>-<topic-slug>-design.md"]
 ```
 
 ### State Transition Preconditions & Deliverable Gates
 
-| From State                   | To State                     | Gate Condition / Prerequisite                                                                         | Verified By                 |
-| :--------------------------- | :--------------------------- | :---------------------------------------------------------------------------------------------------- | :-------------------------- |
-| **Phase 0 (ARCHITECT)**      | **Phase 1 (PLAN)**           | Formal Spec written to `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` | `ag-brainstorming`          |
-| **Phase 1 (PLAN)**           | **Phase 2 (VERIFIER PREP)**  | WBS Plan created and `risk-gate.json` initialized with `formalSpecPath`                               | `ag-plan-agent`             |
-| **Phase 2 (VERIFIER PREP)**  | **Phase 3 (EXECUTE)**        | Level 2 tests frozen into `adversarial-validation.json` with status `RED`                             | `ag-tester` / `ag-security` |
-| **Phase 3 (EXECUTE)**        | **Phase 4 (INTERROGATION)**  | All frozen tests PASS; `verification.json` status is `PASS` (0 failures)                              | `ag-execute-agent`          |
-| **Phase 4 (INTERROGATION)**  | **Phase 5 (PROOF REVIEW)**   | 5-Layer Socratic Interrogation passed; `interrogation-report.json` emitted                            | `ag-code-interrogation`     |
-| **Phase 5 (PROOF REVIEW)**   | **Phase 6 (UPDATE PROCESS)** | `review-decision.json` contains `mustStopBeforeFinalize: false` & `verdict: "APPROVED"`               | `ag-code-reviewer`          |
-| **Phase 6 (UPDATE PROCESS)** | **COMPLETED**                | Docs audit passes 100%; operational SSOT exported to `docs/design/`                                   | `ag-update-process-agent`   |
+| From State                   | To State                     | Gate Condition / Prerequisite                                                                         | Verified By Agent                   | Active Protocol Skill                   |
+| :--------------------------- | :--------------------------- | :---------------------------------------------------------------------------------------------------- | :---------------------------------- | :-------------------------------------- |
+| **Phase 0 (ARCHITECT)**      | **Phase 1 (PLAN)**           | Formal Spec written to `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` | Orchestrator                        | `ag-brainstorming`                      |
+| **Phase 1 (PLAN)**           | **Phase 2 (VERIFIER PREP)**  | WBS Plan created and `risk-gate.json` initialized with `formalSpecPath`                               | `ag-plan-agent` _(Agent)_           | `ag-generate-plan` _(Skill)_            |
+| **Phase 2 (VERIFIER PREP)**  | **Phase 3 (EXECUTE)**        | Level 2 tests frozen into `adversarial-validation.json` with status `RED`                             | `ag-tester` _(Agent)_               | `ag-scenario`, `ag-security` _(Skills)_ |
+| **Phase 3 (EXECUTE)**        | **Phase 4 (INTERROGATION)**  | All frozen tests PASS; `verification.json` status is `PASS` (0 failures)                              | `ag-execute-agent` _(Agent)_        | Domain Plugins _(Skills)_               |
+| **Phase 4 (INTERROGATION)**  | **Phase 5 (PROOF REVIEW)**   | 5-Layer Socratic Interrogation passed; `interrogation-report.json` emitted                            | Orchestrator / Verifier             | `ag-code-interrogation` _(Skill)_       |
+| **Phase 5 (PROOF REVIEW)**   | **Phase 6 (UPDATE PROCESS)** | `review-decision.json` contains `mustStopBeforeFinalize: false` & `verdict: "APPROVED"`               | `ag-code-reviewer` _(Agent)_        | `ag-security` _(Skill)_                 |
+| **Phase 6 (UPDATE PROCESS)** | **COMPLETED**                | Docs audit passes 100%; operational SSOT exported to `docs/design/`                                   | `ag-update-process-agent` _(Agent)_ | `ag-docs` _(Skill)_                     |
 
 ---
 
 ## 3. Phase-by-Phase Execution Protocol
 
-### 🔹 Phase 0: ARCHITECT (`ag-brainstorming`)
+### Phase 0: ARCHITECT (`ag-brainstorming`)
 
-- **Executing Agent:** `ag-brainstorming` (or Orchestrator in Brainstorming mode).
-- **Input Prerequisites:** Feature requirement statement or architectural request.
+- **Executing Agent:** Orchestrator (Main Session).
+- **Invoked Skill:** `ag-brainstorming` (`skill://ag-brainstorming`).
 - **Autonomous Execution Algorithm:**
   1. Identify High-Risk triggers (Auth, Billing, DB Schema, API Contract, Security).
   2. Conduct **One-Question Grilling**: Ask single, focused questions (with 2-4 concrete options per turn) to discover:
@@ -73,10 +92,10 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 1: PLAN (`ag-plan-agent` / `ag-generate-plan`)
+### Phase 1: PLAN (`ag-plan-agent` / `ag-generate-plan`)
 
-- **Executing Agent:** `ag-plan-agent` / `ag-generate-plan`.
-- **Input Prerequisites:** Active Formal Spec at `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md`.
+- **Executing Agent:** `ag-plan-agent` (Subagent spawned via `task(agent: "plan-agent")`).
+- **Invoked Skill:** `ag-generate-plan` (`skill://ag-generate-plan`).
 - **Autonomous Execution Algorithm:**
   1. Parse the Formal Spec; extract all System Invariants (`INV-1`, `INV-2`, etc.).
   2. Create active Plan file at `process/features/[feature]/active/[feature-slug]-plan-[dd-mm-yy].md`.
@@ -87,10 +106,10 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 2: VERIFIER PREP - TDD RED (`ag-tester` / `ag-security` / `ag-scenario`)
+### Phase 2: VERIFIER PREP - TDD RED (`ag-tester` / `ag-security` / `ag-scenario`)
 
-- **Executing Agent:** `ag-tester`, `ag-security`, `ag-scenario`.
-- **Input Prerequisites:** `risk-gate.json` pointing to valid `formalSpecPath`.
+- **Executing Agent:** `ag-tester` (Subagent spawned via `task(agent: "tester")`).
+- **Invoked Helper Skills:** `ag-scenario` (`skill://ag-scenario`), `ag-security` (`skill://ag-security`).
 - **Autonomous Execution Algorithm:**
   1. Read System Invariants from `formalSpecPath`.
   2. Generate Level 2 Property-Based Tests (`fast-check`), race condition simulations, and boundary limit tests.
@@ -101,10 +120,10 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 3: EXECUTE - TDD GREEN & COUNTER-EXAMPLE LOOP (`ag-execute-agent`)
+### Phase 3: EXECUTE - TDD GREEN & COUNTER-EXAMPLE LOOP (`ag-execute-agent`)
 
-- **Executing Agent:** `ag-execute-agent`.
-- **Input Prerequisites:** Active Plan file, Formal Spec, `adversarial-validation.json` (status: `RED`).
+- **Executing Agent:** `ag-execute-agent` (Subagent spawned via `task(agent: "execute-agent")`).
+- **Invoked Domain Skills:** Contextual stack skills (`nextjs`, `zod`, `drizzle`, etc.).
 - **Autonomous Execution Algorithm:**
   1. Read Formal Spec invariants and frozen test matrix.
   2. Write source code implementation complying strictly with 100% of System Invariants.
@@ -117,10 +136,10 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 4: CODE INTERROGATION (`ag-code-interrogation`)
+### Phase 4: CODE INTERROGATION (`ag-code-interrogation`)
 
-- **Executing Agent:** `ag-code-interrogation`.
-- **Input Prerequisites:** Git diff, Formal Spec at `formalSpecPath`, passing test suite in `verification.json`.
+- **Executing Agent:** Orchestrator (or dedicated Verifier Agent).
+- **Invoked Protocol Skill:** `ag-code-interrogation` (`skill://ag-code-interrogation`).
 - **Autonomous Execution Algorithm:**
   1. Inspect the git diff against `formalSpecPath`.
   2. Execute the **5-Layer Cognitive Stack Interrogation Protocol**:
@@ -134,10 +153,10 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 5: PROOF REVIEW GATE (`ag-code-reviewer` / `ag-security`)
+### Phase 5: PROOF REVIEW GATE (`ag-code-reviewer` / `ag-security`)
 
-- **Executing Agent:** `ag-code-reviewer`, `ag-security`.
-- **Input Prerequisites:** Completed git diff, passing `verification.json`, passed `interrogation-report.json`.
+- **Executing Agent:** `ag-code-reviewer` (Subagent spawned via `task(agent: "code-reviewer")`).
+- **Invoked Helper Skill:** `ag-security` (`skill://ag-security`).
 - **Autonomous Execution Algorithm:**
   1. Conduct SAST security audit and invariant verification on git diff.
   2. Verify zero regressions against security boundaries and System Invariants.
@@ -147,17 +166,17 @@ flowchart TD
 
 ---
 
-### 🔹 Phase 6: UPDATE PROCESS & SSOT EXPORT (`ag-update-process-agent`)
+### Phase 6: UPDATE PROCESS & SSOT EXPORT (`ag-update-process-agent`)
 
-- **Executing Agent:** `ag-update-process-agent`.
-- **Input Prerequisites:** `review-decision.json` (`verdict: "APPROVED"`).
+- **Executing Agent:** `ag-update-process-agent` (Subagent spawned via `task(agent: "update-process-agent")`).
+- **Invoked Contract/Helper Skills:** `ag-docs` (`skill://ag-docs`).
 - **Autonomous Execution Algorithm:**
   1. Run mandatory doc audit script:
      `bun run .claude/skills/ag-docs/scripts/validate-docs.mjs`
   2. Archive Formal Spec: Move `process/features/[feature]/active/[feature-slug]-[topic-slug]-formal-spec.md` to `process/features/[feature]/completed/`.
-  3. Synthesize operational evidence using `ag-workflow-doc` and export SSOT operational doc to:
-     `docs/design/<feature-slug>-<topic-slug>-workflow.md` (conforming to `workflow-documentation-standard.md`).
-- **Output Deliverables:** Validated docs, archived spec, `docs/design/<feature-slug>-<topic-slug>-workflow.md`.
+  3. Synthesize project design specifications using `ag-docs` (design mode) and export SSOT project design doc to:
+     `docs/design/<feature-slug>-<topic-slug>-design.md`.
+- **Output Deliverables:** Validated docs, archived spec, `docs/design/<feature-slug>-<topic-slug>-design.md`.
 
 ---
 
@@ -203,18 +222,27 @@ Refer to [`harness-schemas.md`](process/development-protocols/references/harness
 
 Despite the harness having 50+ skills in total, the core Architect & Verifier state machine operates on a lean, deterministic backbone of **6 Core Skills** and **5 Specialist Agents**.
 
-### Core Workflow Engine
+### Core Workflow Engine Matrix
 
-| Phase       | State / Step            | Primary Agent             | Core Skills Invoked              | Harness Deliverable                                   |
-| :---------- | :---------------------- | :------------------------ | :------------------------------- | :---------------------------------------------------- |
-| **Phase 0** | ARCHITECT               | Orchestrator              | `ag-brainstorming`               | `[feature-slug]-[topic-slug]-formal-spec.md`, ADR     |
-| **Phase 1** | PLAN                    | `ag-plan-agent`           | `ag-generate-plan`               | Active Plan file, `risk-gate.json`                    |
-| **Phase 2** | VERIFIER PREP (TDD RED) | `ag-tester`               | `ag-scenario`, `ag-security`     | `adversarial-validation.json` (status: RED)           |
-| **Phase 3** | EXECUTE (TDD GREEN)     | `ag-execute-agent`        | Domain Stack Skills (contextual) | Source Code, `verification.json` (status: PASS)       |
-| **Phase 4** | CODE INTERROGATION      | Orchestrator / Verifier   | `ag-code-interrogation`          | `interrogation-report.json`                           |
-| **Phase 5** | PROOF REVIEW            | `ag-code-reviewer`        | `ag-security`                    | `review-decision.json` (verdict: APPROVED)            |
-| **Phase 6** | UPDATE PROCESS & SSOT   | `ag-update-process-agent` | `ag-workflow-doc`, `ag-docs`     | `docs/design/<feature-slug>-<topic-slug>-workflow.md` |
+| Phase       | State / Step            | Primary Agent (Spawn Target)  | Core Skills Invoked (Instruction Protocol) | Harness Deliverable                                 |
+| :---------- | :---------------------- | :---------------------------- | :----------------------------------------- | :-------------------------------------------------- |
+| **Phase 0** | ARCHITECT               | Orchestrator (Main Session)   | `ag-brainstorming`                         | `[feature-slug]-[topic-slug]-formal-spec.md`, ADR   |
+| **Phase 1** | PLAN                    | `ag-plan-agent`               | `ag-generate-plan`                         | Active Plan file, `risk-gate.json`                  |
+| **Phase 2** | VERIFIER PREP (TDD RED) | `ag-tester`                   | `ag-scenario`, `ag-security`               | `adversarial-validation.json` (status: RED)         |
+| **Phase 3** | EXECUTE (TDD GREEN)     | `ag-execute-agent`            | Domain Capability Stack Skills             | Source Code, `verification.json` (status: PASS)     |
+| **Phase 4** | CODE INTERROGATION      | Orchestrator / Verifier Agent | `ag-code-interrogation`                    | `interrogation-report.json`                         |
+| **Phase 5** | PROOF REVIEW            | `ag-code-reviewer`            | `ag-security`                              | `review-decision.json` (verdict: APPROVED)          |
+| **Phase 6** | UPDATE PROCESS & SSOT   | `ag-update-process-agent`     | `ag-docs`                                  | `docs/design/<feature-slug>-<topic-slug>-design.md` |
 
-### Dynamic Domain Capability Plugins
+### Quick Invocation Cheat Sheet
 
-All other 45+ repository skills (such as `ag-nextjs`, `ag-tailwind`, `ag-zod`, `ag-zustand`, `ag-drizzle`, `ag-web-testing`, etc.) do NOT alter the core state machine. They function as **dynamic capability plugins** that `ag-execute-agent` and `ag-tester` load contextually in Phase 2 or Phase 3 based on the project's technology stack.
+```ts
+// Example: Spawning an Agent (Subagent execution)
+task({
+  agent: "plan-agent", // <-- AGENT ID (Omits 'ag-' prefix when calling task tool)
+  task: "Generate WBS implementation plan for Formal Spec...",
+});
+
+// Example: Invoking a Skill (Context loading & Protocol instructions)
+// Active Agent reads skill://<skill-name> (e.g., skill://ag-code-interrogation)
+```

@@ -1,0 +1,22 @@
+{
+  "featureSlug": "wallet-transfer",
+  "planSlug": "wallet-transfer-plan-01-08-26",
+  "interrogatedAt": "2026-08-01T00:00:00Z",
+  "lastUpdatedAt": "2026-08-01T00:15:00Z",
+  "gateVerdict": "PASS",
+  "circuitBreakerTriggered": false,
+  "layersEvaluated": ["L1_BIAS", "L2_INVARIANTS"],
+  "invariantsVerified": [],
+  "identifiedRisks": [
+    {
+      "riskId": "RISK-1",
+      "layer": "L2_INVARIANTS",
+      "severity": "CRITICAL",
+      "description": "INV-1 negative balance invariant violated during race condition.",
+      "mitigationStatus": "OPEN",
+      "mitigationNotes": "Unresolved."
+    }
+  ],
+  "qaTrace": [],
+  "summaryNotes": "Flawed interrogation."
+}
