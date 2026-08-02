@@ -32,6 +32,18 @@ This skill is designed for the agent to reference when:
    - For **High-Risk features** (Auth, Billing, DB Schema, API Gateway, Secrets), author the **Formal Specification** at `process/features/{feature}/active/{feature-slug}-{topic-slug}-formal-spec.md` using template `process/development-protocols/references/formal-spec-template.md` (defining Zod validation contracts, System Invariants `INV-1..N`, and Adversarial Payloads `ADV-1..N`).
 7. **Transition:** After user approves written spec, invoke the `ag-generate-plan` skill to create the implementation plan.
 
+### High-Risk Features & Formal Specifications (Architect Phase Gate)
+
+When brainstorming work falls under **High-Risk Class** (Auth, Billing & Payments, Database Schema Migrations, Public API Contracts, Gateway, or Secrets Management):
+
+1. **Invoke Architect / Verifier Protocol:** Execute One-Question Grilling per `process/development-protocols/references/architect-verifier-master-workflow-guide.md`.
+2. **Author Formal Specification:** Create the Formal Spec artifact at `process/features/{feature}/active/{feature-slug}-{topic-slug}-formal-spec.md` using template `process/development-protocols/references/formal-spec-template.md`.
+3. **Mandatory Formal Spec Elements:**
+   - **Strict Input Data Schema:** Define Zod schemas or TypeScript Discriminated Unions for all inputs.
+   - **System Invariants (`INV-1..N`):** State mathematical or logical rules that MUST ALWAYS HOLD TRUE.
+   - **Adversarial Validation Matrix (`ADV-1..N`):** Define Level 2 edge cases (concurrency, race conditions, malicious payloads) and fail-safe recovery behaviors.
+4. **ADR Creation:** Record any hard architectural decisions or trade-offs via `ag-docs adr` at `docs/adr/000X-<kebab-case-name>.md`.
+
 ### 2. Examples
 
 #### Example 1: New Feature Brainstorming & Trade-Off Matrix
