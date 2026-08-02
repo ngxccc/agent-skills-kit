@@ -1,0 +1,9 @@
+---
+name: missing-description
+metadata:
+  internal: true
+---
+
+# Missing Description Skill
+
+This skill is missing the required description field.

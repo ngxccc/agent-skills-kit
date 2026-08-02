@@ -13,47 +13,33 @@ For context routing, grouping, and discoverability audits, use the `audit-contex
 ## Workflow
 
 1. Run the Claude/Codex agent parity validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs
    ```
-
 2. Run the shared skill discovery validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs
    ```
-
 3. Run the README.md sync validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs
    ```
-
 4. Run the protocol wiring validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs
    ```
-
 5. Run the seed file consistency validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs
    ```
-
 6. Run the kit portability validator:
-
    ```bash
    node .claude/skills/ag-audit-ag/scripts/validate-kit-portability.mjs
    ```
-
 7. Run the skill structural pattern validator:
-
    ```bash
    bun run .claude/skills/ag-audit-ag/scripts/validate-skill-patterns.mjs
    ```
-
 8. If any script reports failures, inspect the referenced files and patch the smallest
    relevant surface.
 9. Re-run the failed validators until they pass.
