@@ -163,6 +163,7 @@ When the user explicitly invokes one of the mode names or command names from the
 Global best practices and coding conventions apply:
 
 - TypeScript fundamentals
+- Tool Selection Discipline: Strictly follow [process/development-protocols/references/tool-invocation-policy.md](process/development-protocols/references/tool-invocation-policy.md) — prefer specialized tools (`read`, `lsp`, `ast_edit`, `debug`) over generic shell commands.
 - Naming and data practices
 - Functions, classes, and abstraction
 - Component architecture
