@@ -29,9 +29,9 @@ Read these files as needed:
 
 Reference docs (harness methodology, not project-specific):
 
-- `process/development-protocols/references/example-simple-prd.md` - Reference for simple plan structure
-- `process/development-protocols/references/example-complex-prd.md` - Reference for complex plan depth
-- `process/development-protocols/references/program-goal-charter-template.md` - Program Goal Charter template for phase programs
+- `.claude/skills/ag-generate-plan/references/example-simple-prd.md` - Reference for simple plan structure
+- `.claude/skills/ag-generate-plan/references/example-complex-prd.md` - Reference for complex plan depth
+- `process/development-protocols/references/tool-invocation-policy.md` - Mandatory tool selection policy & device payload reference
 
 ### Orchestrator Role (Main Claude Code Session)
 
