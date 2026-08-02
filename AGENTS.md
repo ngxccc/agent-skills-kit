@@ -505,11 +505,9 @@ request to surface relevant skills. Attach candidate skill names to the subagent
 | `ag-predict`                  | Pre-implementation 5-persona debate             | risks, predict issues, architectural review              |
 | `ag-preview`                  | Visual diagram & slide preview helper           | diagram, visualize, slides, preview                      |
 | `ag-problem-solving`          | Systematic problem solving helper               | problem solving, stuck, inversion exercise               |
-| `ag-publish`                  | Package publishing helper                       | publish package, release publish                         |
 | `ag-red-team-plan`            | Red team security audit planning                | red team, security attack plan                           |
 | `ag-repomix`                  | Repository packing for reference artifacts      | pack repo, snapshot codebase, repo context               |
 | `ag-reverse-code-review`      | Reverse code review helper                      | reverse code review, sanity check code                   |
-| `ag-review-situation`         | Situation review helper                         | review situation, situation scan                         |
 | `ag-risk-evidence-pack`       | Risk evidence packaging helper                  | risk evidence, verification evidence pack                |
 | `ag-scenario`                 | Edge case generation across 12 dimensions       | edge cases, test scenarios, edge case matrix             |
 | `ag-scout`                    | Fast codebase scouting helper                   | find files, where is, search codebase                    |

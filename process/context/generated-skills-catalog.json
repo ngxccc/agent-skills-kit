@@ -9,7 +9,7 @@
       "process/context/generated-skills-catalog.json"
     ]
   },
-  "skillCount": 51,
+  "skillCount": 49,
   "skills": [
     {
       "folder": "ag-agent-browser",
@@ -795,34 +795,6 @@
       "mentionedSkills": []
     },
     {
-      "folder": "ag-publish",
-      "name": "ag-publish",
-      "description": "Use when publishing harness improvements to the remote kit repo. Diffs managed files, shows what changed, bumps version, and pushes. Counterpart to ag-update (pull).",
-      "aliases": [
-        "ag-publish"
-      ],
-      "normalizedName": "agpublish",
-      "triggerKeywords": [
-        "publish kit",
-        "push harness",
-        "release kit",
-        "update remote"
-      ],
-      "layer": "contract",
-      "routedFrom": [
-        "AGENTS.md",
-        "process/context/generated-skills-catalog.json"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [
-        "references/ag-publish.md"
-      ],
-      "mentionedSkills": [
-        "ag-update"
-      ]
-    },
-    {
       "folder": "ag-red-team-plan",
       "name": "ag-red-team-plan",
       "description": "Trigger keywords: red team, attack plan, stress test design, find flaws, audit architecture, challenge my plan. Red Teaming skill for auditing student architectural plans, attacking designs for race conditions, bottlenecks, edge cases, and failure modes before implementation begins.",
@@ -892,33 +864,6 @@
       "allowlisted": false,
       "allowlistReason": null,
       "relativeReferences": [],
-      "mentionedSkills": []
-    },
-    {
-      "folder": "ag-review-situation",
-      "name": "ag-review-situation",
-      "description": "Use when you need a read-only situation review and handoff summary of current branch state, local/remote refs, worktrees, active project plans, selected-plan hints, and suggested next checks.",
-      "aliases": [
-        "ag-review-situation"
-      ],
-      "normalizedName": "agreviewsituation",
-      "triggerKeywords": [
-        "what's in flight",
-        "handoff",
-        "worktree status",
-        "active plans",
-        "next steps"
-      ],
-      "layer": "helper",
-      "routedFrom": [
-        "AGENTS.md",
-        "process/context/generated-skills-catalog.json"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [
-        "references/review-situation-workflow.md"
-      ],
       "mentionedSkills": []
     },
     {
