@@ -1,12 +1,8 @@
 ---
 name: ag-autoresearch
 description: "Loop: find gaps → fix → repeat until agents find no gaps or a metric goal is hit. Shared loop primitive for PVL, EVL, and standalone quality runs."
-argument-hint: "[domain] [corpus path(s)] [verify: command] [max_iterations: N]"
 trigger_keywords: autoresearch, harden spec, fix all errors, improve coverage, iterative improvement, gap loop
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # ag-autoresearch

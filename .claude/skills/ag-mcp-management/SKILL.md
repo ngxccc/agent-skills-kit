@@ -1,10 +1,6 @@
 ---
 name: ag-mcp-management
 description: Manage MCP servers - discover, analyze, execute tools/prompts/resources. Use for MCP integrations, intelligent tool selection, multi-server management, context-efficient capability discovery.
-argument-hint: "[task or server-name]"
-metadata:
-  author: claudekit
-  version: "1.0.0"
 trigger_keywords: mcp, management
 layer: helper
 ---

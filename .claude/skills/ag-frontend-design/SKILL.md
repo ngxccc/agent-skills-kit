@@ -1,12 +1,8 @@
 ---
 name: ag-frontend-design
 description: Create polished frontend interfaces from designs/screenshots/videos. Use for web components, 3D experiences, replicating UI designs, quick prototypes, immersive interfaces, avoiding AI slop.
-license: Complete terms in LICENSE.txt
 trigger_keywords: UI, design, layout, component, page, interface, visual, CSS, Tailwind, login page, dashboard
 layer: helper
-metadata:
-  author: claudekit
-  version: "1.0.0"
 ---
 
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.

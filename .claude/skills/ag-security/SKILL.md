@@ -1,14 +1,8 @@
 ---
 name: ag-security
 description: "STRIDE + OWASP-based security audit with optional auto-fix. Scans code for vulnerabilities, categorizes by severity, and can iteratively fix findings using ag-autoresearch pattern."
-argument-hint: "<scope glob or 'full'> [--fix] [--iterations N]"
 trigger_keywords: security, vulnerability, auth, XSS, SQL injection
 layer: helper
-metadata:
-  author: claudekit
-  attribution: "Security audit pattern adapted from autoresearch by Udit Goenka (MIT)"
-  license: MIT
-  version: "1.0.0"
 ---
 
 # ag-security — Security Audit

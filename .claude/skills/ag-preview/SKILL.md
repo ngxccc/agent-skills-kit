@@ -1,10 +1,6 @@
 ---
 name: ag-preview
 description: "Use when you need to inspect files or generate visual explanations, slides, diagrams, or HTML recaps."
-argument-hint: "[path] OR [--html] --explain|--slides|--diagram|--ascii [topic] OR --html --diff|--plan-review|--recap"
-metadata:
-  author: claudekit
-  version: "1.1.0"
 trigger_keywords: preview
 layer: helper
 ---

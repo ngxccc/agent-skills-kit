@@ -1,11 +1,6 @@
 ---
 name: ag-docs
 description: "Trigger keywords: docs, README, document codebase, ADR, architectural decision, decision record, design doc, architecture record, RFC, request for comments, architectural proposal, system design. Skill for analyzing codebase, managing project documentation, creating/validating Architectural Decision Records (ADRs), Request for Comments (RFCs), and System Design Docs."
-license: MIT
-argument-hint: "init|update|summarize|adr|rfc|design"
-metadata:
-  author: claudekit
-  version: "1.3.0"
 trigger_keywords: docs
 layer: helper
 ---

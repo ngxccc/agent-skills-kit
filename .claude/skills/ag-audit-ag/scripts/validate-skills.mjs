@@ -16,17 +16,6 @@ const blockingKeys = new Set([
   "trigger_keywords",
   "layer",
 ]);
-const advisoryKeys = new Set([
-  "license",
-  "allowed-tools",
-  "argument-hint",
-  "languages",
-  "metadata",
-  "user-invocable",
-  "when_to_use",
-  "category",
-  "keywords",
-]);
 const intentionallyIgnored = new Set(["sync-from-riper5", "sync-to-riper5"]);
 const staleOwnershipPatterns = [
   "default workflow owner",
@@ -140,15 +129,10 @@ for (const skill of skillNames) {
     );
   }
 
-  const unexpected = keys.filter(
-    (key) => !blockingKeys.has(key) && !advisoryKeys.has(key),
-  );
-  if (unexpected.length > 0)
-    warn(`${file} has non-system frontmatter keys: ${unexpected.join(", ")}`);
-
-  for (const key of keys.filter((item) => advisoryKeys.has(item))) {
-    warn(
-      `${file} uses richer advisory frontmatter key ${key}; keep Codex compatibility in mind if this expands`,
+  const unexpected = keys.filter((key) => !blockingKeys.has(key));
+  if (unexpected.length > 0) {
+    fail(
+      `${file} contains non-canonical frontmatter keys: ${unexpected.join(", ")}; only name, description, trigger_keywords, layer are permitted`,
     );
   }
 }

@@ -3,10 +3,6 @@ name: ag-setup
 description: Interactive harness setup for any project. Detects stack, scaffolds process dirs, deep-scans the codebase, populates context. Works on fresh and existing projects — always asks before reorganizing.
 trigger_keywords: seed, harness setup, bootstrap, new project, scaffold, setup
 layer: helper
-metadata:
-  author: agent-skills-kit
-  version: "3.3.0"
-  # version tracks SKILL.md doc changes independently from kit version in ag-manifest.json
 ---
 
 # VibeCo Agent Harness Setup

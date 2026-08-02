@@ -1,8 +1,6 @@
 ---
 name: ag-strict-config-derivation
 description: "Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries."
-license: MIT
-argument-hint: "[no-args]"
 trigger_keywords: strict, config, derivation
 layer: helper
 ---

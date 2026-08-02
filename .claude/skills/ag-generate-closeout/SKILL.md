@@ -1,12 +1,8 @@
 ---
 name: ag-generate-closeout
 description: "Generate the post-EXECUTE closeout packet for a plan or phase. Includes archive-readiness classification, drift signal scoring, commit checkpoint recommendation, and move-on next-state recommendation."
-argument-hint: "[selected plan path or phase name]"
 trigger_keywords: closeout, phase closeout, archive readiness, drift scoring, move-on
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # ag-generate-closeout

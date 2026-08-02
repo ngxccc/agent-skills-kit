@@ -1,12 +1,8 @@
 ---
 name: ag-scout
 description: "Fast codebase scouting using shell search and optional parallel research agents. Use for file discovery, task context gathering, and quick scoped searches across directories."
-argument-hint: "[search-target] [ext]"
 trigger_keywords: find files, where is, search codebase
 layer: helper
-metadata:
-  author: claudekit
-  version: "1.0.0"
 ---
 
 # Scout

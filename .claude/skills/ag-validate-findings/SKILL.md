@@ -1,12 +1,8 @@
 ---
 name: ag-validate-findings
 description: "Use when running VALIDATE V2-V3 fan-out. Two-layer investigation (4 dimension agents + per-section feasibility agents) synthesized into PASS/CONDITIONAL/BLOCKED net gate. Strategy-agnostic."
-argument-hint: "[plan file path]"
 trigger_keywords: validate findings, layer 1 dimensions, layer 2 feasibility, net gate, validate fan-out
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # ag-validate-findings

@@ -1,12 +1,6 @@
 ---
 name: ag-tech-graph
 description: "Use when you need publish-grade SVG or PNG technical diagrams for architecture, flow, sequence, UML, state, or comparison visuals, with preview used afterward for review rather than generation."
-license: MIT
-argument-hint: "[diagram-type or system description] [--style <n>] [--output <path>] [--feature <name>]"
-metadata:
-  author: flowser
-  version: "1.1.0"
-  attribution: "Adapted from upstream fireworks-tech-graph concepts and assets, narrowed for this kit"
 trigger_keywords: tech, graph
 layer: helper
 ---

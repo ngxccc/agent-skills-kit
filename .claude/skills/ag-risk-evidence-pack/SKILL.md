@@ -1,12 +1,8 @@
 ---
 name: ag-risk-evidence-pack
 description: "Define and generate the manual-first evidence pack for high-risk work. Covers 6 high-risk class definitions and the 5-artifact schema required before finalizing, pushing, or handing off."
-argument-hint: "[risk class and work description]"
 trigger_keywords: risk evidence, high-risk pack, evidence pack, risk gate, adversarial validation
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # ag-risk-evidence-pack

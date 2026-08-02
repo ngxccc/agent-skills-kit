@@ -1,14 +1,8 @@
 ---
 name: ag-scenario
 description: "Generate comprehensive edge cases and test scenarios by decomposing features across 12 dimensions. Use before implementation or testing to catch issues early."
-argument-hint: "<file path or feature description>"
 trigger_keywords: edge cases, test scenarios, what could go wrong
 layer: helper
-metadata:
-  author: claudekit
-  attribution: "Scenario exploration pattern adapted from autoresearch by Udit Goenka (MIT)"
-  license: MIT
-  version: "1.0.0"
 ---
 
 # ag-scenario — Edge Case & Scenario Explorer

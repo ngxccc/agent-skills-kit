@@ -3,9 +3,6 @@ name: ag-audit-plans
 description: Audit active project plan files for staleness, completion, and routing truth. Use when cleaning up plans, reconciling active work, or archiving completed artifacts.
 trigger_keywords: audit plans, plan inventory, stale plans, active plan count
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # Audit Plans

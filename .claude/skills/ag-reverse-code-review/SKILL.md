@@ -1,11 +1,6 @@
 ---
 name: ag-reverse-code-review
 description: "Trigger keywords: reverse review, compare options, trade-off analysis, eval approaches, which pattern is better. Reverse Code Review skill for evaluating architectural trade-offs, comparing multi-option implementations (Trade-off Matrix), and evaluating student critical thinking rather than just syntax correctness."
-license: MIT
-argument-hint: "[architecture-or-code-problem]"
-metadata:
-  author: ngxc
-  version: "1.0.0"
 trigger_keywords: reverse, code, review
 layer: helper
 ---

@@ -3,9 +3,6 @@ name: ag-generate-context
 description: Generate or update the project's authoritative repository context at process/context/all-context.md. Use when repo context is missing, stale, or contradicted by code.
 trigger_keywords: generate context, update context, refresh context, missing context
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # Generate Context

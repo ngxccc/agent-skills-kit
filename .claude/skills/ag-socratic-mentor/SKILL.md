@@ -1,11 +1,6 @@
 ---
 name: ag-socratic-mentor
 description: "Trigger keywords: socratic, tutor, explain concept, guide me, teach me, learning mode, ZPD. Socratic Tutoring & Deliberate Practice skill for guiding students through core business logic and architecture via guided questions, concept explanation, and scaffolding/fading, strictly enforcing the Zero-Code-Handout rule."
-license: MIT
-argument-hint: "[topic or query]"
-metadata:
-  author: ngxc
-  version: "1.0.0"
 trigger_keywords: socratic, mentor
 layer: helper
 ---

@@ -1,11 +1,6 @@
 ---
 name: ag-git-flow
 description: "Trigger keywords: git flow, branch management, rebase, merge request, commit convention, release flow, create pr, pull request, pr template, gh pr. Skill for managing branch creation, conventional commit formatting, feature branching, and clean pull request creation workflows."
-license: MIT
-argument-hint: "[branch-or-flow-command]"
-metadata:
-  author: ngxc
-  version: "1.2.0"
 trigger_keywords: git, flow
 layer: helper
 ---

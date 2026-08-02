@@ -1,12 +1,8 @@
 ---
 name: ag-generate-spec
 description: Create or update a product-discovery SPEC (requirements doc) for user review. Use when turning RESEARCH findings plus user intent into a reviewable requirements artifact before INNOVATE/PLAN.
-argument-hint: "[feature idea or task slug]"
 trigger_keywords: spec, requirements doc, product discovery, what and why, requirements artifact
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # Generate SPEC

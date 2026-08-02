@@ -1,11 +1,6 @@
 ---
 name: ag-repomix
 description: "Use when you need to pack a local or remote repository into an AI-friendly reference artifact for research, audits, feature-porting prep, context review, or security-oriented repo analysis."
-license: MIT
-argument-hint: "[path-or-owner/repo] [--feature <name>] [--include <glob>] [--ignore <glob>] [--remote]"
-metadata:
-  author: flowser
-  version: "1.1.0"
 trigger_keywords: repomix
 layer: helper
 ---

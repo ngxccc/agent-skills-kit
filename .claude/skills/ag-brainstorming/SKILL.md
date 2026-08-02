@@ -1,11 +1,6 @@
 ---
 name: ag-brainstorming
 description: "Use when starting creative work, building components, or modifying behavior. Trigger keywords: brainstorm, spec, design, approach, requirements, clarify. Explores user intent, requirements, architecture trade-offs, and design specs before implementation."
-license: MIT
-argument-hint: "[no-args]"
-metadata:
-  author: ngxc
-  version: "1.3.0"
 trigger_keywords: brainstorming
 layer: helper
 ---

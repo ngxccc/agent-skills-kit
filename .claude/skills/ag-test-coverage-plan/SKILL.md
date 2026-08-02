@@ -1,12 +1,8 @@
 ---
 name: ag-test-coverage-plan
 description: "Use when creating a test plan for a blast radius. Assigns all 4 tiers (fully-automated, hybrid, agent-probe, known-gap) with exact commands, what each proves, and gap resolution options."
-argument-hint: "[blast radius description or plan file path]"
 trigger_keywords: test coverage plan, test tiers, blast radius coverage, gap resolution, TDD plan
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
 ---
 
 # ag-test-coverage-plan

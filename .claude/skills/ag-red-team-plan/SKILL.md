@@ -1,11 +1,6 @@
 ---
 name: ag-red-team-plan
 description: "Trigger keywords: red team, attack plan, stress test design, find flaws, audit architecture, challenge my plan. Red Teaming skill for auditing student architectural plans, attacking designs for race conditions, bottlenecks, edge cases, and failure modes before implementation begins."
-license: MIT
-argument-hint: "[plan-file-or-design-query]"
-metadata:
-  author: ngxc
-  version: "1.0.0"
 trigger_keywords: red, team, plan
 layer: helper
 ---

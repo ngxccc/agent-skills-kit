@@ -1,11 +1,6 @@
 ---
 name: ag-second-brain
 description: "Use when querying, searching, updating, or adding notes in the Obsidian second brain without fabricating details."
-license: MIT
-argument-hint: "[query]"
-metadata:
-  author: Team
-  version: "1.0.0"
 trigger_keywords: second, brain
 layer: helper
 ---

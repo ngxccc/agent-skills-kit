@@ -1,9 +1,6 @@
 ---
 name: ag-harness-sync
 description: Use this skill to sync and manage agent harness versions. Supports pulling updates from the remote kit repo (ag-update logic) and publishing local improvements to the remote kit repo (ag-publish logic).
-metadata:
-  author: agent-skills
-  version: "2.0.0"
 trigger_keywords: harness, sync
 layer: helper
 ---

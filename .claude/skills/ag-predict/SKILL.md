@@ -1,14 +1,8 @@
 ---
 name: ag-predict
 description: "5 expert personas debate proposed changes before implementation. Catches architectural, security, performance, and UX issues early. Use before major features or risky changes."
-argument-hint: "<feature description or change proposal> [--files <glob>]"
 trigger_keywords: risks, predict issues, architectural review
 layer: helper
-metadata:
-  author: claudekit
-  attribution: "Multi-persona prediction pattern adapted from autoresearch by Udit Goenka (MIT)"
-  license: MIT
-  version: "1.0.0"
 ---
 
 # ag-predict — Multi-Persona Pre-Analysis

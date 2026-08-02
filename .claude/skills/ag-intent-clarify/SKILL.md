@@ -1,12 +1,8 @@
 ---
 name: ag-intent-clarify
 description: "Clarify intent before RIPER-5 phase delegation. Scores ambiguity (4 signals); generates structured multi-choice questions for Tier 2. Two-mode: SIMPLE and DEEP."
-argument-hint: "[user request text]"
 trigger_keywords: intent clarification, ambiguity score, routing tier, clarify request
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "2.1.0"
 ---
 
 # ag-intent-clarify

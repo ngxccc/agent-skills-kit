@@ -3,9 +3,6 @@ name: ag-generate-plan
 description: Create or update implementation plans in the repo's SIMPLE, COMPLEX, or PHASE PROGRAM format. Use when turning an idea, PRD, or approved direction into saved plan artifacts.
 trigger_keywords: plan, create plan, write plan, generate spec, plan artifact, phase program, umbrella plan, session goal block
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "2.0.0"
 ---
 
 # Generate Plan & Phase Program (`ag-generate-plan`)

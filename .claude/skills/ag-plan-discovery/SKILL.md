@@ -1,12 +1,8 @@
 ---
 name: ag-plan-discovery
 description: "Discover related plans for the current task: same feature folder full depth, other features active-only, general-plans active. Like ag-context-discovery but for plan artifacts."
-argument-hint: "[feature folder name or task description]"
 trigger_keywords: related plans, what was tried, plan history, feature backlog, plan discovery
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.1.0"
 ---
 
 # ag-plan-discovery

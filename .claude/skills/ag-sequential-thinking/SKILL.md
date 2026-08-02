@@ -1,13 +1,8 @@
 ---
 name: ag-sequential-thinking
 description: Apply step-by-step analysis for complex problems with revision capability. Use for multi-step reasoning, hypothesis verification, adaptive planning, problem decomposition, course correction.
-license: MIT
-argument-hint: "[problem to analyze step-by-step]"
 trigger_keywords: complex problem, think through, analyze step by step
 layer: helper
-metadata:
-  author: claudekit
-  version: "1.0.0"
 ---
 
 # Sequential Thinking
