@@ -527,29 +527,29 @@ request to surface relevant skills. Attach candidate skill names to the subagent
 
 #### 3. Harness & System Skills (Built-in OMP / System Runtime)
 
-| Skill                                                                                        | Purpose                                        |
-| :------------------------------------------------------------------------------------------- | :--------------------------------------------- |
-| `zod`                                                                                        | Zod schema validation rules and standards      |
-| `zustand`                                                                                    | Zustand state management best practices        |
-| `upstash-ratelimit`                                                                          | Upstash rate limiting standards                |
-| `ui-design`                                                                                  | UI/UX & frontend design standards              |
-| `typescript`                                                                                 | TypeScript compilation & performance rules     |
-| `typescript-refactor`                                                                        | TypeScript refactoring standards               |
-| `typescript-advanced-patterns`                                                               | Advanced TypeScript design patterns            |
-| `nextjs`                                                                                     | Next.js App Router guidelines & caching        |
-| `nextjs-bundle-optimizer`                                                                    | Next.js bundle size optimization               |
-| `nextjs-ppr-patterns`                                                                        | Next.js Partial Prerendering patterns          |
-| `tailwind`                                                                                   | Tailwind CSS guidelines & utility organization |
-| `tailwind-refactor`                                                                          | Tailwind CSS refactoring patterns              |
-| `tailwind-responsive-ui`                                                                     | Responsive Tailwind UI patterns                |
-| `tailwind-ui-refactor`                                                                       | Tailwind UI redesign patterns                  |
-| `react-hook-form`                                                                            | React Hook Form best practices                 |
-| `react-hook-form-audit`                                                                      | React Hook Form code audit rules               |
-| `implementation-design-patterns`                                                             | Gang of Four design patterns in TypeScript     |
-| `implementation-functional-patterns`                                                         | Functional programming patterns                |
-| `merge-worktree`                                                                             | Git worktree cleanup and merge helper          |
-| Rule: When one or more skills match the request, mention them to the user or include them in |
-| the subagent prompt context. Never silently skip relevant skills.                            |
+| Skill                                | Purpose                                        |
+| :----------------------------------- | :--------------------------------------------- |
+| `zod`                                | Zod schema validation rules and standards      |
+| `zustand`                            | Zustand state management best practices        |
+| `upstash-ratelimit`                  | Upstash rate limiting standards                |
+| `ui-design`                          | UI/UX & frontend design standards              |
+| `typescript`                         | TypeScript compilation & performance rules     |
+| `typescript-refactor`                | TypeScript refactoring standards               |
+| `typescript-advanced-patterns`       | Advanced TypeScript design patterns            |
+| `nextjs`                             | Next.js App Router guidelines & caching        |
+| `nextjs-bundle-optimizer`            | Next.js bundle size optimization               |
+| `nextjs-ppr-patterns`                | Next.js Partial Prerendering patterns          |
+| `tailwind`                           | Tailwind CSS guidelines & utility organization |
+| `tailwind-refactor`                  | Tailwind CSS refactoring patterns              |
+| `tailwind-responsive-ui`             | Responsive Tailwind UI patterns                |
+| `tailwind-ui-refactor`               | Tailwind UI redesign patterns                  |
+| `react-hook-form`                    | React Hook Form best practices                 |
+| `react-hook-form-audit`              | React Hook Form code audit rules               |
+| `implementation-design-patterns`     | Gang of Four design patterns in TypeScript     |
+| `implementation-functional-patterns` | Functional programming patterns                |
+| `merge-worktree`                     | Git worktree cleanup and merge helper          |
+
+Rule: When one or more skills match the request, mention them to the user or include them in the subagent prompt context. Never silently skip relevant skills.
 
 ### 1. Detect Intent
 
