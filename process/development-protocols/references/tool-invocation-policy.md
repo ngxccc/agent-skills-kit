@@ -47,9 +47,9 @@ This document defines the strict, non-negotiable policy for selecting specialize
 ### 3. AST Structural Rewrites (`xd://ast_edit`)
 
 - **Remove Console Logs**:
-  `write("xd://ast_edit", {"paths": ["src/**/*.ts"], "ops": [{"pat": "console.log($$$ARGS)", "out": ""}]})`
+  `write("xd://ast_edit", {"paths": [".codex/hooks/lib/*.cjs"], "ops": [{"pat": "console.log($$$ARGS)", "out": ""}]})`
 - **Rewrite Function Calls**:
-  `write("xd://ast_edit", {"paths": ["src/**/*.ts"], "ops": [{"pat": "oldLogger.info($MSG)", "out": "logger.info($MSG)"}]})`
+  `write("xd://ast_edit", {"paths": [".codex/hooks/lib/*.cjs"], "ops": [{"pat": "oldLogger.info($MSG)", "out": "logger.info($MSG)"}]})`
 
 ### 4. DAP Debugger (`xd://debug`)
 
