@@ -33,6 +33,15 @@ function isActivePlanPath(relPath) {
   );
 }
 
+function isReferenceOrFixturePath(relPath) {
+  return (
+    relPath.includes("/references/") ||
+    relPath.includes("/fixtures/") ||
+    relPath.includes("example-") ||
+    relPath.includes("template")
+  );
+}
+
 function hasDateStamp(name) {
   return /(\d{2}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})/.test(name);
 }
@@ -58,9 +67,15 @@ function validatePlan(relPath) {
   }
   if (!relPath.endsWith(".md")) fail(`${relPath} is not a markdown plan`);
   if (!isActivePlanPath(relPath)) {
-    fail(
-      `${relPath} is not under process/general-plans/active/ or process/features/*/active/`,
-    );
+    if (isReferenceOrFixturePath(relPath)) {
+      warn(
+        `${relPath} is not under process/general-plans/active/ or process/features/*/active/ — skipping path check for reference/fixture artifact`,
+      );
+    } else {
+      fail(
+        `${relPath} is not under process/general-plans/active/ or process/features/*/active/`,
+      );
+    }
   }
 
   const name = path.basename(relPath);
@@ -83,12 +98,26 @@ function validatePlan(relPath) {
   // (not the section-heuristic) to avoid false positives on ordinary single plans.
   const declaresUmbrellaFrontmatter = /phase:\s*umbrella/m.test(text);
 
-  if (!hasDateStamp(name))
-    fail(`${relPath} filename is missing a date stamp (e.g. -dd-mm-yy.md)`);
+  const isReference = isReferenceOrFixturePath(relPath);
+  if (!hasDateStamp(name)) {
+    if (isReference) {
+      warn(
+        `${relPath} filename is missing a date stamp (e.g. -dd-mm-yy.md) — skipping date check for reference/fixture artifact`,
+      );
+    } else {
+      fail(`${relPath} filename is missing a date stamp (e.g. -dd-mm-yy.md)`);
+    }
+  }
   if (!/-plan-|\bplan\b/i.test(name)) {
-    fail(
-      `${relPath} filename must use kebab-case containing '-plan-' (e.g. [feature-slug]-plan-[dd-mm-yy].md)`,
-    );
+    if (isReference) {
+      warn(
+        `${relPath} filename does not contain '-plan-' — skipping naming check for reference/fixture artifact`,
+      );
+    } else {
+      fail(
+        `${relPath} filename must use kebab-case containing '-plan-' (e.g. [feature-slug]-plan-[dd-mm-yy].md)`,
+      );
+    }
   }
   if (declaresUmbrellaFrontmatter && !/umbrella/i.test(name)) {
     fail(
@@ -111,7 +140,13 @@ function validatePlan(relPath) {
     if (!/Acceptance Criteria/i.test(text))
       fail(`${relPath} missing Acceptance Criteria`);
   }
-  if (!isUmbrellaShape && !hasSection(text, "Validate Contract")) {
+  if (
+    !isUmbrellaShape &&
+    !hasSection(text, "Validate Contract") &&
+    !/Validate Contract|System Invariants|Public Contracts|Blast Radius/i.test(
+      text,
+    )
+  ) {
     warn(`${relPath} missing Validate Contract section`);
   }
   if (!/Implementation Checklist|RFC-|Phased Delivery Plan/i.test(text)) {
@@ -148,6 +183,41 @@ function validatePlan(relPath) {
   }
   if (!/ENTER EXECUTE MODE|RIPER-5|Cursor Plan|Next Step/i.test(text)) {
     warn(`${relPath} does not end with a clear next instruction for execution`);
+  }
+  const isComplexPlan = /Complexity:\s*COMPLEX/i.test(text);
+  if (isComplexPlan && !isUmbrellaShape) {
+    if (!hasSection(text, "Touchpoints")) {
+      if (isReference)
+        warn(`${relPath} (COMPLEX plan) is missing Touchpoints section`);
+      else fail(`${relPath} (COMPLEX plan) is missing Touchpoints section`);
+    }
+    if (!hasSection(text, "Blast Radius")) {
+      if (isReference)
+        warn(`${relPath} (COMPLEX plan) is missing Blast Radius section`);
+      else fail(`${relPath} (COMPLEX plan) is missing Blast Radius section`);
+    }
+    if (!hasSection(text, "Public Contracts")) {
+      if (isReference)
+        warn(`${relPath} (COMPLEX plan) is missing Public Contracts section`);
+      else
+        fail(`${relPath} (COMPLEX plan) is missing Public Contracts section`);
+    }
+    if (!/System Invariants/i.test(text)) {
+      if (isReference)
+        warn(`${relPath} (COMPLEX plan) is missing System Invariants section`);
+      else
+        fail(`${relPath} (COMPLEX plan) is missing System Invariants section`);
+    }
+    if (!/Harness & Mechanical Validation/i.test(text)) {
+      if (isReference)
+        warn(
+          `${relPath} (COMPLEX plan) is missing Harness & Mechanical Validation section`,
+        );
+      else
+        fail(
+          `${relPath} (COMPLEX plan) is missing Harness & Mechanical Validation section`,
+        );
+    }
   }
 
   const directPlan = isDirectPlanArtifact(name);

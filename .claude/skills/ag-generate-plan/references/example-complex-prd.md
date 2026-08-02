@@ -1,24 +1,63 @@
 ---
-name: reference:example-complex-prd
-description: "Reference COMPLEX plan artifact — multi-phase program, phase-gate validation, phase stubs"
-date: 04-06-26
+name: protocol:references-example-complex-prd
+description: "Reference example of a COMPLEX multi-phase PRD plan."
+date: 2026-08-02
 metadata:
   node_type: memory
-  type: reference
+  type: protocol
+  read_order: 1
+  required: false
+  read_when: "calibrating complex multi-phase implementation plans"
 ---
 
-# SocialNet Engagement Dashboard: Shareable Analytics PRD
+# LinkedIn Achievements Dashboard: Shareable Analytics PRD
 
 **Date**: January 25, 2026
 **Complexity**: COMPLEX (Multi-phase)
 **Implementation Approach**: Hybrid (Approach 3 - Grouped Queries + Zustand Store)
 **Execution Model**: Phase-by-Phase with Pre-Research and Post-Testing
+**Formal Spec Path**: `process/features/linkedin-achievements/active/LinkedIn_Achievements_Formal_Spec.md`
+**Risk Gate Artifact**: `process/features/linkedin-achievements/active/risk-gate.json`
+**Invariant Bindings**: `INV-1 (Optimistic Locking & Streak Parity)`, `INV-2 (Zero Auth Bypass on Org Metrics)`, `INV-3 (Idempotent tRPC Query Fallback)`
+
+## Touchpoints
+
+- **Files Read**: `prisma/schema.prisma`, `src/server/api/routers/account.ts`, `src/store/useAccountStore.ts`
+- **Files Modified**: `src/server/api/root.ts`, `src/app/[orgSlug]/[accountSlug]/page.tsx`
+- **Files Created**: `src/components/achievements/BentoGrid.tsx`, `src/components/achievements/NetworkTreemap.tsx`, `src/components/achievements/HeatMap.tsx`
+
+## Blast Radius
+
+Multi-phase dashboard component addition, tRPC router extension, Zustand state store extension. Zero schema breaking changes.
+
+## Public Contracts
+
+### HTTP / tRPC Procedures
+
+1. `achievements.getProfileMetrics` -> Returns verified/assisted comment statistics, streaks, percentile rank
+2. `achievements.getNetworkData` -> Returns network interaction frequency for treemap visualization
+3. `achievements.getActivityData` -> Returns 365-day contribution heat map grid data
+
+## System Invariants & Reliability Invariants
+
+- `INV-1`: Optimistic Locking & Streak Parity
+- `INV-2`: Zero Auth Bypass on Org Metrics
+- `INV-3`: Idempotent tRPC Query Fallback & Stale-While-Revalidate Caching
+
+## Harness & Mechanical Validation
+
+Before phase transition or PR merge, run:
+
+```bash
+bun run .claude/skills/ag-generate-plan/scripts/validate-harness-artifacts.mjs
+bun run .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs process/development-protocols/references/example-complex-prd.md
+```
 
 ## Overview
 
-Build a visually impressive, shareable achievements section within the existing Next.js account dashboard that showcases SocialNet engagement metrics. The dashboard displays verified/assisted comment statistics, activity streaks, network visualization via treemap, contribution heat map, and best friends rankings. Designed with a bento box layout using the neobrutalist theme, optimized for social media sharing.
+Build a visually impressive, shareable achievements section within the existing Next.js account dashboard that showcases LinkedIn engagement metrics. The dashboard displays verified/assisted comment statistics, activity streaks, network visualization via treemap, contribution heat map, and best friends rankings. Designed with a bento box layout using the neobrutalist theme, optimized for social media sharing.
 
-**Status**: ⏳ PLANNED
+**Status**: ⏳ PLANNED (PHASE_1_PLAN_ACTIVE)
 
 ---
 
@@ -27,23 +66,18 @@ Build a visually impressive, shareable achievements section within the existing 
 - [Context and Goals](#1-context-and-goals)
 - [Execution Brief](#15-execution-brief)
 - [Architecture Decisions](#3-architecture-decisions-final)
-- [Component Details](#7-component-details)
-- [Database Schema](#10-database-schema-prisma-style)
-- [API Surface](#11-api-surface-trpc)
-- [Phase Structure](#phase-structure)
-- [Phased Delivery Plan](#13-phased-delivery-plan)
-- [Phases](#15-rfcs)
+- [Component Details](#8-component-details)
+- [Database Schema](#11-database-schema-prisma-style)
+- [API Surface](#12-api-surface-trpc)
+- [Phased Delivery Plan](#14-phased-delivery-plan)
+- [RFCs](#16-rfcs)
 - [Implementation Checklist](#implementation-checklist)
-- [Blast Radius](#blast-radius)
-- [Phase Loop Progress](#phase-loop-progress)
-- [Validate Contract](#validate-contract)
-- [Agent Routing Reference](#agent-routing-reference)
 
 ---
 
 ## 1. Context and Goals
 
-MyPlatform users manage multiple SocialNet accounts and post AI-assisted comments. The achievements dashboard serves as a growth hack mechanism - users can proudly showcase their engagement statistics on social media, driving organic visibility and user acquisition.
+EngageKit users manage multiple LinkedIn accounts and post AI-assisted comments. The achievements dashboard serves as a growth hack mechanism - users can proudly showcase their engagement statistics on social media, driving organic visibility and user acquisition.
 
 **In-scope**:
 
@@ -93,6 +127,14 @@ MyPlatform users manage multiple SocialNet accounts and post AI-assisted comment
 
 **Test:** Real data populates all cards, loading skeletons appear during fetch, error boundaries catch failures gracefully, Zustand DevTools shows state updates.
 
+---
+
+## Phase Completion Rules
+
+1. Mỗi bước thực thi (Phase 1–12) phải thỏa mãn 100% nguyên tắc bất biến (`INV-1`..`INV-3`).
+2. Biên dịch TypeScript `pnpm check-types` đạt 0 lỗi trước khi chuyển sang bước tiếp theo.
+3. Không làm hỏng các test suite hiện tại trong `src/server/api/`.
+
 ### Phase 8-10: Visualizations (Treemap, Heat Map, Rankings)
 
 **What happens:** Implement Recharts treemap with profile pictures, build custom heat map grid component with color intensity, create ranking list with progress bars and avatars.
@@ -117,9 +159,88 @@ MyPlatform users manage multiple SocialNet accounts and post AI-assisted comment
 
 ---
 
-## Phase Structure
+## 1.75 Phased Execution Workflow
 
-For multi-phase execution workflow, see [process/development-protocols/phase-programs.md](../../../process/development-protocols/phase-programs.md).
+**IMPORTANT**: This plan uses a phase-by-phase execution model with built-in approval gates. Each RFC follows this workflow:
+
+### Phase Workflow Pattern
+
+**Step 1: Pre-Phase Research**
+
+- Read existing code patterns in codebase
+- Analyze similar implementations
+- Identify potential blockers or unknowns
+- Present findings to user for review
+
+**Step 2: Detailed Planning**
+
+- Based on research, create detailed implementation steps
+- Specify exact files to create/modify
+- Define success criteria
+- Get user approval before proceeding
+
+**Step 3: Implementation**
+
+- Execute approved plan exactly as specified
+- No deviations from approved approach
+- Mid-phase check-in if phase is long (>2 hours)
+
+**Step 4: Testing**
+
+- Execute specific test scenarios (provided in RFC)
+- Verify all acceptance criteria met
+- Document any issues or deviations
+- Show results to user
+
+**Step 5: Phase Approval**
+
+- User reviews implementation and test results
+- User approves to proceed to next phase
+- OR user requests changes (loop back to Step 2)
+
+### Example Phase Execution
+
+```
+User: "Begin RFC-001: Database Indexes"
+
+Assistant (Pre-Phase Research):
+- Reading existing Comment model indexes...
+- Analyzing query patterns in tRPC routers...
+- Findings: Current indexes only on [accountId], [status], [commentedAt]
+- Recommended: Add composite indexes for achievements queries
+- Do you approve proceeding with this approach?
+
+User: "Yes, proceed"
+
+Assistant (Detailed Planning):
+- Will add 3 composite indexes to Comment model
+- Files to modify: packages/db/prisma/models/comment.prisma
+- Migration command: pnpm db:migrate dev
+- Expected migration time: <1 minute
+- Ready to implement?
+
+User: "Go ahead"
+
+Assistant (Implementation):
+[Adds indexes, generates migration, applies to database]
+
+Assistant (Testing):
+Running post-phase tests:
+✓ Migration applied successfully
+✓ Indexes visible in schema
+✓ Query with WHERE accountId + status + peakTouchScore: 12ms (was 340ms)
+✓ No errors in database logs
+
+Phase RFC-001 complete. Proceed to RFC-002?
+```
+
+### Benefits of This Approach
+
+- **User control**: Approve each phase before implementation
+- **Early feedback**: Catch issues before significant work done
+- **Visibility**: Clear understanding of what's being built
+- **Quality**: Testing after each phase ensures incremental quality
+- **Flexibility**: Easy to adjust approach based on discoveries
 
 ---
 
@@ -136,8 +257,8 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 
 **Constraints**:
 
-- Must use existing Prisma schema (`Comment`, `SocialNetAccount`, `User`)
-- Must follow neobrutalist theme from `@your-org/ui`
+- Must use existing Prisma schema (`Comment`, `LinkedInAccount`, `User`)
+- Must follow neobrutalist theme from `@sassy/ui`
 - Mobile viewport minimum: 375px width
 - Browser support: Last 2 versions of Chrome, Firefox, Safari, Edge
 - Accessibility: WCAG 2.1 AA compliance
@@ -211,6 +332,23 @@ export const useAccountStore = create<AccountStore>((set) => ({
 **New Pattern** (for achievements):
 
 ```tsx
+interface AchievementsState {
+  profileMetrics: ProfileMetrics | null;
+  networkData: NetworkProfile[] | null;
+  activityData: ActivityBucket[] | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface AchievementsActions {
+  setProfileMetrics: (data: ProfileMetrics) => void;
+  setNetworkData: (data: NetworkProfile[]) => void;
+  setActivityData: (data: ActivityBucket[]) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  reset: () => void;
+}
+
 export const useAchievementsStore = create<AchievementsStore>((set) => ({
   profileMetrics: null,
   networkData: null,
@@ -332,7 +470,7 @@ grid-template-areas:
 
 **Rationale**:
 
-- Mobile users comprise 60%+ of SocialNet traffic
+- Mobile users comprise 60%+ of LinkedIn traffic
 - Vertical stacking is simplest and most accessible on narrow viewports
 - Tablet users get partial bento experience (treemap + heatmap side-by-side)
 - Desktop users get full visual impact
@@ -365,7 +503,7 @@ grid-template-areas:
 
 - ✅ No additional navigation required (visible immediately)
 - ✅ Prominent placement encourages social sharing
-- ✅ Contextually relevant (achievements per SocialNet account, not global)
+- ✅ Contextually relevant (achievements per LinkedIn account, not global)
 - ✅ Reuses existing layout/auth infrastructure
 
 ### Alternative Approaches Considered
@@ -442,14 +580,14 @@ User sees fully populated achievements dashboard
 **Authentication**:
 
 - All tRPC procedures use `accountProcedure` (requires Clerk auth + account ownership)
-- Validates user has access to requested SocialNet account
+- Validates user has access to requested LinkedIn account
 - Prevents cross-account data leakage
 
 **Data Privacy**:
 
 - Only shows data for comments posted by current account (filtered by `accountId`)
 - Profile pictures from `owner.imageUrl` (Clerk-managed, already public)
-- Network data shows SocialNet profile URLs (already public information)
+- Network data shows LinkedIn profile URLs (already public information)
 - No sensitive metadata exposed (touch scores are internal metrics)
 
 **Rate Limiting**:
@@ -486,7 +624,48 @@ User sees fully populated achievements dashboard
 
 **Store Shape**:
 
-_(TypeScript interfaces are inferred during implementation; see source files.)_
+```typescript
+interface ProfileMetrics {
+  verifiedCount: number;
+  assistedCount: number;
+  percentile: number;
+  currentStreak: number;
+  longestStreak: number;
+  profileSlug: string;
+  profileImageUrl: string | null;
+}
+
+interface NetworkProfile {
+  authorProfileUrl: string;
+  authorName: string | null;
+  authorAvatarUrl: string | null;
+  interactionCount: number;
+}
+
+interface ActivityBucket {
+  date: string; // ISO date (YYYY-MM-DD)
+  count: number;
+}
+
+interface AchievementsState {
+  profileMetrics: ProfileMetrics | null;
+  networkData: NetworkProfile[] | null;
+  activityData: ActivityBucket[] | null;
+  isLoading: boolean;
+  error: string | null;
+}
+
+interface AchievementsActions {
+  setProfileMetrics: (data: ProfileMetrics) => void;
+  setNetworkData: (data: NetworkProfile[]) => void;
+  setActivityData: (data: ActivityBucket[]) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+  reset: () => void; // Called when switching accounts
+}
+
+type AchievementsStore = AchievementsState & AchievementsActions;
+```
 
 **Usage Pattern**:
 
@@ -574,7 +753,7 @@ useEffect(() => {
 ```
 ┌──────────────────────────────────┐
 │  [Avatar]  @account-slug         │
-│            SocialNet Engagement   │
+│            LinkedIn Engagement   │
 │            2026                  │
 ├──────────────────────────────────┤
 │  🎯 234      🤝 156      🏆 TOP  │
@@ -600,7 +779,7 @@ useEffect(() => {
 - Visualize interaction frequency via box size
 - Render profile pictures inside boxes
 - Show names and interaction counts on hover
-- Handle click to open SocialNet profile in new tab
+- Handle click to open LinkedIn profile in new tab
 
 **Data Source**: `useAchievementsStore((s) => s.networkData)` (top 50 profiles)
 
@@ -700,12 +879,24 @@ useEffect(() => {
 
 ---
 
+## 8. Backend Endpoints and Workers
+
+Not applicable - all data fetched via tRPC (no dedicated backend service).
+
+---
+
+## 9. Infrastructure Deployment
+
+No infrastructure changes required - deploys with existing Next.js app on Vercel.
+
+---
+
 ## 10. Database Schema (Prisma-style)
 
 **Existing Models** (No changes required):
 
 ```prisma
-model SocialNetAccount {
+model LinkedInAccount {
   id               String   @id @default(uuid())
   profileSlug      String?  @unique
   ownerId          String?
@@ -717,7 +908,7 @@ model SocialNetAccount {
 model User {
   id                  String   @id  // Clerk user ID
   imageUrl            String?       // Profile picture
-  socialNetAccounts    SocialNetAccount[]
+  linkedInAccounts    LinkedInAccount[]
   // ... other fields
 }
 
@@ -730,7 +921,7 @@ model Comment {
   authorName        String?
   authorProfileUrl  String?
   authorAvatarUrl   String?
-  account           SocialNetAccount? @relation(fields: [accountId], references: [id])
+  account           LinkedInAccount? @relation(fields: [accountId], references: [id])
 
   @@index([accountId])
   @@index([status])
@@ -851,7 +1042,7 @@ getProfileMetrics: accountProcedure.query(async ({ ctx }) => {
   const { currentStreak, longestStreak } = calculateStreaks(comments);
 
   // Profile info
-  const account = await ctx.db.socialNetAccount.findUnique({
+  const account = await ctx.db.linkedInAccount.findUnique({
     where: { id: accountId },
     include: { owner: { select: { imageUrl: true } } },
   });
@@ -1090,6 +1281,12 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
 
 ---
 
+## 12. Real-time Event Model
+
+Not applicable - no WebSocket or real-time updates. Data loads on page visit only.
+
+---
+
 ## 13. Phased Delivery Plan
 
 ### Current Status
@@ -1131,7 +1328,7 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
 ### Should-Have (S)
 
 - [S-001] Hover tooltips on heat map cells
-- [S-002] Click-to-SocialNet on network treemap boxes
+- [S-002] Click-to-LinkedIn on network treemap boxes
 - [S-003] Medal icons for top 3 in best friends ranking
 - [S-004] Smooth transitions between loading/success states
 - [S-005] Empty states when no data available
@@ -1159,11 +1356,9 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
 
 ---
 
-## 15. Phases
+## 15. RFCs
 
-_Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`._
-
-### Phase-01: Database Indexes for Performance
+### RFC-001: Database Indexes for Performance
 
 **Summary**: Add composite indexes to `Comment` model for efficient querying of achievements metrics.
 
@@ -1208,15 +1403,15 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 
 **What's Functional Now**: Database optimized for fast achievements data retrieval
 
-**Ready For**: Phase-02 (tRPC Router Implementation)
+**Ready For**: RFC-002 (tRPC Router Implementation)
 
 ---
 
-### Phase-02: tRPC Achievements Router
+### RFC-002: tRPC Achievements Router
 
 **Summary**: Create new tRPC router with three procedures for fetching achievements data.
 
-**Dependencies**: Phase-01 (Database Indexes)
+**Dependencies**: RFC-001 (Database Indexes)
 
 **Stages**:
 
@@ -1234,7 +1429,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 3. Implement assisted count query (`peakTouchScore 50-80`)
 4. Implement global percentile calculation (cross-account aggregation)
 5. Implement streak calculation logic (helper function)
-6. Fetch profile slug and image URL via SocialNetAccount → User relation
+6. Fetch profile slug and image URL via LinkedInAccount → User relation
 7. Add error handling and logging
 8. Write unit tests for streak calculation function
 
@@ -1278,15 +1473,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Backend API ready to serve achievements data
 
-**Ready For**: Phase-03 (Zustand Store)
+**Ready For**: RFC-003 (Zustand Store)
 
 ---
 
-### Phase-03: Achievements Zustand Store Setup
+### RFC-003: Achievements Zustand Store Setup
 
 **Summary**: Create Zustand store for achievements state management following existing `useAccountStore` pattern.
 
-**Dependencies**: Phase-02 (tRPC Router)
+**Dependencies**: RFC-002 (tRPC Router)
 
 **Stages**:
 
@@ -1365,15 +1560,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Zustand store ready to receive and distribute achievements data
 
-**Ready For**: Phase-04 (Bento Layout & Profile Metrics Card)
+**Ready For**: RFC-004 (Bento Layout & Profile Metrics Card)
 
 ---
 
-### Phase-04: Bento Layout & Profile Metrics Card
+### RFC-004: Bento Layout & Profile Metrics Card
 
 **Summary**: Build parent bento grid layout and first card component (merged hero + metrics).
 
-**Dependencies**: Phase-03 (Zustand Store)
+**Dependencies**: RFC-003 (Zustand Store)
 
 **Stages**:
 
@@ -1403,7 +1598,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 4. Implement merged hero header section:
    - Avatar component with `profileImageUrl` or fallback
    - Display `@{profileSlug}`
-   - Title: "SocialNet Engagement 2026"
+   - Title: "LinkedIn Engagement 2026"
 5. Implement metrics grid (3 columns):
    - Verified count with icon (🎯) and label
    - Assisted count with icon (🤝) and label
@@ -1445,15 +1640,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Bento layout renders with first card (profile + metrics)
 
-**Ready For**: Phase-05 (Network Treemap Card)
+**Ready For**: RFC-005 (Network Treemap Card)
 
 ---
 
-### Phase-05: Network Treemap Visualization
+### RFC-005: Network Treemap Visualization
 
 **Summary**: Implement interactive treemap showing engagement network with profile pictures.
 
-**Dependencies**: Phase-04 (Bento Layout)
+**Dependencies**: RFC-004 (Bento Layout)
 
 **Stages**:
 
@@ -1502,7 +1697,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
    ```
 5. Wrap in ResponsiveContainer for fluid sizing
 6. Add Radix Tooltip for hover details
-7. Implement click handler (navigate to SocialNet profile in new tab)
+7. Implement click handler (navigate to LinkedIn profile in new tab)
 8. Handle loading state (Skeleton)
 9. Handle empty state ("No interactions yet" message)
 
@@ -1511,7 +1706,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 1. Import NetworkTreemapCard in AchievementsSection
 2. Place in grid-area "treemap" (60% width on desktop)
 3. Test responsiveness (treemap scales correctly)
-4. Verify click-to-SocialNet works (opens in new tab)
+4. Verify click-to-LinkedIn works (opens in new tab)
 5. Test hover tooltips (shows full name + exact count)
 6. Verify neobrutalist borders on treemap cells
 7. Test with various data sizes (5 profiles, 50 profiles)
@@ -1529,7 +1724,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Profile pictures appear inside boxes (when box large enough)
 - [ ] Author names and counts visible
 - [ ] Hover shows tooltip with full details
-- [ ] Click navigates to SocialNet profile in new tab
+- [ ] Click navigates to LinkedIn profile in new tab
 - [ ] Empty state shows when no network data
 - [ ] Loading skeleton appears during query pending
 - [ ] Neobrutalist theme applied (black borders, chart colors)
@@ -1537,15 +1732,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Network treemap visualizes top 50 engaged profiles
 
-**Ready For**: Phase-06 (Activity Heat Map Card)
+**Ready For**: RFC-006 (Activity Heat Map Card)
 
 ---
 
-### Phase-06: Activity Heat Map Visualization
+### RFC-006: Activity Heat Map Visualization
 
 **Summary**: Build GitHub-style contribution grid showing 365 days of commenting activity.
 
-**Dependencies**: Phase-05 (Network Treemap)
+**Dependencies**: RFC-005 (Network Treemap)
 
 **Stages**:
 
@@ -1625,15 +1820,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Activity heat map visualizes daily engagement for past year
 
-**Ready For**: Phase-07 (Best Friends Ranking Card)
+**Ready For**: RFC-007 (Best Friends Ranking Card)
 
 ---
 
-### Phase-07: Best Friends Ranking Card
+### RFC-007: Best Friends Ranking Card
 
 **Summary**: Display top 5 most-engaged profiles with rankings, avatars, and progress bars.
 
-**Dependencies**: Phase-06 (Activity Heat Map)
+**Dependencies**: RFC-006 (Activity Heat Map)
 
 **Stages**:
 
@@ -1683,8 +1878,8 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **Stage 5: Interactions**
 
-1. Make entire item clickable (navigate to SocialNet profile)
-2. Add accessible link with aria-label: "View {name} on SocialNet"
+1. Make entire item clickable (navigate to LinkedIn profile)
+2. Add accessible link with aria-label: "View {name} on LinkedIn"
 3. Open in new tab (`target="_blank" rel="noopener noreferrer"`)
 4. Add hover cursor pointer
 5. Test keyboard navigation (tab, enter)
@@ -1703,7 +1898,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Medal icons for top 3 ranks
 - [ ] Progress bars proportional to interaction count
 - [ ] Avatars show profile pictures or fallback initials
-- [ ] Click navigates to SocialNet profile in new tab
+- [ ] Click navigates to LinkedIn profile in new tab
 - [ ] Loading skeleton appears during query pending
 - [ ] Empty state shows when no network data
 - [ ] Neobrutalist theme applied (borders, shadows)
@@ -1711,15 +1906,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Best friends ranking displays top 5 engaged profiles
 
-**Ready For**: Phase-08 (Responsive Design & Polish)
+**Ready For**: RFC-008 (Responsive Design & Polish)
 
 ---
 
-### Phase-08: Responsive Design & Polish
+### RFC-008: Responsive Design & Polish
 
 **Summary**: Finalize responsive behavior, accessibility, and visual polish.
 
-**Dependencies**: Phase-07 (Best Friends Card)
+**Dependencies**: RFC-007 (Best Friends Card)
 
 **Stages**:
 
@@ -1810,15 +2005,15 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **What's Functional Now**: Achievements dashboard fully responsive, accessible, and polished
 
-**Ready For**: Phase-09 (Testing & QA)
+**Ready For**: RFC-009 (Testing & QA)
 
 ---
 
-### Phase-09: Testing & Quality Assurance
+### RFC-009: Testing & Quality Assurance
 
 **Summary**: Comprehensive testing coverage for achievements dashboard.
 
-**Dependencies**: Phase-08 (Responsive Design & Polish)
+**Dependencies**: RFC-008 (Responsive Design & Polish)
 
 **Stages**:
 
@@ -1869,7 +2064,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 **Stage 6: Manual QA**
 
-1. Test on real SocialNet accounts with varying data:
+1. Test on real LinkedIn accounts with varying data:
    - Account with 0 comments
    - Account with 1-10 comments
    - Account with 100+ comments
@@ -1906,6 +2101,58 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 ---
 
+## 16. Rules (for this project)
+
+### Tech Stack
+
+- **Frontend**: React 18, Next.js 15 (App Router), TypeScript
+- **Styling**: Tailwind CSS v4, shadcn/ui (neobrutalist theme)
+- **Data Fetching**: tRPC, React Query
+- **Visualization**: Recharts (treemap), custom SVG/div grid (heat map)
+- **Database**: Prisma ORM, PostgreSQL
+- **Authentication**: Clerk (existing)
+
+### Code Standards
+
+- Follow existing codebase conventions
+- Use TypeScript strict mode
+- No `any` types (use `unknown` if necessary)
+- Prefer functional components with hooks
+- Use `const` over `let`, avoid `var`
+- Destructure props in component signature
+- Use named exports (no default exports except page.tsx)
+
+### Architecture Patterns
+
+- **Data Fetching**: tRPC procedures return plain objects (no Prisma models directly)
+- **Context**: Use React Context for cross-component data sharing
+- **Components**: Co-locate related components in `_components/` folder
+- **Styling**: Tailwind utilities first, CSS modules only if absolutely necessary
+- **Performance**: Memoize expensive computations, use React.memo judiciously
+
+### Performance
+
+- Query execution: <500ms for <10k comments
+- Page load: <3s on slow 3G
+- Interaction latency: <100ms
+- Lighthouse score: >90
+
+### Security
+
+- All tRPC procedures require authentication (`accountProcedure`)
+- Validate account ownership before returning data
+- No raw SQL (use Prisma only)
+- Sanitize user input (accountSlug validation)
+
+### Documentation
+
+- JSDoc comments for all public functions/components
+- README updates for new features
+- Inline comments for complex logic only
+- Type definitions serve as documentation
+
+---
+
 ## 17. Verification (Comprehensive Review)
 
 ### Gap Analysis
@@ -1936,6 +2183,87 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 | **Maintainability** | 90/100  | Modular architecture with clear separation of concerns; Context pattern may require refactoring if achievements expand |
 | **Accessibility**   | 80/100  | Basic a11y covered; advanced features (screen reader announcements for live data) not fully specified                  |
 | **Security**        | 95/100  | Strong authentication and authorization; minor concern about revealing global user count via percentile                |
+
+---
+
+## 18. Change Management (for updates mid-flight)
+
+**Change Request Process**:
+
+1. Classify change (New feature, Modify existing, Remove, Scope change, Technical debt, Timeline)
+2. Analyze impact (Components affected, Timeline impact, Dependencies, UX impact)
+3. Determine strategy (Immediate, Schedule for next phase, Defer to post-launch)
+4. Update plan sections (Component Details, RFCs, Acceptance Criteria)
+5. Communicate to stakeholders (document decision and rationale)
+6. Track risks (add to Risks section)
+
+**Example Change Scenarios**:
+
+- User requests "Export as PNG" button mid-implementation → Defer to post-launch (out of scope for V1)
+- Performance testing reveals percentile query too slow → Immediate fix (cache percentile calculations, regenerate hourly)
+- Designer requests different color palette → Schedule for next phase (after core functionality complete)
+
+---
+
+## 19. Ops Runbook
+
+### Deployment
+
+**Pre-Deployment Checklist**:
+
+- [ ] All RFCs completed
+- [ ] Tests passing (unit, integration, E2E)
+- [ ] Database migration applied to staging
+- [ ] Performance benchmarks met
+- [ ] Accessibility audit passed
+- [ ] Manual QA signed off
+
+**Deployment Steps**:
+
+1. Create feature branch: `feature/linkedin-achievements-dashboard`
+2. Implement RFCs 1-9 in order
+3. Submit PR with screenshots and test results
+4. Code review (2 approvals required)
+5. Merge to main
+6. Deploy to staging (Vercel preview)
+7. Run smoke tests on staging
+8. Deploy to production (Vercel production)
+9. Monitor error logs for 24 hours
+
+**Rollback Plan**:
+
+- Revert PR if critical bug discovered
+- Database migrations are additive (indexes), safe to keep
+- No data loss risk (read-only feature)
+
+### Monitoring
+
+**Metrics to Track**:
+
+- Query execution time (tRPC procedures)
+- Page load time (account dashboard)
+- Error rate (tRPC failures)
+- User engagement (how many users visit achievements section)
+
+**Alerts**:
+
+- tRPC query timeout (>5s)
+- Error rate >1%
+- Database CPU usage >80%
+
+### Maintenance
+
+**Monthly Tasks**:
+
+- Review query performance (check for slow queries)
+- Update dependencies (Recharts, React Query, Prisma)
+- Audit database indexes (ensure still optimal)
+
+**Quarterly Tasks**:
+
+- Accessibility audit
+- Performance benchmarking
+- User feedback review (gather feature requests)
 
 ---
 
@@ -1973,7 +2301,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Error boundaries catch failures with retry option
 - [ ] Empty states show user-friendly messages
 - [ ] Tooltips provide additional context on hover
-- [ ] Links open SocialNet profiles in new tab
+- [ ] Links open LinkedIn profiles in new tab
 - [ ] Keyboard navigation works throughout
 
 ---
@@ -2002,20 +2330,33 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 - Gamification features (levels, XP, leaderboards)
 - Social comparison (opt-in, compare with peers)
-- Third-party integrations (share to Twitter/SocialNet directly)
+- Third-party integrations (share to Twitter/LinkedIn directly)
 - Analytics dashboard (track achievements over time)
 
 ### Technical Debt
 
 - Consider migrating Context to Zustand if state management becomes complex
 - Optimize percentile calculation (cache globally, regenerate hourly)
-- Extract heat map component to `@your-org/ui` for reusability
+- Extract heat map component to `@sassy/ui` for reusability
 - Add E2E tests for all user flows
 - Implement lazy loading for treemap images
 
 ---
 
-## Implementation Checklist (Complete Workflow)
+## Implementation Checklist & Work Breakdown Structure (WBS) Table
+
+### Primitive Atomic WBS Table
+
+| Target File / Artifact                           | Bound Invariant  | Verification Command        |
+| :----------------------------------------------- | :--------------- | :-------------------------- |
+| `prisma/schema.prisma`                           | `INV-2`          | `pnpm db:migrate dev`       |
+| `src/server/api/routers/achievements.ts`         | `INV-1`, `INV-3` | `pnpm test src/server/api/` |
+| `src/store/useAccountStore.ts`                   | `INV-1`          | `pnpm test src/store/`      |
+| `src/components/achievements/BentoGrid.tsx`      | `INV-2`          | `pnpm check-types`          |
+| `src/components/achievements/NetworkTreemap.tsx` | `INV-3`          | `pnpm check-types`          |
+| `src/components/achievements/HeatMap.tsx`        | `INV-1`          | `pnpm check-types`          |
+
+### Primitive Checklist
 
 **Phase 1: Database Indexes** (30 min)
 
@@ -2074,7 +2415,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Create `NetworkTreemapCard.tsx` component
 - [ ] Integrate Recharts `<Treemap>`
 - [ ] Add hover tooltips
-- [ ] Implement click-to-SocialNet
+- [ ] Implement click-to-LinkedIn
 - [ ] Add loading/error/empty states
 - [ ] Test with varying data sizes
 
@@ -2097,7 +2438,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Implement ranking list
 - [ ] Add medal icons
 - [ ] Add progress bars
-- [ ] Implement click-to-SocialNet
+- [ ] Implement click-to-LinkedIn
 - [ ] Add loading/error/empty states
 
 **Phase 9: Responsive Design** (3 hours)
@@ -2141,45 +2482,51 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 ---
 
-## Blast Radius
+## Cursor + RIPER-5 Guidance
 
-_List the files, packages, and runtime surfaces this plan touches. Update before EXECUTE begins._
+### Cursor Plan Mode
 
-- `packages/db/prisma/models/comment.prisma` — new composite indexes
-- `packages/api/src/router/achievements.ts` — new tRPC router (new file)
-- `packages/api/src/router/root.ts` — router registration
-- `apps/nextjs/src/stores/zustand-store/achievements-store.ts` — new Zustand store (new file)
-- `apps/nextjs/src/stores/zustand-store/index.ts` — store export registration
-- `apps/nextjs/src/app/(new-dashboard)/[orgSlug]/[accountSlug]/page.tsx` — achievements section integration
-- `apps/nextjs/src/app/(new-dashboard)/[orgSlug]/[accountSlug]/_components/achievements/` — new component directory
-- `apps/nextjs/src/app/(new-dashboard)/[orgSlug]/[accountSlug]/_components/achievements/AchievementsSection.tsx` — bento layout (new file)
-- `apps/nextjs/src/app/(new-dashboard)/[orgSlug]/[accountSlug]/_components/achievements/cards/` — card components directory
+**Import Checklist**: Copy RFC implementation checklists directly into Cursor Plan mode for step-by-step execution.
 
-## Phase Loop Progress
+**Workflow**:
 
-For each phase (Phase-01 through Phase-09), the loop runs independently:
+1. Start with RFC-001 (Database Indexes)
+2. Execute each checklist item sequentially
+3. After each RFC, update status strip in this plan file
+4. Reattach this plan to future sessions for context
+5. If scope changes mid-flight, pause and run Change Management section
 
-- [ ] 1a. Research updated — context loaded, codebase scan complete for this phase
-- [ ] 1b. Plan supplemented — phase plan checklist reflects research findings
-- [ ] 2. Validate contract written — ag-validate-agent gate verdict is green
-- [ ] 3. Execute complete — all phase checklist items done, phase tests pass
-- [ ] 4. Update process — phase plan archived, phase report filed, context docs updated
+### RIPER-5 Mode
 
-> **IMPORTANT:** Step 2 is never skippable. A placeholder Validate Contract is a blocker. If the current phase validate-contract is a placeholder, do NOT proceed to step 3.
+**Mode Sequence**:
 
-## Validate Contract
+1. **RESEARCH**: ✅ Already complete (extensive codebase analysis, schema review, existing patterns identified)
+2. **INNOVATE**: ✅ Already complete (3 approaches explored, Approach 3 selected with rationale)
+3. **PLAN**: 🚧 **YOU ARE HERE** - This plan document is the output of PLAN mode
+4. **EXECUTE**: Request user approval of this plan, then enter EXECUTE mode
+5. **REVIEW**: After implementation, validate against this plan and flag deviations
 
-_ag-validate-agent writes this section before EXECUTE for each phase. Do not start EXECUTE with this placeholder in place._
+**EXECUTE Mode Instructions**:
 
-## Agent Routing Reference
+- Implement EXACTLY as planned in RFCs
+- Do not add features not specified (no scope creep)
+- If deviation needed, STOP and return to PLAN mode (update this file)
+- Mid-implementation check-in at ~50% (after RFC-005 Network Treemap)
+- Use this plan as single source of truth
 
-Each RIPER-5 phase is owned by a dedicated ag-agent. Route to the correct agent for each phase:
+**Scope Change Protocol**:
 
-| Phase          | Agent                     | Notes                                                                        |
-| -------------- | ------------------------- | ---------------------------------------------------------------------------- |
-| RESEARCH       | `ag-research-agent`       | Read-only; gather codebase facts, existing patterns, and prior decisions     |
-| INNOVATE       | `ag-innovate-agent`       | Brainstorm approaches; produce decision summary with rationale               |
-| PLAN           | `ag-plan-agent`           | Write the plan artifact; no implementation                                   |
-| VALIDATE       | `ag-validate-agent`       | Mandatory V1–V7 gate sequence; writes the Validate Contract section          |
-| EXECUTE        | `ag-execute-agent`        | Implement exactly as specified; requires a non-placeholder validate-contract |
-| UPDATE PROCESS | `ag-update-process-agent` | Archive plan, update context docs, write memory notes, emit closeout packet  |
+- If user requests new feature mid-execution: Pause, classify change (see Change Management section), update plan, resume
+- If technical blocker discovered: Document in Known Issues, propose solution, get approval before proceeding
+
+---
+
+## Verification Evidence
+
+1. **TypeScript Type Safety:** `pnpm check-types` passes with 0 errors.
+2. **ESLint Clean:** `pnpm lint` passes with 0 warnings.
+3. **Unit & Integration Tests:** `pnpm test` passes 100%.
+4. **Mechanical Validation:** `node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs process/development-protocols/references/example-complex-prd.md` passes with 0 errors.
+5. **Context Alignment:** Aligned with `process/context/all-context.md` and `process/context/tests/all-tests.md`.
+
+## Resume and Execution Handoff

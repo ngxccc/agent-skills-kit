@@ -27,18 +27,20 @@ If invoked without arguments, present available documentation operations:
 | `summarize` | Quick codebase summary                                   |
 | `adr`       | Create or validate Architectural Decision Records (ADRs) |
 | `rfc`       | Create or validate Request for Comments (RFCs)           |
-| `design`    | Create or validate System Design & Workflow Specs        |
+| `design`    | Create or validate System Design Docs                    |
+| `workflow`  | Create or validate SSOT Operational Workflows            |
 
 ## Subcommands
 
-| Subcommand           | Reference                          | Purpose                                                  |
-| -------------------- | ---------------------------------- | -------------------------------------------------------- |
-| `/ag-docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation        |
-| `/ag-docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation       |
-| `/ag-docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary            |
-| `/ag-docs adr`       | `references/adr-layout.md`         | Create or validate Architectural Decision Records (ADRs) |
-| `/ag-docs rfc`       | `references/rfc-layout.md`         | Create or validate Request for Comments (RFC proposals)  |
-| `/ag-docs design`    | `references/design-doc-layout.md`  | Create or validate System Design & Operational Workflows |
+| Subcommand           | Reference                                       | Purpose                                                     |
+| -------------------- | ----------------------------------------------- | ----------------------------------------------------------- |
+| `/ag-docs init`      | `references/init-workflow.md`                   | Analyze codebase and create initial documentation           |
+| `/ag-docs update`    | `references/update-workflow.md`                 | Analyze codebase and update existing documentation          |
+| `/ag-docs summarize` | `references/summarize-workflow.md`              | Quick analysis and update of codebase summary               |
+| `/ag-docs adr`       | `references/adr-layout.md`                      | Create or validate Architectural Decision Records (ADRs)    |
+| `/ag-docs rfc`       | `references/rfc-layout.md`                      | Create or validate Request for Comments (RFC proposals)     |
+| `/ag-docs design`    | `references/design-doc-layout.md`               | Create or validate System Design Specifications             |
+| `/ag-docs workflow`  | `references/workflow-documentation-standard.md` | Create or validate SSOT Operational Workflows (WBS/Mermaid) |
 
 ## Routing
 
@@ -50,11 +52,17 @@ Parse `$ARGUMENTS` first word:
 - `adr` → Load `references/adr-layout.md` and manage ADRs under `docs/adr/`
 - `rfc` → Load `references/rfc-layout.md` and manage RFCs under `docs/rfc/`
 - `design` → Load `references/design-doc-layout.md` and manage Design Docs under `docs/design/`
-- empty/unclear → Present available options
+- `workflow` → Load `references/workflow-documentation-standard.md` and manage SSOT Workflow Specs under `docs/design/`
 
 ## Automated Validation Scripts
 
-To validate all ADR files in the repository for standard formatting, run:
+To run all documentation validation suites (ADRs, RFCs, and Design/Workflow Docs) in parallel:
+
+```bash
+bun run .claude/skills/ag-docs/scripts/validate-docs.mjs
+```
+
+To validate individual documentation types for standard formatting, run:
 
 ```bash
 bun run .claude/skills/ag-docs/scripts/validate-adrs.mjs
@@ -72,6 +80,12 @@ To validate all System Design Documents in the repository for standard formattin
 bun run .claude/skills/ag-docs/scripts/validate-design-docs.mjs
 ```
 
+To validate all SSOT Workflow Documents (per workflow-documentation-standard.md) for standard formatting, run:
+
+```bash
+bun run .claude/skills/ag-docs/scripts/validate-workflow-docs.mjs
+```
+
 ## Shared Context
 
 For this repo, durable agent-facing documentation lives in `process/context/`, not `./docs`.
@@ -80,12 +94,12 @@ Use `audit-context` after adding, moving, splitting, or grouping context files.
 
 ### Feature & Infrastructure Workflow Documentation
 
-For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `process/development-protocols/references/workflow-documentation-standard.md` or use `ag-docs` design mode.
-
+For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `references/workflow-documentation-standard.md` or use `/ag-docs workflow`.
 ---
 
 ## References
 
 - [references/adr-layout.md](references/adr-layout.md) - Architectural Decision Record layout specification.
 - [references/rfc-layout.md](references/rfc-layout.md) - Request for Comments proposal layout specification.
-- [references/design-doc-layout.md](references/design-doc-layout.md) - System Design & Workflow layout specification.
+- [references/design-doc-layout.md](references/design-doc-layout.md) - System Design layout specification.
+- [references/workflow-documentation-standard.md](references/workflow-documentation-standard.md) - SSOT Workflow Documentation Standard.
