@@ -59,6 +59,10 @@ const validators = [
     cmd: "bun run .claude/skills/ag-docs/scripts/validate-docs.mjs",
   },
   {
+    name: "All-Context Audit",
+    cmd: "node .claude/skills/ag-generate-context/scripts/validate-all-context.mjs",
+  },
+  {
     name: "Plan Artifact",
     cmd: "node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs",
   },

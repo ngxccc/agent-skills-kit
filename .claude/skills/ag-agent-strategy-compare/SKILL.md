@@ -1,12 +1,8 @@
 ---
 name: ag-agent-strategy-compare
 description: "Evaluate 4 execution strategies (sequential, parallel-subagents, workflow, agent-team) for a phase or fan-out task. Outputs 7-signal score table, agent count math, cost guards, and strategy recommendation."
-argument-hint: "[phase context description or fan-out task description]"
 trigger_keywords: execution strategy, parallel agents, strategy comparison, agent count, fan-out recommendation
 layer: contract
-metadata:
-  author: agent-skills-kit-pro-max-kit
-  version: "1.2.0"
 ---
 
 # ag-agent-strategy-compare

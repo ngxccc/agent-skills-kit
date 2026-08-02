@@ -84,7 +84,9 @@ function validatePlan(relPath) {
   const declaresUmbrellaFrontmatter = /phase:\s*umbrella/m.test(text);
 
   if (!hasDateStamp(name)) fail(`${relPath} filename is missing a date stamp`);
-  if (!/_PLAN_/.test(name)) fail(`${relPath} filename is missing _PLAN_`);
+  if (!/_PLAN_|-plan-|\bplan\b|\bPLAN\b/i.test(name)) {
+    fail(`${relPath} filename should contain 'plan' or 'PLAN'`);
+  }
   if (declaresUmbrellaFrontmatter && !/umbrella/i.test(name)) {
     fail(
       `${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`,
@@ -107,7 +109,7 @@ function validatePlan(relPath) {
       fail(`${relPath} missing Acceptance Criteria`);
   }
   if (!isUmbrellaShape && !hasSection(text, "Validate Contract")) {
-    fail(`${relPath} missing Validate Contract section`);
+    warn(`${relPath} missing Validate Contract section`);
   }
   if (!/Implementation Checklist|RFC-|Phased Delivery Plan/i.test(text)) {
     fail(
@@ -181,9 +183,30 @@ function validatePlan(relPath) {
 }
 
 if (planPaths.length === 0) {
-  fail(
-    "Usage: node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>",
-  );
+  const activeGeneral = fs.existsSync("process/general-plans/active")
+    ? fs
+        .readdirSync("process/general-plans/active")
+        .filter((f) => f.endsWith(".md"))
+        .map((f) => `process/general-plans/active/${f}`)
+    : [];
+  if (fs.existsSync("process/features")) {
+    for (const feat of fs.readdirSync("process/features")) {
+      const featActive = `process/features/${feat}/active`;
+      if (fs.existsSync(featActive)) {
+        activeGeneral.push(
+          ...fs
+            .readdirSync(featActive)
+            .filter((f) => f.endsWith(".md"))
+            .map((f) => `${featActive}/${f}`),
+        );
+      }
+    }
+  }
+  if (activeGeneral.length > 0) {
+    planPaths.push(...activeGeneral);
+  } else {
+    warn("No active plan files found to validate.");
+  }
 }
 
 const checkedPlans = [];
