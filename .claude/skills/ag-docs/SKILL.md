@@ -16,7 +16,6 @@ layer: helper
 
 Use this skill when working with ag-docs workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
@@ -26,25 +25,25 @@ Analyze codebase and manage project documentation, Architectural Decision Record
 
 If invoked without arguments, present available documentation operations:
 
-| Operation   | Description                                                  |
-| ----------- | ------------------------------------------------------------ |
-| `init`      | Analyze codebase & create initial docs                       |
-| `update`    | Analyze changes & update docs                                |
-| `summarize` | Quick codebase summary                                       |
-| `adr`       | Create or validate Architectural Decision Records (ADRs)     |
-| `rfc`       | Create or validate Request for Comments (RFCs)               |
-| `design`    | Create or validate System Design & Workflow Specs            |
+| Operation   | Description                                              |
+| ----------- | -------------------------------------------------------- |
+| `init`      | Analyze codebase & create initial docs                   |
+| `update`    | Analyze changes & update docs                            |
+| `summarize` | Quick codebase summary                                   |
+| `adr`       | Create or validate Architectural Decision Records (ADRs) |
+| `rfc`       | Create or validate Request for Comments (RFCs)           |
+| `design`    | Create or validate System Design & Workflow Specs        |
 
 ## Subcommands
 
-| Subcommand           | Reference                          | Purpose                                                    |
-| -------------------- | ---------------------------------- | ---------------------------------------------------------- |
-| `/ag-docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation          |
-| `/ag-docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation         |
-| `/ag-docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary              |
-| `/ag-docs adr`       | `references/adr-layout.md`         | Create or validate Architectural Decision Records (ADRs)  |
-| `/ag-docs rfc`       | `references/rfc-layout.md`         | Create or validate Request for Comments (RFC proposals)   |
-| `/ag-docs design`    | `references/design-doc-layout.md`  | Create or validate System Design & Operational Workflows  |
+| Subcommand           | Reference                          | Purpose                                                  |
+| -------------------- | ---------------------------------- | -------------------------------------------------------- |
+| `/ag-docs init`      | `references/init-workflow.md`      | Analyze codebase and create initial documentation        |
+| `/ag-docs update`    | `references/update-workflow.md`    | Analyze codebase and update existing documentation       |
+| `/ag-docs summarize` | `references/summarize-workflow.md` | Quick analysis and update of codebase summary            |
+| `/ag-docs adr`       | `references/adr-layout.md`         | Create or validate Architectural Decision Records (ADRs) |
+| `/ag-docs rfc`       | `references/rfc-layout.md`         | Create or validate Request for Comments (RFC proposals)  |
+| `/ag-docs design`    | `references/design-doc-layout.md`  | Create or validate System Design & Operational Workflows |
 
 ## Routing
 
@@ -85,6 +84,7 @@ Read `process/context/all-context.md` first to choose the relevant root file or 
 Use `audit-context` after adding, moving, splitting, or grouping context files.
 
 ### Feature & Infrastructure Workflow Documentation
+
 For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `process/development-protocols/references/workflow-documentation-standard.md` or invoke the `ag-workflow-doc` skill.
 
 ---

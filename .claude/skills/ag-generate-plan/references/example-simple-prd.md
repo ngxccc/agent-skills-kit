@@ -6,6 +6,7 @@ metadata:
   node_type: memory
   type: reference
 ---
+
 # MyApp Neobrutalist Redesign - Plan
 
 **Date:** 26-11-25  
@@ -35,12 +36,14 @@ Rebuild the MyApp social activity discovery app with identical features and mock
 ## Goals and Success Metrics
 
 **Goals:**
+
 - Replicate all features from original MyApp (SwipeFeed, Activity Cards, Drawers, My Activities, Hosted Activities, Profile, Chat, Bottom Nav)
 - Implement neobrutalist + Gumroad minimalist design: rounded corners, bold colors, friendly typography, creative layouts
 - Migrate to modern tech stack: pnpm, Next.js App Router, Tailwind CSS 4, latest React Router/Query
 - Deliver fully functional prototype with all mock data working
 
 **Success Metrics:**
+
 - All 9 core features work identically to original
 - Design matches neobrutalist aesthetic (bold borders, rounded elements, playful colors)
 - App runs on `localhost:3000` without errors
@@ -56,18 +59,23 @@ Rebuild the MyApp social activity discovery app with identical features and mock
 Before EXECUTE begins, ag-validate-agent must write the Validate Contract section. Do not start EXECUTE with an empty placeholder.
 
 ### Phase 1: Project Setup
+
 **What happens:** Initialize Next.js with pnpm, upgrade to Tailwind CSS 4, install dependencies (React Query, shadcn/ui, lucide-react).
 
 ### Phase 2: Design System
+
 **What happens:** Create neobrutalist color palette, CSS variables, typography scale in `globals.css`.
 
 ### Phase 3: Data Layer
+
 **What happens:** Create `lib/mockData.ts` with all interfaces and mock data, set up React Query provider.
 
 ### Phase 4: Core Components
+
 **What happens:** Build neobrutalist-styled UI components (Button, Card, Badge, Avatar, Drawer), Bottom Navigation, tab routing.
 
 ### Phase 5: Feature Implementation
+
 **What happens:** Build SwipeFeed, ActivityCard, Drawers, MyActivities, HostedActivities, Profile, Chat components.
 
 ### Test Gates
@@ -84,6 +92,7 @@ After completing all implementation steps, verify the following:
 (tier: fully-automated | hybrid | agent-probe — assign per item above)
 
 ### Expected Outcome
+
 - Fully functional MyApp clone with neobrutalist design
 - All mock data rendering correctly
 - Smooth navigation and animations
@@ -94,6 +103,7 @@ After completing all implementation steps, verify the following:
 ## Scope
 
 **In-Scope:**
+
 - All original features: SwipeFeed, ActivityCard, ActivityDetailDrawer, UserProfileDrawer, MyActivities, HostedActivities, Profile, Chat, BottomNav
 - Complete mock data migration (users, activities, conversations, join requests)
 - Neobrutalist design system (rounded buttons, bold borders, playful colors, friendly typography)
@@ -101,6 +111,7 @@ After completing all implementation steps, verify the following:
 - Responsive mobile-first layout
 
 **Out-of-Scope:**
+
 - Backend integration or real API calls
 - Authentication system
 - Real-time features
@@ -110,6 +121,7 @@ After completing all implementation steps, verify the following:
 ## Assumptions and Constraints
 
 **Assumptions:**
+
 - Original app structure and data are well-understood from context file
 - Neobrutalist design principles are: bold borders (2-4px), rounded corners (8-16px), playful colors, friendly typography, generous spacing
 - Next.js App Router can handle client-side routing needs
@@ -117,6 +129,7 @@ After completing all implementation steps, verify the following:
 - Tailwind CSS 4 configuration is compatible with Next.js
 
 **Constraints:**
+
 - Must use pnpm (not npm/yarn)
 - Must use Next.js App Router (not Pages Router)
 - Must use Tailwind CSS 4 (not v3)
@@ -344,18 +357,23 @@ After completing all implementation steps, verify the following:
 ## Risks and Mitigations
 
 **Risk 1:** Tailwind CSS 4 compatibility issues with Next.js
+
 - **Mitigation:** Use official Next.js + Tailwind CSS 4 documentation, test configuration early
 
 **Risk 2:** React Router conflicts with Next.js App Router
+
 - **Mitigation:** Use client-side state for tab navigation instead of React Router, or use Next.js built-in routing for pages if needed
 
 **Risk 3:** React Query setup with Next.js App Router
+
 - **Mitigation:** Follow latest React Query + Next.js App Router patterns from official docs, use proper provider setup
 
 **Risk 4:** Neobrutalist design not matching vision
+
 - **Mitigation:** Create design tokens early, test components incrementally, reference Gumroad/neobrutalist examples
 
 **Risk 5:** Data migration errors
+
 - **Mitigation:** Copy mock data carefully, verify all interfaces match, test data access early
 
 ## Integration Notes

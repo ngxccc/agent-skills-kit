@@ -48,9 +48,13 @@ if (!target) {
     const headerCols = header.split("\t").map((c) => c.trim());
 
     // 3. Plateau/regression signal column present.
-    const hasSignalCol = headerCols.some((c) => /saturation_status|loop_status|plateau|regression/i.test(c));
+    const hasSignalCol = headerCols.some((c) =>
+      /saturation_status|loop_status|plateau|regression/i.test(c),
+    );
     if (!hasSignalCol) {
-      fail(`${target} missing a plateau/regression signal column (saturation_status / loop_status)`);
+      fail(
+        `${target} missing a plateau/regression signal column (saturation_status / loop_status)`,
+      );
     }
 
     // 2 + 4. Iteration counter (col 1) strictly monotonic AND max <= 10.
@@ -63,7 +67,9 @@ if (!target) {
         continue;
       }
       if (prev !== null && iter <= prev) {
-        fail(`${target} iteration counter not strictly increasing (${prev} -> ${iter})`);
+        fail(
+          `${target} iteration counter not strictly increasing (${prev} -> ${iter})`,
+        );
       }
       if (iter > 10) {
         fail(`${target} iteration index ${iter} exceeds 10-cycle cap`);
@@ -85,12 +91,16 @@ if (!target) {
       }
     }
     if (domainValue !== "plan" && domainValue !== "tests") {
-      fail(`${target} domain field must be exactly 'plan' or 'tests' (got ${JSON.stringify(domainValue)})`);
+      fail(
+        `${target} domain field must be exactly 'plan' or 'tests' (got ${JSON.stringify(domainValue)})`,
+      );
     }
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

@@ -15,6 +15,7 @@ layer: helper
 ## When to Apply
 
 This skill is designed for the agent to reference when:
+
 - The user or agent needs to perform branch operations (creating feature branches, rebasing, squashing).
 - Enforcing Conventional Commits formatting (`feat:`, `fix:`, `refactor:`, `docs:`, `test:`).
 - Creating enterprise Pull Requests (PRs) with standard titles, structured Markdown bodies, labels, and assignees.
@@ -40,11 +41,13 @@ This skill is designed for the agent to reference when:
 ### 2. Examples
 
 #### Example 1: Creating a Feature Branch & Conventional Commit
+
 - **Context:** User wants to start a new feature for payment webhooks.
 - **User prompt:** "Start a new git branch and commit message for payment webhook integration."
 - **Action/Result:** Agent checks git status, creates branch `feature/payment-webhook-integration`, and crafts commit `feat(payment): add PayOS webhook handler`.
 
 #### Example 2: Enterprise Pull Request Creation
+
 - **Context:** Committing and opening a PR for an authentication fix.
 - **User prompt:** "Create a pull request for the auth service fix."
 - **Action/Result:** Agent formats title `fix(auth): resolve JWT expiration handling`, builds body per `pr-template.md`, and runs PR creation via `create-pr.mjs` or `xd://github`.

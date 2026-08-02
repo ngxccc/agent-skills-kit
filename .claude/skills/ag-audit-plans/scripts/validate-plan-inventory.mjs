@@ -5,7 +5,11 @@ import { execSync } from "node:child_process";
 
 let root;
 try {
-  root = execSync('git rev-parse --show-toplevel', { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+  root = execSync("git rev-parse --show-toplevel", {
+    stdio: ["pipe", "pipe", "pipe"],
+  })
+    .toString()
+    .trim();
 } catch {
   // Not a git repository — fall back to process.cwd() so the script still works on new projects.
   root = process.cwd();
@@ -42,7 +46,11 @@ function hasDateStamp(name) {
   return /(\d{2}-\d{2}-\d{2}|\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})/.test(name);
 }
 
-for (const dir of ["process/general-plans/active", "process/general-plans/completed", "process/features"]) {
+for (const dir of [
+  "process/general-plans/active",
+  "process/general-plans/completed",
+  "process/features",
+]) {
   if (!fs.existsSync(path.join(root, dir))) fail(`${dir} missing`);
 }
 
@@ -80,13 +88,24 @@ for (const file of activePlans) {
 
   if (!hasDateStamp(name)) samples.nameNotDateStamped.push(file);
   if (!/_PLAN_|PLAN\.md$|PLAN_/.test(name)) samples.noPlanInName.push(file);
-  if (!/Phase Completion Rules|phase is NOT complete|Phase is NOT complete/i.test(text)) {
+  if (
+    !/Phase Completion Rules|phase is NOT complete|Phase is NOT complete/i.test(
+      text,
+    )
+  ) {
     samples.missingPhaseRules.push(file);
   }
-  if (!/Verification|Test Procedure|Manual test|Post-Phase Testing|Acceptance Criteria/i.test(text)) {
+  if (
+    !/Verification|Test Procedure|Manual test|Post-Phase Testing|Acceptance Criteria/i.test(
+      text,
+    )
+  ) {
     samples.missingVerification.push(file);
   }
-  if (/handoff|README|execution-sequence/i.test(name) && !/_PLAN_|PLAN/i.test(name)) {
+  if (
+    /handoff|README|execution-sequence/i.test(name) &&
+    !/_PLAN_|PLAN/i.test(name)
+  ) {
     samples.likelyReferenceInActive.push(file);
   }
 }
@@ -95,12 +114,15 @@ const duplicateBasenameGroups = [...duplicateNames.entries()]
   .filter(([, count]) => count > 1)
   .map(([name, count]) => ({ name, count }));
 
-if (activePlans.length > 10) warn(`active plan count is high: ${activePlans.length}`);
+if (activePlans.length > 10)
+  warn(`active plan count is high: ${activePlans.length}`);
 for (const [key, files] of Object.entries(samples)) {
   if (files.length > 0) warn(`${key}: ${files.length} active files`);
 }
 if (duplicateBasenameGroups.length > 0) {
-  warn(`duplicate active plan basenames: ${duplicateBasenameGroups.length} groups`);
+  warn(
+    `duplicate active plan basenames: ${duplicateBasenameGroups.length} groups`,
+  );
 }
 
 const result = {

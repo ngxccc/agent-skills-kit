@@ -5,7 +5,9 @@ import { execSync } from "node:child_process";
 
 const root = (() => {
   try {
-    return execSync("git rev-parse --show-toplevel", { encoding: "utf8" }).trim();
+    return execSync("git rev-parse --show-toplevel", {
+      encoding: "utf8",
+    }).trim();
   } catch {
     return process.cwd();
   }
@@ -66,7 +68,9 @@ function validateUmbrella(relPath) {
     return null;
   }
   if (!isUmbrellaActivePath(relPath)) {
-    warn(`${relPath} is not under process/features/*/active/ or process/features/*/completed/ — skipping path check`);
+    warn(
+      `${relPath} is not under process/features/*/active/ or process/features/*/completed/ — skipping path check`,
+    );
   }
 
   const text = read(relPath);
@@ -90,8 +94,13 @@ function validateUmbrella(relPath) {
   // Filename convention: a real umbrella plan under process/features/*/active|completed
   // MUST carry the literal token `umbrella` in its filename ({program-slug}-umbrella_PLAN_{date}.md).
   // Scoped to feature paths so synthetic fixtures (pass.md/fail.md) run by direct path are exempt.
-  if (isUmbrellaActivePath(relPath) && !/umbrella/i.test(path.basename(relPath))) {
-    fail(`${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`);
+  if (
+    isUmbrellaActivePath(relPath) &&
+    !/umbrella/i.test(path.basename(relPath))
+  ) {
+    fail(
+      `${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`,
+    );
   }
 
   // Required sections
@@ -103,11 +112,15 @@ function validateUmbrella(relPath) {
     fail(`${relPath} missing '## Stable Program Goal' section`);
   } else {
     // Check /goal block length ≤ 4000 chars
-    const stableGoalMatch = text.match(/^## Stable Program Goal\b.*?\n([\s\S]*?)(?=\n## |\n---\n|$)/im);
+    const stableGoalMatch = text.match(
+      /^## Stable Program Goal\b.*?\n([\s\S]*?)(?=\n## |\n---\n|$)/im,
+    );
     if (stableGoalMatch) {
       const goalContent = stableGoalMatch[1];
       if (goalContent.length > 4000) {
-        fail(`${relPath} Stable Program Goal section content exceeds 4000 chars (${goalContent.length} chars)`);
+        fail(
+          `${relPath} Stable Program Goal section content exceeds 4000 chars (${goalContent.length} chars)`,
+        );
       }
     }
   }
@@ -118,7 +131,10 @@ function validateUmbrella(relPath) {
 
   // Canonical heading is '## Phase Ordering'; '## Phase Sequence' accepted as a legacy alias
   // (dual-accept — some completed-program umbrellas still carry the old heading; non-breaking).
-  if (!hasSection(text, "Phase Ordering") && !hasSection(text, "Phase Sequence")) {
+  if (
+    !hasSection(text, "Phase Ordering") &&
+    !hasSection(text, "Phase Sequence")
+  ) {
     fail(`${relPath} missing '## Phase Ordering' section`);
   }
 
@@ -137,7 +153,8 @@ function validateUmbrella(relPath) {
   if (phaseSeqMatch) {
     const phaseSeqContent = phaseSeqMatch[1];
     // Find lines that reference process/features/ or process/general-plans/ paths
-    const pathPattern = /`?(process\/(?:features\/[^/]+|general-plans)\/(?:active|completed)\/[^`\s|]+\.md)`?/g;
+    const pathPattern =
+      /`?(process\/(?:features\/[^/]+|general-plans)\/(?:active|completed)\/[^`\s|]+\.md)`?/g;
     let match;
     while ((match = pathPattern.exec(phaseSeqContent)) !== null) {
       const phasePath = match[1];
@@ -149,7 +166,9 @@ function validateUmbrella(relPath) {
 
   // Warnings
   if (!/Per-Phase Loop|per-phase loop|Per-Phase Entry/i.test(text)) {
-    warn(`${relPath} missing '## Per-Phase Loop' or equivalent section (recommended)`);
+    warn(
+      `${relPath} missing '## Per-Phase Loop' or equivalent section (recommended)`,
+    );
   }
 
   if (!hasSection(text, "Global Constraints")) {
@@ -157,7 +176,9 @@ function validateUmbrella(relPath) {
   }
 
   if (!hasSection(text, "Durable Report Destinations")) {
-    warn(`${relPath} missing '## Durable Report Destinations' section (recommended)`);
+    warn(
+      `${relPath} missing '## Durable Report Destinations' section (recommended)`,
+    );
   }
 
   return {
@@ -209,7 +230,9 @@ if (inputPaths.length > 0) {
     }
   }
   if (planPaths.length === 0) {
-    warnings.push("No umbrella plans found in process/features/*/active/ or process/features/*/completed/");
+    warnings.push(
+      "No umbrella plans found in process/features/*/active/ or process/features/*/completed/",
+    );
   }
 }
 

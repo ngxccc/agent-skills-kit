@@ -1,15 +1,21 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
 
-const vaultDir = '/home/ngxc/workspace/obsidian/my-second-brain';
-const query = process.argv.slice(2).join(' ').trim();
+const vaultDir = "/home/ngxc/workspace/obsidian/my-second-brain";
+const query = process.argv.slice(2).join(" ").trim();
 
 if (!query) {
-  console.log('Error: Please provide a search query.');
+  console.log("Error: Please provide a search query.");
   process.exit(1);
 }
 
-const ignoreDirs = ['99_Meta', '40_Archives', '.git', '.obsidian', 'node_modules'];
+const ignoreDirs = [
+  "99_Meta",
+  "40_Archives",
+  ".git",
+  ".obsidian",
+  "node_modules",
+];
 
 function getMarkdownFiles(dir) {
   let results = [];
@@ -21,7 +27,7 @@ function getMarkdownFiles(dir) {
       if (!ignoreDirs.includes(file)) {
         results = results.concat(getMarkdownFiles(filePath));
       }
-    } else if (file.endsWith('.md')) {
+    } else if (file.endsWith(".md")) {
       results.push(filePath);
     }
   }
@@ -37,20 +43,21 @@ function parseFrontmatter(content) {
   const body = content.substring(match[0].length).trim();
   const data = {};
 
-  const lines = fmText.split('\n');
+  const lines = fmText.split("\n");
   for (const line of lines) {
-    const colonIdx = line.indexOf(':');
+    const colonIdx = line.indexOf(":");
     if (colonIdx === -1) continue;
     const key = line.substring(0, colonIdx).trim();
     let val = line.substring(colonIdx + 1).trim();
 
     // Parse simple arrays [a, b, c] or single strings
-    if (val.startsWith('[') && val.endsWith(']')) {
-      val = val.substring(1, val.length - 1)
-        .split(',')
-        .map(s => s.trim().replace(/^["']|["']$/g, ''));
+    if (val.startsWith("[") && val.endsWith("]")) {
+      val = val
+        .substring(1, val.length - 1)
+        .split(",")
+        .map((s) => s.trim().replace(/^["']|["']$/g, ""));
     } else {
-      val = val.replace(/^["']|["']$/g, '');
+      val = val.replace(/^["']|["']$/g, "");
     }
     data[key] = val;
   }
@@ -61,7 +68,7 @@ function parseFrontmatter(content) {
 function extractTLDR(body) {
   const tldrRegex = /## TL;DR\r?\n([\s\S]*?)(?=\n##|\n---|$)/;
   const match = body.match(tldrRegex);
-  return match ? match[1].trim() : '';
+  return match ? match[1].trim() : "";
 }
 
 function search() {
@@ -70,21 +77,28 @@ function search() {
   const queryTerms = query.toLowerCase().split(/\s+/);
 
   for (const file of files) {
-    const rawContent = fs.readFileSync(file, 'utf8');
+    const rawContent = fs.readFileSync(file, "utf8");
     const { data, body } = parseFrontmatter(rawContent);
     const relativePath = path.relative(vaultDir, file);
-    const fileName = path.basename(file, '.md');
-    const title = fileName.replace(/_/g, ' ');
+    const fileName = path.basename(file, ".md");
+    const title = fileName.replace(/_/g, " ");
 
     let score = 0;
     const matchedTerms = new Set();
 
     const tags = Array.isArray(data.tags) ? data.tags : [];
-    const aliases = Array.isArray(data.aliases) ? data.aliases : (data.aliases ? [data.aliases] : []);
+    const aliases = Array.isArray(data.aliases)
+      ? data.aliases
+      : data.aliases
+        ? [data.aliases]
+        : [];
 
     for (const term of queryTerms) {
       // 1. Check title/filename
-      if (title.toLowerCase().includes(term) || fileName.toLowerCase().includes(term)) {
+      if (
+        title.toLowerCase().includes(term) ||
+        fileName.toLowerCase().includes(term)
+      ) {
         score += 15;
         matchedTerms.add(term);
       }
@@ -128,7 +142,7 @@ function search() {
         aliases,
         tldr: extractTLDR(body),
         body,
-        score
+        score,
       });
     }
   }
@@ -137,7 +151,7 @@ function search() {
   results.sort((a, b) => b.score - a.score);
 
   if (results.length === 0) {
-    console.log('NO_MATCHES_FOUND');
+    console.log("NO_MATCHES_FOUND");
     return;
   }
 
@@ -147,13 +161,13 @@ function search() {
     console.log(`---`);
     console.log(`Source: ${r.path}`);
     console.log(`Title: ${r.title}`);
-    if (r.tags.length > 0) console.log(`Tags: ${r.tags.join(', ')}`);
-    if (r.aliases.length > 0) console.log(`Aliases: ${r.aliases.join(', ')}`);
+    if (r.tags.length > 0) console.log(`Tags: ${r.tags.join(", ")}`);
+    if (r.aliases.length > 0) console.log(`Aliases: ${r.aliases.join(", ")}`);
     if (r.tldr) {
       console.log(`TL;DR:\n${r.tldr}`);
     } else {
       // Show first 200 chars of body
-      const cleanBody = r.body.replace(/[#*`]/g, '').trim();
+      const cleanBody = r.body.replace(/[#*`]/g, "").trim();
       console.log(`Content Preview:\n${cleanBody.substring(0, 250)}...`);
     }
     console.log(`---`);

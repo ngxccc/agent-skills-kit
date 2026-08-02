@@ -55,6 +55,7 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 Restate scope of what is being updated and archived — selected plan path, phase name, what this UPDATE PROCESS session closes out. Under /goal autonomous execution: emit a 1-sentence restatement as an audit log entry and auto-proceed.
 
 **Step 0a: invoke `ag-context-discovery`** — before reading any plan or context file, invoke `ag-context-discovery` to load:
+
 - Full feature folder file listing for the session being closed (pass the feature name from the orchestrator handoff)
 - Relevant context group files for the task domain
 - Test context routing chain via `process/context/tests/all-tests.md`
@@ -62,6 +63,7 @@ Restate scope of what is being updated and archived — selected plan path, phas
 This is the first action, not optional. Do not open any plan file or context file before ag-context-discovery completes.
 
 **Step 0b: invoke `ag-review-situation`** — after ag-context-discovery, invoke `ag-review-situation` to confirm:
+
 - Current branch and worktree state
 - Active-plan list (which plans are still in `active/` before archival decisions are made)
 - Any uncommitted changes that affect archival decisions
@@ -73,20 +75,23 @@ This is the first action, not optional. Do not open any plan file or context fil
 **Step 0c: invoke `ag-generate-closeout`** — MANDATORY before archiving any plan or updating umbrella state.
 
 **Step 0c-pre: Parse EVL HANDOFF SUMMARY if present.** If the orchestrator handoff prompt contains a `EVL HANDOFF SUMMARY:` fenced block (see behavior-reference Section 6 EVL Step 6 for the format), parse its fields before opening any disk files:
+
 - `preliminary_packet_path:` — use this as the direct path (skip default path search if present). **Fallback:** If `preliminary_packet_path:` is present but the file does not exist on disk: emit `PRELIMINARY_PACKET_MISSING: [path]` warning and fall back to the default path search (proceed as if the field were absent). Do not hard-stop — the preliminary packet may not have been written yet.
 - `context_partial:` array — these feed directly into Phase 1's CONTEXT_PARTIAL scan; treat as pre-populated flags
 - `known_gaps:` and `follow_up_stubs:` — note these for Phase 2 gap analysis
-If no structured block is present, proceed with default preliminary packet path search as specified below.
+  If no structured block is present, proceed with default preliminary packet path search as specified below.
 
 **Task-folder artefact colocation:** Every artefact this agent produces — phase reports, closeout packets, audit outputs, autoresearch iteration reports + `results.tsv`, and any scratch/research notes — MUST be written INSIDE the task's folder (`process/features/{feature}/active/{slug}_{dd-mm-yy}/` for feature-scoped, `process/general-plans/active/{slug}_{dd-mm-yy}/` for general). Use filenames `{slug}_{TYPE}_{dd-mm-yy}.md` (TYPE ∈ PLAN|SPEC|REPORT|REF). Never write to the deprecated sibling `reports/` or `references/` dirs or any ad-hoc location. On completion the whole folder moves as a unit (active/ → completed/, later → backlog/).
 
 Before invoking ag-generate-closeout: check whether a EVL preliminary packet exists on disk.
+
 - Feature-scoped plan: `process/features/{feature}/active/{slug}_{date}/{slug}_REPORT_{date}.md` (inside task folder — new convention) or legacy `process/features/{feature}/reports/{phase-slug}-evl-preliminary.md`
 - General-plans plan: `process/general-plans/active/{slug}_{date}/{slug}_REPORT_{date}.md` (inside task folder — new convention) or legacy `process/general-plans/reports/{phase-slug}-evl-preliminary.md`
 
 Where `{slug}` = plan filename slug (strip `_PLAN_` and date suffix, e.g. `myfeature_PLAN_06-06-26.md` → `myfeature`) and `{date}` = the task creation date.
 
 **{feature} and path disambiguation:**
+
 - If plan file is at `process/features/{X}/active/{slug}_{date}/...` → feature-scoped; `{feature}` = `{X}`; look inside the task folder first for `{slug}_REPORT_{date}.md`, then fall back to legacy `process/features/{X}/reports/` path.
 - If plan file is at `process/general-plans/active/{slug}_{date}/...` → not feature-scoped; look inside the task folder first, then fall back to legacy `process/general-plans/reports/{phase-slug}-evl-preliminary.md`.
 - Do NOT derive `{feature}` from the plan filename — derive it from the path segment after `process/features/`.
@@ -97,6 +102,7 @@ If not found: run ag-generate-closeout fresh (re-derive from plan file and git d
 **[U-S5-pre] Pre-acceptance check (REQUIRED before [U-S5]):** Verify that the file at `preliminary_packet_path:` (parsed in Step 0c-pre from the EVL HANDOFF SUMMARY block) exists on disk. If file is absent AND the `preliminary_packet_path:` value was present in the EVL HANDOFF SUMMARY → emit `PRELIMINARY_PACKET_MISSING: [path]` and request orchestrator to re-run EVL steps 1-3 from scratch before proceeding. If `preliminary_packet_path:` was not present in the handoff summary (no structured HANDOFF SUMMARY block received) → skip this check and proceed to [U-S5] using the default path search.
 
 invoke `ag-generate-closeout` to produce the closeout packet:
+
 - Phase report
 - Drift score
 - Archive-readiness assessment
@@ -114,9 +120,10 @@ This is not optional. The closeout packet is the input for all subsequent phase 
 ### Phase 1: Conversation Analysis
 
 **EVL handoff CONTEXT_PARTIAL scan:** Before analyzing the conversation, extract CONTEXT_PARTIAL flags using both formats:
+
 1. **Structured format (preferred):** If Step 0c-pre parsed a EVL HANDOFF SUMMARY block, read the `context_partial:` array field directly — these are the flags. Parse format: `context_partial:` is a JSON-style array of quoted strings (e.g., `["billing", "auth"]`). An empty array `[]` means no CONTEXT_PARTIAL flags — do NOT treat `[]` as a flag. Parse each quoted string as one distinct area name.
 2. **Inline format (fallback):** Scan the EVL handoff summary text for `CONTEXT_PARTIAL: [area]` flags (uppercase keyword, inline style).
-Structured block takes precedence; use inline format only when no structured block was present. List each extracted flag explicitly before proceeding.
+   Structured block takes precedence; use inline format only when no structured block was present. List each extracted flag explicitly before proceeding.
 
 In Phase 2 item 4 (Context File Updates), treat each extracted CONTEXT_PARTIAL flag as a required context audit target — verify the relevant context file covers the missing area and add it to the context file update list if not covered.
 
@@ -133,16 +140,19 @@ In Phase 2 item 4 (Context File Updates), treat each extracted CONTEXT_PARTIAL f
 **Step 2b: invoke `ag-sequential-thinking`** — when this session requires updating 3 or more context docs that reference each other (multi-file dependency ordering), invoke `ag-sequential-thinking` before writing any edits. Pass the list of context docs and their cross-references. Use the ordered dependency sequence it produces to determine the correct write order.
 
 **Step 2c: architectural change check** — if the just-completed EXECUTE session produced architectural changes (new services, new data flows, new agent/skill relationships, new packages, or changed inter-package dependencies):
+
 - Use ag-sequential-thinking to map the data flow or service topology as a numbered step sequence, then use ag-scenario to identify cross-service failure modes. Document findings as a prose architecture note in the plan, not a diagram.
 - Save the prose architecture note INSIDE the task folder as `{slug}_REF_{dd-mm-yy}.md` (never the deprecated sibling `references/` dir — see Task-folder artefact colocation rule above)
 - Reference the architecture note in the phase report and in the relevant context doc update
 
 **Step 2d: context ownership conflict resolution** — if two context docs both claim ownership of the same knowledge (detected during the context audit in item 4):
+
 - invoke `ag-problem-solving` before writing either doc
 - pass both docs and the conflicting knowledge to `ag-problem-solving`
 - use its output to decide which doc owns the knowledge and which one defers
 
 Categorize potential improvements by target rule file:
+
 - **Code Standards / Tech Stack** → `process/development-protocols/ag-system-behavior/12-reference.md`
 - **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `CLAUDE.md` or `AGENTS.md` if adapter guidance must change
 - **Mode Orchestration** → `process/development-protocols/ag-system-behavior/01-overview.md`
@@ -150,6 +160,7 @@ Categorize potential improvements by target rule file:
 - **Skills** → `.agents/skills/`
 
 Format each improvement as:
+
 ```
 [Number]. [Category] - [Target File]
 Summary: [Concise description]
@@ -161,12 +172,14 @@ Location: [Where in file - section name or append location]
 **MANDATORY: You MUST check ALL of the following categories every time. Do NOT skip any.**
 
 **1. Memory Updates** (learnings, patterns, user preferences):
+
 - Capture stable patterns confirmed during execution
 - Update or correct existing memory entries that are wrong
 - Add new entries for reusable knowledge
 - **Memory↔context sync check**: For every memory entry written this session, explicitly state whether the same knowledge belongs in `process/context/`. If yes, add it as a required context-update item — do not close Phase 2 without it.
 
 **2. Plan File Updates** (if `process/general-plans/active/{slug}_{date}/{slug}_PLAN_{date}.md` or `process/features/{feature}/active/{slug}_{date}/{slug}_PLAN_{date}.md` exists):
+
 - Mark Phase X as complete (✅)
 - Update "What's Functional Now" with [specific additions]
 - Document deviations: [list specific deviations from self-review]
@@ -177,6 +190,7 @@ Location: [Where in file - section name or append location]
 - Also: tick Step 7 checkbox in the `## Phase Loop Progress` section of the phase plan file: `- [x] 7. UPDATE PROCESS — archived; context updated; committed`. This is required for the next inner-loop cycle's V1 auto-proceed check to work correctly.
 
 **2b. Phase Program Updates** (if the work used an umbrella plan plus per-phase plans):
+
 - Determine whether this was a normal one-plan task or a phase program under `process/features/{feature}/`
 - For phase programs, check ALL of the following:
   - Which phase plans are now `✅ VERIFIED`
@@ -192,12 +206,14 @@ Location: [Where in file - section name or append location]
   - do NOT keep the old feature artificially "in progress" just because future adjacent work exists
 
 **3. Feature List Sync — ALWAYS CHECK THIS:**
+
 - Run `ls process/features/` and compare to the **Current features** list in `CLAUDE.md` and `AGENTS.md`
 - If a new feature folder exists that isn't in the list → update the list
 - If a listed feature folder no longer exists → remove it from the list
 - If general artifacts (plans/reports/references) for a single topic have reached 5+ → flag for promotion and ask user
 
 **4. Context File Updates — ALWAYS CHECK THIS:**
+
 - **This is NOT optional.** Every implementation session changes the codebase. You MUST scan `process/context/` and propose updates for affected files.
 - Read `process/context/all-context.md` first. It is the context router and grouping protocol.
 - Run the following to see ALL context files (no depth limit) and ALL feature group artifacts:
@@ -232,11 +248,13 @@ Location: [Where in file - section name or append location]
   - explicitly trigger or recommend the `ag-audit-context` skill before claiming the context layer is fully reconciled
 
 **When CONTEXT_PARTIAL area doesn't map to any existing context group:**
+
 - If the area has <3 documents/topics: add a new subsection to the nearest relevant existing context file (e.g., add to `skills/all-skills.md` for skill-related gaps). Update `process/context/all-context.md` routing table to note the new subsection.
 - If the area has 3+ separable topics: flag for context group creation per context group lifecycle rules in `all-context.md` (user approval required). Write a backlog note with context group creation request.
 - In either case: create or stub the content before marking Phase 2 item 4 complete for this CONTEXT_PARTIAL flag.
 
 **5. Skill/Agent File Updates** (if workflow improvements discovered):
+
 - Check `.agents/skills/`, `.claude/agents/`, and `.codex/agents/` for files that should be updated
 - Examples: new debugging patterns, improved agent prompts, workflow optimizations
 - Scan MEMORY.md for entries that have matured into stable patterns worth promoting to agent prompts, protocol files, or context docs
@@ -248,6 +266,7 @@ Location: [Where in file - section name or append location]
 **[U2] ag-audit-context — trigger conditions (EITHER is sufficient):**
 (1) Any `process/context/` file or context group was modified during this phase.
 (2) The EVL handoff summary (from Phase 1 CONTEXT_PARTIAL scan) contains any `CONTEXT_PARTIAL: [area]` flags — even if no context file was modified.
+
 - Use these as specialist follow-up surfaces rather than improvising replacements:
   - `ag-generate-context` when the repo context router itself needs refresh
   - `ag-audit-context` when context routing, grouping, discoverability, or structural context edits changed
@@ -255,6 +274,7 @@ Location: [Where in file - section name or append location]
 - If structural context changes happened, `ag-audit-context` is not optional housekeeping; it is the specialist validation step for the context layer.
 
 **5b. Mirror Discipline — ALWAYS CHECK THIS:**
+
 - If shared workflow behavior changed, explicitly review all of:
   - `process/development-protocols/`
   - `AGENTS.md`
@@ -272,6 +292,7 @@ Location: [Where in file - section name or append location]
 - Canonical workflow truth lives in `process/development-protocols/`; repo truth lives in `process/context/`; adapter surfaces mirror those sources rather than inventing parallel truth.
 
 **6. Deferred / Skipped Work Capture — ALWAYS CHECK THIS:**
+
 - Scan the conversation for items that were **researched but intentionally skipped**, deferred, or marked "for later"
 - Look for phrases like: "skip for now", "we'll do this later", "not in scope", "defer", "parking this", "out of scope", "TODO", "future work"
 - For each deferred item, determine the correct destination:
@@ -297,6 +318,7 @@ Location: [Where in file - section name or append location]
 - Present deferred items to user for approval alongside other improvements in Phase 3
 
 **7. Stale Artifact Scan -- ALWAYS CHECK THIS:**
+
 - When archiving a plan from `active/` to `completed/`, scan the task folder (`active/{slug}_{date}/`) for co-located REPORT and REF artifacts — under task-folder artefact colocation these all live inside the task folder and move with it as a unit
 - Also scan the legacy sibling `reports/` and `references/` directories for any related artifacts not yet migrated to the task folder
 - Match artifacts to the plan being archived using these heuristics:
@@ -328,17 +350,20 @@ This is UPDATE PROCESS's single user touchpoint — present the numbered improve
 For each approved improvement:
 
 **Memory Storage**:
+
 - Store durable shared project knowledge in `process/context/`.
 - If the user explicitly asks to update Claude-specific project memory, write to `~/.claude/projects/[project-slug]/memory/` using the existing memory format.
 - Codex does not have a separate repo-local project-memory mirror.
 
 **Rule File Updates**:
+
 - Read target file
 - Check for overlap with existing content
 - Append to relevant section or integrate contextually
 - Validate format compliance
 
 **Plan Updates**:
+
 - Update `process/general-plans/active/{slug}_{dd-mm-yy}/{slug}_PLAN_{dd-mm-yy}.md` (task-folder convention)
 - Mark phases complete (✅)
 - Update "What's Functional Now"
@@ -350,6 +375,7 @@ For each approved improvement:
 - **Archival gate (vacuous-green ban; Step A4; cites 10-update-process closeout field 9 + archival checklist):** "ready to archive now" REQUIRES that EVERY developed-behavior criterion is met by a PASSING automated/E2E gate (Fully-Automated or Hybrid). Any criterion resting on a Known-Gap residual (Agent-Probe-only or unproven) FORCES classification "keep active because testing is still pending" AND a backlog test-building stub for that residual. A plan whose developed behavior is vacuously green (declared done with no passing automated/E2E gate proving it) is NOT archivable — Known-Gap is never a basis for archival.
 
 **Phase Program Updates**:
+
 - For umbrella/phase-plan programs, update the selected feature folder as a coordinated set:
   - umbrella/orchestration plan
   - current phase plan
@@ -364,6 +390,7 @@ For each approved improvement:
 - If execution exposed a well-defined missing downstream lane, create the new phase plan or follow-up artifact in this mode and update the umbrella or parent plan so the next path is explicit.
 
 **Context Updates**:
+
 - Read `process/context/all-context.md` first to identify the owning root file or context group.
 - Use `process/context/tests/all-tests.md` as the verification router whenever test commands, runner selection, or validation-gate truth changed.
 - Scan ALL context files and feature group artifacts:
@@ -390,31 +417,35 @@ For each approved improvement:
 
 Note: Context paths follow the grouped architecture — always read the `all-{group}.md` entrypoint first, then the specific deep-reference file.
 
-| Entry | Covers |
-|---|---|
-| `process/context/all-context.md` | Root context entrypoint, architecture, API surface, conventions, env vars, monorepo layout |
-| `process/context/tests/all-tests.md` | Testing quick-start, runner selection, commands, debugging procedures, and routing |
-| `process/context/tests/` | Grouped test docs, including browser automation helpers and historical live-round references |
-| process/context/uxui/ (if project has UI/UX context group) | UI/UX grouped router plus deep design-system references |
-| process/context/{group}/ (per-domain grouped routers, if the project uses context groups) | Each grouped router plus its deep-reference files |
-| `process/context/planning/` | Planning grouped router plus SIMPLE vs COMPLEX reference docs |
-| `.claude/skills/ag-generate-plan/references/example-simple-prd.md` | Reference template for simple plan structure |
-| `.claude/skills/ag-generate-plan/references/example-complex-prd.md` | Reference template for complex plan depth |
+| Entry                                                                                     | Covers                                                                                       |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `process/context/all-context.md`                                                          | Root context entrypoint, architecture, API surface, conventions, env vars, monorepo layout   |
+| `process/context/tests/all-tests.md`                                                      | Testing quick-start, runner selection, commands, debugging procedures, and routing           |
+| `process/context/tests/`                                                                  | Grouped test docs, including browser automation helpers and historical live-round references |
+| process/context/uxui/ (if project has UI/UX context group)                                | UI/UX grouped router plus deep design-system references                                      |
+| process/context/{group}/ (per-domain grouped routers, if the project uses context groups) | Each grouped router plus its deep-reference files                                            |
+| `process/context/planning/`                                                               | Planning grouped router plus SIMPLE vs COMPLEX reference docs                                |
+| `.claude/skills/ag-generate-plan/references/example-simple-prd.md`                        | Reference template for simple plan structure                                                 |
+| `.claude/skills/ag-generate-plan/references/example-complex-prd.md`                       | Reference template for complex plan depth                                                    |
 
 **Registry auto-update rule**: After every UPDATE PROCESS session, run:
+
 ```bash
 find process/context -name '*.md' | sort
 find process/features -name '*.md' | sort
 ```
+
 Compare the output against `process/context/all-context.md`, group `all-*.md` entrypoints, and the registry table above. For any file present on disk but missing from the router/index, add it with a one-line description derived from the first heading and overview paragraph. Edit this agent file directly only when the set of durable context entrypoints changes.
 
 **Context grouping rule**: If a topic has 3+ durable docs, a context file exceeds roughly 800 lines with separable subtopics, or multiple agents repeatedly need one slice of a large context file, propose a new context group. Do not move files without user approval. After any context grouping change, run:
+
 ```bash
 node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
 ```
 
 **Cross-surface mirror validation**:
 If workflow/process/agent/skill files changed, run:
+
 ```bash
 node .claude/skills/ag-audit-vc/scripts/validate-agent-parity.mjs
 node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs
@@ -468,6 +499,7 @@ git mv {feature}/reports/{artifact-name} {feature}/completed/{slug}_{date}/{arti
 **Required phase report structure:**
 
 Every phase report MUST begin with YAML frontmatter:
+
 ```yaml
 ---
 phase: [phase-name-slug]
@@ -481,18 +513,23 @@ plan: [path/to/plan-file.md]
 Then include these named sections (all 9 required, in this order):
 
 ### What Was Done
+
 [Concrete list of what was actually implemented or changed this phase — practice, not a restatement of the plan checklist.]
 
 ### What Was Skipped/Deferred
+
 [Plan items intentionally not done this phase, with why; each deferred item → a backlog NOTE.]
 
 ### Test Gate Outcomes
+
 [Each test gate run this phase and its result (green/red/skipped), with the exact command and outcome.]
 
 ### Plan Deviations
+
 [Where execution diverged from the plan, and why. Mid-phase progress notes feed this section. None → state "none".]
 
 ### Test Infra Gaps Found
+
 [Missing/weak test infrastructure discovered this phase that blocks or weakens verification; each → a backlog NOTE.]
 
 ### SPEC Achievement
@@ -500,26 +537,32 @@ Then include these named sections (all 9 required, in this order):
 After execution, score each SPEC acceptance criterion (from the locked `*_SPEC_*.md`) as **met** or **unmet**. Each unmet criterion → a backlog NOTE. Record results under a `## SPEC Gaps` heading in the phase report. The SPEC is frozen — never edit it; gaps go to backlog only. (This wires the scoring behavior for the `## SPEC Gaps` heading; do NOT confuse it with closeout/archival-readiness drift scoring, which is a separate concern.)
 
 ### Closeout Packet
+
 [The ag-generate-closeout packet for this phase (the 9-item schema). Reference or inline it here.]
 
 ### Forward Preview
 
 #### Test Infra Found
+
 [List test infra changes discovered or implemented this phase]
 
 #### Blast Radius Changes
+
 [Files added/modified/removed vs. original plan blast radius]
 
 #### Commands to Stay Green
+
 [Exact commands the next phase must keep green]
 
 #### Dependency Changes
+
 [New deps added, removed, or version-changed this phase]
 
 **Two-commit content rule:**
+
 - Source commit (already completed at EVL-green by ag-git-manager): implementation files only — source code, config, schema changes. Do NOT include in the process commit.
 - Process commit (this step): archived plan file, updated context docs (`process/context/`), phase report (`reports/`), memory notes. Do NOT include implementation files in the process commit.
-If ag-git-manager has not yet made the source commit: emit BLOCKED — EVL-green required before process commit.
+  If ag-git-manager has not yet made the source commit: emit BLOCKED — EVL-green required before process commit.
 
 **Step 4-end: present summary** — after completing all approved changes in Phase 4 (context updates written, plan archived, memory entries created), output the completed UPDATE PROCESS summary directly in chat as a markdown block before proceeding to Phase 5.
 
@@ -530,6 +573,7 @@ If ag-git-manager has not yet made the source commit: emit BLOCKED — EVL-green
 ### Phase 5: Final Review
 
 List all changes made:
+
 - Memory entries created (with titles)
 - Rule files modified (with sections updated)
 - Specific content added/modified
@@ -540,6 +584,7 @@ List all changes made:
 Provide summary of enhancement impact.
 
 **Required final checklist**:
+
 - Claude surface updated or explicitly unchanged with reason
 - Codex surface updated or explicitly unchanged with reason
 - `process/` docs updated or explicitly unchanged with reason
@@ -567,6 +612,7 @@ When archiving completed plans, follow this sequence:
 5. **Verify & Cleanup**: After move, verify source folder is gone
 
 **Implementation sequence**:
+
 ```bash
 # 1. All search_replace operations to update plan status
 # (completed in Phase 4)
@@ -593,6 +639,7 @@ ls process/general-plans/active/{slug}_{date}/  # should fail (folder gone)
 
 **A5 INTERIM ESCALATION (drift score 3+):**
 Before archiving when drift is HIGH:
+
 1. List the top 3 gap items that triggered the high drift score
 
    **Gap items for A5 selection:** (1) Each unresolved checklist deviation in the plan file; (2) Each Known-Gap test tier from validate-contract; (3) Each backlog note created during EVL. **Ranking:** product-breakage > test-breakage > harness-drift > stale-command-drift. Top 3 = first 3 in ranked list. If <3 total: list all and proceed.
@@ -606,6 +653,7 @@ Before archiving when drift is HIGH:
 **Under /goal autonomous execution:** Drift 3+ → automatically create follow-up plan stubs for gap items (do NOT spawn ag-execute-agent autonomously without PVL validation). Archive the current plan. Follow-up stub is the forward path.
 
 **Closeout rule**:
+
 - UPDATE PROCESS is the default archival/context-reconciliation path after non-trivial EXECUTE work.
 - If the selected plan is not genuinely ready to archive, say so explicitly and leave it in `active/`.
 - If cleanup debt is broader than the selected plan, suggest `ag-audit-plans` as a follow-up maintenance step rather than silently normalizing unrelated plans.
@@ -620,6 +668,7 @@ Before archiving when drift is HIGH:
 ## Autonomous /goal Execution Rules
 
 During `/goal` phase program execution, ag-update-process-agent proceeds on its own recommendation without user approval:
+
 - Write phase reports autonomously
 - Update context docs autonomously
 - Archive completed plans autonomously
@@ -627,6 +676,7 @@ During `/goal` phase program execution, ag-update-process-agent proceeds on its 
 - Update umbrella execution state autonomously
 
 Blocked items go to backlog — always find a path to proceed. Never hard-stop on a blocked item when a backlog path exists. Only pause for:
+
 - Irreversible infrastructure or data operations not covered by the plan
 - Outward-facing changes (emails, webhooks, billing) not covered by the contract
 - Explicit user instructions to stop
@@ -647,9 +697,9 @@ terminal step that closes each phase).
 - 5. **EXECUTE** — ag-execute-agent: per-section Level-1 test gates green.
 - 6. **EVL** — all EVL gates green; follow-up stubs registered; EVL handoff summary written.
 - 7. **UPDATE PROCESS** — this agent: write the phase report, update the umbrella
-  `## Current Execution State` (overwrite, not append), archive the plan when ready, update context
-  docs, and commit. Fire Tier-0 intent restatement at entry. Emit the PHASE_COMPLETE signal so the
-  orchestrator advances to the next phase's Step 1 (RESEARCH).
+     `## Current Execution State` (overwrite, not append), archive the plan when ready, update context
+     docs, and commit. Fire Tier-0 intent restatement at entry. Emit the PHASE_COMPLETE signal so the
+     orchestrator advances to the next phase's Step 1 (RESEARCH).
 
 The hard-test-gate vocabulary (vacuous-green ban / REQ-TEST-LINK / TEST-SCENARIO-DISCOVERY) the
 closeout SPEC-Achievement scoring honors is defined by the Phase 4 gate sections in this agent
@@ -680,6 +730,7 @@ Never skip Phase 3 approval collection in interactive (non-/goal) runs: present 
 ## Example Update Process Session
 
 **Good**:
+
 ```
 User: "ENTER UPDATE PROCESS MODE"
 
@@ -741,6 +792,7 @@ UPDATE PROCESS complete. Ready for next task.
 ```
 
 **Good — phase program closeout**:
+
 ```text
 User: "ENTER UPDATE PROCESS MODE"
 
@@ -763,6 +815,7 @@ Approved updates:
 ## Violation Prevention
 
 This mode is systematic. Follow all 6 phases in order:
+
 - Don't skip Phase 3 approval collection
 - Don't implement before getting approval
 - Don't forget to update plan and context when applicable
@@ -791,7 +844,8 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted under /goal before returning, before status block):
+
 - `PHASE_COMPLETE: UPDATE PROCESS — [phase name] archived; phase report written; process commit invoked. Proceed to next phase Step 0.`
-(Orchestrator matches on prefix `PHASE_COMPLETE: UPDATE PROCESS` — suffix is informational. See §Completion for full spec.)
+  (Orchestrator matches on prefix `PHASE_COMPLETE: UPDATE PROCESS` — suffix is informational. See §Completion for full spec.)
 
 Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

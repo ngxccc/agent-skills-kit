@@ -29,7 +29,7 @@ This skill defines the **only acceptable pattern** for any configuration that co
 1. **Construct the Const**: Define your runtime configuration list using `as const` to freeze the keys at compile time.
 2. **Derive the Type**: Map over the keys of the typeof const config (e.g. `[K in keyof typeof CONFIG]`) to construct your TypeScript types dynamically.
 3. **Consume in Queries and UI**: Pass the runtime const directly into database queries and validate return values using `satisfies` with the derived type.
-4. **Enforce Clean Comments**: Write self-documenting code and only use comments tagged with the Better Comments Tag Dictionary to explain the *why* of config settings.
+4. **Enforce Clean Comments**: Write self-documenting code and only use comments tagged with the Better Comments Tag Dictionary to explain the _why_ of config settings.
 
 ## Core Rule (Strict)
 

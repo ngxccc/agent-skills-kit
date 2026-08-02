@@ -13,7 +13,11 @@ const colors = {
 
 const primaryDesignDir = path.resolve("docs/design");
 const fallbackDesignDir = path.resolve("second-brain/Docs/Design");
-const designDir = fs.existsSync(primaryDesignDir) ? primaryDesignDir : (fs.existsSync(fallbackDesignDir) ? fallbackDesignDir : primaryDesignDir);
+const designDir = fs.existsSync(primaryDesignDir)
+  ? primaryDesignDir
+  : fs.existsSync(fallbackDesignDir)
+    ? fallbackDesignDir
+    : primaryDesignDir;
 let failures = 0;
 
 function logError(file, message) {
@@ -29,14 +33,18 @@ if (!fs.existsSync(designDir)) {
   fs.mkdirSync(designDir, { recursive: true });
 }
 
-const files = fs.readdirSync(designDir).filter(f => f.endsWith(".md"));
+const files = fs.readdirSync(designDir).filter((f) => f.endsWith(".md"));
 
 if (files.length === 0) {
-  console.log(`${colors.yellow}Warning: No Design Doc files found in docs/design or second-brain/Docs/Design.${colors.reset}`);
+  console.log(
+    `${colors.yellow}Warning: No Design Doc files found in docs/design or second-brain/Docs/Design.${colors.reset}`,
+  );
   process.exit(0);
 }
 
-console.log(`${colors.cyan}Auditing ${files.length} System Design & Workflow Documents...${colors.reset}\n`);
+console.log(
+  `${colors.cyan}Auditing ${files.length} System Design & Workflow Documents...${colors.reset}\n`,
+);
 
 const requiredSections = [
   "Overview & Context",
@@ -52,7 +60,10 @@ for (const file of files) {
 
   // 1. Check filename format (e.g., booking-payment-workflow.md or feature-topic-design.md)
   if (!/^[a-z0-9-]+(-workflow|-design)?\.md$/.test(file)) {
-    logError(file, "Filename must be kebab-case, e.g., 'booking-payment-workflow.md'");
+    logError(
+      file,
+      "Filename must be kebab-case, e.g., 'booking-payment-workflow.md'",
+    );
   }
 
   // 2. Check for H1 Title
@@ -75,9 +86,13 @@ for (const file of files) {
 
 console.log(`\n${"─".repeat(50)}`);
 if (failures > 0) {
-  console.error(`\n${colors.red}${colors.bold}Audit failed with ${failures} error(s).${colors.reset}`);
+  console.error(
+    `\n${colors.red}${colors.bold}Audit failed with ${failures} error(s).${colors.reset}`,
+  );
   process.exit(1);
 } else {
-  console.log(`\n${colors.green}${colors.bold}All Design Docs passed validation cleanly.${colors.reset}`);
+  console.log(
+    `\n${colors.green}${colors.bold}All Design Docs passed validation cleanly.${colors.reset}`,
+  );
   process.exit(0);
 }

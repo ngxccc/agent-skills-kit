@@ -50,6 +50,7 @@ Restate the task received from the orchestrator. If the orchestrator already ran
 **First action — context and plan discovery (joint):**
 
 Invoke `ag-context-discovery` as the very first action before reading any file:
+
 - Load `process/context/all-context.md` and follow its routing table to the smallest relevant context group files.
 - When verification, test, or runtime checks are part of the task, follow the routing chain: `process/context/tests/all-tests.md` → relevant deeper file (e.g. `container-e2e.md`) before proposing steps.
 
@@ -124,7 +125,7 @@ After producing the approach decision, invoke `ag-agent-strategy-compare` to eva
 2. Scan active-plan inventory before creating anything:
    - `process/general-plans/active/`
    - `process/features/*/active/`
-   Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` plan shapes as valid compatibility inputs.
+     Treat direct `*_PLAN_*.md`, legacy `PLAN.md`, legacy `plan.md`, and `phase-*` plan shapes as valid compatibility inputs.
 3. Reuse or resume an existing relevant plan when one already exists instead of duplicating it.
 4. If the work belongs to an existing feature, or clearly requires feature-scoped storage, use `process/features/{feature}/active/{slug}_{date}/` task folder. Sibling `reports/` dir is deprecated for new writes.
    **Task-folder artefact colocation:** Across every compressed phase (PLAN/VALIDATE/EXECUTE), all artefacts — plan, spec, reports, references, closeout notes — go INSIDE this task's `{slug}_{date}/` folder using `{slug}_{TYPE}_{date}.md` (TYPE ∈ PLAN|SPEC|REPORT|REF). Never write to the deprecated sibling `reports/`/`references/` dirs or any ad-hoc location — the whole folder moves as a unit on archive.
@@ -134,13 +135,7 @@ After producing the approach decision, invoke `ag-agent-strategy-compare` to eva
 
 **3+ phase program — agent-team required:** When research/innovate indicates 3+ phase plans are needed, `ag-agent-strategy-compare` MUST recommend **agent-team** (not parallel-subagents or sequential) per the Phase Program Exception — agent team members must communicate to coordinate blast-radius non-overlap and dependency declarations across phases. Fast-mode CANNOT compress a 3+ phase program into one pass — it must stop after making the phase-program recommendation and route to normal PLAN mode.
 
-**Phase insertion:** When identifying that a new phase must be inserted between existing phases mid-program: follow the Phase Insertion Renumbering protocol (behavior-reference Section 8) — update ## Phase Ordering in all plans, re-annotate registry entries, re-number Context Envelope phase fields, and emit PHASE_RENUMBERED signals. Coordinate blast-radius claims via the registry token protocol before writing new phase entries.
-8. **For the 2-3 highest-risk checklist items:** invoke `ag-scenario` to generate edge cases across the risk dimensions for those items. Incorporate findings into the checklist and plan mitigations.
-9. **For COMPLEX plans that introduce a new service or multi-package architecture:** invoke `ag-sequential-thinking` to map the data flow or service topology as a numbered step sequence, then invoke `ag-scenario` to identify cross-service failure modes. Document findings as a prose architecture note in the plan.
-10. Generate checklist with specific file paths.
-11. Surface one exact selected plan file path back to the user before the pause.
-12. Ensure new/touched direct plans include `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`.
-13. Display implementation checklist.
+**Phase insertion:** When identifying that a new phase must be inserted between existing phases mid-program: follow the Phase Insertion Renumbering protocol (behavior-reference Section 8) — update ## Phase Ordering in all plans, re-annotate registry entries, re-number Context Envelope phase fields, and emit PHASE_RENUMBERED signals. Coordinate blast-radius claims via the registry token protocol before writing new phase entries. 8. **For the 2-3 highest-risk checklist items:** invoke `ag-scenario` to generate edge cases across the risk dimensions for those items. Incorporate findings into the checklist and plan mitigations. 9. **For COMPLEX plans that introduce a new service or multi-package architecture:** invoke `ag-sequential-thinking` to map the data flow or service topology as a numbered step sequence, then invoke `ag-scenario` to identify cross-service failure modes. Document findings as a prose architecture note in the plan. 10. Generate checklist with specific file paths. 11. Surface one exact selected plan file path back to the user before the pause. 12. Ensure new/touched direct plans include `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, and `Resume and Execution Handoff`. 13. Display implementation checklist.
 
 **Phase-end — strategy compare:**
 
@@ -168,6 +163,7 @@ After PLAN, run the VALIDATE sequence inline before pausing:
 9. If V7 gate returns CONDITIONAL (not BLOCKED):
    1. Emit a `SUPPLEMENT REQUEST:` block listing each concern as `- Gap [N]: Section [section-id] | Concern: [text] | Severity: CONCERN | Suggested addition: [1-sentence]`.
    2. Perform PVL-supplement steps **inline** using fast-mode's own planning capability — do NOT spawn a separate ag-plan-agent subagent. Fast-mode runs in compressed single-context mode and has direct plan access. Steps: (a) parse the SUPPLEMENT REQUEST block for in-scope sections; (b) update the plan file with the supplement (file-scope bright-line applies — out-of-scope gaps get NEEDS_CONTEXT and are carried to Open Gaps); **Backlog NOTE for out-of-scope gaps:** Before carrying to Open Gaps, write a backlog NOTE for each out-of-scope gap to `process/features/{feature}/backlog/` (or `process/general-plans/backlog/`). Use the format from ag-validate-agent.md V7 sub-case step 1:
+
 ```
 ## [gap name] — NEW PLAN REQUIRED
 Date: [YYYY-MM-DD]
@@ -176,10 +172,9 @@ Gap: [description]
 Files outside blast-radius: [list — or 'N/A']
 New API surface: [list — or 'N/A']
 ```
-Path routing: feature-scoped → `process/features/{feature}/backlog/`; general-plans → `process/general-plans/backlog/`. (c) write `## Inner Loop Refresh Note` if any sections changed. Then proceed to step 9.3.
-   3. Re-run [VALIDATE] V1-V7 inline after supplement.
-   4. If CONDITIONAL after supplement: accept and proceed to MANDATORY PAUSE.
-   Under /goal autonomous execution: auto-supplement + re-run once; if still CONDITIONAL: accept autonomously and proceed.
+
+Path routing: feature-scoped → `process/features/{feature}/backlog/`; general-plans → `process/general-plans/backlog/`. (c) write `## Inner Loop Refresh Note` if any sections changed. Then proceed to step 9.3. 3. Re-run [VALIDATE] V1-V7 inline after supplement. 4. If CONDITIONAL after supplement: accept and proceed to MANDATORY PAUSE.
+Under /goal autonomous execution: auto-supplement + re-run once; if still CONDITIONAL: accept autonomously and proceed.
 
 See `process/development-protocols/ag-system-behavior/01-overview.md` §VALIDATE Gate for skip conditions,
 gate verdicts, and BLOCKED escalation path. Full V1–V7 sequence: invoke `ag-validate-findings`.
@@ -248,6 +243,7 @@ The standard PHASE_COMPLETE: FAST signal fires ONLY after full EXECUTE completio
 ## Phase Lock Enforcement
 
 Even in FAST mode:
+
 - Planning creates plan file only.
 - Planning should follow the `ag-generate-plan` skill's artifact rules.
 - VALIDATE runs between PLAN and the pause; the pause only fires after VALIDATE completes and the validate-contract is written.
@@ -260,10 +256,12 @@ Even in FAST mode:
 ## Difference from Default Mode
 
 **Default Mode**:
+
 - User confirms after EACH mode transition
 - RESEARCH → (confirm) → INNOVATE → (confirm) → PLAN → (confirm) → EXECUTE
 
 **FAST Mode**:
+
 - RESEARCH + SPEC + INNOVATE + PLAN + VALIDATE happen automatically in one response
 - Then **PAUSE** for confirmation (after validate-contract is written)
 - EXECUTE only after approval
@@ -311,6 +309,7 @@ Then wait for user approval before continuing.
 ## Example Fast Mode Session
 
 **Good**:
+
 ```
 User: "ENTER FAST MODE - add dark mode toggle"
 
@@ -400,6 +399,7 @@ Implementation complete. Dark mode toggle functional.
 ```
 
 **Bad**:
+
 ```
 User: "ENTER FAST MODE - add dark mode"
 
@@ -419,6 +419,7 @@ Implementing dark mode now...
 ## Tool Usage
 
 **Full Access Available** (like EXECUTE mode):
+
 - All phases use appropriate tools
 - RESEARCH: Read, Grep, Glob, Bash
 - INNOVATE: Read, Grep, Glob
@@ -431,6 +432,7 @@ Use feature-scoped `Reports:` and `Plans:` handoff paths when `Feature:` is pres
 ## Violation Prevention
 
 If you catch yourself:
+
 - Skipping phases
 - Implementing before approval
 - Not pausing after VALIDATE
@@ -449,13 +451,15 @@ After EXECUTE phase and self-review:
 3. Optionally suggest UPDATE PROCESS mode if deviations exist
 
 **Completion signal** (emitted after EXECUTE sub-phase completes under /goal):
+
 - Happy path: `PHASE_COMPLETE: FAST — plan path: [path], exit status: [DONE | DONE_WITH_CONCERNS]`
 - BLOCKED: `PHASE_COMPLETE: FAST — gate: BLOCKED; plan: [path]; stop reason: [reason]`
-(Full spec in §Autonomous /goal Execution Rules.)
+  (Full spec in §Autonomous /goal Execution Rules.)
 
 ## Ready for Next Phase
 
 After completion:
+
 - User: "ENTER UPDATE PROCESS MODE" → Capture learnings
 - Or move to next feature/task
 
@@ -472,8 +476,9 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted after EXECUTE sub-phase completes under /goal, before status block):
+
 - Happy path: `PHASE_COMPLETE: FAST — plan path: [path], exit status: [DONE | DONE_WITH_CONCERNS]`
 - BLOCKED: `PHASE_COMPLETE: FAST — gate: BLOCKED; plan: [path]; stop reason: [reason]`
-(See §Completion and §Autonomous /goal Execution Rules for full spec.)
+  (See §Completion and §Autonomous /goal Execution Rules for full spec.)
 
 Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

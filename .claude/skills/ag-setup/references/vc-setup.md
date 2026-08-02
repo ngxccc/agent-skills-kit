@@ -10,15 +10,15 @@ Detailed instructions for each phase of the ag-setup skill, including interactiv
 
 After running DETECT, classify the project before choosing a flow:
 
-| Signal | Classification |
-|--------|---------------|
-| No `process/` directory, no `all-context.md`, no meaningful CLAUDE.md content | **New project** -- use Flow A |
-| `process/` exists but contains ONLY kit-installed files (`_seeds/`, `development-protocols/`, `context/generated-skills-catalog.json`) and no user content (`all-context.md` absent, `general-plans/` absent, `features/` absent or empty) | **New project** -- use Flow A (install.sh ran but ag-setup has not yet run; this is a fresh install) |
-| Has `process/` directory with user content (e.g. `all-context.md`, `general-plans/` with plans, `features/` with entries) | **Existing project** -- use Flow B |
-| Has `all-context.md` with real (non-placeholder) content | **Existing project** -- use Flow B |
-| Has `all-context.md` but its non-comment body is entirely placeholder/stub (e.g. contains `<!-- STUDY:` markers throughout, all sections say "pending", no real stack or routing content) | **New project** -- use Flow A (SCAFFOLD ran but STUDY was interrupted; treat as fresh and continue from STUDY) |
-| Has CLAUDE.md with project-specific sections (beyond managed protocol) | **Existing project** -- use Flow B |
-| Has `.agent-skills-kit-backup/` (just ran install.sh over an existing setup) | **Existing project** -- use Flow B |
+| Signal                                                                                                                                                                                                                                     | Classification                                                                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| No `process/` directory, no `all-context.md`, no meaningful CLAUDE.md content                                                                                                                                                              | **New project** -- use Flow A                                                                                  |
+| `process/` exists but contains ONLY kit-installed files (`_seeds/`, `development-protocols/`, `context/generated-skills-catalog.json`) and no user content (`all-context.md` absent, `general-plans/` absent, `features/` absent or empty) | **New project** -- use Flow A (install.sh ran but ag-setup has not yet run; this is a fresh install)           |
+| Has `process/` directory with user content (e.g. `all-context.md`, `general-plans/` with plans, `features/` with entries)                                                                                                                  | **Existing project** -- use Flow B                                                                             |
+| Has `all-context.md` with real (non-placeholder) content                                                                                                                                                                                   | **Existing project** -- use Flow B                                                                             |
+| Has `all-context.md` but its non-comment body is entirely placeholder/stub (e.g. contains `<!-- STUDY:` markers throughout, all sections say "pending", no real stack or routing content)                                                  | **New project** -- use Flow A (SCAFFOLD ran but STUDY was interrupted; treat as fresh and continue from STUDY) |
+| Has CLAUDE.md with project-specific sections (beyond managed protocol)                                                                                                                                                                     | **Existing project** -- use Flow B                                                                             |
+| Has `.agent-skills-kit-backup/` (just ran install.sh over an existing setup)                                                                                                                                                               | **Existing project** -- use Flow B                                                                             |
 
 **Classification is based on USER content, not kit-installed files.** `_seeds/`, `development-protocols/`, and `context/generated-skills-catalog.json` are always present after install.sh and do not indicate an existing project setup. Check for user-created files before routing to Flow B.
 
@@ -47,17 +47,20 @@ This is not a checklist — it is an open-ended conversation that continues unti
 Start broad, then go deeper based on answers. Ask follow-ups on anything vague or interesting. Do not move on after a fixed number of questions — keep going until both you and the user are satisfied that nothing important is missing.
 
 **Round 1 — Project identity (always start here):**
+
 - "What is this project? Give me a brief description in your own words."
 - "Who uses it? Who is the target audience?"
 - Purpose: populates the project description in all-context.md. A human description is always better than what a code scan infers.
 
 **Round 2 — Architecture and scope (adapt based on Round 1):**
+
 - "What are the main product areas or features?"
 - "How is the codebase organized? Any key services, packages, or modules I should know about?"
 - "What are the most important or complex parts of the codebase?"
 - Purpose: guides feature folder creation, architecture sections, and STUDY focus areas.
 
 **Round 3 — Workflow and conventions (adapt based on what you've learned):**
+
 - "Do you work solo or with a team?"
 - "Any coding conventions, naming patterns, or architectural decisions that are important?"
 - "How do you handle testing? CI/CD? Deployments?"
@@ -65,6 +68,7 @@ Start broad, then go deeper based on answers. Ask follow-ups on anything vague o
 - Purpose: populates Key Patterns and Conventions, testing context, and infrastructure sections.
 
 **Round 4+ — Follow-ups (as many rounds as needed):**
+
 - Follow up on anything vague: "You mentioned [X] — can you tell me more about how that works?"
 - Probe pain points: "Are there any pain points, tech debt, or things you want agents to be careful about?"
 - Catch-all: "Anything else that is important context for working on this codebase?"
@@ -125,6 +129,7 @@ Record MISSING directories in the PRESENT & ASK findings under "MISSING" so the 
 **Produce an internal assessment:**
 
 For each file/directory found (or expected), classify it as:
+
 - **Good**: has real, detailed, useful content. Keep as-is.
 - **Stale**: has content but it is outdated, incomplete, or has unfilled placeholders. Candidate for update.
 - **Placeholder**: seed template text with no real content. Candidate for replacement.
@@ -159,6 +164,7 @@ LAYOUT CHANGES (reorganization I would suggest):
 ```
 
 **Wait for the user to respond.** They may:
+
 - Approve everything: "looks good, go ahead"
 - Selectively approve: "update the stale ones but don't add the new feature folders"
 - Reject changes: "leave everything as-is, just validate"
@@ -169,6 +175,7 @@ Respect their choices. Only proceed with approved changes.
 **Then have the full discovery conversation from Flow A (Step 2: ASK),** regardless of how much existing context you found. Existing context files may be stale, incomplete, or written by someone else. The user's live answers are always more current and more valuable.
 
 Start with: "I've read your existing context. Let me verify my understanding and fill in the gaps." Then:
+
 - Summarize what you learned from existing files.
 - Ask: "Is this still accurate? What's changed since these docs were written?"
 - Work through the same Round 1-4 question areas from Flow A, skipping anything the existing context already covers well and the user confirms is current.
@@ -377,12 +384,12 @@ process/
 
 ### Migration Mode Decision Logic
 
-| Signal | Mode |
-|--------|------|
-| No `process/` directory exists | Fresh |
-| `process/` exists but no `development-protocols/` | Merge |
-| `process/` exists with `development-protocols/` | Refresh |
-| `process/context/all-context.md` exists | Merge or Refresh (preserve it) |
+| Signal                                            | Mode                           |
+| ------------------------------------------------- | ------------------------------ |
+| No `process/` directory exists                    | Fresh                          |
+| `process/` exists but no `development-protocols/` | Merge                          |
+| `process/` exists with `development-protocols/`   | Refresh                        |
+| `process/context/all-context.md` exists           | Merge or Refresh (preserve it) |
 
 ### Fresh Mode
 
@@ -403,17 +410,18 @@ Preserve existing content, migrate old layouts, fill gaps (read from `process/_s
 
 Detect old directory layouts and reorganize them into the harness standard structure. **Show every planned move to the user and wait for approval before executing.**
 
-| Old Layout | Migration Action |
-|------------|-----------------|
-| `process/plans/` exists, no `process/general-plans/` | Create `process/general-plans/active/` and `process/general-plans/completed/`. For each file in `process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `process/plans/`. |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`. Remove empty `process/reports/`. |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/backlog/`. Remove empty `process/skills/`. |
-| Example PRDs at old locations (under `process/context/`, `process/context/planning/`, or `process/development-protocols/references/`) | Move to `.claude/skills/ag-generate-plan/references/`. |
-| process/context/backlog.md | Move to `process/general-plans/backlog/backlog.md` |
-| Flat `*_PLAN_*.md` file directly in `process/general-plans/active/` or `process/features/*/active/` (pre-v3.0.0 layout) | Create a `{slug}_{date}/` task subfolder and move the plan file inside it. Scan the plan for "COMPLETE"/"DONE" markers; if found, create under `completed/{slug}_{date}/` instead. Never overwrite if a task folder with the same name exists — add `-migrated` suffix. |
+| Old Layout                                                                                                                                                    | Migration Action                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `process/plans/` exists, no `process/general-plans/`                                                                                                          | Create `process/general-plans/active/` and `process/general-plans/completed/`. For each file in `process/plans/`: scan for "COMPLETE", "DONE", or checkmark markers -- move matches to `completed/`, move the rest to `active/`. Remove empty `process/plans/`.                              |
+| `process/reports/` exists at top level                                                                                                                        | Move `process/reports/*` to `process/general-plans/reports/`. Remove empty `process/reports/`.                                                                                                                                                                                               |
+| `process/skills/` exists at top level                                                                                                                         | Move `process/skills/*` to `process/general-plans/backlog/`. Remove empty `process/skills/`.                                                                                                                                                                                                 |
+| Example PRDs at old locations (under `process/context/`, `process/context/planning/`, or `process/development-protocols/references/`)                         | Move to `.claude/skills/ag-generate-plan/references/`.                                                                                                                                                                                                                                       |
+| process/context/backlog.md                                                                                                                                    | Move to `process/general-plans/backlog/backlog.md`                                                                                                                                                                                                                                           |
+| Flat `*_PLAN_*.md` file directly in `process/general-plans/active/` or `process/features/*/active/` (pre-v3.0.0 layout)                                       | Create a `{slug}_{date}/` task subfolder and move the plan file inside it. Scan the plan for "COMPLETE"/"DONE" markers; if found, create under `completed/{slug}_{date}/` instead. Never overwrite if a task folder with the same name exists — add `-migrated` suffix.                      |
 | `process/general-plans/reports/`, `process/general-plans/references/`, or `process/features/*/reports/`, `process/features/*/references/` sibling directories | Auto-migrate every **safe** legacy artifact into the relevant task folder in the same scope. Delete the legacy dir if it becomes empty. Leave only unresolved artifacts behind, list them in LAYOUT CHANGES, and do NOT create new sibling `reports/` or `references/` dirs during scaffold. |
 
 **Migration rules:**
+
 - Never overwrite existing files at the destination. If a same-name file exists, keep both (rename the migrated copy with a `-migrated` suffix).
 - Print every move action so the user can verify.
 - After all moves, remove empty source directories.
@@ -467,7 +475,7 @@ Update protocols, preserve user content (read from `process/_seeds/`, never modi
    - `process/features/`
    - `process/context/planning/`
    - `process/context/tests/`
-   Skip directories that already exist.
+     Skip directories that already exist.
 2. Overwrite development protocol files from `process/development-protocols/` (these are managed system files that live in the real directory, not in `_seeds/`)
 3. Add missing seed files: for each `.seed` file in `process/_seeds/`, if the corresponding target (same path with the `.seed` extension removed) does NOT exist, copy it with `.seed` removed and `{{project_name}}` replaced with the detected project name. Never overwrite an existing target file.
 4. Add missing `_GUIDE.md` files from `process/_seeds/`
@@ -478,8 +486,8 @@ Update protocols, preserve user content (read from `process/_seeds/`, never modi
 
 The only placeholder used in seed templates is:
 
-| Placeholder | Source |
-|-------------|--------|
+| Placeholder        | Source                    |
+| ------------------ | ------------------------- |
 | `{{project_name}}` | `package.json` name field |
 
 All other content is populated by the STUDY phase using real codebase analysis, not string replacement.
@@ -509,12 +517,12 @@ Spawn a single subagent that reads all existing `process/` content and produces 
 
 Spawn 4 parallel subagents. Each produces a structured findings report as its output.
 
-| Subagent | Task | Output |
-|----------|------|--------|
+| Subagent                          | Task                                                                                                                              | Output                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
 | A: Architecture and Stack Scanner | Source directory scan, tech stack detection with versions, import alias mapping, env var cataloging, key patterns and conventions | Structured findings: stack details, directory tree, aliases, entry points, patterns |
-| B: Test and Quality Scanner | Test runners, config files, test directories, test commands per package/workspace | Structured findings: runners, configs, commands, known quirks |
-| C: Context Group Detector | Scan for database, auth, CI/CD, container, UI, workflow signals using the detection table below | List of recommended context groups with evidence for each |
-| D: Feature Area Detector | Route groups, package names, README features, doc structure | List of recommended feature folders with evidence for each |
+| B: Test and Quality Scanner       | Test runners, config files, test directories, test commands per package/workspace                                                 | Structured findings: runners, configs, commands, known quirks                       |
+| C: Context Group Detector         | Scan for database, auth, CI/CD, container, UI, workflow signals using the detection table below                                   | List of recommended context groups with evidence for each                           |
+| D: Feature Area Detector          | Route groups, package names, README features, doc structure                                                                       | List of recommended feature folders with evidence for each                          |
 
 Wait for all Round 1 subagents to complete. Present the combined detection summary to the user. User confirms or adjusts the detected groups and features before Round 2.
 
@@ -522,12 +530,12 @@ Wait for all Round 1 subagents to complete. Present the combined detection summa
 
 Spawn up to 4 parallel subagents. Each writes to a distinct set of files with no overlap.
 
-| Subagent | Consumes | Writes to |
-|----------|----------|-----------|
-| E: all-context.md Writer | Findings from A + C + user answers | `process/context/all-context.md` |
-| F: all-tests.md Writer | Findings from B | `process/context/tests/all-tests.md` |
+| Subagent                            | Consumes                               | Writes to                                                                                                                                                                                                                                                                                                                                        |
+| ----------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| E: all-context.md Writer            | Findings from A + C + user answers     | `process/context/all-context.md`                                                                                                                                                                                                                                                                                                                 |
+| F: all-tests.md Writer              | Findings from B                        | `process/context/tests/all-tests.md`                                                                                                                                                                                                                                                                                                             |
 | G: ag-generate-context (delegation) | Findings from C (approved-groups list) | DELEGATION: invoke `ag-generate-context` skill in `setup-delegation` mode, passing the approved-groups list from Subagent C. Context-group detection and per-group file authoring is owned by `ag-generate-context` — see `.claude/skills/ag-generate-context/references/generate-context.md` for the detection table and per-mode instructions. |
-| H: Feature Folder Scaffolder | Findings from D + user answers | `process/features/{feature}/` dirs + `_GUIDE.md` files |
+| H: Feature Folder Scaffolder        | Findings from D + user answers         | `process/features/{feature}/` dirs + `_GUIDE.md` files                                                                                                                                                                                                                                                                                           |
 
 Wait for all Round 2 subagents to complete. Proceed to VALIDATE.
 
@@ -540,11 +548,13 @@ Skip parallel delegation. A single agent can handle the entire STUDY phase seque
 The agent (or Subagent A) must scan and document:
 
 **Source directory scan:**
+
 - List all top-level source directories (src/, lib/, app/, pages/, etc.)
 - For monorepos: list all workspace packages with their purpose
 - Identify entry points (main files, route handlers, server starts)
 
 **Tech stack specifics:**
+
 - Framework + version (e.g., "Next.js 15 with App Router", not just "Next.js")
 - Runtime (Node, Bun, Deno) + version from `package.json` engines or `.node-version`
 - Database (ORM + DB type from dependencies + config files)
@@ -553,16 +563,19 @@ The agent (or Subagent A) must scan and document:
 - API layer (REST/GraphQL/tRPC) from dependencies + route files
 
 **Import alias mapping:**
+
 - Read `tsconfig.json` / `jsconfig.json` paths field
 - Read `vite.config` resolve.alias if present
 - Document every alias -> actual path
 
 **Environment variables:**
+
 - Scan `.env.example`, `.env.local.example`, or env schema files (e.g., `env.ts`, `env.mjs`)
 - Group by category (auth, database, API keys, URLs)
 - List variable names only, never values
 
 **Key patterns:**
+
 - Error handling convention (throws vs result pattern)
 - State management (Redux, Zustand, Jotai, context)
 - API patterns (REST conventions, middleware chains, RPC)
@@ -584,11 +597,13 @@ Scan these locations for feature identification:
 **Cross-reference with user answers.** If the user named product areas in the ASK step, those are strong signals for feature folders even if the automated scan would not have created them. Ask the user where the code lives if you cannot find it.
 
 **Feature folder creation threshold:**
+
 - Create a feature folder only when the feature has 3+ source files AND is a distinct product area (not a utility)
 - For monorepos: each app or business-logic package is a candidate
 - For single apps: each major route group with its own components/API is a candidate
 
 **Each feature folder gets:**
+
 - `active/`, `completed/`, `backlog/` subdirectories (do NOT create `reports/` or `references/` — these are deprecated sibling dirs; new artifacts go inside task folders)
 - `_GUIDE.md` explaining the feature scope, key files, and current state
 

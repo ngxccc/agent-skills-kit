@@ -22,6 +22,7 @@ Pull the latest agent harness improvements from the remote agent-skills-kit-pro-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 - After bootstrapping a project with `ag-setup` and wanting the latest improvements
 
 ## Workflow
@@ -57,6 +58,7 @@ git clone --local --depth 1 --quiet "$KIT_SOURCE" "$VC_UPDATE_TMPDIR" 2>/dev/nul
 > `VC_KIT_SOURCE` — if set, use this path or URL instead of the official remote. Accepts any value accepted by `git clone`. This enables offline testing (`VC_KIT_SOURCE=/path/to/local/kit`) and forks/pinned versions.
 
 If the clone fails (network error, auth error, repo not found):
+
 - Print the error message.
 - Clean up the temp directory if it was partially created.
 - **Stop.** Do not proceed.
@@ -70,6 +72,7 @@ node "$VC_UPDATE_TMPDIR/resolve-manifest.mjs" --root "$VC_UPDATE_TMPDIR" --json
 ```
 
 Parse the JSON output to extract:
+
 - `files` (string[]) -- resolved managed file paths
 - `merge` (string[]) -- files where user customizations are preserved (not overwritten)
 - `copyIfMissing` (string[]) -- files only installed if they don't already exist locally
@@ -78,6 +81,7 @@ Parse the JSON output to extract:
 - `legacyDeletions` (string[]) -- paths to delete on migration (present in kit v3.0.0+; absent in older kits)
 
 Extract the remote version from the manifest:
+
 ```bash
 node -e "console.log(JSON.parse(require('fs').readFileSync('$VC_UPDATE_TMPDIR/ag-manifest.json','utf8')).version)"
 ```
@@ -109,6 +113,7 @@ node "$VC_UPDATE_TMPDIR/compute-sync-plan.mjs" \
 ```
 
 Parse the JSON output: `{ toAdd, toModify, toDelete, toPreserve, staleWarnings }`.
+
 - `toAdd` — files to copy from kit to project (not yet present or tracked).
 - `toModify` — files to overwrite (tracked, present, content differs).
 - `toDelete` — stale kit files to remove (in old snapshot, not in new ownedPaths, passed namespace guard).
@@ -193,6 +198,7 @@ Do not suppress this warning or fold it into the summary line. It must appear as
 Do NOT proceed until the user explicitly says "apply" (or a clear affirmative like "yes", "go", "do it").
 
 If the user aborts:
+
 - Remove `$VC_UPDATE_TMPDIR`.
 - Print "Update cancelled. No changes made."
 - **Stop.**
@@ -251,6 +257,7 @@ node "$VC_UPDATE_TMPDIR/compute-sync-plan.mjs" \
 ```
 
 `--apply` deterministically executes the computed plan:
+
 - **toAdd / toModify**: `mkdir -p` parent + copy from kit to project. `toPreserve` entries (merge/copyIfMissing survivors) are never touched.
 - **toDelete**: each entry is removed — directories via `rmSync({recursive:true,force:true})`, files via `rmSync({force:true})`.
 - **Empty-parent sweep**: after all deletions, every ancestor directory of every deleted path is walked deepest-first and `rmdirSync`'d if empty. This is the guaranteed cleanup that prevents hollow deprecated skill dirs (e.g. empty `references/`, `scripts/` subdirs) from surviving after a skill is removed.
@@ -265,13 +272,14 @@ Do NOT hand-loop `rm` or `cp` commands — use only the `--apply` invocation abo
 **Part C — Symlinks** (handled separately, unchanged):
 
 For each entry in `symlinks`:
+
 - If a real directory exists at the path: `rm -rf` it first.
 - If a wrong symlink exists: `rm` it first.
 - Create the symlink: `ln -s {target} {path}`
 
 **Part D — Safe legacy layout migration**:
 
-> **Sequencing — safe-migration (Part D) RUNS BEFORE legacyDeletions are applied.** This ordering ensures user report/reference content is moved into task folders *before* the deprecated layout dirs (e.g. `process/general-plans/reports`, `process/_seeds/.../references`) are removed by the manifest's `legacyDeletions` pass. Never delete a deprecated layout dir until Part D has migrated its safe contents — otherwise user content would be lost.
+> **Sequencing — safe-migration (Part D) RUNS BEFORE legacyDeletions are applied.** This ordering ensures user report/reference content is moved into task folders _before_ the deprecated layout dirs (e.g. `process/general-plans/reports`, `process/_seeds/.../references`) are removed by the manifest's `legacyDeletions` pass. Never delete a deprecated layout dir until Part D has migrated its safe contents — otherwise user content would be lost.
 
 After the harness files and symlinks are updated, migrate safe old-layout process artifacts into task folders:
 
@@ -295,6 +303,7 @@ rm -rf "$VC_UPDATE_TMPDIR"
 ```
 
 If `--apply` exits non-zero (permission error, missing kit file):
+
 - Print the error message.
 - Suggest running `chmod` on the affected path or checking file ownership.
 - The command exits 1; do not treat a partial run as success.
@@ -434,6 +443,7 @@ Recommended next step — run the five core validators:
 Kit v3.0.0 introduces the `legacyDeletions` key in `resolveGlob()`'s JSON output (Step 4 above). **This note applies to users who are upgrading FROM a kit v2.x install that still has an OLD SKILL.md** (one that predates v3.0.0 and does not reference `compute-sync-plan.mjs`). When such a user runs `ag-update`, the remote resolver already emits `legacyDeletions` in its JSON output. The current SKILL.md (this file, v3.0.0+) reads and applies that field in Step 6 via `compute-sync-plan.mjs`. No local SKILL.md change is required on the user's side — the update process itself installs the new SKILL.md in the same run.
 
 The one-shot migration on next `ag-update` from kit v3.0.0:
+
 1. Resolver emits `legacyDeletions: [".claude/skills/ag-team", ".claude/skills/ag-chrome-devtools", ...]` in the JSON output.
 2. Step 6 applies those deletions in addition to the normal snapshot diff.
 3. The 11 deprecated skill dirs (ag-team, ag-chrome-devtools, ag-docs, ag-repomix, ag-preview, ag-merge-worktree, ag-tech-graph, ag-watzup, ag-xia, ag-mcp-management, ag-context-engineering) plus 5 deprecated protocol paths are removed from the local install in one pass.
@@ -444,7 +454,6 @@ The one-shot migration on next `ag-update` from kit v3.0.0:
 ## Reference
 
 For detailed algorithm, error handling matrix, and edge cases, see `references/ag-update.md`.
-
 
 ## References
 

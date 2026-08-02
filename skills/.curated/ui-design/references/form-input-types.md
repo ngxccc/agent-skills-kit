@@ -51,13 +51,14 @@ Using `type="text"` for all inputs forces mobile users to switch keyboards manua
 ```
 
 **Input types and their keyboards:**
-| Type | Keyboard shows |
-|------|----------------|
-| `email` | @ symbol prominent |
-| `tel` | Number pad |
-| `url` | .com, / shortcuts |
-| `search` | Search button |
-| `number` | Number pad with +/- |
-| `inputmode="numeric"` | Number pad only |
+
+| Type                  | Keyboard shows      |
+| --------------------- | ------------------- |
+| `email`               | @ symbol prominent  |
+| `tel`                 | Number pad          |
+| `url`                 | .com, / shortcuts   |
+| `search`              | Search button       |
+| `number`              | Number pad with +/- |
+| `inputmode="numeric"` | Number pad only     |
 
 Reference: [web.dev Input Types](https://web.dev/articles/payment-and-address-form-best-practices#input_types)

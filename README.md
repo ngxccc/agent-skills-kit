@@ -37,6 +37,7 @@ _A production-grade meta harness for AI coding agents (Claude Code, Codex, Antig
 </div>
 
 ---
+
 ## 🚀 Quick Start (30 Seconds)
 
 Run the raw CLI binary directly inside your target project directory:
@@ -46,6 +47,7 @@ curl -fsSL https://raw.githubusercontent.com/ngxccc/agent-skills-kit/main/bin/ag
 ```
 
 The CLI automatically detects your technology stack, scaffolds the process directory structure, copies all agent/skill layers, and populates authoritative context entrypoints (`process/context/all-context.md`).
+
 ## 🏛️ Architecture: Architect & Verifier Paradigm
 
 This harness operates on the **Architect & Verifier Paradigm** integrated with the **RIPER-5 Spec-Driven Development System**:
@@ -62,10 +64,10 @@ flowchart TD
 
 ### Risk-Based Tiering Decision Matrix
 
-| Risk Class | Domain & Triggers | Mandatory Protocol & Verification | Required Harness Artifacts |
-| :--- | :--- | :--- | :--- |
+| Risk Class          | Domain & Triggers                                                                             | Mandatory Protocol & Verification                                                                                                                                                     | Required Harness Artifacts                                                                                                                                                 |
+| :------------------ | :-------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **High-Risk Class** | Auth, Billing, DB Schema Migrations, Public APIs, Gateway/Proxy, Secrets, Security Boundaries | **Autonomous Architect & Verifier Protocol** (Phases 0 $\rightarrow$ 6 State Machine, One-Question Grilling, Invariant Freeze, TDD RED-GREEN Counter-Examples, 5-Layer Interrogation) | `<Feature>_<Topic>_Formal_Spec.md`, `risk-gate.json`, `adversarial-validation.json`, `verification.json`, `interrogation-report.json`, `review-decision.json`, `docs/adr/` |
-| **Low-Risk Class** | Formatting, Typos, Cosmetic CSS, Simple UI Components (< 15 lines of code) | **Lightweight FAST MODE** (Direct planning & execution bypass) | Direct plan file |
+| **Low-Risk Class**  | Formatting, Typos, Cosmetic CSS, Simple UI Components (< 15 lines of code)                    | **Lightweight FAST MODE** (Direct planning & execution bypass)                                                                                                                        | Direct plan file                                                                                                                                                           |
 
 ---
 

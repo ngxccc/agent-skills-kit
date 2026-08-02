@@ -43,6 +43,7 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, `Plans`, or o
 ## Phase Program Commit Mode
 
 When operating under /goal phase program execution (canonical commit timing from behavior-reference Section 8):
+
 - ONE commit per phase — after EVL is fully green and follow-up stubs are registered. **Commit timing clarification:** 'After EVL is fully green' means after BOTH EVL AND UPDATE PROCESS complete — not immediately after EVL passes. UPDATE PROCESS writes phase reports, context updates, and archived plans that must be included in the same phase commit bundle. Do not commit at EVL-green and commit again for UPDATE PROCESS artifacts — wait for the full phase cycle to close.
 - Do NOT split by category (feature code / tests / config) — bundle ALL phase changes into a single commit: all source changes from Level 1 + any execute-supplement fixes + follow-up plan stub files + execute-summary file + EVL preliminary packet
 - Commit message format: `phase(N): [phase-plan-title] — EVL green, [N] gates, [N] known-gaps`
@@ -123,6 +124,7 @@ After completing git operations, report one of these status codes:
 **Phase program commit signals (under /goal):**
 After each successful phase program commit, emit:
 `PHASE_COMPLETE: GIT-COMMIT — [source|process] commit complete; SHA: [short-sha]; branch: [branch-name]`
+
 - Source commit: `PHASE_COMPLETE: GIT-COMMIT — source commit complete; SHA: [sha]; branch: [branch]`
 - Process commit: `PHASE_COMPLETE: GIT-COMMIT — process commit complete; SHA: [sha]; branch: [branch]`
 

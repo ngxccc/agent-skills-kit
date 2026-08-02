@@ -73,15 +73,15 @@ Triggered when context already exists and the goal is to bring it up to date.
 
 Use this table to determine which context groups to create during `standalone-full` and `delta` modes (or during ag-setup Round 1 Subagent C scanning — the canonical detection table lives here).
 
-| Project Signal | Context Group | all-*.md Content |
-|---|---|---|
-| Prisma/Drizzle/TypeORM/Sequelize + DB config | `database/` | Schema location, migration commands, client setup, key models |
-| Docker/Dockerfile/docker-compose present | `container/` | Image structure, services, ports, build commands |
-| Auth dependency (Clerk/NextAuth/Auth.js/Passport/Lucia) | `auth/` | Provider, config location, protected routes pattern |
-| CI/CD config (.github/workflows, .circleci, .gitlab-ci) | `cicd/` | Pipeline stages, deployment targets, required secrets |
-| Infrastructure code (terraform, pulumi, CDK, SST) | `infra/` | Provider, resource types, deployment commands |
-| 3+ UI component directories or design system | `uxui/` | Component library, styling approach, design tokens |
-| Workflow/queue system (BullMQ, Temporal, Inngest, etc.) | `workflows/` | Queue config, worker setup, job types |
+| Project Signal                                          | Context Group | all-*.md Content                                              |
+| ------------------------------------------------------- | ------------- | ------------------------------------------------------------- |
+| Prisma/Drizzle/TypeORM/Sequelize + DB config            | `database/`   | Schema location, migration commands, client setup, key models |
+| Docker/Dockerfile/docker-compose present                | `container/`  | Image structure, services, ports, build commands              |
+| Auth dependency (Clerk/NextAuth/Auth.js/Passport/Lucia) | `auth/`       | Provider, config location, protected routes pattern           |
+| CI/CD config (.github/workflows, .circleci, .gitlab-ci) | `cicd/`       | Pipeline stages, deployment targets, required secrets         |
+| Infrastructure code (terraform, pulumi, CDK, SST)       | `infra/`      | Provider, resource types, deployment commands                 |
+| 3+ UI component directories or design system            | `uxui/`       | Component library, styling approach, design tokens            |
+| Workflow/queue system (BullMQ, Temporal, Inngest, etc.) | `workflows/`  | Queue config, worker setup, job types                         |
 
 **Rule:** Only create a group when the project has SUBSTANTIAL content for it — at minimum 2+ source files dedicated to that domain. A single config file is not enough.
 
@@ -149,13 +149,13 @@ When populating `all-context.md` from seed templates or from a fresh scan, write
 2. **Project description**: Use the user's own words when available (from ag-setup's ASK step). Supplement with what the code scan reveals. The user's description should be prominent, not buried.
 3. **Quick Start section**: Keep the generic routing instructions from the template.
 4. **Current Root Entry Points table** and **Current Context Groups table**: do NOT hand-fill these. They live between `<!-- GENERATED:routing -->` markers and are generated from each group doc's frontmatter. First ensure every `all-{group}.md` you wrote has complete frontmatter (`name: context:all-{group}`, `description`, a non-empty `keywords` list of task-vocabulary terms, optional `related: [context:{slug}]` siblings), then run `node .claude/skills/ag-context-discovery/scripts/discover-context.mjs --emit-routing` to populate both tables.
-6. **Task Routing table**: hand-author this (it maps editorial task types → entry points). Fill based on what context groups exist.
-7. **Repository Structure**: Write actual directory tree output (2-3 levels deep, showing key directories and files).
-8. **Technology Stack**: Write specific framework names, versions, and combinations discovered during analysis.
-9. **Key Patterns and Conventions**: Document actual patterns found in the codebase (error handling, state management, API patterns, naming conventions, import aliases). Include conventions the user mentioned.
-10. **Environment and Configuration**: List actual env var groups found (names only, never values).
-11. **Context Group Lifecycle**: Keep the generic instructions from the template.
-12. **Scan Metadata** (add at bottom): include generated timestamp, HEAD from `git rev-parse HEAD` if available, mode (fresh/merge/refresh), and package manager detected.
+5. **Task Routing table**: hand-author this (it maps editorial task types → entry points). Fill based on what context groups exist.
+6. **Repository Structure**: Write actual directory tree output (2-3 levels deep, showing key directories and files).
+7. **Technology Stack**: Write specific framework names, versions, and combinations discovered during analysis.
+8. **Key Patterns and Conventions**: Document actual patterns found in the codebase (error handling, state management, API patterns, naming conventions, import aliases). Include conventions the user mentioned.
+9. **Environment and Configuration**: List actual env var groups found (names only, never values).
+10. **Context Group Lifecycle**: Keep the generic instructions from the template.
+11. **Scan Metadata** (add at bottom): include generated timestamp, HEAD from `git rev-parse HEAD` if available, mode (fresh/merge/refresh), and package manager detected.
 
 ## Delta Update Rules
 

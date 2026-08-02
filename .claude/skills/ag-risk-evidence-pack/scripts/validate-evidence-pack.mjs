@@ -43,9 +43,15 @@ if (!target) {
       try {
         parsed = JSON.parse(fs.readFileSync(reviewPath, "utf8"));
       } catch (err) {
-        fail(`${target}/harness/review-decision.json is not valid JSON: ${err.message}`);
+        fail(
+          `${target}/harness/review-decision.json is not valid JSON: ${err.message}`,
+        );
       }
-      if (parsed && parsed.decision !== "APPROVE" && parsed.decision !== "REJECT") {
+      if (
+        parsed &&
+        parsed.decision !== "APPROVE" &&
+        parsed.decision !== "REJECT"
+      ) {
         fail(
           `${target}/harness/review-decision.json decision must be exactly APPROVE or REJECT (got ${JSON.stringify(parsed.decision)})`,
         );
@@ -54,7 +60,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

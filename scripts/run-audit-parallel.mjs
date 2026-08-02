@@ -14,23 +14,61 @@ import { promisify } from "node:util";
 const execAsync = promisify(exec);
 
 const validators = [
-  { name: "Agent Parity", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs" },
-  { name: "Skills Structure", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs" },
-  { name: "Guide Sync", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs" },
-  { name: "Protocol Wiring", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs" },
-  { name: "Seeds Integrity", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs" },
-  { name: "Kit Portability", cmd: "node .claude/skills/ag-audit-ag/scripts/validate-kit-portability.mjs" },
-  { name: "Skill Patterns", cmd: "bun run .claude/skills/ag-audit-ag/scripts/validate-skill-patterns.mjs" },
-  { name: "Context Discovery", cmd: "node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs" },
-  { name: "Skill Routing", cmd: "node .claude/skills/ag-audit-context/scripts/validate-skill-routing.mjs" },
-  { name: "Skills Catalog Check", cmd: "node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --check" },
-  { name: "Docs Audit", cmd: "bun run .claude/skills/ag-docs/scripts/validate-docs.mjs" },
-  { name: "Plan Artifact", cmd: "node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs" }
+  {
+    name: "Agent Parity",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs",
+  },
+  {
+    name: "Skills Structure",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs",
+  },
+  {
+    name: "Guide Sync",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-guide-sync.mjs",
+  },
+  {
+    name: "Protocol Wiring",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-protocol-wiring.mjs",
+  },
+  {
+    name: "Seeds Integrity",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-seeds.mjs",
+  },
+  {
+    name: "Kit Portability",
+    cmd: "node .claude/skills/ag-audit-ag/scripts/validate-kit-portability.mjs",
+  },
+  {
+    name: "Skill Patterns",
+    cmd: "bun run .claude/skills/ag-audit-ag/scripts/validate-skill-patterns.mjs",
+  },
+  {
+    name: "Context Discovery",
+    cmd: "node .claude/skills/ag-audit-context/scripts/validate-context-discovery.mjs",
+  },
+  {
+    name: "Skill Routing",
+    cmd: "node .claude/skills/ag-audit-context/scripts/validate-skill-routing.mjs",
+  },
+  {
+    name: "Skills Catalog Check",
+    cmd: "node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --check",
+  },
+  {
+    name: "Docs Audit",
+    cmd: "bun run .claude/skills/ag-docs/scripts/validate-docs.mjs",
+  },
+  {
+    name: "Plan Artifact",
+    cmd: "node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs",
+  },
 ];
 
 async function main() {
   const startTime = Date.now();
-  console.log(`🚀 Running ${validators.length} Audit Validators in Parallel...\n`);
+  console.log(
+    `🚀 Running ${validators.length} Audit Validators in Parallel...\n`,
+  );
 
   let failures = 0;
 
@@ -42,7 +80,7 @@ async function main() {
       } catch (err) {
         return { name: item.name, success: false, error: err };
       }
-    })
+    }),
   );
 
   for (const res of results) {
@@ -60,9 +98,13 @@ async function main() {
   const duration = ((Date.now() - startTime) / 1000).toFixed(2);
   console.log(`\n--------------------------------------------------`);
   if (failures === 0) {
-    console.log(`\x1b[32m✨ All ${validators.length} Audit Validators Passed (${duration}s)\x1b[0m`);
+    console.log(
+      `\x1b[32m✨ All ${validators.length} Audit Validators Passed (${duration}s)\x1b[0m`,
+    );
   } else {
-    console.log(`\x1b[31m❌ Audit Failed with ${failures} failure(s) (${duration}s)\x1b[0m`);
+    console.log(
+      `\x1b[31m❌ Audit Failed with ${failures} failure(s) (${duration}s)\x1b[0m`,
+    );
     process.exit(1);
   }
 }

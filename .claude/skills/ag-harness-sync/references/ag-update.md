@@ -30,7 +30,7 @@ The manifest uses glob-based patterns resolved by `resolve-manifest.mjs`.
     "process/general-plans/**",
     "**/.git/**",
     "**/.logs/**",
-    ".codex/statusline.cjs",
+    ".codex/statusline.cjs"
   ],
   "strip": [],
   "merge": [".claude/settings.json"],

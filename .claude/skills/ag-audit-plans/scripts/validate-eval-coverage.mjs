@@ -47,9 +47,15 @@ function findRuntimeHarnessDir() {
 }
 
 // ── 1. Load skills from generated-skills-catalog.json ───────────────────────
-const catalogPath = path.join(root, "process/context/generated-skills-catalog.json");
+const catalogPath = path.join(
+  root,
+  "process/context/generated-skills-catalog.json",
+);
 if (!fs.existsSync(catalogPath)) {
-  console.error("ERROR: generated-skills-catalog.json not found at", catalogPath);
+  console.error(
+    "ERROR: generated-skills-catalog.json not found at",
+    catalogPath,
+  );
   console.error("Cannot enumerate skill components — catalog is required.");
   process.exitCode = 1;
   // eslint-disable-next-line no-process-exit
@@ -60,7 +66,10 @@ let catalog;
 try {
   catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
 } catch (e) {
-  console.error("ERROR: Failed to parse generated-skills-catalog.json:", e.message);
+  console.error(
+    "ERROR: Failed to parse generated-skills-catalog.json:",
+    e.message,
+  );
   process.exitCode = 1;
   process.exit();
 }
@@ -95,8 +104,12 @@ const phaseComponents = [
 
 // ── 4. Collect all tags from harness scenario files ──────────────────────────
 const runtimeHarnessDir = findRuntimeHarnessDir();
-const scenariosDir = runtimeHarnessDir ? path.join(runtimeHarnessDir, "scenarios") : null;
-const liveRosterPath = runtimeHarnessDir ? path.join(runtimeHarnessDir, "live-roster.ts") : null;
+const scenariosDir = runtimeHarnessDir
+  ? path.join(runtimeHarnessDir, "scenarios")
+  : null;
+const liveRosterPath = runtimeHarnessDir
+  ? path.join(runtimeHarnessDir, "live-roster.ts")
+  : null;
 
 const coveredTags = new Set();
 
@@ -105,7 +118,9 @@ if (!scenariosDir || !fs.existsSync(scenariosDir)) {
   console.error("WARNING: scenarios directory not found at", scenariosDir);
   // Don't exit — anti-vacuity check below will catch empty coverage
 } else {
-  const scenarioFiles = fs.readdirSync(scenariosDir).filter((f) => f.endsWith(".ts"));
+  const scenarioFiles = fs
+    .readdirSync(scenariosDir)
+    .filter((f) => f.endsWith(".ts"));
   for (const file of scenarioFiles) {
     const filePath = path.join(scenariosDir, file);
     let content;
@@ -163,18 +178,32 @@ if (fs.existsSync(knownGapsPath)) {
     const parsed = JSON.parse(fs.readFileSync(knownGapsPath, "utf8"));
     acknowledgedGaps = parsed.acknowledged_gaps || [];
   } catch (e) {
-    console.error("WARNING: Failed to parse eval-coverage-known-gaps.json:", e.message);
+    console.error(
+      "WARNING: Failed to parse eval-coverage-known-gaps.json:",
+      e.message,
+    );
   }
 }
 
 const acknowledgedSet = new Set(acknowledgedGaps.map((g) => g.component));
 
 // ── 7. Build component list ──────────────────────────────────────────────────
-let allComponents = [...skillComponents, ...agentComponents, ...phaseComponents];
+let allComponents = [
+  ...skillComponents,
+  ...agentComponents,
+  ...phaseComponents,
+];
 
 const envMap = process["env"];
 const genericMockGapKey = ["VC", "EVAL", "COVERAGE", "MOCK", "GAP"].join("_");
-const legacyMockGapKey = ["FLO", "WSER", "EVAL", "COVERAGE", "MOCK", "GAP"].join("_");
+const legacyMockGapKey = [
+  "FLO",
+  "WSER",
+  "EVAL",
+  "COVERAGE",
+  "MOCK",
+  "GAP",
+].join("_");
 const mockGap = envMap[genericMockGapKey] ?? envMap[legacyMockGapKey];
 if (mockGap) {
   allComponents = [...allComponents, mockGap];
@@ -184,7 +213,9 @@ if (mockGap) {
 if (filterComponent) {
   allComponents = allComponents.filter((c) => c === filterComponent);
   if (allComponents.length === 0) {
-    console.error(`ERROR: Component "${filterComponent}" not found in enumerated components.`);
+    console.error(
+      `ERROR: Component "${filterComponent}" not found in enumerated components.`,
+    );
     process.exitCode = 1;
     process.exit();
   }
@@ -199,7 +230,11 @@ for (const component of allComponents) {
     results.push({ component, status: "COVERED" });
   } else if (acknowledgedSet.has(component)) {
     const entry = acknowledgedGaps.find((g) => g.component === component);
-    results.push({ component, status: "ACKNOWLEDGED", reason: entry?.reason || "" });
+    results.push({
+      component,
+      status: "ACKNOWLEDGED",
+      reason: entry?.reason || "",
+    });
   } else {
     results.push({ component, status: "GAP" });
     gaps.push(component);
@@ -220,12 +255,16 @@ const sep = "-".repeat(colWidths.component + colWidths.status + 7);
 
 console.log("\nEval Coverage Report");
 console.log(sep);
-console.log(`| ${pad("COMPONENT", colWidths.component)} | ${pad("STATUS", colWidths.status)} |`);
+console.log(
+  `| ${pad("COMPONENT", colWidths.component)} | ${pad("STATUS", colWidths.status)} |`,
+);
 console.log(sep);
 
 for (const r of results) {
   const marker = r.status === "GAP" ? " <-- UNACKNOWLEDGED GAP" : "";
-  console.log(`| ${pad(r.component, colWidths.component)} | ${pad(r.status, colWidths.status)} |${marker}`);
+  console.log(
+    `| ${pad(r.component, colWidths.component)} | ${pad(r.status, colWidths.status)} |${marker}`,
+  );
 }
 console.log(sep);
 
@@ -247,7 +286,9 @@ if (gaps.length > 0) {
     "\nTo acknowledge a gap, add an entry to:",
     path.relative(root, knownGapsPath),
   );
-  console.error('Format: { "component": "<tag>", "reason": "<why deferred>", "acknowledged_date": "YYYY-MM-DD" }');
+  console.error(
+    'Format: { "component": "<tag>", "reason": "<why deferred>", "acknowledged_date": "YYYY-MM-DD" }',
+  );
 
   if (!dryRun) {
     process.exitCode = 1;

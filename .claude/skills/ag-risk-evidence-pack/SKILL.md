@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-risk-evidence-pack workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate and validate the manual-first evidence pack required before finalizing, pushing, or handing off high-risk implementation work.
@@ -45,6 +45,7 @@ From `process/development-protocols/orchestration.md` ("High-Risk Execution Hand
 Per **task-folder artefact colocation**, all artifacts go inside the selected plan's task folder (e.g. `process/features/{feature}/active/{slug}_{date}/harness/` or `process/general-plans/active/{slug}_{date}/harness/`), so the whole pack moves with the plan as a unit. Legacy path `reports/harness/` is deprecated for new writes; never write the pack to a sibling `reports/` dir or any ad-hoc location. The validator script lives at `.claude/skills/ag-risk-evidence-pack/scripts/validate-risk-artifacts.mjs`.
 
 ### 1. `risk-gate.json`
+
 Records the risk class, work description, and approver identity before work begins or is finalized.
 
 ```json
@@ -57,6 +58,7 @@ Records the risk class, work description, and approver identity before work begi
 ```
 
 ### 2. `context-snippets.json`
+
 Relevant code snippets with exact file and line citations for every surface the change touches in the high-risk class.
 
 ```json
@@ -73,6 +75,7 @@ Relevant code snippets with exact file and line citations for every surface the 
 ```
 
 ### 3. `verification.json`
+
 Documents every verification step taken and its result. Steps must cover both the happy path and at least one failure or boundary case.
 
 ```json
@@ -89,6 +92,7 @@ Documents every verification step taken and its result. Steps must cover both th
 ```
 
 ### 4. `review-decision.json`
+
 The explicit reviewer decision record. Must contain APPROVE or REJECT with a written rationale — no implicit approvals.
 
 ```json
@@ -101,6 +105,7 @@ The explicit reviewer decision record. Must contain APPROVE or REJECT with a wri
 ```
 
 ### 5. `adversarial-validation.json`
+
 Required when the path is high-risk or attack-sensitive (e.g. auth bypass, privilege escalation, secret exfiltration). Documents adversarial scenarios considered and whether each was ruled out.
 
 ```json
@@ -174,7 +179,6 @@ Verbatim from `process/development-protocols/implementation-standards.md` ("Risk
 > - if the evidence pack is missing, say so explicitly instead of implying the work is proven
 >
 > This contract is manual-first and opt-in by risk class. It is not a default blocking hook.
-
 
 ## References
 

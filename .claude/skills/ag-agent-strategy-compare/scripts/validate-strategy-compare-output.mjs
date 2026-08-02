@@ -61,13 +61,20 @@ if (!target) {
     dataRows.push(row);
   }
   if (dataRows.length < 7) {
-    fail(`${target} 7-signal table has ${dataRows.length} data rows; require >= 7`);
+    fail(
+      `${target} 7-signal table has ${dataRows.length} data rows; require >= 7`,
+    );
   } else {
     for (const row of dataRows.slice(0, 7)) {
-      const cells = row.split("|").map((c) => c.trim()).filter((c, i, arr) => i !== 0 && i !== arr.length - 1);
+      const cells = row
+        .split("|")
+        .map((c) => c.trim())
+        .filter((c, i, arr) => i !== 0 && i !== arr.length - 1);
       // require at least 2 columns and no empty cell among them
       if (cells.length < 2 || cells.some((c) => c.length === 0)) {
-        fail(`${target} 7-signal table has an empty cell in row: ${row.trim()}`);
+        fail(
+          `${target} 7-signal table has an empty cell in row: ${row.trim()}`,
+        );
       }
     }
   }
@@ -81,7 +88,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

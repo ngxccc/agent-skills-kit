@@ -76,6 +76,7 @@ git diff --name-only HEAD~1  # Get changed files
 ```
 
 Read the scout skill at `.claude/skills/ag-scout/SKILL.md` for codebase scouting with an edge-case-focused prompt:
+
 ```
 Scout edge cases for recent changes.
 Changed: {files}
@@ -94,13 +95,13 @@ Document scout findings for inclusion in review.
 
 ### 3. Systematic Review
 
-| Area | Focus |
-|------|-------|
-| Structure | Organization, modularity |
-| Logic | Correctness, edge cases from scout |
-| Types | Safety, error handling |
-| Performance | Bottlenecks, inefficiencies |
-| Security | Vulnerabilities, data exposure |
+| Area        | Focus                              |
+| ----------- | ---------------------------------- |
+| Structure   | Organization, modularity           |
+| Logic       | Correctness, edge cases from scout |
+| Types       | Safety, error handling             |
+| Performance | Bottlenecks, inefficiencies        |
+| Security    | Vulnerabilities, data exposure     |
 
 ### 4. Prioritization
 
@@ -112,6 +113,7 @@ Document scout findings for inclusion in review.
 ### 5. Recommendations
 
 For each issue:
+
 - Explain problem and impact
 - Provide specific fix example
 - Suggest alternatives if applicable
@@ -136,41 +138,52 @@ If the reviewed change touches auth, billing, data migration/destructive writes,
 ## Code Review Summary
 
 ### Scope
+
 - Files: [list]
 - LOC: [count]
 - Focus: [recent/specific/full]
 - Scout findings: [edge cases discovered]
 
 ### Overall Assessment
+
 [Brief quality overview]
 
 ### Critical Issues
+
 [Security, breaking changes]
 
 ### High Priority
+
 [Performance, type safety]
 
 ### Medium Priority
+
 [Code quality, maintainability]
 
 ### Low Priority
+
 [Style, minor opts]
 
 ### Edge Cases Found by Scout
+
 [List issues from scouting phase]
 
 ### Positive Observations
+
 [Good practices noted]
 
 ### Recommended Actions
+
 1. [Prioritized fixes]
 
 ### Metrics
+
 - Type Coverage: [%]
 - Test Coverage: [%]
 - Linting Issues: [count]
 
 ### Unresolved Questions
+
 [If any]
 ```
 
@@ -200,6 +213,7 @@ This format mirrors the SUPPLEMENT REQUEST format used by ag-validate-agent V7. 
 When spawned from execute-agent under /goal autonomous phase execution: return findings immediately without pausing for user input.
 
 **Status codes under /goal:**
+
 - `DONE`: no blocking issues found — execution may continue to the next step.
 - `DONE_WITH_CONCERNS`: non-blocking issues found — document in the phase report and continue. Do NOT block execution.
 - `BLOCKED`: a blocking production-readiness issue was found that is within the current blast-radius — execute-agent must fix the issue before marking the section complete.

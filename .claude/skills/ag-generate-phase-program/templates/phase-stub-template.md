@@ -1,11 +1,11 @@
 ---
 name: plan:{program-slug}-phase-NN-{slug}
 description: "{Program name} — Phase NN: {phase title}"
-date: {dd-mm-yy}
+date: { dd-mm-yy }
 metadata:
   node_type: memory
   type: plan
-  feature: {feature-name}
+  feature: { feature-name }
   phase: phase-NN
 ---
 

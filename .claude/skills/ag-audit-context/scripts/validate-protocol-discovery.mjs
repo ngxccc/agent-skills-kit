@@ -28,7 +28,10 @@ function walk(dir, out = []) {
 
 function stripQuotes(v) {
   const t = v.trim();
-  if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) {
+  if (
+    (t.startsWith('"') && t.endsWith('"')) ||
+    (t.startsWith("'") && t.endsWith("'"))
+  ) {
     return t.slice(1, -1);
   }
   return t;
@@ -89,19 +92,29 @@ for (const file of covered) {
   else if (!top.name.startsWith("protocol:")) {
     failures.push(`${file} name "${top.name}" must start with "protocol:"`);
   }
-  if (!top.description) failures.push(`${file} frontmatter missing description`);
+  if (!top.description)
+    failures.push(`${file} frontmatter missing description`);
   if (!top.date) failures.push(`${file} frontmatter missing date`);
   if (metadata.type !== "protocol") {
-    failures.push(`${file} metadata.type is "${metadata.type ?? "missing"}", expected "protocol"`);
+    failures.push(
+      `${file} metadata.type is "${metadata.type ?? "missing"}", expected "protocol"`,
+    );
   }
-  if (metadata.node_type === undefined) failures.push(`${file} metadata.node_type missing`);
-  if (metadata.read_order === undefined) failures.push(`${file} metadata.read_order missing`);
+  if (metadata.node_type === undefined)
+    failures.push(`${file} metadata.node_type missing`);
+  if (metadata.read_order === undefined)
+    failures.push(`${file} metadata.read_order missing`);
   else if (!/^\d+$/.test(metadata.read_order)) {
-    failures.push(`${file} metadata.read_order "${metadata.read_order}" is not an integer`);
+    failures.push(
+      `${file} metadata.read_order "${metadata.read_order}" is not an integer`,
+    );
   }
-  if (metadata.required === undefined) failures.push(`${file} metadata.required missing`);
+  if (metadata.required === undefined)
+    failures.push(`${file} metadata.required missing`);
   else if (metadata.required !== "true" && metadata.required !== "false") {
-    failures.push(`${file} metadata.required "${metadata.required}" must be true|false`);
+    failures.push(
+      `${file} metadata.required "${metadata.required}" must be true|false`,
+    );
   }
   if (!metadata.read_when) failures.push(`${file} metadata.read_when missing`);
 }

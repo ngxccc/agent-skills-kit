@@ -16,13 +16,13 @@ Wire the canonical 7-step inner loop into the phase-program machinery.
 
 **Validate-contract required before EXECUTE.**
 
-  - [x] 1. RESEARCH — gather inner-loop requirements
-  - [X] 2. INNOVATE — compare loop wiring approaches
-  - [ ] 3. PLAN-SUPPLEMENT — write the phase plan
-  - [ ] 4. PVL — plan validation loop
-  - [ ] 5. EXECUTE — implement
-  - [ ] 6. EVL — execution validation loop
-  - [ ] 7. UPDATE PROCESS — archive + capture learnings
+- [x] 1. RESEARCH — gather inner-loop requirements
+- [x] 2. INNOVATE — compare loop wiring approaches
+- [ ] 3. PLAN-SUPPLEMENT — write the phase plan
+- [ ] 4. PVL — plan validation loop
+- [ ] 5. EXECUTE — implement
+- [ ] 6. EVL — execution validation loop
+- [ ] 7. UPDATE PROCESS — archive + capture learnings
 
 ## Blast Radius
 

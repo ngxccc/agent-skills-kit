@@ -41,18 +41,24 @@ if (!target) {
 
   // 2. Net gate must be exactly one allowed value.
   const allowedNetGates = ["PASS", "CONDITIONAL", "BLOCKED"];
-  const netMatch = text.match(/net gate\s*[:=]?\s*\*{0,2}\s*(PASS|CONDITIONAL|BLOCKED)\b/i);
+  const netMatch = text.match(
+    /net gate\s*[:=]?\s*\*{0,2}\s*(PASS|CONDITIONAL|BLOCKED)\b/i,
+  );
   if (!netMatch) {
-    fail(`${target} net gate string is missing or not one of ${allowedNetGates.join("/")}`);
+    fail(
+      `${target} net gate string is missing or not one of ${allowedNetGates.join("/")}`,
+    );
   } else {
     const netGate = netMatch[1].toUpperCase();
 
     // 3. Per-layer verdict tokens: any FAIL or BLOCKED layer verdict forces net BLOCKED.
     // Parse status cells from the Layer tables (Status: X or | ... | X | rows).
-    const verdictTokens = (text.match(/\b(PASS|CONCERN|FAIL|BLOCKED)\b/gi) || []).map((t) =>
-      t.toUpperCase(),
+    const verdictTokens = (
+      text.match(/\b(PASS|CONCERN|FAIL|BLOCKED)\b/gi) || []
+    ).map((t) => t.toUpperCase());
+    const hasFailingLayer = verdictTokens.some(
+      (t) => t === "FAIL" || t === "BLOCKED",
     );
-    const hasFailingLayer = verdictTokens.some((t) => t === "FAIL" || t === "BLOCKED");
     if (hasFailingLayer && netGate !== "BLOCKED") {
       fail(
         `${target} net-gate derivation wrong: a FAIL/BLOCKED layer verdict is present but net gate is ${netGate} (must be BLOCKED)`,
@@ -61,7 +67,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

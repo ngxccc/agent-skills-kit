@@ -17,9 +17,11 @@
 ## Blast Radius
 
 Multi-phase dashboard component addition, tRPC router extension, Zustand state store extension. Zero schema breaking changes.
+
 ## Public Contracts
 
 ### HTTP / tRPC Procedures
+
 1. `achievements.getProfileMetrics` -> Returns verified/assisted comment statistics, streaks, percentile rank
 2. `achievements.getNetworkData` -> Returns network interaction frequency for treemap visualization
 3. `achievements.getActivityData` -> Returns 365-day contribution heat map grid data
@@ -33,10 +35,12 @@ Multi-phase dashboard component addition, tRPC router extension, Zustand state s
 ## Harness & Mechanical Validation
 
 Before phase transition or PR merge, run:
+
 ```bash
 bun run .claude/skills/ag-generate-plan/scripts/validate-harness-artifacts.mjs
 bun run .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs process/development-protocols/references/example-complex-prd.md
 ```
+
 ## Overview
 
 Build a visually impressive, shareable achievements section within the existing Next.js account dashboard that showcases LinkedIn engagement metrics. The dashboard displays verified/assisted comment statistics, activity streaks, network visualization via treemap, contribution heat map, and best friends rankings. Designed with a bento box layout using the neobrutalist theme, optimized for social media sharing.
@@ -118,6 +122,7 @@ EngageKit users manage multiple LinkedIn accounts and post AI-assisted comments.
 1. Mỗi bước thực thi (Phase 1–12) phải thỏa mãn 100% nguyên tắc bất biến (`INV-1`..`INV-3`).
 2. Biên dịch TypeScript `pnpm check-types` đạt 0 lỗi trước khi chuyển sang bước tiếp theo.
 3. Không làm hỏng các test suite hiện tại trong `src/server/api/`.
+
 ### Phase 8-10: Visualizations (Treemap, Heat Map, Rankings)
 
 **What happens:** Implement Recharts treemap with profile pictures, build custom heat map grid component with color intensity, create ranking list with progress bars and avatars.
@@ -2330,16 +2335,17 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 
 ### Primitive Atomic WBS Table
 
-| Target File / Artifact | Bound Invariant | Verification Command |
-| :--- | :--- | :--- |
-| `prisma/schema.prisma` | `INV-2` | `pnpm db:migrate dev` |
-| `src/server/api/routers/achievements.ts` | `INV-1`, `INV-3` | `pnpm test src/server/api/` |
-| `src/store/useAccountStore.ts` | `INV-1` | `pnpm test src/store/` |
-| `src/components/achievements/BentoGrid.tsx` | `INV-2` | `pnpm check-types` |
-| `src/components/achievements/NetworkTreemap.tsx` | `INV-3` | `pnpm check-types` |
-| `src/components/achievements/HeatMap.tsx` | `INV-1` | `pnpm check-types` |
+| Target File / Artifact                           | Bound Invariant  | Verification Command        |
+| :----------------------------------------------- | :--------------- | :-------------------------- |
+| `prisma/schema.prisma`                           | `INV-2`          | `pnpm db:migrate dev`       |
+| `src/server/api/routers/achievements.ts`         | `INV-1`, `INV-3` | `pnpm test src/server/api/` |
+| `src/store/useAccountStore.ts`                   | `INV-1`          | `pnpm test src/store/`      |
+| `src/components/achievements/BentoGrid.tsx`      | `INV-2`          | `pnpm check-types`          |
+| `src/components/achievements/NetworkTreemap.tsx` | `INV-3`          | `pnpm check-types`          |
+| `src/components/achievements/HeatMap.tsx`        | `INV-1`          | `pnpm check-types`          |
 
 ### Primitive Checklist
+
 **Phase 1: Database Indexes** (30 min)
 
 - [ ] Add indexes to `Comment` model in Prisma schema
@@ -2502,6 +2508,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - If technical blocker discovered: Document in Known Issues, propose solution, get approval before proceeding
 
 ---
+
 ## Verification Evidence
 
 1. **TypeScript Type Safety:** `pnpm check-types` passes with 0 errors.
@@ -2510,6 +2517,4 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 4. **Mechanical Validation:** `node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs process/development-protocols/references/example-complex-prd.md` passes with 0 errors.
 5. **Context Alignment:** Aligned with `process/context/all-context.md` and `process/context/tests/all-tests.md`.
 
-
 ## Resume and Execution Handoff
-

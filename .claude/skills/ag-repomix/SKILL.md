@@ -16,7 +16,6 @@ layer: helper
 
 Use this skill when working with ag-repomix workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
@@ -234,7 +233,6 @@ For detailed information, see:
 - GitHub: https://github.com/yamadashy/repomix
 - Documentation: https://repomix.com/guide/
 - MCP Server: available upstream for assistant integrations when relevant
-
 
 ## References
 

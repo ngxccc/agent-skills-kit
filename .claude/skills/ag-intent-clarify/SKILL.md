@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-intent-clarify workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > Output style: lead each question with the recommended option; plain language, no filler — `process/development-protocols/communication-standards.md`.
 
 Two-mode intent clarification: SIMPLE (direct, 3-5 reads) and DEEP (research subagent first, then questions).
@@ -49,6 +49,7 @@ These conditions force Tier 0 regardless of the ambiguity score. Check these FIR
 When an auto-skip condition matches, produce only a 1-sentence restatement of intent and route immediately per the existing routing protocol. Do not announce the tier. Do not surface any questions.
 
 **Priority ordering when multiple conditions match simultaneously:**
+
 1. Explicit mode command (highest priority)
 2. /goal mid-program execution
 3. Continuation phrase
@@ -65,20 +66,20 @@ Apply only the highest-priority matching condition's abbreviated behavior. Do no
 
 Each signal is worth +1. Sum to get the ambiguity score.
 
-| Signal | Description |
-|--------|-------------|
-| Ambiguous scope | Request touches multiple features or packages without naming one |
-| No explicit path | No file, package, or feature name mentioned |
-| Multiple intents | Request could be a bug fix, feature, refactor, or question |
-| First interaction | No established workflow context in current session |
+| Signal            | Description                                                      |
+| ----------------- | ---------------------------------------------------------------- |
+| Ambiguous scope   | Request touches multiple features or packages without naming one |
+| No explicit path  | No file, package, or feature name mentioned                      |
+| Multiple intents  | Request could be a bug fix, feature, refactor, or question       |
+| First interaction | No established workflow context in current session               |
 
 Score thresholds:
 
-| Score | Tier | Action |
-|-------|------|--------|
-| 0–1 | Tier 0 | Auto-route silently |
-| 2 | Tier 1 | Show routing summary, wait for confirmation |
-| 3+ | Tier 2 | Full structured clarification suite |
+| Score | Tier   | Action                                      |
+| ----- | ------ | ------------------------------------------- |
+| 0–1   | Tier 0 | Auto-route silently                         |
+| 2     | Tier 1 | Show routing summary, wait for confirmation |
+| 3+    | Tier 2 | Full structured clarification suite         |
 
 ---
 
@@ -94,6 +95,7 @@ Before running any tier, the orchestrator selects the operating mode. Mode affec
 - No subagent spawning
 
 **Trigger conditions (all must be true for SIMPLE):**
+
 - Ambiguity score ≤ 3
 - Request is scoped to a known file, package, or named feature
 - Orchestrator can fill option values from active plans + context routing alone
@@ -107,6 +109,7 @@ Before running any tier, the orchestrator selects the operating mode. Mode affec
 - Questions are materially better because they are grounded in actual codebase discovery
 
 **Trigger conditions (any ONE triggers DEEP):**
+
 - Ambiguity score is 4/4 (all four signals)
 - Request involves a phase program kickoff (new umbrella + N phases)
 - Request touches 3+ packages or feature folders
@@ -194,6 +197,7 @@ In both modes, the goal of Step 1 is identical: replace every generic placeholde
 ### Step 2 — Question generation using ag-scenario + ag-predict style reasoning
 
 Before writing the questions, THINK across these axes:
+
 - What are the plausible failure modes if we pick the wrong scope? (ag-scenario thinking)
 - What would 5 different people (senior dev, PM, security reviewer, QA, end user) want to know before starting? (ag-predict thinking)
 - What ordering of decisions has the most downstream impact? (ag-sequential-thinking)
@@ -212,6 +216,7 @@ CRITICAL dimensions appear first. The user can say "skip useful questions" to an
 **REQUIRED: use the `AskUserQuestion` tool to render all Tier 2 questions.** Do NOT render questions as markdown text. The AskUserQuestion tool renders clickable option selections in the Claude Code UI, which is far faster for the user than typing answers.
 
 **How to call it:**
+
 - Pass all questions in a single `AskUserQuestion` call (up to 4 per call)
 - Group CRITICAL questions into the first call(s), USEFUL questions after
 - Use `multiSelect: false` for mutually exclusive choices (default)
@@ -221,6 +226,7 @@ CRITICAL dimensions appear first. The user can say "skip useful questions" to an
 - Each option `label` is the short choice text; `description` is the implication
 
 **Option rules (same as before, now applied to AskUserQuestion fields):**
+
 - Minimum 3 options per question (the tool supports up to 4; always include an "Other" option as the last one)
 - Mark exactly one option as `(Recommended)` by appending it to the label: `"Sequential — single agent (Recommended)"`
 - Fill option labels with concrete values from the research pass (real file paths, package names, plan IDs) — never generic placeholders
@@ -246,7 +252,9 @@ Each dimension header format:
 ```
 ### [Dimension name] 🔴 CRITICAL
 ```
+
 or
+
 ```
 ### [Dimension name] 🟡 USEFUL
 ```
@@ -255,7 +263,7 @@ or
 
 After all questions, always emit:
 
-> Answer what you want — partial answers are fine. I'll use the *(Recommended)* defaults for anything you skip. Ready to proceed when you confirm.
+> Answer what you want — partial answers are fine. I'll use the _(Recommended)_ defaults for anything you skip. Ready to proceed when you confirm.
 
 Do NOT route to any subagent before receiving at least a partial response or explicit "go".
 
@@ -270,6 +278,7 @@ For a substantial request, cover all 8 dimensions. For a narrower request, use o
 Clarify what changes and — equally important — what must NOT change.
 
 Example questions:
+
 - Which packages/files are in scope?
 - Are there components or APIs that must remain untouched?
 - Is this isolated to one package or cross-cutting?
@@ -279,6 +288,7 @@ Example questions:
 Clarify what the user truly wants to see as a result.
 
 Example questions:
+
 - What does "done" look like to you?
 - Is the goal a passing test suite, a deployed change, a passing code review, or visible UI behavior?
 - Is there a specific user action or flow that must work?
@@ -288,6 +298,7 @@ Example questions:
 Clarify what the user is most worried about going wrong.
 
 Example questions:
+
 - What are the most likely ways this change breaks something?
 - Are there auth, billing, schema, or public API surfaces this touches?
 - Is there a rollback requirement?
@@ -297,6 +308,7 @@ Example questions:
 Clarify what has already been tried or is already in progress.
 
 Example questions:
+
 - Is there an existing plan file for this?
 - Has this been attempted before? What happened?
 - Is this a continuation of recent work (visible in git status or active plans)?
@@ -306,6 +318,7 @@ Example questions:
 Clarify the expected speed/quality tradeoff.
 
 Example questions:
+
 - Is this a hotfix that needs to ship now, or a proper implementation with full plan/test coverage?
 - Does this block other work in flight?
 - Quick patch acceptable, or must it be production-grade immediately?
@@ -321,11 +334,13 @@ Example questions:
 Clarify how much the agent can decide on its own vs. checkpoint with the user.
 
 Example questions:
+
 - Can the agent pick the implementation approach, or does the user want to choose?
 - Should the agent pause for approval before destructive changes (schema migrations, API removals)?
 - Is a /goal-style autonomous run acceptable, or does each phase need a checkpoint?
 
 Autopilot-specific example (when trigger detected):
+
 - "This run will proceed autonomously. The following gates remain manual regardless:
   (1) irreversible/outward-facing actions not in the validate-contract,
   (2) live-provider billed feasibility probes (cost-class: needs-live-provider),
@@ -337,6 +352,7 @@ Autopilot-specific example (when trigger detected):
 Clarify any specific libraries, patterns, or constraints the solution must conform to.
 
 Example questions:
+
 - Is there a specific library or pattern required?
 - Are there style/lint rules that constrain the approach?
 - Must the solution work in a specific runtime environment (Bun vs Node, edge vs server)?
@@ -346,6 +362,7 @@ Example questions:
 Only include when the request implies multiple dependent phases or a long-running program.
 
 Example questions:
+
 - Should phases run sequentially or can some parallelize?
 - Which phase is the hard dependency for the rest?
 - What is the acceptable stopping point if a later phase is blocked?
@@ -368,19 +385,19 @@ Below is a complete example of good Tier 2 output for a request like "refactor t
 Getting scope wrong here means re-opening files mid-phase and invalidating earlier test gates.
 
 Options:
-  A) Prisma schema + tRPC billing router + UI billing page — full stack *(Recommended)*
-  B) tRPC billing router + UI only — skip schema migration for now
-  C) UI only — wire to existing endpoints, validate assumptions first
-  D) Other: describe your preference
+A) Prisma schema + tRPC billing router + UI billing page — full stack _(Recommended)_
+B) tRPC billing router + UI only — skip schema migration for now
+C) UI only — wire to existing endpoints, validate assumptions first
+D) Other: describe your preference
 
 **Q2: Which existing billing surfaces must NOT change?**
 We need to know what is off-limits before touching shared code paths.
 
 Options:
-  A) Stripe webhook handlers and subscription models are frozen *(Recommended)*
-  B) Only the credit transaction model is frozen
-  C) Nothing is frozen — all billing code is in scope
-  D) Other: describe your preference
+A) Stripe webhook handlers and subscription models are frozen _(Recommended)_
+B) Only the credit transaction model is frozen
+C) Nothing is frozen — all billing code is in scope
+D) Other: describe your preference
 
 ---
 
@@ -390,10 +407,10 @@ Options:
 If the success bar is wrong, the agent will stop too early or overshoot.
 
 Options:
-  A) User can trigger a top-up from the UI and credit balance updates — end-to-end *(Recommended)*
-  B) Backend complete with tests passing; UI is out of scope for this phase
-  C) Plan written and approved — no implementation yet
-  D) Other: describe your preference
+A) User can trigger a top-up from the UI and credit balance updates — end-to-end _(Recommended)_
+B) Backend complete with tests passing; UI is out of scope for this phase
+C) Plan written and approved — no implementation yet
+D) Other: describe your preference
 
 ---
 
@@ -403,10 +420,10 @@ Options:
 Billing changes can silently double-charge or under-credit users if guard logic is missing.
 
 Options:
-  A) Add explicit idempotency key to the top-up Stripe call *(Recommended)*
-  B) No idempotency needed — amount is small enough that duplicates are acceptable
-  C) Not sure — flag for code review
-  D) Other: describe your preference
+A) Add explicit idempotency key to the top-up Stripe call _(Recommended)_
+B) No idempotency needed — amount is small enough that duplicates are acceptable
+C) Not sure — flag for code review
+D) Other: describe your preference
 
 ---
 
@@ -416,14 +433,14 @@ Options:
 Affects whether we write a full plan with validate-contract or skip to a lightweight execute.
 
 Options:
-  A) Proper plan + validate-contract + full test coverage *(Recommended)*
-  B) Quick implementation with tests deferred to a follow-up
-  C) Research and plan only — no implementation this session
-  D) Other: describe your preference
+A) Proper plan + validate-contract + full test coverage _(Recommended)_
+B) Quick implementation with tests deferred to a follow-up
+C) Research and plan only — no implementation this session
+D) Other: describe your preference
 
 ---
 
-> Answer what you want — partial answers are fine. I'll use the *(Recommended)* defaults for anything you skip. Ready to proceed when you confirm.
+> Answer what you want — partial answers are fine. I'll use the _(Recommended)_ defaults for anything you skip. Ready to proceed when you confirm.
 
 ---
 
@@ -436,6 +453,7 @@ Understanding the failure modes in question generation:
 ```
 Q: What scope should the refactor cover?
 ```
+
 This forces the user to type a free-form answer. Slow. Vague. Hard to act on.
 
 ### Bad (only 2 options, no recommendation marked)
@@ -445,6 +463,7 @@ Q: Full stack or UI only?
   A) Full stack
   B) UI only
 ```
+
 Binary questions miss the third path. No recommendation means the user has no default to accept.
 
 ### Bad (generic placeholders left in)
@@ -452,6 +471,7 @@ Binary questions miss the third path. No recommendation means the user has no de
 ```
 Q: Which areas? [A] just {X} [B] {X} and {Y}
 ```
+
 Placeholders not replaced with concrete values from light research. Signals the skill was invoked lazily.
 
 ### Good
@@ -615,7 +635,6 @@ Generate questions across Scope, Success Criteria, Failure Modes, Priority, Tech
 - First interaction: Yes (+1)
 
 Score: 3 → Tier 2, but only 3–4 questions covering Scope, Success Criteria, Risk Surface (billing-specific failure modes). Skip Autonomy Boundaries and Phase Program since it's a single-phase feature.
-
 
 ## References
 

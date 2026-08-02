@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-generate-closeout workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > Output style: closeout packet leads with the verdict/recommendation, tables for drift/readiness, one-line TL;DR — `process/development-protocols/communication-standards.md`.
 
 Generate the post-EXECUTE closeout packet for a completed plan or phase. Produces a structured summary with archive-readiness classification, drift signal scoring, commit checkpoint recommendation, and the single best next valid state.
@@ -41,6 +41,7 @@ Choose one mode before generating the closeout packet.
 ### Simple Mode (default)
 
 Use when:
+
 - The execute session just ended and all context is fresh in the conversation.
 - The plan was a single-phase, straightforward implementation.
 - No context compaction occurred during the session.
@@ -90,10 +91,11 @@ Every closeout packet must include these 9 items. Present them in order.
    - What still requires manual verification, user confirmation, or future test coverage.
 
 4b. **Validate-contract compliance**
-   - Was VALIDATE run for this plan?
-   - Is a `## Validate Contract` section present in the plan file?
-   - If VALIDATE was skipped, state the documented skip reason.
-   - A plan cannot be classified `Ready for UPDATE PROCESS archival` without a present validate-contract or a documented skip reason.
+
+- Was VALIDATE run for this plan?
+- Is a `## Validate Contract` section present in the plan file?
+- If VALIDATE was skipped, state the documented skip reason.
+- A plan cannot be classified `Ready for UPDATE PROCESS archival` without a present validate-contract or a documented skip reason.
 
 5. **Cleanup done vs still needed**
    - What context docs, reports, or process artifacts were already updated.
@@ -267,7 +269,6 @@ Example shape:
 Drift score: HIGH (3 signals: 12 files touched, .claude/ skill added, 3 memory-worthy observations)
 Strongly recommend UPDATE PROCESS -- harness/protocol files touched.
 ```
-
 
 ## References
 

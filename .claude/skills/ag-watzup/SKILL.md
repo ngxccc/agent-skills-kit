@@ -16,7 +16,6 @@ layer: helper
 
 Use this skill when working with ag-watzup workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
@@ -108,7 +107,6 @@ Good trigger phrases:
 - `what should I look at next`
 
 Load `references/watzup-workflow.md` when you need the project's decision tree or hint-priority rules.
-
 
 ## References
 

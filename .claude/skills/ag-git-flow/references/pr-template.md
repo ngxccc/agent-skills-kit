@@ -11,12 +11,15 @@ PR titles MUST follow the Conventional Commits specification or Ticket Reference
 ```
 <type>(<scope>): <imperative short description>
 ```
+
 or
+
 ```
 [TICKET-ID] <type>(<scope>): <imperative short description>
 ```
 
 ### Allowed `<type>` Values
+
 - `feat`: A new feature or capability
 - `fix`: A bug fix
 - `refactor`: Code refactoring without behavioral or interface changes
@@ -28,6 +31,7 @@ or
 - `ci`: CI/CD configuration or script updates
 
 ### Title Rules
+
 - Use imperative mood in the summary ("add" not "added" or "adds").
 - Maximum length: 72 characters.
 - Start description with a lowercase letter.
@@ -35,6 +39,7 @@ or
 - Do NOT include emojis or icons in the title.
 
 ### Examples
+
 - `feat(auth): add OAuth2 refresh token support`
 - `fix(api): handle missing authorization header gracefully`
 - `chore(deps): update bun runtime to version 1.3.14`
@@ -45,9 +50,11 @@ or
 
 ```markdown
 ## Summary
+
 Concise explanation of the changes introduced by this PR and the business/technical reason for the change.
 
 ## Type of Change
+
 - [ ] feat: New feature
 - [ ] fix: Bug fix
 - [ ] refactor: Code refactoring (no functional change)
@@ -57,20 +64,25 @@ Concise explanation of the changes introduced by this PR and the business/techni
 - [ ] chore: Maintenance or tooling update
 
 ## Context & Related References
+
 - Plan / Specification: process/general-plans/active/... (or link to active feature plan)
 - Issue / Ticket: Closes #<issue_number> / Relates to #<issue_number>
 
 ## Changes Made
+
 - Detailed technical breakdown of specific changes made across files/packages.
 
 ## Verification & Testing
+
 - [ ] Type check passed (`bun run check-types` / `tsc --noEmit`)
 - [ ] Unit & integration test suite passed (`bun test`)
 - [ ] Manual verification completed
 
 ### Testing Evidence
 ```
+
 [Paste execution output, test suite logs, or smoke test command results here]
+
 ```
 
 ## Security & Compliance Checklist
@@ -86,12 +98,15 @@ Concise explanation of the changes introduced by this PR and the business/techni
 PRs MUST be assigned at least one category label and one area label.
 
 ### Category Labels
+
 - `type:feat`, `type:fix`, `type:refactor`, `type:docs`, `type:test`, `type:chore`, `type:perf`
 
 ### Area Labels
+
 - `area:core`, `area:ui`, `area:api`, `area:auth`, `area:db`, `area:deps`, `area:ci`, `area:harness`
 
 ### Status & Priority Labels
+
 - `priority:p0` (critical), `priority:p1` (high), `priority:p2` (normal), `status:needs-review`
 
 ---

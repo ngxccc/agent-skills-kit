@@ -43,6 +43,7 @@ For substantial work, start by reading `process/context/all-context.md`, then lo
 ## Session Start (First Actions — Mandatory)
 
 **Re-spawn context (VC-PREDICT-DEEP-NEEDED return):** If the orchestrator prompt contains a `Prior Research: [findings]` header indicating this is a VC-PREDICT-DEEP-NEEDED re-spawn:
+
 - Skip ag-review-situation, ag-intent-clarify, ag-context-discovery, and ag-plan-discovery (Authorized Tier-0 exception — scope, intent, context, and plan discovery were established before VC-PREDICT-DEEP-NEEDED was emitted; all are redundant in re-spawn context)
 - Proceed directly to ag-predict using the `Prior Research: [findings]` block as the deep-mode research input
 - Do NOT re-read the full research output from Step 1 — the Prior Research block is the complete input for this ag-predict pass
@@ -55,6 +56,7 @@ Restate the **locked SPEC** (the requirements to satisfy) + research findings; c
 
 **Action 1 — ag-context-discovery:**
 Invoke `ag-context-discovery` to load relevant context. Steps:
+
 1. Run `find process/context/ -type f` to get the full context file listing.
 2. Read `process/context/all-context.md` to understand context routing.
 3. Load the feature folder file listing if a `Feature:` scope was passed (`process/features/{feature}/`).
@@ -67,6 +69,7 @@ Invoke `ag-context-discovery` to load relevant context. Steps:
 
 **Action 2 — ag-review-situation:**
 Invoke `ag-review-situation` to confirm branch/worktree/active-plan status:
+
 1. Read current git branch and any active worktrees.
 2. Scan `process/general-plans/active/` and `process/features/*/active/` for active plans relevant to the task (plans now live inside `{slug}_{date}/` subfolders — look one level deep).
 3. Note which plan (if any) this innovate session is continuing from.
@@ -105,6 +108,7 @@ Only after all three steps are complete, proceed to brainstorming.
 ## Pattern Discovery Step
 
 Before proposing novel approaches, invoke `ag-scout` as the first scanning step:
+
 - Use `ag-scout` to search the codebase for existing patterns, prior implementations, and related conventions that are relevant to the brainstorm domain.
 - Pass the task keywords and relevant file paths. Collect patterns found.
 - Only propose an approach that duplicates an existing pattern if there is a clear reason to diverge. Surface the existing pattern as a baseline option.
@@ -112,6 +116,7 @@ Before proposing novel approaches, invoke `ag-scout` as the first scanning step:
 ## Library-Dependent Approach Rule
 
 When any approach under consideration depends on a specific library, framework, SDK, API, or CLI tool — invoke `ag-docs-seeker` immediately on first encounter. This is MANDATORY, not conditional.
+
 - Pass: library name, version if known, and the specific API surface or concept needed.
 - Do not proceed with describing the approach in detail until `ag-docs-seeker` confirms the API shape.
 
@@ -136,12 +141,14 @@ Then **halt**. Do NOT proceed to `ag-predict`. The INNOVATE step is NOT complete
 ## High-Risk Approach Evaluation
 
 When any approach candidate touches auth, billing, external APIs, or destructive operations, invoke `ag-scenario` before including that approach in the final comparison set:
+
 - Pass: the approach description, the risk surface (auth / billing / external API / destructive).
 - `ag-scenario` generates edge cases across 12 dimensions. Include the most significant edge cases in the approach's "Cons" or "Trade-offs" section.
 
 ## Auth/Billing/Trust-Boundary Security Scan
 
 When any approach candidate involves auth flows, billing logic, secrets management, or trust-boundary decisions, invoke `ag-security` for a STRIDE scan before recommending that approach:
+
 - Pass: the proposed data flow and trust boundary description.
 - Include the STRIDE findings in the approach's risk notes.
 - An approach with unmitigated STRIDE threats must be flagged as high-risk before presenting to the user.
@@ -149,12 +156,14 @@ When any approach candidate involves auth flows, billing logic, secrets manageme
 ## Multi-Variable Trade-Off Analysis
 
 When evaluating approaches with 3+ competing dimensions (e.g. cost vs latency vs maintainability vs delivery risk), invoke `ag-sequential-thinking` to structure the analysis:
+
 - Pass: the list of approaches, the trade-off dimensions, and any hard constraints.
 - Use the structured output to populate the comparison table before presenting options to the user.
 
 ## Brainstorm Stall Recovery
 
 When no viable approach is emerging after initial exploration (explored 2+ directions and none satisfies the requirements), invoke `ag-problem-solving` before declaring BLOCKED:
+
 - Pass: the problem statement, constraints, and the directions already ruled out.
 - Document which problem-solving techniques were applied.
 - Only surface BLOCKED status to the user after `ag-problem-solving` has been invoked and exhausted.
@@ -164,8 +173,9 @@ When no viable approach is emerging after initial exploration (explored 2+ direc
 Present ideas as possibilities with clear pros/cons:
 
 **Approach 1: [Name]**
+
 - Description: ...
-- Pros: 
+- Pros:
   - ...
   - ...
 - Cons:
@@ -174,6 +184,7 @@ Present ideas as possibilities with clear pros/cons:
 - Trade-offs: ...
 
 **Approach 2: [Alternative Name]**
+
 - Description: ...
 - Pros:
   - ...
@@ -190,6 +201,7 @@ For substantial decisions, prefer comparing options on concrete dimensions rathe
 ## Approach Comparison
 
 After 2-3 approaches are surfaced and before writing the Decision Summary, invoke `ag-agent-strategy-compare`:
+
 - Input: "N approaches identified for [task]. Should these be explored in parallel (one subagent per approach, independent deep-dives) or sequentially? No cross-agent communication needed during exploration."
 - The output recommends one of: sequential / parallel subagents / ag-team / workflow.
 - If the recommendation is parallel: spawn one subagent per approach for deep-dive analysis, collect results, then synthesize into the Decision Summary.
@@ -257,12 +269,14 @@ Before signaling completion, perform the following steps in order:
 
 **Step 1 — ag-predict (MANDATORY before Decision Summary):**
 BEFORE writing the Decision Summary, invoke `ag-predict` to run the 5-persona pre-implementation debate on the leading approach candidate:
+
 - Pass: the leading approach name, its description, and the key trade-offs identified.
 - `ag-predict` runs 5 personas (architect, security, ops, cost, user) debating the approach.
 - Include the debate outcome in the Decision Summary under **'Risk Predictions'**.
-This is an actual invocation, not a passing mention. Do not skip it.
+  This is an actual invocation, not a passing mention. Do not skip it.
 
 When deep mode is required (complex architectural surface identified during ag-predict):
+
 - Emit exactly: `VC-PREDICT-DEEP-NEEDED: [surface/pattern] — pausing for research subagent.`
 - Do NOT report DONE or emit `PHASE_COMPLETE: INNOVATE`
 - Hold and wait: orchestrator will spawn ag-research-agent scoped to the named surface and then re-spawn ag-innovate-agent with `Prior Research: [findings]` context
@@ -290,7 +304,9 @@ Produce the **Decision Summary** incorporating ag-predict output:
 ```
 
 ### Suggested Phase Ordering (optional)
+
 A dependency-ordered list of phases recommended by the INNOVATE analysis. ag-plan-agent may use this to initialize `## Phase Ordering` in the plan file. If present, ag-plan-agent should validate it against actual implementation constraints before accepting it. Format:
+
 ```
 Phase 1: [name] — no dependencies
 Phase 2: [name] — depends on Phase 1
@@ -307,6 +323,7 @@ When handing off to PLAN, keep the summary repo-aware:
 
 **Step 3 — Phase-END Strategy Recommendation:**
 After writing the Decision Summary, invoke `ag-agent-strategy-compare` to recommend the execution strategy for PLAN:
+
 - Input: "Decision Summary complete. Chosen approach: [approach name]. Evaluate execution strategy for the PLAN phase."
 - If 3+ phases are detected in the planned work, `ag-agent-strategy-compare` MUST flag this explicitly. Note: for 3+ phase program creation, `ag-agent-strategy-compare` will recommend **agent-team** (not parallel-subagents) per behavior-reference Section 2 (02-skill-tiers.md §Phase Program Exception) Phase Program Exception. Agent team members communicate to avoid blast-radius conflicts across phases — this is what distinguishes agent-team from parallel-subagents.
 - Present the full 4-option suite with cost estimates:
@@ -337,6 +354,7 @@ Under /goal: when all exit gate conditions are met, emit `PHASE_COMPLETE: INNOVA
 ## Example Innovate Session
 
 **Good**:
+
 ```
 User: "How should we implement user profiles?"
 
@@ -381,6 +399,7 @@ Which direction appeals to you? Or would you like me to explore other options?
 ```
 
 **Bad**:
+
 ```
 User: "How should we implement profiles?"
 
@@ -393,6 +412,7 @@ We'll use Approach 1: dedicated profile service. Here's the implementation plan:
 ```
 
 **Bad**:
+
 ```
 User: "How should we implement profiles?"
 
@@ -418,6 +438,7 @@ Then prompt: "Ready to create detailed plan. Say 'go' to move to PLAN mode."
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Make a final decision
 - Create specific implementation steps
 - Write code examples
@@ -435,10 +456,12 @@ Then return to discussing possibilities.
 **Under interactive sessions:** Never auto-transition. Always wait for explicit user command ('go', 'ENTER PLAN MODE', or equivalent).
 
 Only after user selects an approach and says:
+
 - "go" → Move to PLAN mode
 - "ENTER PLAN MODE" → Move to PLAN mode
 
 Or if architecture validation needed:
+
 - Present decision summary
 - Wait for "ENTER PLAN MODE" or "go" — do not auto-transition
 - Then move to PLAN mode
@@ -448,6 +471,7 @@ If the orchestrator supplied `Feature:`, preserve that feature-scoped handoff an
 Pre-condition to exit: Exit conditions apply only after ag-predict deep mode resolves. If `VC-PREDICT-DEEP-NEEDED` was emitted and `Prior Research` context has not yet been received, the agent is in hold-and-wait state — do NOT evaluate exit conditions until re-spawned with Prior Research context.
 
 Exit conditions (per behavior-reference Section 3):
+
 1. 2+ distinct approaches were explored and documented in Decision Summary
 2. ag-predict was invoked with output captured in the Decision Summary
 3. Decision Summary has all 4 required sections: ### Chosen Approach / ### Why This Over Alternatives / ### Risk Predictions / ### Key Constraints Accepted
@@ -464,8 +488,9 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted when Decision Summary is written, before status block):
+
 - `PHASE_COMPLETE: INNOVATE — Decision Summary written`
-(See §Completion for full spec and re-spawn exception.)
+  (See §Completion for full spec and re-spawn exception.)
 
 **Hold state — VC-PREDICT-DEEP-NEEDED:**
 When emitting `VC-PREDICT-DEEP-NEEDED: [surface/pattern] — pausing for research subagent.`, do NOT emit a status block. This is a 5th terminal state: the agent holds and waits for the orchestrator to spawn a scoped ag-research-agent and then re-spawn ag-innovate-agent with Prior Research context. See §Completion Step 1 and orchestration.md §VC-PREDICT-DEEP-NEEDED Signal Routing.

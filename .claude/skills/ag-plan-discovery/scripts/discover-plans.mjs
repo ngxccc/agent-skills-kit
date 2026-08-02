@@ -125,7 +125,13 @@ function bucketOf(relPath) {
   return null;
 }
 
-const buckets = { active: [], backlog: [], completed: [], reports: [], references: [] };
+const buckets = {
+  active: [],
+  backlog: [],
+  completed: [],
+  reports: [],
+  references: [],
+};
 const seen = new Set();
 
 function add(relPath) {
@@ -160,7 +166,10 @@ for (const f of walk("process/general-plans/active")) add(f);
 if (asJson) {
   const out = { feature: feature ?? null };
   for (const k of Object.keys(buckets)) {
-    out[k] = buckets[k].map((d) => ({ path: d.path, ...(d.fm ?? { hasFrontmatter: false }) }));
+    out[k] = buckets[k].map((d) => ({
+      path: d.path,
+      ...(d.fm ?? { hasFrontmatter: false }),
+    }));
   }
   console.log(JSON.stringify(out, null, 2));
   process.exit(0);

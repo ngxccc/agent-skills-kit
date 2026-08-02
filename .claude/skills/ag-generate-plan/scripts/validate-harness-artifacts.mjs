@@ -70,7 +70,10 @@ function validateVerification(data) {
   if (!data.status || typeof data.status !== "string") {
     errors.push(`Missing or invalid 'status'`);
   }
-  if (!data.verificationResults || typeof data.verificationResults !== "object") {
+  if (
+    !data.verificationResults ||
+    typeof data.verificationResults !== "object"
+  ) {
     errors.push(`Missing or invalid 'verificationResults' object`);
   }
   if (!Array.isArray(data.invariantsVerified)) {
@@ -81,7 +84,9 @@ function validateVerification(data) {
   } else {
     data.edgeCasesCoverage.forEach((item, idx) => {
       if (!item.id || !item.name || !item.layer || !item.status) {
-        errors.push(`edgeCasesCoverage[${idx}] missing required keys (id, name, layer, status)`);
+        errors.push(
+          `edgeCasesCoverage[${idx}] missing required keys (id, name, layer, status)`,
+        );
       }
     });
   }
@@ -90,7 +95,9 @@ function validateVerification(data) {
   } else {
     data.adversarialMatrixCoverage.forEach((item, idx) => {
       if (!item.id || !item.name || !item.layer || !item.status) {
-        errors.push(`adversarialMatrixCoverage[${idx}] missing required keys (id, name, layer, status)`);
+        errors.push(
+          `adversarialMatrixCoverage[${idx}] missing required keys (id, name, layer, status)`,
+        );
       }
     });
   }
@@ -116,13 +123,15 @@ function validateReviewDecision(data) {
 
 function validateHarnessDir(dirPath) {
   totalHarnessesChecked++;
-  console.log(`\n${cyan("🔍 Validating Harness Manifest Directory:")} ${bold(dirPath)}`);
-  
+  console.log(
+    `\n${cyan("🔍 Validating Harness Manifest Directory:")} ${bold(dirPath)}`,
+  );
+
   const files = {
     "risk-gate.json": validateRiskGate,
     "adversarial-validation.json": validateAdversarialValidation,
     "verification.json": validateVerification,
-    "review-decision.json": validateReviewDecision
+    "review-decision.json": validateReviewDecision,
   };
 
   let dirErrors = 0;
@@ -142,15 +151,19 @@ function validateHarnessDir(dirPath) {
       const fileErrors = validator(parsed, fullPath);
 
       if (fileErrors.length === 0) {
-        console.log(`  ${green("✔")} ${filename} - ${green("VALID (SSOT v2.0.0 compliant)")}`);
+        console.log(
+          `  ${green("✔")} ${filename} - ${green("VALID (SSOT v2.0.0 compliant)")}`,
+        );
       } else {
         console.log(`  ${red("✖")} ${filename} - ${red("INVALID")}:`);
-        fileErrors.forEach(err => console.log(`     - ${red(err)}`));
+        fileErrors.forEach((err) => console.log(`     - ${red(err)}`));
         dirErrors += fileErrors.length;
         totalErrors += fileErrors.length;
       }
     } catch (err) {
-      console.log(`  ${red("💥 Malformed JSON in")} ${filename}: ${err.message}`);
+      console.log(
+        `  ${red("💥 Malformed JSON in")} ${filename}: ${err.message}`,
+      );
       dirErrors++;
       totalErrors++;
     }
@@ -175,7 +188,7 @@ if (targetArg) {
 } else {
   // Scan all harness directories in process/
   const harnessDirs = [];
-  
+
   function scan(dir) {
     if (!existsSync(dir)) return;
     const entries = readdirSync(dir);
@@ -209,9 +222,17 @@ if (targetArg) {
 
 console.log("\n" + "=".repeat(60));
 if (totalErrors === 0) {
-  console.log(green(`🎉 SUCCESS: Checked ${totalHarnessesChecked} harness directory/directories with 0 validation errors.`));
+  console.log(
+    green(
+      `🎉 SUCCESS: Checked ${totalHarnessesChecked} harness directory/directories with 0 validation errors.`,
+    ),
+  );
   process.exit(0);
 } else {
-  console.log(red(`❌ FAILURE: Found ${totalErrors} schema validation error(s) across ${totalHarnessesChecked} directory/directories.`));
+  console.log(
+    red(
+      `❌ FAILURE: Found ${totalErrors} schema validation error(s) across ${totalHarnessesChecked} directory/directories.`,
+    ),
+  );
   process.exit(1);
 }

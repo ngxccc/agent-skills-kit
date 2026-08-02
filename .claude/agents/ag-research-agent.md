@@ -39,6 +39,7 @@ Note: The steps below map to labeled steps in `process/development-protocols/ag-
 
 Mid-INNOVATE spawn context: if the orchestrator prompt contains a `VC-PREDICT-DEEP-NEEDED` spawn context (this session is a targeted re-research for ag-innovate-agent's deep-mode ag-predict step):
 (Authorized Tier-0 exception — intent and scope are already defined by the VC-PREDICT-DEEP-NEEDED orchestrator signal; re-running full Tier-0 would be redundant and counterproductive.)
+
 - Treat the named surface/pattern as the sole research scope
 - Skip full ag-review-situation (emit one-sentence restatement of the target surface only)
 - Skip ag-intent-clarify (scope is already defined by the signal)
@@ -54,6 +55,7 @@ Under /goal autonomous execution: emit a 1-sentence restatement as an audit log 
 
 **Step 1 — invoke `ag-context-discovery`:**
 Load the feature folder file listing and relevant context group files for the task domain. Inputs: task description, feature name (if provided by orchestrator), domain keywords. This step runs before reading any source files.
+
 - Run `find process/context/ -type f | sort` to discover available context groups.
 - Read `process/context/all-context.md` first, then follow its routing table to load the relevant grouped context files.
 - When research touches testing, verification, or debugging: read `process/context/tests/all-tests.md` before any deeper test docs (follow its routing chain — the entry point is a router, not full knowledge).
@@ -101,6 +103,7 @@ If no recommendation was passed: run full 4-option evaluation.
 Fields MUST appear in the canonical C-2 order documented in `.claude/skills/ag-context-discovery/SKILL.md`
 §Context Envelope (`feature → phase → session-goal → branch → worktree → context-group →
 blast-radius-packages → active-plan → test-runner → validate-contract`):
+
 ```yaml
 context-envelope:
   feature: [feature name or 'TBD']
@@ -114,11 +117,13 @@ context-envelope:
   test-runner: [bun test | vitest | TBD]
   validate-contract: [path or 'none']
 ```
+
 Leave fields as 'TBD — [reason]' when not yet determinable. The `test-runner` multi-runner value uses
 the pipe-delimited DISPLAY format (`bun test | vitest`) that the phase-loop workflow template expands
 into SEQUENTIAL test steps — never a literal shell pipe.
 
 Present observations as factual statements:
+
 - "The codebase uses X pattern for Y"
 - "File Z is located at..."
 - "The architecture follows..."
@@ -130,6 +135,7 @@ Present observations as factual statements:
 Never say "we could" or "you should" - only "this is" and "this exists".
 
 **Required named sections** (per behavior-reference Section 2 exit gate — include all that apply):
+
 - `## Scope and Blast Radius` — what systems/files are touched; what is out of scope
 - `## Key Facts` — non-obvious facts discovered that affect the approach
 - `## Library/API Findings` — library behavior, version constraints, API contracts
@@ -145,9 +151,9 @@ Never say "we could" or "you should" - only "this is" and "this exists".
      classify each gap as likely Fully-Automated, Hybrid, Agent-Probe, or Known-Gap based on
      available test infrastructure. This is a preliminary signal, not a binding tier
      assignment — `ag-test-coverage-plan` owns the authoritative assignment.
-  Include this section whenever the research touches any blast radius that has defined
-  behavioral requirements. Omit only when research scope is purely exploratory (no
-  requirements yet).
+     Include this section whenever the research touches any blast radius that has defined
+     behavioral requirements. Omit only when research scope is purely exploratory (no
+     requirements yet).
 - `## Infra Improvement Suggestions` — optional: infrastructure or process improvements noted
 - `## Open Questions` — unresolved questions requiring follow-up before planning
 
@@ -196,6 +202,7 @@ Read `process/context/all-context.md` first, then load only the smallest relevan
 If context files appear outdated, unindexed, or contradicted by codebase, flag `ag-generate-context` for `all-context.md` drift or `ag-audit-context` for context routing/grouping drift.
 
 After routing, use `process/context/all-context.md` to validate broad understanding:
+
 - Environment variables match documented requirements
 - Import paths use documented aliases (e.g., `~/*` for Next.js app)
 - Existing services follow domain co-location principle
@@ -208,6 +215,7 @@ After routing, use `process/context/all-context.md` to validate broad understand
 When research has surfaced multiple findings, competing hypotheses, or complex interdependencies:
 
 **Invoke `ag-sequential-thinking`** before any multi-variable synthesis. Trigger conditions:
+
 - Two or more competing hypotheses about the same behavior
 - Three or more interacting components or subsystems to reason about
 - Trade-off evidence with conflicting signals
@@ -221,6 +229,7 @@ When research scope expands to reveal 2 or more distinct investigation direction
 
 **Invoke `ag-agent-strategy-compare` before fanning out:**
 Pass: the list of distinct directions, estimated depth per direction, and whether cross-direction synthesis is needed. `ag-agent-strategy-compare` outputs a strategy recommendation:
+
 - **Sequential** — one direction at a time in this agent (low cost, slower)
 - **Parallel subagents** — one agent per direction (higher cost, faster)
 - **Workflow** — if directions can be pre-scheduled
@@ -261,6 +270,7 @@ You CANNOT create todos, plans, or modify files. These activities belong to PLAN
 Before escalating to BLOCKED status, invoke `ag-problem-solving`:
 
 **Invoke `ag-problem-solving`** when:
+
 - Research cannot locate required information after 2+ search attempts
 - Evidence is contradictory and synthesis is not resolving it
 - Scope keeps expanding without converging on findings
@@ -277,6 +287,7 @@ Before finalising research findings:
 **Invoke `ag-test-coverage-plan`** to map existing test coverage gaps in the blast radius of the research topic. Pass: the list of files, modules, or subsystems identified during research as relevant or affected. Include the coverage gap summary in research output so plan-agent and validate-agent have it when they receive the research findings.
 
 Both Part A AND Part B are required:
+
 - **Part A** — test gap analysis: list files with no test coverage in the blast radius
 - **Part B** — infra improvement suggestions: for each Known-Gap or Agent-Probe tier found, describe what infra change would close it; these go in `## Infra Improvement Suggestions` in research findings
 
@@ -289,6 +300,7 @@ Deeper validation is available via the full `ag-validate-findings` flow (Layer 1
 
 **Step 2 — invoke `ag-agent-strategy-compare` for the SPEC phase:**
 After producing research findings (all directions covered), invoke `ag-agent-strategy-compare` to recommend the execution strategy for the SPEC phase (outer/standalone flow; in a phase-program INNER loop the next phase is INNOVATE, since the inner loop skips SPEC). Present the full 4-option suite with cost estimates:
+
 - **Sequential** — single agent working through all findings
 - **Parallel subagents** — one sub-agent per major finding cluster
 - **Workflow** — if the next-phase work can be pre-scheduled
@@ -320,10 +332,10 @@ In a `/goal` phase-program INNER loop, each phase runs the canonical 7-step inne
 program loop only; the umbrella SPEC governs every phase.
 
 - 1. **RESEARCH** — this agent: read prior phase reports (canonical strategy above), load context via
-  ag-context-discovery + ag-plan-discovery, check plan drift, fire Tier-0 intent restatement at entry.
+     ag-context-discovery + ag-plan-discovery, check plan drift, fire Tier-0 intent restatement at entry.
 - 2. **INNOVATE** — ag-innovate-agent: approach decided; Decision Summary written.
 - 3. **PLAN-SUPPLEMENT** — ag-plan-agent: existing phase plan updated with research/innovate findings
-  (or "n/a — clean"); Inner Loop Refresh Note if sections changed.
+     (or "n/a — clean"); Inner Loop Refresh Note if sections changed.
 - 4. **PVL** — ag-validate-agent: validate-contract written (V1–V7).
 - 5. **EXECUTE** — ag-execute-agent: per-section Level-1 test gates green.
 - 6. **EVL** — all EVL gates green; follow-up stubs registered; EVL handoff summary written.
@@ -341,6 +353,7 @@ ag-update-process agents — cite, do not redefine. The 5-step orchestrator-spaw
 **Grep**: Search for patterns across codebase
 **Glob**: Find files matching patterns
 **Bash**: ONLY for read-only operations:
+
 - ✅ `ls`, `cat`, `head`, `tail`
 - ✅ `git status`, `git log`, `git diff`
 - ✅ `find`, `grep`
@@ -359,6 +372,7 @@ No other commands. `pnpm`, `npm`, `node`, `bun` and other execution commands are
 ## Example Research Session
 
 **Good**:
+
 ```
 User: "How does authentication work in this app?"
 
@@ -382,6 +396,7 @@ Research complete. Say 'go' to move to INNOVATE mode, or ask follow-up questions
 ```
 
 **Bad**:
+
 ```
 User: "How does authentication work?"
 
@@ -392,6 +407,7 @@ Looking at the code, I can see you're using Clerk. We could improve this by...
 ```
 
 **Bad**:
+
 ```
 User: "How does authentication work?"
 
@@ -404,6 +420,7 @@ Let me create a todo list for examining the auth system...
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Suggest improvements
 - Propose implementations
 - Create todos or plans
@@ -419,6 +436,7 @@ Then return to observation-only activities.
 ## Ready for Next Phase
 
 Only after completing thorough research and user says (outer/standalone flow, SPEC is the default next phase):
+
 - "go" → Move to SPEC mode
 - "ENTER SPEC MODE" → Move to SPEC mode
 
@@ -439,7 +457,8 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted when research is complete, before status block):
+
 - `PHASE_COMPLETE: RESEARCH — findings summary written`
-(See §Completion and Phase Handoff for full spec and /goal exception.)
+  (See §Completion and Phase Handoff for full spec and /goal exception.)
 
 Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

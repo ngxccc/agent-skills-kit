@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-generate-phase-program workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate kickoff artifacts for a multi-phase RIPER-5 program: umbrella plan, Program Goal Charter,
@@ -60,6 +60,7 @@ plan) or dynamic workflow. Plans are created in the recommended parallel mode, n
 
 **Step 1a — Read template files.**
 Before creating any plan artifacts, execute `Read` on both template files:
+
 - `.claude/skills/ag-generate-phase-program/templates/umbrella-plan-template.md`
 - `.claude/skills/ag-generate-phase-program/templates/phase-stub-template.md`
 
@@ -75,6 +76,7 @@ Present the recommendation using the format in "Kickoff Recommendation Format" b
 plan artifacts yet. Stop and wait for user approval.
 
 **Step 4 — after approval, create the required artifacts:**
+
 - feature folder under `process/features/{feature}/` with subdirs `active/`, `completed/`, `backlog/` (no `reports/` or `references/` — new repos omit these deprecated sibling dirs)
 - ONE program task folder in `active/`: `active/{program-slug}_{date}/` holding the umbrella `_PLAN_`, every phase `_PLAN_`, every phase `_REPORT_`, the phase registry, and `_REF_` files — all FLAT (no per-phase subfolders)
 - the umbrella/orchestration plan: `active/{program-slug}_{date}/{program-slug}-umbrella_PLAN_{date}.md` — the filename MUST carry the literal `umbrella` token (enforced by `validate-plan-artifact.mjs` and `validate-umbrella-artifact.mjs` for any plan whose frontmatter declares `phase: umbrella`)
@@ -186,12 +188,13 @@ Then: advance one phase at a time using the 7-step inner loop `R → I → P →
 
 Two copy-pasteable template files exist for generating structurally correct artifacts:
 
-| Template | Path | Use when |
-|---|---|---|
+| Template      | Path                                                                           | Use when                                   |
+| ------------- | ------------------------------------------------------------------------------ | ------------------------------------------ |
 | Umbrella plan | `.claude/skills/ag-generate-phase-program/templates/umbrella-plan-template.md` | Creating a new umbrella/orchestration plan |
-| Phase stub | `.claude/skills/ag-generate-phase-program/templates/phase-stub-template.md` | Creating a new per-phase plan stub |
+| Phase stub    | `.claude/skills/ag-generate-phase-program/templates/phase-stub-template.md`    | Creating a new per-phase plan stub         |
 
 **Mandatory Read steps:** Before writing any umbrella plan or phase stub, execute:
+
 1. `Read(".claude/skills/ag-generate-phase-program/templates/umbrella-plan-template.md")`
 2. `Read(".claude/skills/ag-generate-phase-program/templates/phase-stub-template.md")`
 
@@ -205,19 +208,23 @@ Before creating any plan files for a new large program, present a short recommen
 five items:
 
 **1. Program fit**
+
 - should this be `standard complex` or a `phase program`
 - why
 
 **2. Recommended structure**
+
 - feature folder name
 - umbrella plan name
 - proposed phase list in order
 
 **3. Recommended immediate next action**
+
 - what should happen now
 - what should wait until later
 
 **4. Approval checkpoint**
+
 - ask whether to proceed with creating the plan artifacts
 
 **5. Compressed session-goal block (printed in chat)**
@@ -279,10 +286,10 @@ prod-state mutation, production image push/deploy, and live/costful gates are de
 See your project's container/test context docs for the exact sanctioned commands. Do not re-list
 those commands here.
 
-| Tier | Autonomous? | Examples |
-|---|---|---|
-| GREEN — fully autonomous (the default) | yes | direct shared-container interaction — exec, read logs, send messages, edit/write files, push secrets, probe health; run any documented script in your project's test context docs; rebuild the image and recreate/restart the shared container via the project's managed script to apply changes (named volume preserved); create/rebuild/recreate/remove E2E-owned disposable targets freely; reversible stop/start parking of the shared container, restored and verified leave-as-found |
-| RED — defer-and-report (never autonomous) | no | wipe/delete the shared container's named volume (irrecoverable data loss) or otherwise destroy persistent state without recovery; mutate production DB/storage/streaming state; push production images or deploy; run live/costful/provider-backed gates without per-lane approval |
+| Tier                                      | Autonomous? | Examples                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----------------------------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| GREEN — fully autonomous (the default)    | yes         | direct shared-container interaction — exec, read logs, send messages, edit/write files, push secrets, probe health; run any documented script in your project's test context docs; rebuild the image and recreate/restart the shared container via the project's managed script to apply changes (named volume preserved); create/rebuild/recreate/remove E2E-owned disposable targets freely; reversible stop/start parking of the shared container, restored and verified leave-as-found |
+| RED — defer-and-report (never autonomous) | no          | wipe/delete the shared container's named volume (irrecoverable data loss) or otherwise destroy persistent state without recovery; mutate production DB/storage/streaming state; push production images or deploy; run live/costful/provider-backed gates without per-lane approval                                                                                                                                                                                                         |
 
 ---
 
@@ -417,12 +424,12 @@ When a regression is detected in step 5:
 
 **Classify the regression:**
 
-| Type | Definition | Example |
-|---|---|---|
-| product breakage | previously working product behavior is broken | API endpoint returns 500, container fails to start |
-| test breakage | previously passing test now fails | Vitest suite red, Playwright spec timeout |
-| harness drift | process/agent/skill artifacts are inconsistent | context doc references a deleted file |
-| stale command drift | a previously recorded command no longer works | pnpm script renamed, env var removed |
+| Type                | Definition                                     | Example                                            |
+| ------------------- | ---------------------------------------------- | -------------------------------------------------- |
+| product breakage    | previously working product behavior is broken  | API endpoint returns 500, container fails to start |
+| test breakage       | previously passing test now fails              | Vitest suite red, Playwright spec timeout          |
+| harness drift       | process/agent/skill artifacts are inconsistent | context doc references a deleted file              |
+| stale command drift | a previously recorded command no longer works  | pnpm script renamed, env var removed               |
 
 **Decision tree:**
 
@@ -482,7 +489,6 @@ only, not workflow rules.
 
 A blank template plus a filled-in reference example live at
 `.claude/skills/ag-generate-phase-program/references/program-goal-charter-template.md`.
-
 
 ## References
 

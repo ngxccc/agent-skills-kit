@@ -62,6 +62,7 @@ Use this file when you need to:
 (No deeper test docs yet. Add routing entries here as they are created.)
 
 ## Quick Decision Guide
+
 ### Use `Supertest` when
 
 - Testing NestJS / Express / Node.js HTTP REST API endpoints E2E.
@@ -164,12 +165,12 @@ pnpm test -- path/to/file.test.ts  # single file
 ```
 -->
 
-| Scope / Skill       | Runner | Command                                                                                                                      |
-| ------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------- |
-| statusline/hooks    | Node   | `node .codex/hooks/lib/__tests__/statusline-suite.cjs`                                                                       |
-| watzup scan         | Node   | `node .claude/skills/ag-watzup/scripts/watzup-scan.test.cjs`                                                                 |
-| docs seeker         | Node   | `cd .claude/skills/ag-docs-seeker && npm test`                                                                               |
-| validation / audit  | Node   | `node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs` (and other scripts under ag-audit-ag / ag-audit-context) |
+| Scope / Skill      | Runner | Command                                                                                                                      |
+| ------------------ | ------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| statusline/hooks   | Node   | `node .codex/hooks/lib/__tests__/statusline-suite.cjs`                                                                       |
+| watzup scan        | Node   | `node .claude/skills/ag-watzup/scripts/watzup-scan.test.cjs`                                                                 |
+| docs seeker        | Node   | `cd .claude/skills/ag-docs-seeker && npm test`                                                                               |
+| validation / audit | Node   | `node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs` (and other scripts under ag-audit-ag / ag-audit-context) |
 
 ## Debugging Quick Reference
 

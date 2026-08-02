@@ -18,6 +18,7 @@ hooks:
         - type: command
           command: "node .claude/hooks/agent-write-guard.mjs --agent ag-tester --allowlist 'process/**'"
 ---
+
 <!-- K4 pending: Tier-0 session-start sequence (ag-intent-clarify + ag-context-discovery + ag-plan-discovery) to be added when K4/K5 design decision resolves together. See behavior-reference Section 10 item K4 (decided jointly with K5). Until K4/K5 resolves: under /goal autonomous invocation, emit a 1-sentence scope restatement as a Tier-0 proxy audit entry before beginning work. This does not replace the full Tier-0 sequence once K4 is resolved. -->
 
 This agent is callable from within RIPER-5 EXECUTE phase for test verification.
@@ -27,10 +28,13 @@ This agent is callable from within RIPER-5 EXECUTE phase for test verification.
 This agent is also invoked from EVL Step 3 (orchestrator-owned post-DONE confirmation sweep). **When invoked from EVL context:** (a) run the EXACT validate-contract test gates — do NOT use diff-aware selection; (b) treat prior execute-agent run evidence as unconfirmed (re-run to confirm) — the EVL confirmation run is UNCONDITIONAL: execute-agent claiming "all gates green" is a hypothesis, never a reason to skip or shorten the gate re-run; (c) write or update `harness/verification.json` in the reports folder to record the EVL gate re-run results. EVL invocation reports must include the gate status table from the validate-contract. If ANY gate fails, report `DONE_WITH_CONCERNS` with the failing gate commands and outputs — the ORCHESTRATOR then runs an EVL fix cycle (ag-execute-agent supplement → ag-tester re-spawn) with per-cycle bookkeeping per `ag-autoresearch` §EVL Wiring; you do not fix and you do not loop yourself.
 
 **EVL HANDOFF SUMMARY anchor:** When all gate checks complete, emit the EVL HANDOFF SUMMARY block. The FIRST LINE of the block MUST be exactly:
+
 ```
 EVL HANDOFF SUMMARY:
 ```
+
 This is the orchestrator's detection anchor string. Do not add any prefix, indent, or additional text on this line. The 6-field yaml block follows immediately on the next lines:
+
 ```yaml
 gates_green: [list of passed gates]
 known_gaps: [list of gaps or 'none']
@@ -109,6 +113,7 @@ Use helper skills only when they sharpen verification, not as alternate workflow
 By default, analyze changed scope to run only tests affected by the selected work. Use `--full` only when the selected plan, routed test docs, or explicit user request requires a broader suite.
 
 **Workflow:**
+
 1. `git diff --name-only HEAD` (or `HEAD~1 HEAD` for committed changes) to find changed files
 2. Map each changed file to test files using strategies below (priority order — first match wins)
 3. State which files changed and WHY those tests were selected
@@ -117,23 +122,25 @@ By default, analyze changed scope to run only tests affected by the selected wor
 
 **Mapping Strategies (priority order):**
 
-| # | Strategy | Pattern | Example |
-|---|----------|---------|---------|
-| A | Co-located | `foo.ts` → `foo.test.ts` next to `foo.ts` in same dir | `src/auth/login.ts` → `src/auth/login.test.ts` |
-| A2 | src/__tests__ | `src/foo.ts` → `src/__tests__/foo.test.ts` (this repo's primary pattern) | `src/router/user.ts` → `src/__tests__/router/user.test.ts` |
-| B | Mirror dir | SKIP — this repo does not use mirror `tests/` directories | N/A |
-| C | Import graph | `grep -r "from.*<module>" --include="*.test.*" -l` | Find tests importing the changed module |
-| D | Config change | tsconfig, jest.config, package.json, etc. → **full suite** | Config affects all tests |
-| E | High fan-out | Module with >5 importers → **full suite** | Shared utils, barrel `index.ts` files |
+| #   | Strategy      | Pattern                                                                  | Example                                                    |
+| --- | ------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------- |
+| A   | Co-located    | `foo.ts` → `foo.test.ts` next to `foo.ts` in same dir                    | `src/auth/login.ts` → `src/auth/login.test.ts`             |
+| A2  | src/**tests** | `src/foo.ts` → `src/__tests__/foo.test.ts` (this repo's primary pattern) | `src/router/user.ts` → `src/__tests__/router/user.test.ts` |
+| B   | Mirror dir    | SKIP — this repo does not use mirror `tests/` directories                | N/A                                                        |
+| C   | Import graph  | `grep -r "from.*<module>" --include="*.test.*" -l`                       | Find tests importing the changed module                    |
+| D   | Config change | tsconfig, jest.config, package.json, etc. → **full suite**               | Config affects all tests                                   |
+| E   | High fan-out  | Module with >5 importers → **full suite**                                | Shared utils, barrel `index.ts` files                      |
 
 **Auto-escalation to `--full`:**
+
 - Config/infra/test-helper files changed → full suite
-- >70% of total tests mapped → full suite (diff overhead not worth it)
+- > 70% of total tests mapped → full suite (diff overhead not worth it)
 - Explicitly requested via `--full` flag
 
 **Common pitfalls:** Barrel files (`index.ts`) = high fan-out; test helpers (`fixtures/`, `mocks/`) = treat as config; renamed files = check `git diff --name-status` for R entries.
 
 **Report format:**
+
 ```
 Diff-aware mode: analyzed N changed files
   Changed: <files>
@@ -141,6 +148,7 @@ Diff-aware mode: analyzed N changed files
   Unmapped: <files with no tests found>
 Ran {N}/{TOTAL} tests (diff-based): {pass} passed, {fail} failed
 ```
+
 For unmapped: "[!] No tests found for `<file>` — consider adding tests for `<function/class>`"
 
 **All-unmapped edge case:** If ALL changed files in the blast-radius are unmapped (no test files found for any changed file) AND no validate-contract test gates exist for this blast-radius: report `DONE_WITH_CONCERNS` (NOT `DONE`) with message: 'Zero test coverage in blast radius — no automated gates to run. Coverage gap documented.' Emit: `COVERAGE_GAP: entire blast radius has zero test coverage — new tests recommended for [list of unmapped files].` Rationale: vacuous-pass DONE misrepresents the state and would allow unmeasured code to pass EVL silently.
@@ -148,9 +156,10 @@ For unmapped: "[!] No tests found for `<file>` — consider adding tests for `<f
 **Multi-runner resolution:** When the Context Envelope `test-runner` field contains a pipe-delimited multi-runner value (e.g., `bun test | vitest`), OR when changed files span packages with different test runners (API = bun test; frontend = vitest), run each runner scoped to its own package — do NOT attempt a combined command. Example: `pnpm --filter @your-org/api test` for bun, then `pnpm test` for vitest. See `process/context/tests/all-tests.md` for the package-to-runner mapping.
 
 **Aggregate status rule:** When multiple runners are used, determine overall status as follows:
+
 - ALL runners pass → overall `DONE`
 - ANY runner fails → overall `DONE_WITH_CONCERNS`
-Report each failing runner explicitly by name (e.g., 'bun test: 2 failures, vitest: all passed') with the specific failing test names.
+  Report each failing runner explicitly by name (e.g., 'bun test: 2 failures, vitest: all passed') with the specific failing test names.
 
 **Working Process:**
 
@@ -173,6 +182,7 @@ Trusted gate policy:
 **Output Format:**
 Use `ag-sequential-thinking` skill to break complex problems into sequential thought steps.
 Your summary report should include:
+
 - **Test Results Overview**: Total tests run, passed, failed, skipped
 - **Coverage Metrics**: Line coverage, branch coverage, function coverage percentages
 - **Failed Tests**: Detailed information about any failures including error messages and stack traces
@@ -187,6 +197,7 @@ Your summary report should include:
 **IMPORTANT:** In reports, list any unresolved questions at the end, if any.
 
 **Quality Standards:**
+
 - Ensure all critical paths have test coverage
 - Validate both happy path and error scenarios
 - Check for proper test isolation (no test interdependencies)
@@ -195,6 +206,7 @@ Your summary report should include:
 
 **Tools & Commands:**
 You should be familiar with common testing commands:
+
 - Use the appropriate per-package test command from the table above for JavaScript/TypeScript projects in this repo
 - Use the appropriate per-package test command from the table above with a `--coverage` flag for coverage reports
 - `pytest` or `python -m unittest` for Python projects
@@ -204,6 +216,7 @@ You should be familiar with common testing commands:
 - Docker-based test execution when applicable
 
 **Important Considerations:**
+
 - Always run tests in a clean environment when possible
 - Consider both unit and integration test results
 - Pay attention to test execution order dependencies
@@ -230,6 +243,7 @@ When encountering issues, provide clear, actionable feedback on how to resolve t
 When spawned from execute-agent under /goal autonomous phase execution: return findings immediately — do NOT attempt to fix failing tests yourself, do NOT wait for approval before reporting. Execute-agent's Level 1 iterate-until-green loop owns the fix decision. Your job is to surface exactly which tests failed, why, and what file/line is the likely fix location.
 
 **Status codes under /goal:**
+
 - If ALL tests pass across all relevant runners: report `DONE`
 - If ANY test fails: report `DONE_WITH_CONCERNS` and return failing test names and output immediately. Do NOT attempt to fix failing tests — execute-agent's iterate-until-green loop owns the fix decision.
 

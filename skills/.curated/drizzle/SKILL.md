@@ -2,7 +2,7 @@
 name: drizzle
 description: Rules, standards, and references for Drizzle ORM query styles, performance optimization, type safety, and Drizzle Kit CLI/MCP tooling automation. Use when writing Drizzle queries, defining database services, or configuring migration automation.
 license: MIT
-argument-hint: '[--table <string>] [--query-type <string>]'
+argument-hint: "[--table <string>] [--query-type <string>]"
 metadata:
   author: ngxc
   version: 1.1.0
@@ -25,16 +25,16 @@ Reference these guidelines when:
 
 ## Rule Categories by Priority
 
-| Priority | Category                 | Impact   | Prefix     | Rules |
-| -------- | ------------------------ | -------- | ---------- | ----- |
-| 1        | DTO & Schema Isolation   | CRITICAL | `dto-`     | 1     |
-| 2        | Type Safety & Unions     | CRITICAL | `type-`    | 1     |
-| 3        | Transactions & Locking   | CRITICAL | `lock-`    | 1     |
-| 4        | Schema & Relations Config| CRITICAL | `schema-`, `relations-` | 2 |
-| 5        | Query Selection & YAGNI  | HIGH     | `select-`  | 3     |
-| 6        | Query Style & Performance| HIGH     | `style-`   | 4     |
-| 7        | Error Handling           | MEDIUM   | `error-`   | 1     |
-| 8        | Tooling & MCP Automation | HIGH     | `drizzle-kit-` | 1 |
+| Priority | Category                  | Impact   | Prefix                  | Rules |
+| -------- | ------------------------- | -------- | ----------------------- | ----- |
+| 1        | DTO & Schema Isolation    | CRITICAL | `dto-`                  | 1     |
+| 2        | Type Safety & Unions      | CRITICAL | `type-`                 | 1     |
+| 3        | Transactions & Locking    | CRITICAL | `lock-`                 | 1     |
+| 4        | Schema & Relations Config | CRITICAL | `schema-`, `relations-` | 2     |
+| 5        | Query Selection & YAGNI   | HIGH     | `select-`               | 3     |
+| 6        | Query Style & Performance | HIGH     | `style-`                | 4     |
+| 7        | Error Handling            | MEDIUM   | `error-`                | 1     |
+| 8        | Tooling & MCP Automation  | HIGH     | `drizzle-kit-`          | 1     |
 
 ## Quick Reference
 

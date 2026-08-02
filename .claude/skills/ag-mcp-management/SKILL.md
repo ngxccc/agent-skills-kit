@@ -25,7 +25,7 @@ MCP is an open protocol enabling AI agents to connect to external tools and data
 - Context-efficient: subagents handle MCP discovery and execution
 - Persistent tool catalog: automatically saves discovered tools to JSON for fast reference
 
-## When to Apply This Skill
+## When to Apply
 
 Use this skill when:
 
@@ -237,7 +237,6 @@ The `mcp-manager` agent uses this skill to:
 - Report results back to main agent
 
 This keeps main agent context clean and enables efficient MCP integration.
-
 
 ## References
 

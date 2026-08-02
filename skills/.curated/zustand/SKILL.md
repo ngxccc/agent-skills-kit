@@ -15,6 +15,7 @@ Zustand is a lightweight, fast, and opinionated state management library for Rea
 ## When to Apply
 
 Use this skill when:
+
 - Creating a new Zustand store or refactoring an existing store in the B2B Storefront or Admin application.
 - Configuring state persistence with `localStorage` or other storage backends using the `persist` middleware.
 - Preventing Next.js Hydration Mismatch errors during SSR and client hydration.
@@ -78,6 +79,7 @@ export const useCartStore = create<CartState>()(
 Next.js Server-Side Rendering (SSR) compiles the initial page render on the server, while `localStorage` is only available on the client. To avoid hydration mismatches, use one of the following strategies:
 
 #### Strategy A: Safe `useMounted` State Selector Hook (Recommended)
+
 Export a wrapper hook that subscribes to the Zustand store but only returns the selected state after the component has successfully mounted.
 
 ```typescript
@@ -99,6 +101,7 @@ export function useCart<T>(selector: (state: CartState) => T): T | undefined {
 ```
 
 #### Strategy B: Manual Hydration (`skipHydration: true`)
+
 Set `skipHydration: true` in the persist configuration, and manually trigger `rehydrate()` on mount in a root client layout or provider.
 
 ```typescript

@@ -39,9 +39,15 @@ if (!target) {
   // 5 folder sections per ag-plan-discovery/SKILL.md Output Format:
   // Active Plans / Backlog / Completed / Reports / References
   const sections = [
-    { label: "Active Plans / same-feature", re: /^#{2,3}\s+.*(active plans|same-feature)/im },
+    {
+      label: "Active Plans / same-feature",
+      re: /^#{2,3}\s+.*(active plans|same-feature)/im,
+    },
     { label: "Backlog", re: /^#{2,3}\s+.*backlog/im },
-    { label: "Completed / other-feature", re: /^#{2,3}\s+.*(completed|other[- ]feature)/im },
+    {
+      label: "Completed / other-feature",
+      re: /^#{2,3}\s+.*(completed|other[- ]feature)/im,
+    },
     { label: "Reports", re: /^#{2,3}\s+.*reports/im },
     { label: "References / refs", re: /^#{2,3}\s+.*(references|refs)/im },
   ];

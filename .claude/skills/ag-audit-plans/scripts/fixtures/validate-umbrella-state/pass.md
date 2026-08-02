@@ -7,11 +7,11 @@ phase: umbrella
 
 ## Program Status Table
 
-| Phase | Status |
-| --- | --- |
+| Phase                        | Status      |
+| ---------------------------- | ----------- |
 | Phase 1 validator-foundation | ✅ VERIFIED |
-| Phase 2 spec-artifact-build | pending |
-| Phase 3 phase-reorder | pending |
+| Phase 2 spec-artifact-build  | pending     |
+| Phase 3 phase-reorder        | pending     |
 
 ## Current Execution State
 

@@ -805,9 +805,7 @@ Use one `.diagram-shell` per diagram. The source Mermaid text lives in `<script 
 ### JavaScript (Closure-Based)
 
 ```javascript
-const config = {
-  /* fitPadding, zoom bounds, readabilityFloor */
-};
+const config = {/* fitPadding, zoom bounds, readabilityFloor */};
 const clamp = (n, lo, hi) => Math.max(lo, Math.min(hi, n));
 let activeDrag = null;
 

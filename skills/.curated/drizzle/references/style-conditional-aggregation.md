@@ -19,12 +19,14 @@ const totalOrders = await db.select({ count: sql`count(*)` }).from(orders);
 const activeRevenue = await db
   .select({ sum: sql`sum(amount)` })
   .from(orders)
-  .where(ne(orders.status, 'CANCELLED'));
+  .where(ne(orders.status, "CANCELLED"));
 
 const current30DaysRevenue = await db
   .select({ sum: sql`sum(amount)` })
   .from(orders)
-  .where(and(ne(orders.status, 'CANCELLED'), gte(orders.createdAt, thirtyDaysAgo)));
+  .where(
+    and(ne(orders.status, "CANCELLED"), gte(orders.createdAt, thirtyDaysAgo)),
+  );
 ```
 
 ### ✅ Good: Single query with conditional aggregates

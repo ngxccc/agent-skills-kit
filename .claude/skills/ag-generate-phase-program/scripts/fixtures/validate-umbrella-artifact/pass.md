@@ -24,10 +24,10 @@ Phase 1 complete; Phase 2 pending.
 
 ## Phase Ordering
 
-| Phase | Plan | Depends on |
-|---|---|---|
-| 1 — Foundation | phase-01-foundation | — |
-| 2 — Expansion | phase-02-expansion | Phase 1 |
+| Phase          | Plan                | Depends on |
+| -------------- | ------------------- | ---------- |
+| 1 — Foundation | phase-01-foundation | —          |
+| 2 — Expansion  | phase-02-expansion  | Phase 1    |
 
 ### Join Conditions
 
@@ -35,10 +35,10 @@ Phase 1 complete; Phase 2 pending.
 
 ## Program Status Table
 
-| Phase | Status |
-|---|---|
-| 1 | ✅ COMPLETE |
-| 2 | ⏳ PLANNED |
+| Phase | Status      |
+| ----- | ----------- |
+| 1     | ✅ COMPLETE |
+| 2     | ⏳ PLANNED  |
 
 ## Per-Phase Loop
 

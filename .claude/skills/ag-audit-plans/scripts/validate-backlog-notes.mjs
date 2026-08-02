@@ -36,7 +36,9 @@ if (!target) {
       const statusMatch = text.match(/status\s*[:=]\s*([A-Za-z-]+)/i);
       const statusVal = statusMatch ? statusMatch[1].toLowerCase() : null;
       if (statusVal !== "blocked" && statusVal !== "done-with-gap") {
-        fail(`${target}/${f} missing valid 'status' (expected BLOCKED or done-with-gap; got ${JSON.stringify(statusVal)})`);
+        fail(
+          `${target}/${f} missing valid 'status' (expected BLOCKED or done-with-gap; got ${JSON.stringify(statusVal)})`,
+        );
       }
 
       // item or id field.
@@ -52,7 +54,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

@@ -5,7 +5,9 @@ import { execSync } from "node:child_process";
 
 const root = (() => {
   try {
-    return execSync("git rev-parse --show-toplevel", { encoding: "utf8" }).trim();
+    return execSync("git rev-parse --show-toplevel", {
+      encoding: "utf8",
+    }).trim();
   } catch {
     return process.cwd();
   }
@@ -60,7 +62,9 @@ function validatePhaseStub(relPath) {
     return null;
   }
   if (!isStubActivePath(relPath)) {
-    warn(`${relPath} is not under process/features/*/active/ or process/features/*/completed/ — skipping path check`);
+    warn(
+      `${relPath} is not under process/features/*/active/ or process/features/*/completed/ — skipping path check`,
+    );
   }
 
   const text = read(relPath);
@@ -84,7 +88,9 @@ function validatePhaseStub(relPath) {
 
   // Must NOT contain phase: umbrella
   if (/phase:\s*umbrella/.test(frontmatter)) {
-    fail(`${relPath} is an umbrella plan — use validate-umbrella-artifact.mjs instead`);
+    fail(
+      `${relPath} is an umbrella plan — use validate-umbrella-artifact.mjs instead`,
+    );
     return null;
   }
 
@@ -120,7 +126,9 @@ function validatePhaseStub(relPath) {
       .filter((m) => !stepLines.some((l) => m.re.test(l)))
       .map((m) => m.label);
     if (missingMarkers.length > 0) {
-      fail(`${relPath} Phase Loop Progress missing step markers: ${missingMarkers.join(", ")}`);
+      fail(
+        `${relPath} Phase Loop Progress missing step markers: ${missingMarkers.join(", ")}`,
+      );
     }
   }
 
@@ -129,7 +137,9 @@ function validatePhaseStub(relPath) {
   const hasObjective = hasSection(text, "Objective");
   const hasPurpose = hasSection(text, "Purpose");
   if (!hasChecklist && !hasObjective && !hasPurpose) {
-    fail(`${relPath} missing at least one of: '## Implementation Checklist', '## Objective', or '## Purpose'`);
+    fail(
+      `${relPath} missing at least one of: '## Implementation Checklist', '## Objective', or '## Purpose'`,
+    );
   }
 
   // Required: ## Validate Contract
@@ -151,7 +161,9 @@ function validatePhaseStub(relPath) {
   }
 
   if (!/\*\*Validate-contract required/.test(text)) {
-    warn(`${relPath} Phase Loop Progress missing bold '**Validate-contract required' warning (recommended)`);
+    warn(
+      `${relPath} Phase Loop Progress missing bold '**Validate-contract required' warning (recommended)`,
+    );
   }
 
   return {
@@ -187,7 +199,9 @@ if (inputPaths.length > 0) {
     }
   }
   if (planPaths.length === 0) {
-    warnings.push("No phase stub plans found in process/features/*/active/ or process/features/*/completed/");
+    warnings.push(
+      "No phase stub plans found in process/features/*/active/ or process/features/*/completed/",
+    );
   }
 }
 

@@ -15,6 +15,7 @@ layer: helper
 ## When to Apply
 
 This skill is designed for the agent to reference when:
+
 - The user is a student or developer who has created an architectural plan, feature spec, or DB schema.
 - The agent needs to perform an adversarial Red Team audit to stress-test designs before coding.
 - Triggered by explicit keywords: `red team`, `attack plan`, `stress test design`, `find flaws`, `audit architecture`, `challenge my plan`.
@@ -30,21 +31,23 @@ This skill is designed for the agent to reference when:
    - **Concurrency & Race Conditions:** Microsecond concurrent writes, double-spends, dirty reads.
    - **Failure Modes & Data Integrity:** Third-party timeouts mid-transaction, DB partition, webhook retries.
    - **Boundary Limits & Edge Cases:** Missing indexes, huge payloads, corrupted JSON inputs.
-3. **Formulate Scenario Attacks (`INV-3`):** Do NOT fix the vulnerabilities immediately for the student. Frame each vulnerability as a concrete system failure scenario (*"What happens if payment succeeds but DB write times out at second 4.9?"*).
+3. **Formulate Scenario Attacks (`INV-3`):** Do NOT fix the vulnerabilities immediately for the student. Frame each vulnerability as a concrete system failure scenario (_"What happens if payment succeeds but DB write times out at second 4.9?"_).
 4. **Demand Student Defense & Refactoring:** Require the student to propose fixes or refactor their plan.
 5. **Grant Approval Gate (`INV-4`):** Mark the architecture `APPROVED` only after all attack vectors are resolved.
 
 ### 2. Examples
 
 #### Example 1: Stress-Testing a Ticket Booking Plan
+
 - **Context:** Student submits a plan using simple TypeORM `findOne` + `save` for seat booking.
 - **User prompt:** "Red team this plan for reserving tickets in NestJS."
-- **Action/Result:** The agent identifies a race condition risk, rejects the plan, and asks: *"If 500 users click 'Book Ticket' for the final seat within 1ms, how will your `findOne` check prevent 499 over-bookings?"*
+- **Action/Result:** The agent identifies a race condition risk, rejects the plan, and asks: _"If 500 users click 'Book Ticket' for the final seat within 1ms, how will your `findOne` check prevent 499 over-bookings?"_
 
 #### Example 2: Attacking Payment Webhook Idempotency
+
 - **Context:** Student designs a PayOS payment webhook handler without an event log table.
 - **User prompt:** "Attack my payment webhook design."
-- **Action/Result:** The agent presents a network partition scenario where PayOS sends the same `PAID` event 3 times due to timeout, asking: *"How will your system prevent crediting the user's wallet 3 times?"*
+- **Action/Result:** The agent presents a network partition scenario where PayOS sends the same `PAID` event 3 times due to timeout, asking: _"How will your system prevent crediting the user's wallet 3 times?"_
 
 ---
 

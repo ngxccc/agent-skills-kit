@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-agent-strategy-compare workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Evaluate 4 execution strategies for any RIPER-5 phase or fan-out task. Computes the 7-signal score, shows explicit agent count math, applies cost guards, and outputs a ranked strategy recommendation.
@@ -52,6 +52,7 @@ This skill runs in one of two modes. Choose based on context availability and de
 Score the 7 signals from information already present in the conversation context. No additional file scanning.
 
 Use Simple Mode when:
+
 - File count and blast radius are already clear from the current plan or research summary
 - Test infrastructure status is already mentioned or irrelevant
 - The strategy decision is not gating a phase program kickoff
@@ -64,6 +65,7 @@ Output format: `Signal 3: +1 (estimated 5-10 files)`
 Run targeted codebase scans BEFORE scoring signals, then score each signal with concrete evidence.
 
 **Trigger conditions — any one is sufficient:**
+
 - Signal 3 (file count / directions) cannot be accurately determined from context alone
 - Signal 5 (test infra maturity) is unknown — no test files have been mentioned yet
 - The strategy recommendation will gate a phase program kickoff (high-stakes decision)
@@ -72,12 +74,14 @@ Run targeted codebase scans BEFORE scoring signals, then score each signal with 
 **Scans to run before scoring:**
 
 Signal 3 scan — count actual touchpoint files:
+
 ```bash
 find . -path '*/active/*' -name '*.md' | head -5
 grep -A 30 "Touchpoints" [plan path] | grep -E "^\s*-"
 ```
 
 Signal 5 scan — assess test infra maturity:
+
 ```bash
 # Check if local test script exists
 grep -l "test:local" packages/*/package.json apps/*/package.json 2>/dev/null | head -5
@@ -88,11 +92,13 @@ grep -A 5 "tier:" [plan path] | head -20
 ```
 
 Signal 6 scan — find independent phases for parallelization:
+
 ```bash
 grep -A 5 "Phase Ordering\|phase.*depend" [umbrella plan path] | head -20
 ```
 
 Signal 7 scan — check prior parallel execution outcomes:
+
 ```bash
 find process/features/[feature]/active/ process/features/[feature]/completed/ -name '*_REPORT_*' 2>/dev/null | grep -i "parallel\|execute" | head -5
 ```
@@ -136,25 +142,25 @@ Count how many signals are present. Each signal counts as 1. Use the score to se
 
 ### Seven Signals
 
-| ID | Signal | Present? |
-|----|--------|----------|
-| S1 | **Multi-package scope** — files touch 3+ workspace packages | [ ] |
-| S2 | **Schema/API/auth surface touched** — plan or research identifies changes to DB schema, public API contracts, or auth/identity flows | [ ] |
-| S3 | **3+ viable directions** — research or innovate surfaced 3+ meaningfully different approaches or investigation areas | [ ] |
-| S4 | **Phase program classification** — the work was classified as a phase program (3+ phases) | [ ] |
-| S5 | **User requests depth** — the user explicitly asks for depth ("go deep", "explore all options", "compare thoroughly") | [ ] |
-| S6 | **High-risk class in plan** — plan's Blast Radius or Public Contracts section names auth/identity, billing/credits, schema/migration, public API, container/proxy/gateway, or secrets/trust-boundary | [ ] |
-| S7 | **5+ files in blast radius** — plan's Blast Radius section lists 5 or more distinct files | [ ] |
+| ID  | Signal                                                                                                                                                                                               | Present? |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| S1  | **Multi-package scope** — files touch 3+ workspace packages                                                                                                                                          | [ ]      |
+| S2  | **Schema/API/auth surface touched** — plan or research identifies changes to DB schema, public API contracts, or auth/identity flows                                                                 | [ ]      |
+| S3  | **3+ viable directions** — research or innovate surfaced 3+ meaningfully different approaches or investigation areas                                                                                 | [ ]      |
+| S4  | **Phase program classification** — the work was classified as a phase program (3+ phases)                                                                                                            | [ ]      |
+| S5  | **User requests depth** — the user explicitly asks for depth ("go deep", "explore all options", "compare thoroughly")                                                                                | [ ]      |
+| S6  | **High-risk class in plan** — plan's Blast Radius or Public Contracts section names auth/identity, billing/credits, schema/migration, public API, container/proxy/gateway, or secrets/trust-boundary | [ ]      |
+| S7  | **5+ files in blast radius** — plan's Blast Radius section lists 5 or more distinct files                                                                                                            | [ ]      |
 
 **Total score**: [0–7]
 
 ### Threshold Table
 
-| Score | Label | Recommended strategy |
-|-------|-------|---------------------|
-| 0–1 | LOW | Sequential — one ag-agent at a time. Do not mention fan-out. |
-| 2–3 | MEDIUM | Parallel subagents — spawn one ag-agent per direction; orchestrator merges outputs. |
-| 4+ | HIGH | Workflow or Agent team — workflow for deterministic step-by-step pipelines (automated, predictable sequence); **agent team** (named teammates + shared task list: TeamCreate + TaskCreate/TaskUpdate + Agent with team_name/name + SendMessage, tracked by TaskList — **NOT** parallel subagents) when specialists must share what they find while still working (real-time coordination). Parallel subagents are fire-and-forget and cannot talk to each other; agent-team members can send messages mid-run. |
+| Score | Label  | Recommended strategy                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| ----- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0–1   | LOW    | Sequential — one ag-agent at a time. Do not mention fan-out.                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| 2–3   | MEDIUM | Parallel subagents — spawn one ag-agent per direction; orchestrator merges outputs.                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| 4+    | HIGH   | Workflow or Agent team — workflow for deterministic step-by-step pipelines (automated, predictable sequence); **agent team** (named teammates + shared task list: TeamCreate + TaskCreate/TaskUpdate + Agent with team_name/name + SendMessage, tracked by TaskList — **NOT** parallel subagents) when specialists must share what they find while still working (real-time coordination). Parallel subagents are fire-and-forget and cannot talk to each other; agent-team members can send messages mid-run. |
 
 **Auto-skip rule**: single-file or trivial changes always use sequential regardless of score. Do not mention other strategies for trivial changes.
 
@@ -166,12 +172,12 @@ Count how many signals are present. Each signal counts as 1. Use the score to se
 
 ALL 4 strategies must always be evaluated and presented. Never omit one.
 
-| Strategy | How it works in the vc system | Agent count math | Cost guard | Best fit |
-|----------|-------------------------------|------------------|------------|----------|
-| **Sequential** | One ag-agent at a time in strict RIPER-5 order: orchestrator spawns ag-research-agent → waits → spawns ag-innovate-agent → waits → etc. Each agent gets the previous agent's output. Single context window per phase. | 1 agent per phase (6 total for full RIPER-5) | None | Trivial/single-file changes; iterative `/goal` phase-program execution where steps are known but parallelism adds no benefit |
-| **Parallel subagents** | Orchestrator spawns multiple ag-agents simultaneously via the `Agent` tool, each investigating one independent direction. Each agent loads its own context, invokes its own skills (ag-scout, ag-docs-seeker, ag-sequential-thinking), and returns a result. Orchestrator merges. | 4 (Layer 1 dimensions) + N (one per direction) + 3 (optional validation fan-out) = 7–15 typical | >30: show breakdown before proceeding; >100: ask explicit confirmation | 5+ independent directions (e.g. 5 separate codebase areas, 5 phase plans to validate simultaneously) with no mid-task communication needed between agents |
-| **Workflow** | Full RIPER-5 pipeline as a deterministic `Workflow` script. Each phase is a `phase()` + `agent()` call. Supports `pipeline()` for per-item fan-out, `parallel()` barriers when all-results are needed before proceeding, and loop-until-dry patterns. Can run the full RESEARCH→VALIDATE→EXECUTE→TEST sequence automatically with built-in gates. | P (phase steps) × A (agents per step) × I (iterations) = P × A × I; up to 1000 agents, 16 concurrent | >30: show breakdown; >100: ask confirmation | Full RIPER-5 automation, TDD fan-out loops, metric iteration, large sweeps (lint/test/migrate); unknown item count upfront; quality > cost |
-| **Agent team** | Claude Code's built-in team feature: `TeamCreate` provisions named specialist teammates. Each teammate gets a `TaskCreate` assignment scoped to their specialty (e.g. one runs ag-research-agent, another runs ag-validate-agent, another runs ag-execute-agent). `SendMessage` enables mid-execution coordination. `TaskList` tracks all in-flight work. | M (members) × R (rounds) = M × R; keep M ≤ 6, R ≤ 3 unless scope demands it; typically 6–18 total | >6 members: show each member's role and ask explicit confirmation | 2+ workstreams that must share findings mid-execution (e.g. a security reviewer feeds blockers to the implementer before the implementer finishes); named specialist roles known upfront; adversarial challenge tasks |
+| Strategy               | How it works in the vc system                                                                                                                                                                                                                                                                                                                             | Agent count math                                                                                     | Cost guard                                                             | Best fit                                                                                                                                                                                                              |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Sequential**         | One ag-agent at a time in strict RIPER-5 order: orchestrator spawns ag-research-agent → waits → spawns ag-innovate-agent → waits → etc. Each agent gets the previous agent's output. Single context window per phase.                                                                                                                                     | 1 agent per phase (6 total for full RIPER-5)                                                         | None                                                                   | Trivial/single-file changes; iterative `/goal` phase-program execution where steps are known but parallelism adds no benefit                                                                                          |
+| **Parallel subagents** | Orchestrator spawns multiple ag-agents simultaneously via the `Agent` tool, each investigating one independent direction. Each agent loads its own context, invokes its own skills (ag-scout, ag-docs-seeker, ag-sequential-thinking), and returns a result. Orchestrator merges.                                                                         | 4 (Layer 1 dimensions) + N (one per direction) + 3 (optional validation fan-out) = 7–15 typical      | >30: show breakdown before proceeding; >100: ask explicit confirmation | 5+ independent directions (e.g. 5 separate codebase areas, 5 phase plans to validate simultaneously) with no mid-task communication needed between agents                                                             |
+| **Workflow**           | Full RIPER-5 pipeline as a deterministic `Workflow` script. Each phase is a `phase()` + `agent()` call. Supports `pipeline()` for per-item fan-out, `parallel()` barriers when all-results are needed before proceeding, and loop-until-dry patterns. Can run the full RESEARCH→VALIDATE→EXECUTE→TEST sequence automatically with built-in gates.         | P (phase steps) × A (agents per step) × I (iterations) = P × A × I; up to 1000 agents, 16 concurrent | >30: show breakdown; >100: ask confirmation                            | Full RIPER-5 automation, TDD fan-out loops, metric iteration, large sweeps (lint/test/migrate); unknown item count upfront; quality > cost                                                                            |
+| **Agent team**         | Claude Code's built-in team feature: `TeamCreate` provisions named specialist teammates. Each teammate gets a `TaskCreate` assignment scoped to their specialty (e.g. one runs ag-research-agent, another runs ag-validate-agent, another runs ag-execute-agent). `SendMessage` enables mid-execution coordination. `TaskList` tracks all in-flight work. | M (members) × R (rounds) = M × R; keep M ≤ 6, R ≤ 3 unless scope demands it; typically 6–18 total    | >6 members: show each member's role and ask explicit confirmation      | 2+ workstreams that must share findings mid-execution (e.g. a security reviewer feeds blockers to the implementer before the implementer finishes); named specialist roles known upfront; adversarial challenge tasks |
 
 ### Cost Guard Rules
 
@@ -213,7 +219,7 @@ When a plan describes a program with 3+ phases (phase program classification, si
 
 - **Sequential is NEVER valid** for plan creation fan-out OR validate fan-out across the phases.
 - **3+ phase-plan CREATION default: AGENT TEAM.** Phase plans share files (CLAUDE.md, agent .md files) and MUST coordinate blast-radius non-overlap + dependency declarations — only an agent team can do this (TeamCreate + shared TaskList + SendMessage). Fire-and-forget subagents cannot communicate, so they cannot keep blast radii disjoint and are the WRONG strategy for plan creation. (Outer-PVL VALIDATE fan-out across already-written phase plans, where each validator reads one finished plan with no cross-talk, MAY use independent read-only subagents — see the reconciliation note below.)
-- **Reconciliation (CREATION vs read-only VALIDATE fan-out):** validating N already-written plans needs no inter-agent talk, so bare parallel subagents are valid there; plan CREATION needs cross-talk, so it is agent-team. Note `orchestration.md` even describes Outer PVL as an *agent-team* — prefer agent-team for both and reserve bare parallel subagents only for truly independent read-only fan-out.
+- **Reconciliation (CREATION vs read-only VALIDATE fan-out):** validating N already-written plans needs no inter-agent talk, so bare parallel subagents are valid there; plan CREATION needs cross-talk, so it is agent-team. Note `orchestration.md` even describes Outer PVL as an _agent-team_ — prefer agent-team for both and reserve bare parallel subagents only for truly independent read-only fan-out.
 - **If phases have complex interdependencies requiring mid-draft communication** (e.g., phase 2 plan depends on design decisions surfaced during phase 1 planning): use agent team instead. Assign one teammate per phase, use `SendMessage` for cross-phase coordination.
 - **If the total phase count is unknown upfront** (e.g., the program scope is discovered incrementally): use workflow so the pipeline can expand without re-spawning the orchestrator. Each `agent()` call in the workflow runs the appropriate ag-agent for that phase.
 
@@ -290,7 +296,6 @@ SendMessage: A → B (security findings mid-implementation, not after)
 
 - `process/development-protocols/orchestration.md` — Two-Tier Fan-Out Escalation, Parallel Fan-Out Checkpoints
 - `process/development-protocols/orchestration.md` §VALIDATE Gate — skip conditions, gate verdicts, BLOCKED escalation path
-
 
 ## References
 

@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-autoresearch workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Reusable loop primitive. Runs: find gaps → write report → fix → check → repeat.
@@ -54,12 +54,12 @@ Per-verdict routing tables: `process/development-protocols/orchestration.md` §P
 
 ## Subcommands
 
-| Subcommand | Does | Stops when |
-|---|---|---|
-| `ag-autoresearch` (core) | find gaps → fix → repeat | agents find no gaps OR metric goal hit |
-| `ag-autoresearch:probe` | 8 personas interrogate the corpus until saturation | no new constraints for 3 rounds |
-| `ag-autoresearch:reason` | adversarial debate with blind judges until convergence | judges converge or iteration cap |
-| `ag-autoresearch:evals` | analyze TSV results — trends, plateaus, recommendations | N/A (analysis only) |
+| Subcommand               | Does                                                    | Stops when                             |
+| ------------------------ | ------------------------------------------------------- | -------------------------------------- |
+| `ag-autoresearch` (core) | find gaps → fix → repeat                                | agents find no gaps OR metric goal hit |
+| `ag-autoresearch:probe`  | 8 personas interrogate the corpus until saturation      | no new constraints for 3 rounds        |
+| `ag-autoresearch:reason` | adversarial debate with blind judges until convergence  | judges converge or iteration cap       |
+| `ag-autoresearch:evals`  | analyze TSV results — trends, plateaus, recommendations | N/A (analysis only)                    |
 
 Not ported (already covered by existing ag-system skills): debug → `ag-debugger`, security → `ag-security`, scenario → `ag-scenario`, predict → `ag-predict`.
 
@@ -67,22 +67,22 @@ Not ported (already covered by existing ag-system skills): debug → `ag-debugge
 
 ## Parameters
 
-| Parameter | Required | Default | Notes |
-|---|---|---|---|
-| `domain:` | yes | — | `spec` / `tests` / `ux` / `docs` / `plan` / `errors` |
-| `corpus:` | yes | — | file glob(s) or path list to investigate |
-| `verify:` | no | — | shell command that outputs a number; required for "hit the metric goal" mode |
-| `target:` | no | `0` | the number `verify:` must reach (lower-is-better assumed; use `target_direction: higher` to flip) |
-| `guard:` | no | — | safety shell command that must pass after every fix batch |
-| `frozen_files:` | no | — | glob pattern(s); any file matching is excluded from the fix corpus and must never be modified by a fix agent |
-| `max_iterations:` | no | per domain | hard cap on loop cycles |
-| `severity_escalation_at:` | no | `7` | after this many iterations, stop fixing CONCERN findings (move to backlog) |
-| `consecutive_all_clear:` | no | `2` | how many consecutive zero-gap iterations before SUCCESS |
-| `research_agents:` | no | per domain | number of parallel research agents |
-| `fix_agents:` | no | per domain | number of parallel fix agents |
-| `feature:` | no | inferred | feature folder name for report output paths |
-| `task_slug:` | no | auto | task folder slug; auto-generated as `autoresearch-{domain}-{YYMMDD}` |
-| `auto_run:` | no | prompt | `true` = no pauses; `false` = confirm before each fix batch; under `/goal` always `true` |
+| Parameter                 | Required | Default    | Notes                                                                                                        |
+| ------------------------- | -------- | ---------- | ------------------------------------------------------------------------------------------------------------ |
+| `domain:`                 | yes      | —          | `spec` / `tests` / `ux` / `docs` / `plan` / `errors`                                                         |
+| `corpus:`                 | yes      | —          | file glob(s) or path list to investigate                                                                     |
+| `verify:`                 | no       | —          | shell command that outputs a number; required for "hit the metric goal" mode                                 |
+| `target:`                 | no       | `0`        | the number `verify:` must reach (lower-is-better assumed; use `target_direction: higher` to flip)            |
+| `guard:`                  | no       | —          | safety shell command that must pass after every fix batch                                                    |
+| `frozen_files:`           | no       | —          | glob pattern(s); any file matching is excluded from the fix corpus and must never be modified by a fix agent |
+| `max_iterations:`         | no       | per domain | hard cap on loop cycles                                                                                      |
+| `severity_escalation_at:` | no       | `7`        | after this many iterations, stop fixing CONCERN findings (move to backlog)                                   |
+| `consecutive_all_clear:`  | no       | `2`        | how many consecutive zero-gap iterations before SUCCESS                                                      |
+| `research_agents:`        | no       | per domain | number of parallel research agents                                                                           |
+| `fix_agents:`             | no       | per domain | number of parallel fix agents                                                                                |
+| `feature:`                | no       | inferred   | feature folder name for report output paths                                                                  |
+| `task_slug:`              | no       | auto       | task folder slug; auto-generated as `autoresearch-{domain}-{YYMMDD}`                                         |
+| `auto_run:`               | no       | prompt     | `true` = no pauses; `false` = confirm before each fix batch; under `/goal` always `true`                     |
 
 ---
 
@@ -90,17 +90,17 @@ Not ported (already covered by existing ag-system skills): debug → `ag-debugge
 
 Full configs in `process/development-protocols/ag-autoresearch-spec.md` §Canonical domain configs.
 
-| Domain | Research agents | Fix agents | Max iterations | Escalation at | Guard |
-|---|---|---|---|---|---|
-| `spec` | 2 | 3 | 15 | 7 | none |
-| `tests` | 2 | 2 | 20 | — | `pnpm test` |
-| `ux` | 2 | 2 | 10 | 5 | `pnpm typecheck` |
-| `docs` | 1 | 2 | 8 | — | node validator script |
-| `plan` | 1 | 1 | 3 | — | none |
-| `errors` | 1 | 2 | 20 | — | none |
-| `harness` | 2 | 2 | 10 | — | `pnpm test:runtime-harness:unit` |
+| Domain    | Research agents | Fix agents | Max iterations | Escalation at | Guard                            |
+| --------- | --------------- | ---------- | -------------- | ------------- | -------------------------------- |
+| `spec`    | 2               | 3          | 15             | 7             | none                             |
+| `tests`   | 2               | 2          | 20             | —             | `pnpm test`                      |
+| `ux`      | 2               | 2          | 10             | 5             | `pnpm typecheck`                 |
+| `docs`    | 1               | 2          | 8              | —             | node validator script            |
+| `plan`    | 1               | 1          | 3              | —             | none                             |
+| `errors`  | 1               | 2          | 20             | —             | none                             |
+| `harness` | 2               | 2          | 10             | —             | `pnpm test:runtime-harness:unit` |
 
-_* harness full config: .claude/skills/ag-autoresearch/domains/harness.md_
+_\* harness full config: .claude/skills/ag-autoresearch/domains/harness.md_
 
 ---
 
@@ -116,6 +116,7 @@ _* harness full config: .claude/skills/ag-autoresearch/domains/harness.md_
 ### Step 1 — Research
 
 Spawn `research_agents:` parallel agents. Each agent:
+
 - Reads the corpus files assigned to it
 - Investigates its thread list (cross-file consistency, missing cases, contradictions, undefined behaviors, etc.)
 - Returns a structured gap list: **SEVERITY:** FAIL | CONCERN | OBSERVATION per finding
@@ -127,11 +128,13 @@ Apply severity floor: if `iteration > severity_escalation_at`, discard CONCERN f
 ### Step 2 — Convergence check
 
 **"Until agents find no gaps"** (no `verify:` param):
+
 - If all agents returned zero findings above the severity floor: increment `consecutive_all_clear` counter
 - If counter >= `consecutive_all_clear:` → **SUCCESS**
 - Else: reset counter, continue to Step 3
 
 **"Hit the metric goal"** (`verify:` param set):
+
 - Run verify command, parse numeric output
 - If output reaches `target:` → **SUCCESS**
 - Else: continue to Step 3
@@ -164,6 +167,7 @@ If `auto_run: false`: surface gap summary, wait for user confirmation before fix
 ### Step 5 — Fix
 
 Spawn `fix_agents:` parallel agents. Each agent:
+
 - Receives its assigned gap IDs and file targets
 - Applies fixes
 - Reports: APPLIED (fixed in this iteration) or BACKLOG (deferred, with reason)
@@ -171,6 +175,7 @@ Spawn `fix_agents:` parallel agents. Each agent:
 ### Step 6 — Safety check
 
 If `guard:` is set: run guard command.
+
 - **Passes** → loop back to Step 1
 - **Fails** → revert fix batch, log regression flag, retry this iteration. If regression budget exceeded (> 2 flags in one iteration) → HALT_REGRESSION
 
@@ -213,6 +218,7 @@ When ag-autoresearch is the bookkeeper for a PVL (plan-validate-fix loop):
   for that cycle. Never a single rolling notes file.
 
 **Boundary:**
+
 - ag-autoresearch owns: iteration counter, plateau detection, per-cycle iteration report, regression flag, parallel-fix partitioning (which gap groups go to which fixer) — **all executed by the ORCHESTRATOR at each cycle boundary; no agent runs these implicitly**
 - ag-validate-agent owns: V1–V7 gate sequence + its own Layer-1/Layer-2 fan-out, SUPPLEMENT REQUEST format, validate-contract write, known-gap exclusion — it emits its verdict and terminates; the orchestrator re-spawns it from V1 after each `SUPPLEMENT_APPLIED`
 
@@ -234,6 +240,7 @@ When ag-autoresearch is the bookkeeper for an EVL (execute-validate-fix loop):
   the re-run result for that cycle. Never a single rolling notes file.
 
 **Boundary:**
+
 - ag-autoresearch owns: iteration counter, plateau detection, TSV log, per-cycle iteration report, HANDOFF SUMMARY trigger, parallel-fix partitioning (which failing gate goes to which fixer) — **all executed by the ORCHESTRATOR at each cycle boundary; no agent runs these implicitly**
 - ag-tester owns: which gate commands to run, HANDOFF SUMMARY format, agent-probe re-invocation — its confirmation run is UNCONDITIONAL after every EXECUTE DONE (execute-agent's internal iterate-until-green loop never substitutes for it); it reports failing gates and terminates; the orchestrator runs the fix cycle and re-spawns it
 
@@ -244,6 +251,7 @@ When ag-autoresearch is the bookkeeper for an EVL (execute-validate-fix loop):
 See `process/development-protocols/ag-autoresearch-spec.md` §Iteration report for full frontmatter schema and body sections.
 
 Gap entry format:
+
 ```
 ### GAP-I{N}-{ID} — {short title}
 - **SEVERITY:** FAIL | CONCERN | OBSERVATION
@@ -264,6 +272,7 @@ iteration; PVL/EVL cycles use the `{plan-slug}-pvl-iteration-{NNN}` /
 ## TSV Log Format
 
 Header row:
+
 ```
 iteration	timestamp	gaps_found	fail_count	concern_count	applied	saturation_status	loop_status	notes
 ```
@@ -283,7 +292,6 @@ Run `ag-autoresearch:evals {task_folder}/results.tsv` to analyze trends and get 
 - `session-init.cjs` — active plan summary at SessionStart; adapted to scan `process/general-plans/active/` and `process/features/*/active/`
 - `stop-notify.cjs` — terminal notification at SessionEnd; no changes needed
 - Do NOT register `scout-block.cjs` or `privacy-block.cjs` from the autoresearch reference repo — ag-system settings.json has superior versions; registering them would cause conflicts
-
 
 ## References
 

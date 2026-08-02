@@ -18,13 +18,17 @@ import path from "node:path";
 const filePath = process.argv[2];
 
 if (!filePath) {
-  console.error("Usage: node validate-feasibility-verdict.mjs <path-to-verdict-file>");
+  console.error(
+    "Usage: node validate-feasibility-verdict.mjs <path-to-verdict-file>",
+  );
   process.exitCode = 1;
   process.exit();
 }
 
 const root = process.cwd();
-const absPath = path.isAbsolute(filePath) ? filePath : path.join(root, filePath);
+const absPath = path.isAbsolute(filePath)
+  ? filePath
+  : path.join(root, filePath);
 
 if (!fs.existsSync(absPath)) {
   console.error(`ERROR: File not found: ${filePath}`);

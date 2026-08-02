@@ -11,6 +11,7 @@ layer: helper
 # Harness Sync & Version Management (ag-harness-sync)
 
 Use this skill to sync the agent harness layer. It supports two flows:
+
 1. **Pulling Updates (Update Flow):** For users to update their local project's harness from the remote kit repository.
 2. **Publishing Improvements (Publish Flow):** For maintainers to publish local harness changes back to the remote kit repository.
 
@@ -28,12 +29,14 @@ Follow these steps exactly. Do NOT skip the dry-run or confirmation step.
 #### Step 1: Check Worktree Status
 
 Run `git status --porcelain` in the project root.
+
 - If output is non-empty: **warn** the user that they have uncommitted changes and suggest `git stash` or committing first. **Do not block** -- continue after warning.
 - If output is empty: proceed silently.
 
 #### Step 2: Read Current Version
 
 Read the file `.ag-version` in the project root.
+
 - If it exists: store its contents as `currentVersion` (a semver string like `2.0.4`).
 - If it does not exist: set `currentVersion` to `"0.0.0"` (treat as first update).
 
@@ -45,6 +48,7 @@ git clone --depth 1 https://github.com/ngxccc/agent-skills-kit.git "$TMPDIR"
 ```
 
 If the clone fails (network error, auth error, repo not found):
+
 - Print the error message.
 - Clean up the temp directory if it was partially created.
 - **Stop.** Do not proceed.
@@ -52,11 +56,13 @@ If the clone fails (network error, auth error, repo not found):
 #### Step 4: Resolve Remote Manifest
 
 Run the resolver script from the cloned repo:
+
 ```bash
 node "$TMPDIR/resolve-manifest.mjs" --root "$TMPDIR" --json
 ```
 
 Parse the JSON output to extract:
+
 - `files` (string[]) -- resolved managed file paths
 - `merge` (string[]) -- files where user customizations are preserved (not overwritten)
 - `copyIfMissing` (string[]) -- files only installed if they don't already exist locally
@@ -64,6 +70,7 @@ Parse the JSON output to extract:
 - `symlinks` (object) -- symlink path -> target mappings
 
 Extract the remote version from the manifest:
+
 ```bash
 node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/ag-manifest.json','utf8')).version)"
 ```
@@ -71,6 +78,7 @@ node -e "console.log(JSON.parse(require('fs').readFileSync('$TMPDIR/ag-manifest.
 #### Step 5: Compare Versions
 
 Compare the remote manifest `version` against `currentVersion`.
+
 - If they are equal: report **"Already up to date (vX.Y.Z)"** and clean up `$TMPDIR`. **Stop.**
 - If remote is newer (or currentVersion is `0.0.0`): continue to diff.
 
@@ -89,6 +97,7 @@ Print a dry-run summary with all additions, removals, modifications, merge files
 #### Step 9: Wait for Confirmation
 
 **STOP HERE.** Tell the user:
+
 > "This is a dry-run summary. Type **apply** to proceed with the update, or **abort** to cancel. The temp clone will be cleaned up either way."
 
 Do NOT proceed until the user explicitly says "apply" (or a clear affirmative).
@@ -106,6 +115,7 @@ Print a summary showing how many files were modified, added, removed, or symlink
 ### Workflow 2: Publishing Improvements (Publish Flow)
 
 This is the **maintainer** counterpart to Workflow 1.
+
 - Local checkout of the kit repo required.
 - `.ag-publish-config` file in the current repo root (JSON `{ "kitRepoPath": "/path/to/agent-skills-kit" }`).
 
@@ -144,6 +154,7 @@ Verify no project-specific content leaked into the kit repo by scanning the text
 #### Step 9: Commit and Tag
 
 Commit and tag the release in the kit repo:
+
 ```bash
 cd <kitRepoPath>
 git add -A

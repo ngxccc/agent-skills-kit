@@ -16,20 +16,21 @@ Frozen: ag-system-behavior spec files are NEVER modified.
 
 domain: harness
 corpus:
-  - .claude/agents/*.md
-  - CLAUDE.md
-  - .claude/skills/*/SKILL.md
-  - process/development-protocols/*.md
+
+- .claude/agents/*.md
+- CLAUDE.md
+- .claude/skills/*/SKILL.md
+- process/development-protocols/*.md
   EXCLUDING: process/development-protocols/ag-system-behavior/**
-frozen_files: process/development-protocols/ag-system-behavior/**
-verify: pnpm test:runtime-harness
-target: 0
-guard: pnpm test:runtime-harness:unit
-max_iterations: 10
-research_agents: 2
-fix_agents: 2
-consecutive_all_clear: 2
-auto_run: false
+  frozen_files: process/development-protocols/ag-system-behavior/**
+  verify: pnpm test:runtime-harness
+  target: 0
+  guard: pnpm test:runtime-harness:unit
+  max_iterations: 10
+  research_agents: 2
+  fix_agents: 2
+  consecutive_all_clear: 2
+  auto_run: false
 
 ## Corpus Explanation
 
@@ -59,11 +60,13 @@ Runs the deterministic unit suite (unit mock scenarios; fast, $0, no live API ca
 ## Research Thread List (per agent)
 
 Agent 1 — agent files + CLAUDE.md:
+
 - Does the agent file contain a mandatory bash gate for the misbehaving behavior?
 - Is the instruction prose-only (cognitive) vs bash-enforced (mechanical)?
 - What is the minimal bash gate that would prevent the misbehavior?
 
 Agent 2 — skill SKILL.md files + protocol docs:
+
 - Does the relevant SKILL.md have the correct trigger or check that the agent bypassed?
 - Is the protocol doc prose actionable, or does it rely on cognitive recall?
 
@@ -75,16 +78,17 @@ Fix agent 2: SKILL.md files and protocol docs (excluding frozen ag-system-behavi
 ## Predecessor Playbook
 
 See process/context/coding-harness-evals/self-improvement-loop.md for the manual loop this domain automates. Key differences:
+
 - Manual loop: human operator reads verdicts, decides edits, runs next drive
 - harness domain: ag-autoresearch loop bookkeeper handles iteration counter, plateau detection, TSV logging, and parallel fix dispatch automatically
 
 ## Invocation Examples
 
 Invoke after a live drive surfaces F-CTX-DISC (orchestrator uses ls instead of find):
-  ag-autoresearch domain: harness corpus: .claude/agents/*.md CLAUDE.md verify: "<scenario-selector>=tier0 pnpm test:runtime-harness"
+ag-autoresearch domain: harness corpus: .claude/agents/*.md CLAUDE.md verify: "<scenario-selector>=tier0 pnpm test:runtime-harness"
 
 Invoke to fix F-PLAN-TIN (missing Test Infra Improvement Notes):
-  ag-autoresearch domain: harness corpus: .claude/agents/ag-plan-agent.md verify: "<scenario-selector>=plan-artifact pnpm test:runtime-harness"
+ag-autoresearch domain: harness corpus: .claude/agents/ag-plan-agent.md verify: "<scenario-selector>=plan-artifact pnpm test:runtime-harness"
 
 Full-corpus scan (all harness instruction files):
-  ag-autoresearch domain: harness
+ag-autoresearch domain: harness

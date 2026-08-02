@@ -2,7 +2,7 @@
 name: upstash-ratelimit
 description: Rules, standards, and references for rate limiting in serverless environments using Upstash Ratelimit. Use when implementing rate limiting, configuring Upstash Redis, or handling request blocking.
 license: MIT
-argument-hint: '[--limit <number>] [--window <string>]'
+argument-hint: "[--limit <number>] [--window <string>]"
 metadata:
   author: ngxc
   version: 1.0.0

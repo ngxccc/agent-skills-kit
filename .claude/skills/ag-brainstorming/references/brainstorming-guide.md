@@ -37,10 +37,10 @@ digraph brainstorming {
 
 When presenting technical design choices, provide 2–4 distinct options formatted as a Trade-off Matrix:
 
-| Option | Approach Description | Pros | Cons | Risk Class | Recommendation |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Option A** | *Summary of Approach A* | *Key benefits* | *Drawbacks & operational cost* | Low | **Recommended** |
-| **Option B** | *Summary of Approach B* | *Key benefits* | *Drawbacks & operational cost* | Medium | Alternative |
+| Option       | Approach Description    | Pros           | Cons                           | Risk Class | Recommendation  |
+| :----------- | :---------------------- | :------------- | :----------------------------- | :--------- | :-------------- |
+| **Option A** | _Summary of Approach A_ | _Key benefits_ | _Drawbacks & operational cost_ | Low        | **Recommended** |
+| **Option B** | _Summary of Approach B_ | _Key benefits_ | _Drawbacks & operational cost_ | Medium     | Alternative     |
 
 ---
 

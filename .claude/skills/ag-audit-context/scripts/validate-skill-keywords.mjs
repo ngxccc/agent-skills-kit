@@ -4,7 +4,12 @@
 // Also asserts the generated skills catalog is in sync (delegates to
 // generate-skills-catalog.mjs --check). Exits 1 on any failure.
 import { execSync } from "node:child_process";
-import { listSkillDirs, parseFrontmatter, exists, abs } from "./shared-skill-utils.mjs";
+import {
+  listSkillDirs,
+  parseFrontmatter,
+  exists,
+  abs,
+} from "./shared-skill-utils.mjs";
 
 const VALID_LAYERS = new Set(["actor", "contract", "helper"]);
 
@@ -28,7 +33,12 @@ for (const skill of skills) {
   const kw = (fm.trigger_keywords || "").trim();
   if (!kw) {
     failures.push(`${rel}: missing or empty 'trigger_keywords'`);
-  } else if (kw.split(",").map((s) => s.trim()).filter(Boolean).length === 0) {
+  } else if (
+    kw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean).length === 0
+  ) {
     failures.push(`${rel}: 'trigger_keywords' has no usable keywords`);
   }
 
@@ -36,7 +46,9 @@ for (const skill of skills) {
   if (!layer) {
     failures.push(`${rel}: missing 'layer'`);
   } else if (!VALID_LAYERS.has(layer)) {
-    failures.push(`${rel}: invalid layer '${layer}' (must be one of ${[...VALID_LAYERS].join(", ")})`);
+    failures.push(
+      `${rel}: invalid layer '${layer}' (must be one of ${[...VALID_LAYERS].join(", ")})`,
+    );
   } else {
     tally[layer] += 1;
   }
@@ -44,13 +56,18 @@ for (const skill of skills) {
 
 // Catalog sync gate.
 try {
-  execSync("node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --check", {
-    cwd: abs("."),
-    stdio: "pipe",
-  });
+  execSync(
+    "node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --check",
+    {
+      cwd: abs("."),
+      stdio: "pipe",
+    },
+  );
 } catch (err) {
   const out = (err.stderr || err.stdout || "").toString().trim();
-  failures.push(`generated-skills-catalog.json is stale: ${out || "run generate-skills-catalog.mjs --write"}`);
+  failures.push(
+    `generated-skills-catalog.json is stale: ${out || "run generate-skills-catalog.mjs --write"}`,
+  );
 }
 
 const result = {

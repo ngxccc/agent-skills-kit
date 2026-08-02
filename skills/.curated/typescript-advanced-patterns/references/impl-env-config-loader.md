@@ -70,9 +70,7 @@ Three design rules:
 For multi-environment systems, derive separate types per environment if the contract differs:
 
 ```typescript
-const baseSchema = z.object({
-  /* always present */
-});
+const baseSchema = z.object({/* always present */});
 const prodSchema = baseSchema.extend({ SENTRY_DSN: z.string().url() });
 const devSchema = baseSchema.extend({
   SENTRY_DSN: z.string().url().optional(),

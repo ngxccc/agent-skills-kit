@@ -33,7 +33,19 @@ if (!exists(contextFile)) {
   process.stderr.write(
     "[bare-kit mode] process/context/all-context.md absent — skipping per-project context-doc checks (kit template not yet set up).\n",
   );
-  console.log(JSON.stringify({ checkedFile: contextFile, lineCount: 0, strict, warnings: [], failures: [] }, null, 2));
+  console.log(
+    JSON.stringify(
+      {
+        checkedFile: contextFile,
+        lineCount: 0,
+        strict,
+        warnings: [],
+        failures: [],
+      },
+      null,
+      2,
+    ),
+  );
   process.exit(0);
 }
 
@@ -48,9 +60,11 @@ if (exists(contextFile)) {
   const textWithoutFrontmatter = text.startsWith("---")
     ? text.replace(/^---\n[\s\S]*?\n---\n/, "")
     : text;
-  if (!/^#\s+/.test(textWithoutFrontmatter)) fail(`${contextFile} missing top-level heading`);
+  if (!/^#\s+/.test(textWithoutFrontmatter))
+    fail(`${contextFile} missing top-level heading`);
   for (const section of ["Repository Structure", "Technology Stack"]) {
-    if (!text.includes(`## ${section}`)) fail(`${contextFile} missing ${section} section`);
+    if (!text.includes(`## ${section}`))
+      fail(`${contextFile} missing ${section} section`);
   }
   if (!/Last updated:\s*\d{4}-\d{2}-\d{2}/i.test(text)) {
     fail(`${contextFile} missing Last updated date in YYYY-MM-DD format`);
@@ -58,13 +72,18 @@ if (exists(contextFile)) {
     const dateText = text.match(/Last updated:\s*(\d{4}-\d{2}-\d{2})/i)?.[1];
     const updatedAt = new Date(`${dateText}T00:00:00Z`);
     const ageDays = Math.floor((Date.now() - updatedAt.getTime()) / 86400000);
-    if (ageDays > 14) warn(`${contextFile} is ${ageDays} days old; consider generate-context refresh`);
+    if (ageDays > 14)
+      warn(
+        `${contextFile} is ${ageDays} days old; consider generate-context refresh`,
+      );
   }
   if (!/Repo HEAD|git rev-parse HEAD|commit/i.test(text)) {
     warn(`${contextFile} does not include repo HEAD or commit metadata`);
   }
   if (!/References|Source references|Key files/i.test(text)) {
-    warn(`${contextFile} does not include an obvious source references section`);
+    warn(
+      `${contextFile} does not include an obvious source references section`,
+    );
   }
   if (!/Open Questions|Outstanding Work/i.test(text)) {
     warn(`${contextFile} does not include Open Questions or Outstanding Work`);
@@ -75,19 +94,27 @@ if (exists(contextFile)) {
   if (text.includes("process/plans/")) {
     warn(`${contextFile} mentions legacy process/plans/ path`);
   }
-  if (/sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA|OPENSSH|PRIVATE) KEY|DATABASE_URL=.*:.*@/.test(text)) {
+  if (
+    /sk-[A-Za-z0-9_-]{20,}|BEGIN (RSA|OPENSSH|PRIVATE) KEY|DATABASE_URL=.*:.*@/.test(
+      text,
+    )
+  ) {
     fail(`${contextFile} appears to contain a secret-like value`);
   }
 
   const concreteRefs = [];
-  for (const match of text.matchAll(/`((?:apps|packages|process|\.claude|\.codex|\.agents)\/[^`\s]+)`/g)) {
+  for (const match of text.matchAll(
+    /`((?:apps|packages|process|\.claude|\.codex|\.agents)\/[^`\s]+)`/g,
+  )) {
     const ref = match[1].replace(/[.,;:]$/, "");
     if (/[{}[*\]]/.test(ref)) continue;
     concreteRefs.push(ref);
   }
   const missingRefs = concreteRefs.filter((ref) => !exists(ref));
   if (missingRefs.length > 0) {
-    warn(`${contextFile} has ${missingRefs.length} concrete refs that do not exist`);
+    warn(
+      `${contextFile} has ${missingRefs.length} concrete refs that do not exist`,
+    );
   }
 }
 

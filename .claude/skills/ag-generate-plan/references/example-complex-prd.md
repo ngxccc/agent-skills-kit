@@ -6,6 +6,7 @@ metadata:
   node_type: memory
   type: reference
 ---
+
 # SocialNet Engagement Dashboard: Shareable Analytics PRD
 
 **Date**: January 25, 2026
@@ -45,6 +46,7 @@ Build a visually impressive, shareable achievements section within the existing 
 MyPlatform users manage multiple SocialNet accounts and post AI-assisted comments. The achievements dashboard serves as a growth hack mechanism - users can proudly showcase their engagement statistics on social media, driving organic visibility and user acquisition.
 
 **In-scope**:
+
 - Achievements section integrated into existing account dashboard (`/[orgSlug]/[accountSlug]/page.tsx`)
 - Three grouped tRPC queries (profile metrics, network data, activity data)
 - Zustand store for achievements state management (consistent with existing `useAccountStore` pattern)
@@ -59,6 +61,7 @@ MyPlatform users manage multiple SocialNet accounts and post AI-assisted comment
 - Neobrutalist theme adherence (black borders, hard shadows)
 
 **Out-of-scope (V1)**:
+
 - Screenshot/share button (users can screenshot manually)
 - Real-time data refresh (loads on page visit only)
 - Per-organization ranking (global only)
@@ -73,31 +76,37 @@ MyPlatform users manage multiple SocialNet accounts and post AI-assisted comment
 ## 1.5 Execution Brief
 
 ### Phase 1-3: Foundation (Database Indexes, tRPC Routers, Zustand Store Setup)
+
 **What happens:** Add database indexes for performance, create three new tRPC procedures for achievements data, create Zustand store for achievements state following existing `useAccountStore` pattern.
 
 **Test:** Indexes visible in Prisma schema, tRPC procedures compile and return mock data, Zustand store initializes without errors.
 
 ### Phase 4-5: Component Architecture (Bento Layout + Individual Cards)
+
 **What happens:** Build AchievementsSection parent component with CSS Grid bento layout, create individual card components (ProfileMetricsCard, NetworkTreemapCard, ActivityHeatMapCard, BestFriendsCard, StreakCard).
 
 **Test:** Layout renders correctly on desktop/tablet/mobile, cards accept props and display skeleton states, no visual regressions.
 
 ### Phase 6-7: Data Integration (Connect tRPC + Populate UI)
+
 **What happens:** Wire Zustand store to tRPC queries, connect all card components to Zustand store selectors, implement loading/error states throughout.
 
 **Test:** Real data populates all cards, loading skeletons appear during fetch, error boundaries catch failures gracefully, Zustand DevTools shows state updates.
 
 ### Phase 8-10: Visualizations (Treemap, Heat Map, Rankings)
+
 **What happens:** Implement Recharts treemap with profile pictures, build custom heat map grid component with color intensity, create ranking list with progress bars and avatars.
 
 **Test:** Treemap renders with correct box sizes, heat map shows 365 days with accurate counts, rankings display top 5 with proper sorting.
 
 ### Phase 11-12: Polish (Responsive Design, Performance, Accessibility)
+
 **What happens:** Finalize mobile responsive behavior, optimize query performance with memoization, add ARIA labels and keyboard navigation, conduct comprehensive testing.
 
 **Test:** All breakpoints work correctly, Lighthouse performance score >90, screen readers announce content properly, manual QA passes.
 
 ### Expected Outcome
+
 - Achievements section prominently displays on account dashboard
 - Users see verified/assisted comment counts, top % ranking, streaks
 - Network treemap visualizes interaction frequency
@@ -117,6 +126,7 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 ## 2. Non-Goals and Constraints
 
 **Non-Goals**:
+
 - Admin dashboard or aggregate organization metrics
 - Gamification features (levels, XP, rewards)
 - Social comparison features (leaderboards across users)
@@ -125,6 +135,7 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 - Third-party analytics integrations
 
 **Constraints**:
+
 - Must use existing Prisma schema (`Comment`, `SocialNetAccount`, `User`)
 - Must follow neobrutalist theme from `@your-org/ui`
 - Mobile viewport minimum: 375px width
@@ -141,17 +152,20 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 **Decision**: Use three grouped tRPC queries instead of single mega-query or granular per-component queries.
 
 **Rationale**:
+
 - **Performance**: 3 parallel queries vs 1 sequential reduces latency vs single blocking query
 - **Maintainability**: Logical grouping by data domain (profile, network, activity) keeps code organized
 - **Flexibility**: Can invalidate individual query groups without refetching everything
 - **Type Safety**: Smaller response types are easier to reason about than massive union types
 
 **Grouped Queries**:
+
 1. `achievements.getProfileMetrics` → verified count, assisted count, percentile, current streak, longest streak
 2. `achievements.getNetworkData` → top 50 profiles (for treemap + best friends)
 3. `achievements.getActivityData` → 365-day activity buckets (for heat map)
 
 **Implications**:
+
 - Zustand store receives results from 3 separate `useQuery` hooks
 - Loading states must handle partial data (some queries succeed, others pending)
 - Cache invalidation requires coordination across 3 keys
@@ -162,6 +176,7 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 **Decision**: Use Zustand store for achievements state management instead of React Context.
 
 **Rationale**:
+
 - **Consistent with existing patterns**: Codebase already uses `useAccountStore` for similar global state
 - **Better performance**: Fine-grained subscriptions prevent unnecessary re-renders
 - **Easier debugging**: Zustand DevTools integration out of the box
@@ -170,6 +185,7 @@ For multi-phase execution workflow, see [process/development-protocols/phase-pro
 - **TypeScript-first**: Excellent type inference and safety
 
 **Existing Pattern** (from `apps/nextjs/src/stores/zustand-store/account-store.ts`):
+
 ```tsx
 interface AccountState {
   accountId: string | null;
@@ -193,6 +209,7 @@ export const useAccountStore = create<AccountStore>((set) => ({
 ```
 
 **New Pattern** (for achievements):
+
 ```tsx
 export const useAchievementsStore = create<AchievementsStore>((set) => ({
   profileMetrics: null,
@@ -205,26 +222,25 @@ export const useAchievementsStore = create<AchievementsStore>((set) => ({
   setActivityData: (data) => set({ activityData: data }),
   setLoading: (loading) => set({ isLoading: loading }),
   setError: (error) => set({ error }),
-  reset: () => set({
-    profileMetrics: null,
-    networkData: null,
-    activityData: null,
-    isLoading: false,
-    error: null
-  }),
+  reset: () =>
+    set({
+      profileMetrics: null,
+      networkData: null,
+      activityData: null,
+      isLoading: false,
+      error: null,
+    }),
 }));
 ```
 
 **Usage in Components**:
+
 ```tsx
 // In data-fetching component (AccountDashboardPage)
 const setProfileMetrics = useAchievementsStore((s) => s.setProfileMetrics);
-const { data } = useQuery(
-  trpc.achievements.getProfileMetrics.queryOptions(),
-  {
-    onSuccess: (data) => setProfileMetrics(data)
-  }
-);
+const { data } = useQuery(trpc.achievements.getProfileMetrics.queryOptions(), {
+  onSuccess: (data) => setProfileMetrics(data),
+});
 
 // In display component (ProfileMetricsCard)
 const profileMetrics = useAchievementsStore((s) => s.profileMetrics);
@@ -232,6 +248,7 @@ const isLoading = useAchievementsStore((s) => s.isLoading);
 ```
 
 **Implications**:
+
 - Store updates trigger re-renders only for components subscribing to changed slices
 - No provider setup required (cleaner component tree)
 - DevTools available for debugging state changes
@@ -242,24 +259,27 @@ const isLoading = useAchievementsStore((s) => s.isLoading);
 **Decision**: Perform all metric calculations (verified count, percentile, streaks) in tRPC procedures, not client-side.
 
 **Rationale**:
+
 - Database-level aggregations are faster than client-side processing
 - Reduces payload size (send counts, not raw comment arrays)
 - Percentile ranking requires cross-account data unavailable to client
 - Streak calculation benefits from SQL window functions (future optimization)
 
 **Example**:
+
 ```typescript
 // Server-side (tRPC procedure)
 const verifiedCount = await db.comment.count({
-  where: { accountId, peakTouchScore: { gte: 80 }, status: 'POSTED' }
+  where: { accountId, peakTouchScore: { gte: 80 }, status: "POSTED" },
 });
 
 // vs Client-side (inefficient)
 const comments = await fetchAll(); // Large payload
-const verified = comments.filter(c => c.peakTouchScore >= 80).length;
+const verified = comments.filter((c) => c.peakTouchScore >= 80).length;
 ```
 
 **Implications**:
+
 - More complex tRPC procedures (business logic on backend)
 - Better performance and scalability
 - Easier to cache at database layer
@@ -269,10 +289,12 @@ const verified = comments.filter(c => c.peakTouchScore >= 80).length;
 **Decision**: Use Recharts `<Treemap>` for network visualization, build custom SVG/div grid for heat map.
 
 **Rationale**:
+
 - **Treemap**: Recharts already installed, supports custom content rendering (profile pics), handles layout algorithm automatically
 - **Heat Map**: Recharts doesn't have native heat map component; custom grid gives full control over neobrutalist styling (black borders, hard shadows)
 
 **Implications**:
+
 - Recharts adds ~400KB to bundle (already included, no additional cost)
 - Custom heat map requires manual tooltip implementation
 - Heat map data structure must be pre-bucketed by day (server-side)
@@ -282,12 +304,14 @@ const verified = comments.filter(c => c.peakTouchScore >= 80).length;
 **Decision**: Use CSS Grid with `grid-template-areas` for bento layout instead of Flexbox.
 
 **Rationale**:
+
 - CSS Grid excels at 2D layouts with named areas
 - Easier responsive breakpoints (redefine template-areas at each breakpoint)
 - Explicit control over card placement and sizing
 - Industry standard for dashboard layouts
 
 **Layout Structure**:
+
 ```css
 grid-template-areas:
   "profile verified assisted"
@@ -297,6 +321,7 @@ grid-template-areas:
 ```
 
 **Implications**:
+
 - Requires CSS Grid knowledge for maintenance
 - Named areas make responsive changes clear and explicit
 - Card components must declare their grid-area class
@@ -306,17 +331,20 @@ grid-template-areas:
 **Decision**: Stack all cards vertically on mobile (<768px), 2-column on tablet (768px-1024px), full bento grid on desktop (>1024px).
 
 **Rationale**:
+
 - Mobile users comprise 60%+ of SocialNet traffic
 - Vertical stacking is simplest and most accessible on narrow viewports
 - Tablet users get partial bento experience (treemap + heatmap side-by-side)
 - Desktop users get full visual impact
 
 **Breakpoints**:
+
 - `< 768px`: Single column (mobile)
 - `768px - 1024px`: 2 columns (tablet)
 - `> 1024px`: Full bento grid (desktop)
 
 **Implications**:
+
 - Tailwind responsive utilities required (`md:`, `lg:`)
 - Components must look good in all aspect ratios
 - Heat map may need to truncate on mobile (show last 180 days instead of 365)
@@ -328,11 +356,13 @@ grid-template-areas:
 ### Why Add to Existing Account Dashboard?
 
 **Current State**:
+
 - Account dashboard (`/[orgSlug]/[accountSlug]/page.tsx`) has minimal content (2 cards: Account Info + Quick Actions)
 - Large empty space below existing cards
 - Dashboard is the default landing page when selecting an account
 
 **Benefits of Integration**:
+
 - ✅ No additional navigation required (visible immediately)
 - ✅ Prominent placement encourages social sharing
 - ✅ Contextually relevant (achievements per SocialNet account, not global)
@@ -341,24 +371,28 @@ grid-template-areas:
 ### Alternative Approaches Considered
 
 **Option 1**: Separate `/achievements` route
+
 - ❌ Requires additional click to reach
 - ❌ Less prominent placement
 - ✅ Cleaner separation of concerns
 - **Rejected**: Reduces visibility and shareability
 
 **Option 2**: Modal/Dialog overlay
+
 - ❌ Harder to screenshot (requires opening modal)
 - ❌ Poor mobile UX (full-screen modals on small screens)
 - ✅ Doesn't clutter dashboard
 - **Rejected**: Screenshot functionality is core requirement
 
 **Option 3**: Dedicated sidebar tab
+
 - ❌ Competes with existing tabs (History, Personas, Target List)
 - ❌ Still requires navigation
 - ✅ Familiar pattern
 - **Rejected**: Account dashboard is better default location
 
 **Selected**: Integrate into account dashboard page
+
 - ✅ Zero-click visibility
 - ✅ Encourages organic discovery
 - ✅ Prominent placement for screenshots
@@ -406,26 +440,31 @@ User sees fully populated achievements dashboard
 ## 6. Security Posture
 
 **Authentication**:
+
 - All tRPC procedures use `accountProcedure` (requires Clerk auth + account ownership)
 - Validates user has access to requested SocialNet account
 - Prevents cross-account data leakage
 
 **Data Privacy**:
+
 - Only shows data for comments posted by current account (filtered by `accountId`)
 - Profile pictures from `owner.imageUrl` (Clerk-managed, already public)
 - Network data shows SocialNet profile URLs (already public information)
 - No sensitive metadata exposed (touch scores are internal metrics)
 
 **Rate Limiting**:
+
 - tRPC procedures inherit Next.js rate limiting (Vercel default: 100 req/10s per IP)
 - Client-side caching via React Query (5-minute staleTime)
 - No infinite scroll or polling (data loads once on page visit)
 
 **SQL Injection**:
+
 - All queries use Prisma ORM (parameterized queries, no raw SQL)
 - User input limited to `accountSlug` (validated via Prisma relation lookup)
 
 **XSS Prevention**:
+
 - React auto-escapes all text content
 - Profile names and URLs from database are sanitized by Prisma
 - No `dangerouslySetInnerHTML` used anywhere
@@ -439,6 +478,7 @@ User sees fully populated achievements dashboard
 **Location**: `apps/nextjs/src/stores/zustand-store/achievements-store.ts`
 
 **Responsibilities**:
+
 - Hold achievements data (profile metrics, network data, activity data)
 - Track loading and error states
 - Provide actions to update state
@@ -449,6 +489,7 @@ User sees fully populated achievements dashboard
 _(TypeScript interfaces are inferred during implementation; see source files.)_
 
 **Usage Pattern**:
+
 ```tsx
 // In AccountDashboardPage (data fetching)
 const setProfileMetrics = useAchievementsStore((s) => s.setProfileMetrics);
@@ -459,8 +500,8 @@ const { data, isLoading, error } = useQuery(
   trpc.achievements.getProfileMetrics.queryOptions(),
   {
     onSuccess: (data) => setProfileMetrics(data),
-    onError: (err) => setError(err.message)
-  }
+    onError: (err) => setError(err.message),
+  },
 );
 
 useEffect(() => {
@@ -473,6 +514,7 @@ const isLoading = useAchievementsStore((s) => s.isLoading);
 ```
 
 **Account Switching**:
+
 ```tsx
 // In AccountLayout (when account changes)
 const resetAchievements = useAchievementsStore((s) => s.reset);
@@ -487,12 +529,14 @@ useEffect(() => {
 ### AchievementsSection
 
 **Responsibilities**:
+
 - Render bento box layout container
 - Define CSS Grid structure with named areas
 - Handle responsive breakpoints
 - Compose child card components
 
 **Layout Structure** (desktop):
+
 ```
 ┌─────────────┬─────────┬─────────┐
 │  Profile    │ Verified│ Assisted│
@@ -509,6 +553,7 @@ useEffect(() => {
 ```
 
 **Responsive Behavior**:
+
 - Mobile: All cards stack vertically
 - Tablet: Treemap + HeatMap side-by-side, rest stack
 - Desktop: Full bento grid as shown above
@@ -516,6 +561,7 @@ useEffect(() => {
 ### ProfileMetricsCard
 
 **Responsibilities**:
+
 - Display merged hero header (profile pic + accountSlug + title)
 - Show verified count, assisted count, percentile
 - Display current streak and longest streak
@@ -524,6 +570,7 @@ useEffect(() => {
 **Data Source**: `useAchievementsStore((s) => s.profileMetrics)`
 
 **Layout** (merged hero + metrics):
+
 ```
 ┌──────────────────────────────────┐
 │  [Avatar]  @account-slug         │
@@ -542,12 +589,14 @@ useEffect(() => {
 ```
 
 **Fallback**:
+
 - If no `owner.imageUrl`, show `<Avatar fallback={accountSlug[0].toUpperCase()} />`
 - If no streaks (0 comments), show "—" instead of 0
 
 ### NetworkTreemapCard
 
 **Responsibilities**:
+
 - Visualize interaction frequency via box size
 - Render profile pictures inside boxes
 - Show names and interaction counts on hover
@@ -556,6 +605,7 @@ useEffect(() => {
 **Data Source**: `useAchievementsStore((s) => s.networkData)` (top 50 profiles)
 
 **Visualization**:
+
 - Use Recharts `<Treemap>` component
 - `dataKey="interactionCount"` for box sizing
 - Custom `content` renderer for profile pics + names
@@ -563,15 +613,18 @@ useEffect(() => {
 - Aspect ratio: 4:3 (wider boxes for readability)
 
 **Interaction**:
+
 - Hover: Show tooltip with full name + exact count
 - Click: Navigate to `authorProfileUrl` in new tab
 
 **Empty State**:
+
 - If `networkData` is empty, show "No interactions yet" message
 
 ### ActivityHeatMapCard
 
 **Responsibilities**:
+
 - Display 365-day contribution grid (GitHub-style)
 - Color intensity based on comment count (0 = cream, 10+ = dark green)
 - Show tooltip on hover with date + count
@@ -580,6 +633,7 @@ useEffect(() => {
 **Data Source**: `useAchievementsStore((s) => s.activityData)` (365 daily buckets)
 
 **Visualization**:
+
 - Custom grid component (7 rows x 52 columns = 364 cells + 1)
 - Each cell represents one day
 - Color bins:
@@ -592,11 +646,13 @@ useEffect(() => {
 - Cell size: 12px x 12px (desktop), 8px x 8px (mobile)
 
 **Tooltip**:
+
 - Radix UI `<Tooltip>` on cell hover
 - Content: "March 15, 2026 - 4 comments"
 - Delay: 300ms
 
 **Mobile Optimization**:
+
 - Show last 180 days (26 weeks) instead of 365
 - Reduce cell size to 8px
 - Maintain readable spacing
@@ -604,6 +660,7 @@ useEffect(() => {
 ### BestFriendsCard
 
 **Responsibilities**:
+
 - Display top 5 most-engaged profiles
 - Show rank (gold/silver/bronze medals for top 3)
 - Render profile pictures, names, interaction counts
@@ -612,6 +669,7 @@ useEffect(() => {
 **Data Source**: `useAchievementsStore((s) => s.networkData?.slice(0, 5))`
 
 **Layout**:
+
 ```
 ┌────────────────────────────────────┐
 │  TOP 5 BEST FRIENDS 🏆             │
@@ -628,6 +686,7 @@ useEffect(() => {
 ```
 
 **Progress Bar**:
+
 - Width proportional to `interactionCount`
 - Max width = highest count in top 5
 - Color: `chart-2` (green #308169)
@@ -635,6 +694,7 @@ useEffect(() => {
 - Show count number at end
 
 **Empty State**:
+
 - If fewer than 5 profiles, show available (e.g., "Top 3 Best Friends")
 - If no profiles, show "No interactions yet" message
 
@@ -713,6 +773,7 @@ model Comment {
 **Auth**: `accountProcedure` (validates account ownership)
 
 **Input**:
+
 ```typescript
 {
   accountId: string; // Passed via accountProcedure context
@@ -720,90 +781,91 @@ model Comment {
 ```
 
 **Output**:
+
 ```typescript
 {
-  verifiedCount: number;        // peakTouchScore >= 80
-  assistedCount: number;         // peakTouchScore >= 50 AND < 80
-  percentile: number;            // Global ranking (0-100)
-  currentStreak: number;         // Consecutive days with comments
-  longestStreak: number;         // Max consecutive days ever
+  verifiedCount: number; // peakTouchScore >= 80
+  assistedCount: number; // peakTouchScore >= 50 AND < 80
+  percentile: number; // Global ranking (0-100)
+  currentStreak: number; // Consecutive days with comments
+  longestStreak: number; // Max consecutive days ever
   profileSlug: string;
   profileImageUrl: string | null; // From owner.imageUrl
 }
 ```
 
 **Implementation**:
+
 ```typescript
-getProfileMetrics: accountProcedure
-  .query(async ({ ctx }) => {
-    const accountId = ctx.activeAccount.id;
+getProfileMetrics: accountProcedure.query(async ({ ctx }) => {
+  const accountId = ctx.activeAccount.id;
 
-    // Verified comments
-    const verifiedCount = await ctx.db.comment.count({
-      where: {
-        accountId,
-        status: 'POSTED',
-        peakTouchScore: { gte: 80 }
-      }
-    });
+  // Verified comments
+  const verifiedCount = await ctx.db.comment.count({
+    where: {
+      accountId,
+      status: "POSTED",
+      peakTouchScore: { gte: 80 },
+    },
+  });
 
-    // Assisted comments
-    const assistedCount = await ctx.db.comment.count({
-      where: {
-        accountId,
-        status: 'POSTED',
-        peakTouchScore: { gte: 50, lt: 80 }
-      }
-    });
+  // Assisted comments
+  const assistedCount = await ctx.db.comment.count({
+    where: {
+      accountId,
+      status: "POSTED",
+      peakTouchScore: { gte: 50, lt: 80 },
+    },
+  });
 
-    // Global percentile
-    const totalComments = await ctx.db.comment.count({
-      where: { accountId, status: 'POSTED' }
-    });
+  // Global percentile
+  const totalComments = await ctx.db.comment.count({
+    where: { accountId, status: "POSTED" },
+  });
 
-    const allAccountsComments = await ctx.db.comment.groupBy({
-      by: ['accountId'],
-      where: { status: 'POSTED' },
-      _count: { id: true }
-    });
+  const allAccountsComments = await ctx.db.comment.groupBy({
+    by: ["accountId"],
+    where: { status: "POSTED" },
+    _count: { id: true },
+  });
 
-    const accountsWithFewer = allAccountsComments.filter(
-      acc => acc._count.id < totalComments
-    ).length;
+  const accountsWithFewer = allAccountsComments.filter(
+    (acc) => acc._count.id < totalComments,
+  ).length;
 
-    const percentile = Math.round(
-      (accountsWithFewer / allAccountsComments.length) * 100
-    );
+  const percentile = Math.round(
+    (accountsWithFewer / allAccountsComments.length) * 100,
+  );
 
-    // Streaks (calculate from commentedAt dates)
-    const comments = await ctx.db.comment.findMany({
-      where: {
-        accountId,
-        status: 'POSTED',
-        commentedAt: { not: null }
-      },
-      select: { commentedAt: true },
-      orderBy: { commentedAt: 'desc' }
-    });
+  // Streaks (calculate from commentedAt dates)
+  const comments = await ctx.db.comment.findMany({
+    where: {
+      accountId,
+      status: "POSTED",
+      commentedAt: { not: null },
+    },
+    select: { commentedAt: true },
+    orderBy: { commentedAt: "desc" },
+  });
 
-    const { currentStreak, longestStreak } = calculateStreaks(comments);
+  const { currentStreak, longestStreak } = calculateStreaks(comments);
 
-    // Profile info
-    const account = await ctx.db.socialNetAccount.findUnique({
-      where: { id: accountId },
-      include: { owner: { select: { imageUrl: true } } }
-    });
+  // Profile info
+  const account = await ctx.db.socialNetAccount.findUnique({
+    where: { id: accountId },
+    include: { owner: { select: { imageUrl: true } } },
+  });
 
-    return {
-      verifiedCount,
-      assistedCount,
-      percentile,
-      currentStreak,
-      longestStreak,
-      profileSlug: account.profileSlug ?? '',
-      profileImageUrl: account.owner?.imageUrl ?? null
-    };
-  })
+  return {
+    verifiedCount,
+    assistedCount,
+    percentile,
+    currentStreak,
+    longestStreak,
+    profileSlug: account.profileSlug ?? "",
+    profileImageUrl: account.owner?.imageUrl ?? null,
+  };
+});
 ```
 
 #### `getNetworkData`
@@ -811,6 +873,7 @@ getProfileMetrics: accountProcedure
 **Auth**: `accountProcedure`
 
 **Input**:
+
 ```typescript
 {
   accountId: string; // From context
@@ -819,64 +882,71 @@ getProfileMetrics: accountProcedure
 ```
 
 **Output**:
+
 ```typescript
 {
   authorProfileUrl: string;
   authorName: string | null;
   authorAvatarUrl: string | null;
   interactionCount: number;
-}[]
+}
+[];
 ```
 
 **Implementation**:
+
 ```typescript
 getNetworkData: accountProcedure
-  .input(z.object({
-    limit: z.number().optional().default(50)
-  }))
+  .input(
+    z.object({
+      limit: z.number().optional().default(50),
+    }),
+  )
   .query(async ({ ctx, input }) => {
     const accountId = ctx.activeAccount.id;
 
     // Group by author, count interactions
     const grouped = await ctx.db.comment.groupBy({
-      by: ['authorProfileUrl'],
+      by: ["authorProfileUrl"],
       where: {
         accountId,
-        status: 'POSTED',
-        authorProfileUrl: { not: null }
+        status: "POSTED",
+        authorProfileUrl: { not: null },
       },
       _count: { id: true },
-      orderBy: { _count: { id: 'desc' } },
-      take: input.limit
+      orderBy: { _count: { id: "desc" } },
+      take: input.limit,
     });
 
     // Fetch author details for each unique URL
-    const authorUrls = grouped.map(g => g.authorProfileUrl!);
+    const authorUrls = grouped.map((g) => g.authorProfileUrl!);
 
     const authors = await ctx.db.comment.findMany({
       where: {
         accountId,
-        authorProfileUrl: { in: authorUrls }
+        authorProfileUrl: { in: authorUrls },
       },
       select: {
         authorProfileUrl: true,
         authorName: true,
-        authorAvatarUrl: true
+        authorAvatarUrl: true,
       },
-      distinct: ['authorProfileUrl']
+      distinct: ["authorProfileUrl"],
     });
 
     // Combine counts with author info
-    return grouped.map(g => {
-      const author = authors.find(a => a.authorProfileUrl === g.authorProfileUrl);
+    return grouped.map((g) => {
+      const author = authors.find(
+        (a) => a.authorProfileUrl === g.authorProfileUrl,
+      );
       return {
         authorProfileUrl: g.authorProfileUrl!,
         authorName: author?.authorName ?? null,
         authorAvatarUrl: author?.authorAvatarUrl ?? null,
-        interactionCount: g._count.id
+        interactionCount: g._count.id,
       };
     });
-  })
+  });
 ```
 
 #### `getActivityData`
@@ -884,6 +954,7 @@ getNetworkData: accountProcedure
 **Auth**: `accountProcedure`
 
 **Input**:
+
 ```typescript
 {
   accountId: string; // From context
@@ -892,19 +963,24 @@ getNetworkData: accountProcedure
 ```
 
 **Output**:
+
 ```typescript
 {
-  date: string;  // ISO date (YYYY-MM-DD)
+  date: string; // ISO date (YYYY-MM-DD)
   count: number; // Comments on that day
-}[]
+}
+[];
 ```
 
 **Implementation**:
+
 ```typescript
 getActivityData: accountProcedure
-  .input(z.object({
-    days: z.number().optional().default(365)
-  }))
+  .input(
+    z.object({
+      days: z.number().optional().default(365),
+    }),
+  )
   .query(async ({ ctx, input }) => {
     const accountId = ctx.activeAccount.id;
     const startDate = new Date();
@@ -914,10 +990,10 @@ getActivityData: accountProcedure
     const comments = await ctx.db.comment.findMany({
       where: {
         accountId,
-        status: 'POSTED',
-        commentedAt: { gte: startDate, not: null }
+        status: "POSTED",
+        commentedAt: { gte: startDate, not: null },
       },
-      select: { commentedAt: true }
+      select: { commentedAt: true },
     });
 
     // Bucket by day
@@ -926,19 +1002,19 @@ getActivityData: accountProcedure
     for (let i = 0; i < input.days; i++) {
       const date = new Date();
       date.setDate(date.getDate() - i);
-      const dateKey = date.toISOString().split('T')[0];
+      const dateKey = date.toISOString().split("T")[0];
       buckets.set(dateKey, 0);
     }
 
-    comments.forEach(comment => {
-      const dateKey = comment.commentedAt!.toISOString().split('T')[0];
+    comments.forEach((comment) => {
+      const dateKey = comment.commentedAt!.toISOString().split("T")[0];
       buckets.set(dateKey, (buckets.get(dateKey) ?? 0) + 1);
     });
 
     return Array.from(buckets.entries())
       .map(([date, count]) => ({ date, count }))
       .sort((a, b) => a.date.localeCompare(b.date));
-  })
+  });
 ```
 
 **Helper Function** (streak calculation):
@@ -954,10 +1030,12 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
   const uniqueDates = Array.from(
     new Set(
       comments
-        .filter(c => c.commentedAt !== null)
-        .map(c => c.commentedAt!.toISOString().split('T')[0])
-    )
-  ).sort().reverse(); // Newest first
+        .filter((c) => c.commentedAt !== null)
+        .map((c) => c.commentedAt!.toISOString().split("T")[0]),
+    ),
+  )
+    .sort()
+    .reverse(); // Newest first
 
   if (uniqueDates.length === 0) return { currentStreak: 0, longestStreak: 0 };
 
@@ -966,10 +1044,10 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
   let tempStreak = 1;
 
   // Calculate current streak (from today backward)
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
-  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  const yesterdayStr = yesterday.toISOString().split("T")[0];
 
   // Current streak must include today or yesterday
   if (uniqueDates[0] !== today && uniqueDates[0] !== yesterdayStr) {
@@ -979,7 +1057,7 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
       const current = new Date(uniqueDates[i]);
       const previous = new Date(uniqueDates[i - 1]);
       const diffDays = Math.floor(
-        (previous.getTime() - current.getTime()) / (1000 * 60 * 60 * 24)
+        (previous.getTime() - current.getTime()) / (1000 * 60 * 60 * 24),
       );
 
       if (diffDays === 1) {
@@ -995,7 +1073,7 @@ function calculateStreaks(comments: { commentedAt: Date | null }[]): {
     const current = new Date(uniqueDates[i]);
     const previous = new Date(uniqueDates[i - 1]);
     const diffDays = Math.floor(
-      (previous.getTime() - current.getTime()) / (1000 * 60 * 60 * 24)
+      (previous.getTime() - current.getTime()) / (1000 * 60 * 60 * 24),
     );
 
     if (diffDays === 1) {
@@ -1094,6 +1172,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 **Stages**:
 
 **Stage 1: Schema Analysis**
+
 1. Review existing indexes in `Comment` model
 2. Identify slow queries via Prisma query logs (if available)
 3. Determine optimal index combinations for:
@@ -1102,6 +1181,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
    - Network grouping (`accountId + status + authorProfileUrl`)
 
 **Stage 2: Index Implementation**
+
 1. Add indexes to `packages/db/prisma/models/comment.prisma`:
    ```prisma
    @@index([accountId, status, peakTouchScore])
@@ -1113,12 +1193,14 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 4. Test migration on local database
 
 **Stage 3: Production Deployment**
+
 1. Run migration on staging database
 2. Verify index creation via PostgreSQL `\d+ Comment` command
 3. Measure query performance improvements (before/after)
 4. Deploy migration to production during low-traffic window
 
 **Acceptance Criteria**:
+
 - [ ] Three new indexes visible in Prisma schema
 - [ ] Migration successfully applied to local/staging/production
 - [ ] Query execution time reduced by >50% for achievements queries
@@ -1139,12 +1221,14 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 **Stages**:
 
 **Stage 1: Router Scaffolding**
+
 1. Create `packages/api/src/router/achievements.ts`
 2. Set up router exports and type definitions
 3. Define input/output Zod schemas for each procedure
 4. Register router in `packages/api/src/router/root.ts`
 
 **Stage 2: getProfileMetrics Implementation**
+
 1. Write `getProfileMetrics` procedure using `accountProcedure`
 2. Implement verified count query (`peakTouchScore >= 80`)
 3. Implement assisted count query (`peakTouchScore 50-80`)
@@ -1155,6 +1239,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 8. Write unit tests for streak calculation function
 
 **Stage 3: getNetworkData Implementation**
+
 1. Write `getNetworkData` procedure with optional limit parameter
 2. Implement groupBy query on `authorProfileUrl` with count
 3. Fetch distinct author details (name, avatar) for each URL
@@ -1163,6 +1248,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 6. Add error handling for missing author data
 
 **Stage 4: getActivityData Implementation**
+
 1. Write `getActivityData` procedure with optional days parameter
 2. Calculate start date (today - N days)
 3. Fetch all comments in date range
@@ -1171,6 +1257,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 6. Add validation to prevent excessive date ranges (max 730 days)
 
 **Stage 5: Testing & Integration**
+
 1. Test all procedures via tRPC playground/Postman
 2. Verify accountProcedure authorization works correctly
 3. Test with accounts having 0 comments (empty states)
@@ -1178,6 +1265,7 @@ _Phase plan files use the naming convention `phase-NN-{slug}_PLAN_{dd-mm-yy}.md`
 5. Verify type safety end-to-end (tRPC client types generated correctly)
 
 **Acceptance Criteria**:
+
 - [ ] Three procedures callable via tRPC client
 - [ ] All procedures return correct data for test accounts
 - [ ] Authorization prevents cross-account data access
@@ -1203,6 +1291,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 0: Pre-Phase Research**
+
 1. Read existing `useAccountStore` implementation
 2. Understand pattern for State/Actions interfaces
 3. Identify where to place store file (follow existing pattern)
@@ -1210,6 +1299,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Present findings and proposed store structure to user
 
 **Stage 1: Store Structure & Types**
+
 1. Create `apps/nextjs/src/stores/zustand-store/achievements-store.ts`
 2. Define TypeScript interfaces:
    - `ProfileMetrics` (verified count, assisted count, percentile, streaks, profile info)
@@ -1221,6 +1311,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 3. Add JSDoc comments for all interfaces
 
 **Stage 2: Store Implementation**
+
 1. Create store with `create<AchievementsStore>()` from zustand
 2. Implement initial state (all null, loading false, error null)
 3. Implement setter actions:
@@ -1233,16 +1324,19 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 4. Export `useAchievementsStore` hook
 
 **Stage 3: Store Registration**
+
 1. Add to `apps/nextjs/src/stores/zustand-store/index.ts` exports
 2. Verify store can be imported elsewhere
 3. Test store in isolation (create test file with basic set/get)
 
 **Stage 4: AccountLayout Integration**
+
 1. Import `useAchievementsStore` in AccountLayout
 2. Call `reset()` when account changes (in useEffect)
 3. Test account switching resets achievements state
 
 **Stage 5: Testing**
+
 1. Create `achievements-store.test.ts`
 2. Test initial state (all null)
 3. Test each setter action updates correct slice
@@ -1251,6 +1345,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Verify TypeScript types inferred correctly
 
 **Post-Phase Testing**:
+
 1. Import store in a test component: `const metrics = useAchievementsStore((s) => s.profileMetrics)`
 2. Call setter: `useAchievementsStore.getState().setProfileMetrics({ ... })`
 3. Verify state updates correctly
@@ -1259,6 +1354,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. No console errors or TypeScript errors
 
 **Acceptance Criteria**:
+
 - [ ] Store file created following existing pattern
 - [ ] All TypeScript interfaces defined with proper types
 - [ ] Store exports `useAchievementsStore` hook
@@ -1282,12 +1378,14 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 0: Pre-Phase Research**
+
 1. Review existing bento grid implementations in codebase
 2. Analyze CSS Grid vs Tailwind grid utilities
 3. Review neobrutalist theme card examples
 4. Present proposed layout structure to user
 
 **Stage 1: AchievementsSection Parent Component**
+
 1. Create `apps/nextjs/src/app/(new-dashboard)/[orgSlug]/[accountSlug]/_components/achievements/AchievementsSection.tsx`
 2. Define CSS Grid layout with `grid-template-areas`
 3. Implement responsive breakpoints:
@@ -1298,6 +1396,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Render placeholder divs for each grid area (to visualize layout)
 
 **Stage 2: ProfileMetricsCard Component**
+
 1. Create `ProfileMetricsCard.tsx` in `_components/achievements/cards/`
 2. Use `useAchievementsStore((s) => s.profileMetrics)` to get data from Zustand
 3. Use `useAchievementsStore((s) => s.isLoading)` for loading state
@@ -1305,18 +1404,19 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
    - Avatar component with `profileImageUrl` or fallback
    - Display `@{profileSlug}`
    - Title: "SocialNet Engagement 2026"
-4. Implement metrics grid (3 columns):
+5. Implement metrics grid (3 columns):
    - Verified count with icon (🎯) and label
    - Assisted count with icon (🤝) and label
    - Percentile badge ("TOP X%") with icon (🏆)
-5. Implement streaks row (2 columns):
+6. Implement streaks row (2 columns):
    - Current streak with fire icon (🔥)
    - Longest streak with trophy icon (🏅)
-6. Add neobrutalist styling (black borders, hard shadows, card background)
-7. Handle loading state (Skeleton components)
-8. Handle error state (show "—" for missing data)
+7. Add neobrutalist styling (black borders, hard shadows, card background)
+8. Handle loading state (Skeleton components)
+9. Handle error state (show "—" for missing data)
 
 **Stage 3: Integration**
+
 1. Import ProfileMetricsCard in AchievementsSection
 2. Place in grid-area "profile"
 3. Test on different screen sizes (mobile/tablet/desktop)
@@ -1324,6 +1424,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test with real account data (via tRPC)
 
 **Stage 4: Styling Refinements**
+
 1. Adjust spacing between sections (use Tailwind gap utilities)
 2. Ensure black borders on all cards (2px solid)
 3. Apply hard shadows (`shadow-md` from theme)
@@ -1332,6 +1433,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Test dark mode compatibility
 
 **Acceptance Criteria**:
+
 - [ ] Bento grid layout visible on desktop (named areas working)
 - [ ] Mobile layout stacks all cards vertically
 - [ ] ProfileMetricsCard displays all 5 metrics correctly
@@ -1356,21 +1458,24 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 1: Data Transformation**
+
 1. Create `transformNetworkDataForTreemap()` helper function
 2. Map `networkData` to Recharts treemap format:
    ```typescript
    {
-     name: string;          // authorName
-     size: number;          // interactionCount
+     name: string; // authorName
+     size: number; // interactionCount
      imageUrl: string | null; // authorAvatarUrl
-     profileUrl: string;    // authorProfileUrl
-   }[]
+     profileUrl: string; // authorProfileUrl
+   }
+   [];
    ```
 3. Handle missing author names (use "Unknown" fallback)
 4. Sort by size descending (largest boxes first)
 5. Add unit tests for transformation function
 
 **Stage 2: Custom Treemap Content Renderer**
+
 1. Create `TreemapCell.tsx` component
 2. Accept props: `x`, `y`, `width`, `height`, `name`, `size`, `imageUrl`, `profileUrl`
 3. Render rectangle with neobrutalist border (black 2px)
@@ -1381,6 +1486,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 8. Add hover effect (slightly darken on hover)
 
 **Stage 3: NetworkTreemapCard Component**
+
 1. Create `NetworkTreemapCard.tsx` in `cards/` folder
 2. Use `useNetworkData()` hook to get data from Context
 3. Transform data with helper function
@@ -1389,7 +1495,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
    <Treemap
      data={transformedData}
      dataKey="size"
-     aspectRatio={4/3}
+     aspectRatio={4 / 3}
      stroke="#000000"
      content={<TreemapCell />}
    />
@@ -1401,6 +1507,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 9. Handle empty state ("No interactions yet" message)
 
 **Stage 4: Integration & Styling**
+
 1. Import NetworkTreemapCard in AchievementsSection
 2. Place in grid-area "treemap" (60% width on desktop)
 3. Test responsiveness (treemap scales correctly)
@@ -1410,12 +1517,14 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Test with various data sizes (5 profiles, 50 profiles)
 
 **Stage 5: Performance Optimization**
+
 1. Memoize transformed data with `useMemo()`
 2. Debounce hover tooltips (300ms delay)
 3. Lazy-load profile images (use `loading="lazy"`)
 4. Test render performance with 50+ boxes
 
 **Acceptance Criteria**:
+
 - [ ] Treemap renders with correct box sizes (proportional to interaction count)
 - [ ] Profile pictures appear inside boxes (when box large enough)
 - [ ] Author names and counts visible
@@ -1441,6 +1550,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 1: Heat Map Grid Component**
+
 1. Create `HeatMapGrid.tsx` component
 2. Accept props: `data: { date: string, count: number }[]`, `days: number`
 3. Calculate grid dimensions:
@@ -1452,20 +1562,22 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Add black 1px borders (neobrutalist)
 
 **Stage 2: Color Scheme Implementation**
+
 1. Define color bins:
    ```typescript
    function getHeatMapColor(count: number): string {
-     if (count === 0) return '#fbf6e5';  // card bg
-     if (count <= 2) return 'rgba(27, 154, 170, 0.2)';  // 20%
-     if (count <= 5) return 'rgba(27, 154, 170, 0.4)';  // 40%
-     if (count <= 9) return 'rgba(27, 154, 170, 0.7)';  // 70%
-     return '#1b9aaa';  // 100% (chart-1)
+     if (count === 0) return "#fbf6e5"; // card bg
+     if (count <= 2) return "rgba(27, 154, 170, 0.2)"; // 20%
+     if (count <= 5) return "rgba(27, 154, 170, 0.4)"; // 40%
+     if (count <= 9) return "rgba(27, 154, 170, 0.7)"; // 70%
+     return "#1b9aaa"; // 100% (chart-1)
    }
    ```
 2. Apply colors to grid cells
 3. Add legend showing color scale (0, 1-2, 3-5, 6-9, 10+)
 
 **Stage 3: Tooltip Implementation**
+
 1. Wrap each cell with Radix `<Tooltip>`
 2. Tooltip content: "March 15, 2026 - 4 comments"
 3. Format date using `Intl.DateTimeFormat`
@@ -1473,6 +1585,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test tooltip performance (no lag with 365 cells)
 
 **Stage 4: ActivityHeatMapCard Component**
+
 1. Create `ActivityHeatMapCard.tsx` in `cards/` folder
 2. Use `useActivityData()` hook to get data from Context
 3. Render HeatMapGrid with activity data
@@ -1483,6 +1596,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 8. Handle empty state ("No activity yet" message)
 
 **Stage 5: Responsive Optimization**
+
 1. Desktop (>1024px): Show full 365 days (52 weeks)
 2. Tablet (768-1024px): Show 365 days with smaller cells (8px)
 3. Mobile (<768px): Show last 180 days (26 weeks) to fit width
@@ -1490,6 +1604,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test on various screen sizes
 
 **Stage 6: Integration**
+
 1. Import ActivityHeatMapCard in AchievementsSection
 2. Place in grid-area "heatmap" (40% width on desktop)
 3. Verify layout looks balanced next to treemap (60/40 split)
@@ -1497,6 +1612,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test tooltip interactions on mobile (tap vs hover)
 
 **Acceptance Criteria**:
+
 - [ ] Heat map displays 365 days in 7x52 grid
 - [ ] Color intensity matches comment count bins
 - [ ] Hover tooltip shows date + count
@@ -1522,6 +1638,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 1: BestFriendsCard Component**
+
 1. Create `BestFriendsCard.tsx` in `cards/` folder
 2. Use `useNetworkData()` hook to get data from Context
 3. Slice first 5 profiles: `networkData.slice(0, 5)`
@@ -1531,6 +1648,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Handle empty state ("No interactions yet")
 
 **Stage 2: Ranking List Item Component**
+
 1. Create `BestFriendItem.tsx` sub-component
 2. Accept props: `rank: number`, `name: string`, `avatarUrl: string | null`, `count: number`, `maxCount: number`, `profileUrl: string`
 3. Render rank indicator:
@@ -1544,6 +1662,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Add hover state (slight background color change)
 
 **Stage 3: Progress Bar Implementation**
+
 1. Create `ProgressBar.tsx` component
 2. Accept props: `value: number`, `max: number`, `color: string`
 3. Calculate percentage: `(value / max) * 100`
@@ -1554,6 +1673,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 8. Animate width on mount (CSS transition)
 
 **Stage 4: Layout & Styling**
+
 1. Arrange items vertically in list
 2. Add spacing between items (gap-3)
 3. Apply neobrutalist card styling (black border, hard shadow)
@@ -1562,6 +1682,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Test with varying name lengths (truncation)
 
 **Stage 5: Interactions**
+
 1. Make entire item clickable (navigate to SocialNet profile)
 2. Add accessible link with aria-label: "View {name} on SocialNet"
 3. Open in new tab (`target="_blank" rel="noopener noreferrer"`)
@@ -1569,6 +1690,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test keyboard navigation (tab, enter)
 
 **Stage 6: Integration**
+
 1. Import BestFriendsCard in AchievementsSection
 2. Place in grid-area "friends" (full width)
 3. Test responsive layout (stacks on mobile, full width on all sizes)
@@ -1576,6 +1698,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test with accounts having <5 profiles (shows available only)
 
 **Acceptance Criteria**:
+
 - [ ] Top 5 profiles displayed in descending order
 - [ ] Medal icons for top 3 ranks
 - [ ] Progress bars proportional to interaction count
@@ -1601,6 +1724,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 1: Mobile Responsive Audit**
+
 1. Test on iPhone SE (375px width)
 2. Test on iPhone 12 (390px width)
 3. Test on iPad Mini (768px width)
@@ -1611,6 +1735,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 8. Test horizontal scrolling (should be none)
 
 **Stage 2: Tailwind Responsive Utilities**
+
 1. Audit all components for responsive classes
 2. Add `md:` and `lg:` prefixes where needed
 3. Ensure text sizes scale appropriately:
@@ -1620,6 +1745,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Hide/show elements conditionally (e.g., hide heat map legend on mobile)
 
 **Stage 3: Accessibility (A11y)**
+
 1. Add ARIA labels to all interactive elements
 2. Ensure keyboard navigation works:
    - Tab through cards
@@ -1632,6 +1758,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Ensure all images have alt text
 
 **Stage 4: Performance Optimization**
+
 1. Memoize expensive computations (streak calculation, treemap transformation)
 2. Use React.memo for card components
 3. Optimize image loading (lazy load avatars)
@@ -1640,6 +1767,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Optimize bundle size (check for unnecessary imports)
 
 **Stage 5: Visual Polish**
+
 1. Verify neobrutalist theme consistency across all cards
 2. Ensure black borders are 2px solid everywhere
 3. Apply hard shadows uniformly (shadow-md)
@@ -1649,6 +1777,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Test dark mode compatibility (if applicable)
 
 **Stage 6: Loading & Error States**
+
 1. Audit all loading skeletons (correct size, shape)
 2. Ensure skeletons match final component layout
 3. Test error states (simulate query failures)
@@ -1657,6 +1786,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Ensure empty states have clear messaging
 
 **Stage 7: Cross-Browser Testing**
+
 1. Test on Chrome (latest)
 2. Test on Firefox (latest)
 3. Test on Safari (latest)
@@ -1666,6 +1796,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Check Recharts rendering on all browsers
 
 **Acceptance Criteria**:
+
 - [ ] All breakpoints work correctly (mobile/tablet/desktop)
 - [ ] No horizontal scrolling on any screen size
 - [ ] Keyboard navigation works throughout
@@ -1692,6 +1823,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 **Stages**:
 
 **Stage 1: Unit Tests**
+
 1. Write tests for streak calculation helper function
 2. Write tests for data transformation functions (treemap, heat map)
 3. Write tests for color bin functions (heat map colors)
@@ -1699,6 +1831,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Ensure 100% coverage for helper functions
 
 **Stage 2: Component Tests (React Testing Library)**
+
 1. Test AchievementsProvider with mock tRPC
 2. Test ProfileMetricsCard with mock data
 3. Test NetworkTreemapCard with mock data
@@ -1709,6 +1842,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 8. Test empty states (no data)
 
 **Stage 3: Integration Tests**
+
 1. Test full achievements section with real tRPC calls (against test database)
 2. Test account switching (different accountIds)
 3. Test refetch functionality
@@ -1716,6 +1850,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Test data flow from tRPC → Context → Components
 
 **Stage 4: End-to-End Tests (Playwright)**
+
 1. Test page load and initial render
 2. Test interactions (hover tooltips, click links)
 3. Test responsive behavior (resize viewport)
@@ -1724,6 +1859,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Test with real production-like data
 
 **Stage 5: Performance Testing**
+
 1. Test query performance (measure execution time)
 2. Test with large datasets (10,000+ comments)
 3. Test render performance (measure React render time)
@@ -1732,6 +1868,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 6. Test on slow 3G network (throttle in DevTools)
 
 **Stage 6: Manual QA**
+
 1. Test on real SocialNet accounts with varying data:
    - Account with 0 comments
    - Account with 1-10 comments
@@ -1745,6 +1882,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 7. Verify data accuracy (manual calculation vs dashboard)
 
 **Stage 7: Bug Fixing**
+
 1. Document all bugs found in Stages 1-6
 2. Prioritize bugs (critical, major, minor)
 3. Fix critical bugs immediately
@@ -1752,6 +1890,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 5. Create tickets for minor bugs (post-launch)
 
 **Acceptance Criteria**:
+
 - [ ] Unit tests pass with 100% coverage for helpers
 - [ ] Component tests cover all major scenarios
 - [ ] Integration tests pass against test database
@@ -1772,6 +1911,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 ### Gap Analysis
 
 **Missing Specifications**:
+
 - Screenshot dimensions (if manual screenshot, what aspect ratio to encourage?)
   - **Resolution**: Document recommended viewport width (1200px) for best social media screenshots
 - Heat map cell interactivity on mobile (tap vs hover)
@@ -1780,21 +1920,22 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
   - **Resolution**: Use `accountId` as tiebreaker (alphabetical order)
 
 **Ambiguities Resolved**:
+
 - Profile picture source: Confirmed `User.imageUrl` from Clerk
 - Mobile heat map: Show last 180 days instead of 365
 - Empty states: Show user-friendly messages, not blank cards
 
 ### Quality Assessment
 
-| Criteria | Score | Reason |
-|----------|-------|--------|
-| **Completeness** | 95/100 | All must-have features specified; minor details (exact tooltip text) left to implementation |
-| **Clarity** | 90/100 | Clear architecture decisions and component responsibilities; some implementation details require developer judgment |
-| **Feasibility** | 100/100 | All features implementable with existing tech stack; no blockers identified |
-| **Performance** | 85/100 | Database queries optimized with indexes; some concern about percentile calculation at scale (10k+ accounts) |
-| **Maintainability** | 90/100 | Modular architecture with clear separation of concerns; Context pattern may require refactoring if achievements expand |
-| **Accessibility** | 80/100 | Basic a11y covered; advanced features (screen reader announcements for live data) not fully specified |
-| **Security** | 95/100 | Strong authentication and authorization; minor concern about revealing global user count via percentile |
+| Criteria            | Score   | Reason                                                                                                                 |
+| ------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------- |
+| **Completeness**    | 95/100  | All must-have features specified; minor details (exact tooltip text) left to implementation                            |
+| **Clarity**         | 90/100  | Clear architecture decisions and component responsibilities; some implementation details require developer judgment    |
+| **Feasibility**     | 100/100 | All features implementable with existing tech stack; no blockers identified                                            |
+| **Performance**     | 85/100  | Database queries optimized with indexes; some concern about percentile calculation at scale (10k+ accounts)            |
+| **Maintainability** | 90/100  | Modular architecture with clear separation of concerns; Context pattern may require refactoring if achievements expand |
+| **Accessibility**   | 80/100  | Basic a11y covered; advanced features (screen reader announcements for live data) not fully specified                  |
+| **Security**        | 95/100  | Strong authentication and authorization; minor concern about revealing global user count via percentile                |
 
 ---
 
@@ -1803,6 +1944,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 ### V1.0 (MVP Launch)
 
 **Functional Requirements**:
+
 - [ ] Verified comment count displayed (peakTouchScore >= 80)
 - [ ] Assisted comment count displayed (peakTouchScore 50-80)
 - [ ] Global percentile ranking displayed ("Top X% Engage Warrior")
@@ -1816,6 +1958,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Vertical stacking on mobile
 
 **Non-Functional Requirements**:
+
 - [ ] Page load <3s on slow 3G
 - [ ] Query execution <500ms for accounts with <10k comments
 - [ ] Lighthouse performance score >90
@@ -1825,6 +1968,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] No horizontal scrolling on any screen size
 
 **User Experience**:
+
 - [ ] Loading skeletons appear during data fetch
 - [ ] Error boundaries catch failures with retry option
 - [ ] Empty states show user-friendly messages
@@ -1839,6 +1983,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 ### Post-V1 Enhancements
 
 **Phase 2 (Q2 2026)**:
+
 - Screenshot/share button (export as PNG)
 - Manual refresh button
 - Animated number counters (count-up effect)
@@ -1846,6 +1991,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - Organization-level ranking (compare within org)
 
 **Phase 3 (Q3 2026)**:
+
 - Historical trends (monthly/yearly comparison)
 - Real-time updates (WebSocket for live metrics)
 - Email notifications for achievements
@@ -1853,6 +1999,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - Downloadable achievement report (PDF)
 
 **Phase 4 (Q4 2026)**:
+
 - Gamification features (levels, XP, leaderboards)
 - Social comparison (opt-in, compare with peers)
 - Third-party integrations (share to Twitter/SocialNet directly)
@@ -1871,6 +2018,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 ## Implementation Checklist (Complete Workflow)
 
 **Phase 1: Database Indexes** (30 min)
+
 - [ ] Add indexes to `Comment` model in Prisma schema
 - [ ] Generate migration: `pnpm db:migrate dev`
 - [ ] Apply migration to staging database
@@ -1878,6 +2026,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Deploy migration to production
 
 **Phase 2: tRPC Router** (3 hours)
+
 - [ ] Create `achievements.ts` router file
 - [ ] Implement `getProfileMetrics` procedure
 - [ ] Implement `getNetworkData` procedure
@@ -1888,6 +2037,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Write unit tests for streak helper
 
 **Phase 3: Context Provider** (2 hours)
+
 - [ ] Create `AchievementsContext.tsx` file
 - [ ] Define TypeScript types for Context value
 - [ ] Implement `AchievementsProvider` component
@@ -1898,6 +2048,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Write integration tests for provider
 
 **Phase 4: Bento Layout** (2 hours)
+
 - [ ] Create `AchievementsSection.tsx` component
 - [ ] Define CSS Grid with `grid-template-areas`
 - [ ] Implement responsive breakpoints
@@ -1906,6 +2057,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Integrate into account dashboard page
 
 **Phase 5: Profile Metrics Card** (3 hours)
+
 - [ ] Create `ProfileMetricsCard.tsx` component
 - [ ] Implement hero header (avatar + title)
 - [ ] Implement metrics grid (verified/assisted/percentile)
@@ -1916,6 +2068,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Test with real data
 
 **Phase 6: Network Treemap Card** (4 hours)
+
 - [ ] Create data transformation helper
 - [ ] Create `TreemapCell.tsx` custom renderer
 - [ ] Create `NetworkTreemapCard.tsx` component
@@ -1926,6 +2079,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Test with varying data sizes
 
 **Phase 7: Activity Heat Map Card** (4 hours)
+
 - [ ] Create `HeatMapGrid.tsx` component
 - [ ] Implement color bin function
 - [ ] Create `ActivityHeatMapCard.tsx` component
@@ -1936,6 +2090,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Test tooltip performance
 
 **Phase 8: Best Friends Card** (3 hours)
+
 - [ ] Create `BestFriendItem.tsx` component
 - [ ] Create `ProgressBar.tsx` component
 - [ ] Create `BestFriendsCard.tsx` component
@@ -1946,6 +2101,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Add loading/error/empty states
 
 **Phase 9: Responsive Design** (3 hours)
+
 - [ ] Audit mobile responsiveness
 - [ ] Add Tailwind responsive utilities
 - [ ] Fix layout issues on small screens
@@ -1954,6 +2110,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Test on all browsers
 
 **Phase 10: Accessibility** (2 hours)
+
 - [ ] Add ARIA labels to interactive elements
 - [ ] Implement keyboard navigation
 - [ ] Add focus visible states
@@ -1962,6 +2119,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Run Lighthouse accessibility audit
 
 **Phase 11: Performance Optimization** (2 hours)
+
 - [ ] Memoize expensive computations
 - [ ] Use React.memo for components
 - [ ] Optimize image loading (lazy load)
@@ -1970,6 +2128,7 @@ See [API Surface](#11-api-surface-trpc) section above for full contracts.
 - [ ] Optimize bundle size
 
 **Phase 12: Testing** (4 hours)
+
 - [ ] Write unit tests for helpers
 - [ ] Write component tests
 - [ ] Write integration tests
@@ -2016,11 +2175,11 @@ _ag-validate-agent writes this section before EXECUTE for each phase. Do not sta
 
 Each RIPER-5 phase is owned by a dedicated ag-agent. Route to the correct agent for each phase:
 
-| Phase | Agent | Notes |
-|---|---|---|
-| RESEARCH | `ag-research-agent` | Read-only; gather codebase facts, existing patterns, and prior decisions |
-| INNOVATE | `ag-innovate-agent` | Brainstorm approaches; produce decision summary with rationale |
-| PLAN | `ag-plan-agent` | Write the plan artifact; no implementation |
-| VALIDATE | `ag-validate-agent` | Mandatory V1–V7 gate sequence; writes the Validate Contract section |
-| EXECUTE | `ag-execute-agent` | Implement exactly as specified; requires a non-placeholder validate-contract |
-| UPDATE PROCESS | `ag-update-process-agent` | Archive plan, update context docs, write memory notes, emit closeout packet |
+| Phase          | Agent                     | Notes                                                                        |
+| -------------- | ------------------------- | ---------------------------------------------------------------------------- |
+| RESEARCH       | `ag-research-agent`       | Read-only; gather codebase facts, existing patterns, and prior decisions     |
+| INNOVATE       | `ag-innovate-agent`       | Brainstorm approaches; produce decision summary with rationale               |
+| PLAN           | `ag-plan-agent`           | Write the plan artifact; no implementation                                   |
+| VALIDATE       | `ag-validate-agent`       | Mandatory V1–V7 gate sequence; writes the Validate Contract section          |
+| EXECUTE        | `ag-execute-agent`        | Implement exactly as specified; requires a non-placeholder validate-contract |
+| UPDATE PROCESS | `ag-update-process-agent` | Archive plan, update context docs, write memory notes, emit closeout packet  |

@@ -15,6 +15,7 @@ layer: helper
 ## When to Apply
 
 This skill is designed for the agent to reference when:
+
 - The user is a student or learner working on understanding software engineering concepts, design patterns, or feature logic.
 - The agent needs to perform Socratic mentorship, scaffolding/fading assistance, or Zone of Proximal Development (ZPD) management.
 - Triggered by explicit keywords: `socratic`, `tutor`, `explain concept`, `guide me`, `teach me`, `learning mode`.
@@ -37,14 +38,16 @@ This skill is designed for the agent to reference when:
 ### 2. Examples
 
 #### Example 1: Student Asks for Complete Booking Handler
+
 - **Context:** Student is building a ticket booking module in NestJS and asks: "Write the ticket reservation handler for me."
 - **User prompt:** "Write the ticket reservation handler for me in NestJS."
-- **Action/Result:** The agent refuses to write the full method body per `INV-1`. It provides the `ReserveSeatDto` interface, an empty `reserveSeats()` stub, and asks: *"How will your function check if the seat status is currently `AVAILABLE` before acquiring the lock?"*
+- **Action/Result:** The agent refuses to write the full method body per `INV-1`. It provides the `ReserveSeatDto` interface, an empty `reserveSeats()` stub, and asks: _"How will your function check if the seat status is currently `AVAILABLE` before acquiring the lock?"_
 
 #### Example 2: Scaffolding a Distributed Lock Concept
+
 - **Context:** Student is confused about race conditions when 100 users book seats simultaneously.
 - **User prompt:** "Why do I need Redlock here? Can't I just use a simple IF check in TypeORM?"
-- **Action/Result:** The agent explains the difference between in-memory checks vs. distributed locks using a physical ticket counter analogy, then asks: *"If two server nodes execute `IF (seat.isAvailable)` at the exact same millisecond, what value will both nodes read from the DB?"*
+- **Action/Result:** The agent explains the difference between in-memory checks vs. distributed locks using a physical ticket counter analogy, then asks: _"If two server nodes execute `IF (seat.isAvailable)` at the exact same millisecond, what value will both nodes read from the DB?"_
 
 ---
 

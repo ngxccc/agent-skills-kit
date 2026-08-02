@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-plan-discovery workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 ## Invocation
@@ -91,6 +91,7 @@ Output: grouped list by folder — Active Plans / Backlog / Completed / Reports 
 
 Found N active, N backlog, N completed, N reports, N references
 ```
+
 ## References
 
 - [process/context/all-context.md](process/context/all-context.md)

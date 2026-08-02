@@ -36,15 +36,17 @@ Dữ liệu đầu vào phải được định nghĩa bằng **Zod Schemas** ho
 // Zod Schema Validation Contract
 import { z } from "zod";
 
-export const InputDataSchema = z.object({
-  requestId: z.string().uuid(),
-  amount: z.number().positive("Amount must be greater than zero"),
-  senderId: z.string().min(1),
-  receiverId: z.string().min(1),
-}).refine(data => data.senderId !== data.receiverId, {
-  message: "Sender and Receiver cannot be identical",
-  path: ["receiverId"],
-});
+export const InputDataSchema = z
+  .object({
+    requestId: z.string().uuid(),
+    amount: z.number().positive("Amount must be greater than zero"),
+    senderId: z.string().min(1),
+    receiverId: z.string().min(1),
+  })
+  .refine((data) => data.senderId !== data.receiverId, {
+    message: "Sender and Receiver cannot be identical",
+    path: ["receiverId"],
+  });
 
 export type InputData = z.infer<typeof InputDataSchema>;
 ```
@@ -53,12 +55,14 @@ export type InputData = z.infer<typeof InputDataSchema>;
 
 ## 3. Các Ràng Buộc Bất Biến (Constraints & System Invariants)
 
-*Những điều kiện toán học/logic MUST ALWAYS HOLD TRUE trong mọi thời điểm (Pre, During, Post execution):*
+_Những điều kiện toán học/logic MUST ALWAYS HOLD TRUE trong mọi thời điểm (Pre, During, Post execution):_
 
 - `INV-1 (Data Consistency)`: [Ví dụ: Balance_after = Balance_before - Amount — Xem ADR chi tiết tại `docs/adr/0003-wallet-outbox-pattern.md`]
 - `INV-2 (Security Boundary)`: [Ví dụ: UserRole == 'ADMIN' mới được phép thực hiện hành động — Xem ADR chi tiết tại `docs/adr/0004-rbac-policy.md`]
 - `INV-3 (State Machine Transition)`: [Ví dụ: PENDING -> PROCESSING -> COMPLETED/FAILED, tuyệt đối không được nhảy cóc]
+
 ### Contract Details (Hợp Đồng Hàm):
+
 - **Pre-conditions (Điều kiện tiên quyết)**:
   - `payload.amount > 0`
   - `payload.senderId != payload.receiverId`
@@ -74,11 +78,11 @@ export type InputData = z.infer<typeof InputDataSchema>;
 
 ### A. Ma Trận Trường Hợp Ngoại Lệ (Edge Cases Matrix)
 
-| ID | Trường Hợp Ngoại Lệ / Edge Case | Hành Vi Xử Lý Mong Đổi (Fail-Safe) |
-| :--- | :--- | :--- |
-| `EDGE-1` | Truyền `amount = 0` hoặc số âm (`-500`) | Rejection ngay tại DTO Boundary với `BAD_REQUEST (400)` |
-| `EDGE-2` | Số dư tài khoản không đủ (`balance < amount`) | Throw `InsufficientBalanceException`, không trừ tiền |
-| `EDGE-3` | Mạng đứt kết nối giữa chừng khi đang ghi DB | Rollback 100% DB Transaction, trả về `500 Internal Error` an toàn |
+| ID       | Trường Hợp Ngoại Lệ / Edge Case               | Hành Vi Xử Lý Mong Đổi (Fail-Safe)                                |
+| :------- | :-------------------------------------------- | :---------------------------------------------------------------- |
+| `EDGE-1` | Truyền `amount = 0` hoặc số âm (`-500`)       | Rejection ngay tại DTO Boundary với `BAD_REQUEST (400)`           |
+| `EDGE-2` | Số dư tài khoản không đủ (`balance < amount`) | Throw `InsufficientBalanceException`, không trừ tiền              |
+| `EDGE-3` | Mạng đứt kết nối giữa chừng khi đang ghi DB   | Rollback 100% DB Transaction, trả về `500 Internal Error` an toàn |
 
 ### B. Kịch Bản Kiểm Định Cấp 2 (Level 2 Verifier - Property-Based & Adversarial)
 
@@ -88,11 +92,11 @@ export type InputData = z.infer<typeof InputDataSchema>;
 fc.assert(
   fc.property(fc.float(), fc.string(), (amount, senderId) => {
     // Assert System Invariants hold true under all random inputs
-  })
+  }),
 );
 ```
 
-| ID | Adversarial / Race Condition Scenario | Expected Proof Outcome |
-| :--- | :--- | :--- |
+| ID      | Adversarial / Race Condition Scenario               | Expected Proof Outcome                                          |
+| :------ | :-------------------------------------------------- | :-------------------------------------------------------------- |
 | `ADV-1` | Gửi 2 request rút tiền cùng 1ms với `balance = 100` | 1 request thành công, 1 request rejected (Anti-Double Spending) |
-| `ADV-2` | Cố tình truyền SQL Injection / Malicious Payload | Sanitize & Block ngay tại validation pipe |
+| `ADV-2` | Cố tình truyền SQL Injection / Malicious Payload    | Sanitize & Block ngay tại validation pipe                       |

@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-validate-findings workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Defines the role specs, prompts, and output schemas for the two-layer VALIDATE fan-out (a parallel check across 4 dimensions + per-section feasibility probes). Produces a net gate verdict (PASS / CONDITIONAL / BLOCKED) and all the inputs needed to write the validate-contract — the written checklist that gates EXECUTE.
@@ -55,6 +55,7 @@ Choose before spawning any agents. Pass the selected mode to all Layer 1 and Lay
 Runs the Layer 1 + Layer 2 fan-out using context available in the current conversation. Validation agents derive context from the plan file and what was passed in the prompt.
 
 **Appropriate when:**
+
 - Plan is self-contained (all context needed is in the plan text)
 - Context is fresh in the current conversation window
 - Blast radius is clear and confined to a single domain
@@ -64,6 +65,7 @@ Runs the Layer 1 + Layer 2 fan-out using context available in the current conver
 ### Deep Mode
 
 Trigger when **any one** of the following is true:
+
 - Plan blast radius touches container, infra, or worker lifecycle
 - Plan has 5+ blast-radius packages
 - Plan is a phase in a multi-phase program (prior phase outputs must be loaded)
@@ -78,6 +80,7 @@ Trigger when **any one** of the following is true:
 5. Package all loaded material as a **Context Bundle** and pass it to every Layer 1 and Layer 2 agent
 
 **Quality difference in practice:**
+
 - Simple: Layer 1 infra agent infers container port assignments from plan description text
 - Deep: Layer 1 infra agent reads the container context group (process/context/container/ or the repo's equivalent routing entrypoint) and knows the real port table (gateway:3000, file-server:3001, app-dev:3002, ctx-gateway:3099, browser-bridge:9377, MITM:9090/9091) — can catch real port conflicts the plan missed
 
@@ -87,12 +90,12 @@ Trigger when **any one** of the following is true:
 
 Always run all four, regardless of complexity score. These run in parallel.
 
-| Dimension | Focus | Context to attach |
-|---|---|---|
-| Infra/setup fit | Does this work with container/worker/proxy architecture? Are target file paths, port numbers, and runtime surfaces correct? | `process/context/all-context.md` routing → container and infra groups (follow routing table for local paths) |
-| Test coverage | Is the verification strategy realistic given the test infra? Which tiers apply (fully-automated / hybrid / agent-probe)? | `process/context/tests/all-tests.md` |
-| Breaking changes | Identify API contracts, schemas, auth flows, or public contract changes. Are downstream consumers listed and safe? | Plan's Public Contracts and Blast Radius sections |
-| Security surface | Quick STRIDE/OWASP scan. Does the plan touch auth, billing, data, secrets, or trust boundaries? | `ag-security` skill context |
+| Dimension        | Focus                                                                                                                       | Context to attach                                                                                            |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Infra/setup fit  | Does this work with container/worker/proxy architecture? Are target file paths, port numbers, and runtime surfaces correct? | `process/context/all-context.md` routing → container and infra groups (follow routing table for local paths) |
+| Test coverage    | Is the verification strategy realistic given the test infra? Which tiers apply (fully-automated / hybrid / agent-probe)?    | `process/context/tests/all-tests.md`                                                                         |
+| Breaking changes | Identify API contracts, schemas, auth flows, or public contract changes. Are downstream consumers listed and safe?          | Plan's Public Contracts and Blast Radius sections                                                            |
+| Security surface | Quick STRIDE/OWASP scan. Does the plan touch auth, billing, data, secrets, or trust boundaries?                             | `ag-security` skill context                                                                                  |
 
 **Note:** the security surface dimension INVOKES the `ag-security` skill — do not absorb `ag-security`'s logic here.
 
@@ -179,17 +182,17 @@ Present this exact table format after synthesis:
 
 ### Layer 1 dimensions
 
-| Layer 1 dimensions | Status |
-|---|---|
-| Infra fit | PASS / CONCERN / FAIL |
-| Test coverage | PASS / CONCERN / FAIL |
-| Breaking changes | PASS / CONCERN / FAIL |
-| Security surface | PASS / CONCERN / FAIL |
+| Layer 1 dimensions | Status                |
+| ------------------ | --------------------- |
+| Infra fit          | PASS / CONCERN / FAIL |
+| Test coverage      | PASS / CONCERN / FAIL |
+| Breaking changes   | PASS / CONCERN / FAIL |
+| Security surface   | PASS / CONCERN / FAIL |
 
 ### Layer 2 sections
 
-| Layer 2 sections | Status |
-|---|---|
+| Layer 2 sections   | Status                |
+| ------------------ | --------------------- |
 | Section A — [name] | PASS / CONCERN / FAIL |
 | Section B — [name] | PASS / CONCERN / FAIL |
 | Section N — [name] | PASS / CONCERN / FAIL |
@@ -199,6 +202,7 @@ Present this exact table format after synthesis:
 **→ Net Gate: [PASS / CONDITIONAL / BLOCKED]**
 
 Decision rules:
+
 - **PASS:** 0 FAILs, 0 CONCERNs. All plan fixes applied. Proceed to EXECUTE.
 - **CONDITIONAL:** 0 FAILs, [N] CONCERNs. [N] fixed in plan, [N] as execute-agent instructions, [N] as known-gaps. Proceed to EXECUTE with gaps on record.
 - **BLOCKED:** [N] unresolved FAILs. [List each.] Return to PLAN — do not route to EXECUTE until each FAIL is resolved or explicitly converted to CONDITIONAL by user.
@@ -209,10 +213,10 @@ Decision rules:
 
 Use this table format for each dimension's findings (Section I of the V4 menu):
 
-| Finding | Severity | Proposed fix |
-|---|---|---|
+| Finding               | Severity       | Proposed fix                                                                   |
+| --------------------- | -------------- | ------------------------------------------------------------------------------ |
 | [Finding description] | CONCERN / FAIL | [Proposed fix — apply to plan, execute-agent instruction, or backlog artifact] |
-| [Finding description] | ✅ PASS | — |
+| [Finding description] | ✅ PASS        | —                                                                              |
 
 Show PASS findings as `✅ PASS` with `—` in the proposed fix column.
 
@@ -224,28 +228,28 @@ Show PASS findings as `✅ PASS` with `—` in the proposed fix column.
 
 Show the summary below to the user before they approve EXECUTE (before gate V5). These changes are applied to the plan file when the user accepts.
 
-| # | What changes | Where in plan | Why |
-|---|---|---|---|
-| P1 | [e.g. Add route registration step to Section A checklist] | [Section A — Implementation Checklist] | [Gap found: route not reachable without this step] |
-| P2 | [e.g. Correct blast radius: add downstream consumers] | [Blast Radius section] | [Breaking-changes agent found unlisted consumers] |
-| PN | [...] | [...] | [...] |
+| #   | What changes                                              | Where in plan                          | Why                                                |
+| --- | --------------------------------------------------------- | -------------------------------------- | -------------------------------------------------- |
+| P1  | [e.g. Add route registration step to Section A checklist] | [Section A — Implementation Checklist] | [Gap found: route not reachable without this step] |
+| P2  | [e.g. Correct blast radius: add downstream consumers]     | [Blast Radius section]                 | [Breaking-changes agent found unlisted consumers]  |
+| PN  | [...]                                                     | [...]                                  | [...]                                              |
 
 ### Execute-Agent Instructions
 
 Concerns that cannot be fixed in plan text — written to the validate-contract for execute-agent to follow:
 
-| # | Instruction | Trigger condition |
-|---|---|---|
-| E1 | [e.g. Confirm exact file path before writing Section A. If path differs: update edit target, do NOT skip. Document corrected path in phase report.] | Section A entry |
-| E2 | [e.g. Container change requires image rebuild. Use docker:build + container recreate via API lifecycle. Never docker cp.] | Section D entry |
-| EN | [...] | [...] |
+| #   | Instruction                                                                                                                                         | Trigger condition |
+| --- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------- |
+| E1  | [e.g. Confirm exact file path before writing Section A. If path differs: update edit target, do NOT skip. Document corrected path in phase report.] | Section A entry   |
+| E2  | [e.g. Container change requires image rebuild. Use docker:build + container recreate via API lifecycle. Never docker cp.]                           | Section D entry   |
+| EN  | [...]                                                                                                                                               | [...]             |
 
 ### Backlog Artifacts
 
-| Artifact | Location | What it tracks |
-|---|---|---|
+| Artifact                                         | Location                                        | What it tracks                                          |
+| ------------------------------------------------ | ----------------------------------------------- | ------------------------------------------------------- |
 | [e.g. test-envelope-regression_NOTE_03-06-26.md] | [process/features/development-process/backlog/] | [Envelope regression test against downstream consumers] |
-| [...] | [...] | [...] |
+| [...]                                            | [...]                                           | [...]                                                   |
 
 ---
 
@@ -258,6 +262,7 @@ After the validate-contract is written to the plan file (V6), the skill stores t
 **Multi-phase program:** the /goal already exists in the umbrella `## Stable Program Goal`. Do NOT rewrite it — only verify it is current and points to the umbrella path.
 
 The /goal block must include:
+
 - SESSION GOAL
 - Autonomy rules
 - Hard stops

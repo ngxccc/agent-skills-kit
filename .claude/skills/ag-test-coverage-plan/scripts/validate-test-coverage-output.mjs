@@ -62,12 +62,16 @@ if (!target) {
   }
 
   if (areas.length === 0) {
-    fail(`${target} has no blast-radius area list (expected a 'Blast Radius Areas' section)`);
+    fail(
+      `${target} has no blast-radius area list (expected a 'Blast Radius Areas' section)`,
+    );
   }
   const tierRowsBlob = tierRows.join("\n");
   for (const area of areas) {
     if (!tierRowsBlob.includes(area)) {
-      fail(`${target} blast-radius area '${area}' has no tier-assignment table row`);
+      fail(
+        `${target} blast-radius area '${area}' has no tier-assignment table row`,
+      );
     }
   }
 
@@ -87,15 +91,23 @@ if (!target) {
         continue;
       }
       if (/^\s*\|[\s|:-]+\|?\s*$/.test(line)) continue; // separator row
-      const hasAll = /\bA\)/.test(line) && /\bB\)/.test(line) && /\bC\)/.test(line) && /\bD\)/.test(line);
+      const hasAll =
+        /\bA\)/.test(line) &&
+        /\bB\)/.test(line) &&
+        /\bC\)/.test(line) &&
+        /\bD\)/.test(line);
       if (!hasAll) {
-        fail(`${target} gap row missing one of A/B/C/D resolution letters: ${line.trim()}`);
+        fail(
+          `${target} gap row missing one of A/B/C/D resolution letters: ${line.trim()}`,
+        );
       }
     }
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

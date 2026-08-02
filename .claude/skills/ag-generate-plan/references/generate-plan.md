@@ -48,21 +48,23 @@ Every phase in the plan MUST include explicit verification criteria. A phase is 
 
 Use these precise status markers:
 
-| Marker | Meaning |
-|--------|---------|
-| ⏳ PLANNED | Not started |
+| Marker       | Meaning                             |
+| ------------ | ----------------------------------- |
+| ⏳ PLANNED   | Not started                         |
 | 🔨 CODE DONE | Code written, NOT tested end-to-end |
-| 🧪 TESTING | Code done, currently testing |
-| ✅ VERIFIED | Tested AND user confirmed working |
-| 🚧 BLOCKED | Has issues preventing completion |
+| 🧪 TESTING   | Code done, currently testing        |
+| ✅ VERIFIED  | Tested AND user confirmed working   |
+| 🚧 BLOCKED   | Has issues preventing completion    |
 
 **NEVER mark a phase as ✅ VERIFIED based only on:**
+
 - "Build succeeds"
 - "No TypeScript errors"
 - "Files created"
 - "Curl returns 200"
 
 **ONLY mark ✅ VERIFIED when:**
+
 - Full user flow tested manually
 - Data verified in database/storage
 - User confirms it works as expected
@@ -123,13 +125,13 @@ If COMPLEX, also classify whether it is:
 
 ### Complex decision table
 
-| Situation | Use |
-|---|---|
-| One main execution stream, even if long | **standard complex** |
-| 3 or more dependent milestones with separate proof boundaries | **phase program** |
-| Multi-package or multi-runtime work where each milestone must be re-researched before execution | **phase program** |
-| A broad project that can still be honestly executed from one authoritative file | **standard complex** |
-| Foundation work now, bigger expansion later | **phase program** with explicit foundation vs expansion split |
+| Situation                                                                                       | Use                                                           |
+| ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| One main execution stream, even if long                                                         | **standard complex**                                          |
+| 3 or more dependent milestones with separate proof boundaries                                   | **phase program**                                             |
+| Multi-package or multi-runtime work where each milestone must be re-researched before execution | **phase program**                                             |
+| A broad project that can still be honestly executed from one authoritative file                 | **standard complex**                                          |
+| Foundation work now, bigger expansion later                                                     | **phase program** with explicit foundation vs expansion split |
 
 ## Interactive Q&A (when needed)
 
@@ -230,7 +232,7 @@ After each phase, document:
 16. Verification Evidence — table: `| Gate / Scenario | Strategy | Proves SPEC criterion |`
 17. Test Infra Improvement Notes — placeholder at plan-write time; updated during EVL
 18. Resume and Execution Handoff
-18. Cursor + RIPER-5 Guidance
+19. Cursor + RIPER-5 Guidance
 
 - Use Cursor Plan mode: import this checklist
 - RIPER-5: RESEARCH → INNOVATE → PLAN, then request EXECUTE
@@ -288,22 +290,22 @@ In addition to the normal complex-plan structure:
 5. Separate **foundation proof** from **full expansion** when those are different scopes
 6. Never hand EXECUTE a whole phase program at once; the next instruction must identify the single
    phase plan that should enter execution first
-5. Non-Goals and Constraints
-6. Architecture Decisions (Final)
+7. Non-Goals and Constraints
+8. Architecture Decisions (Final)
    - Numbered decisions with Rationale and Implications
-7. Architecture Clarification (Service Separation if any)
-8. High-level Data Flow (ASCII ok)
-9. Security Posture
-10. Component Details
+9. Architecture Clarification (Service Separation if any)
+10. High-level Data Flow (ASCII ok)
+11. Security Posture
+12. Component Details
     - Responsibilities
     - Key Flows
     - Future Enhancements
-11. Backend Endpoints and Workers
-12. Infrastructure Deployment
-13. Database Schema (Prisma-style)
-14. API Surface (tRPC/REST/GraphQL)
-15. Real-time Event Model (if applicable)
-16. Phased Delivery Plan
+13. Backend Endpoints and Workers
+14. Infrastructure Deployment
+15. Database Schema (Prisma-style)
+16. API Surface (tRPC/REST/GraphQL)
+17. Real-time Event Model (if applicable)
+18. Phased Delivery Plan
 
 - Current Status (with ✅/🔨/🧪/⏳/🚧)
 - Phases: each with:

@@ -26,6 +26,7 @@ Choose a mode before generating scenarios. Default is Simple unless a trigger co
 Generates edge cases from the plan description, checklist item, or approach text provided in the prompt. No subagent spawned.
 
 **Use when:**
+
 - The checklist item is self-contained and clearly described
 - Blast radius is narrow (1–2 files, single package)
 - No auth, billing, schema, or external API surface is touched
@@ -36,12 +37,14 @@ Generates edge cases from the plan description, checklist item, or approach text
 Spawns a research subagent to read the actual source before generating scenarios. Scenarios reference real variable names, real function signatures, and real failure modes visible in the code rather than hypothetical ones.
 
 **Trigger conditions (any one):**
+
 - Checklist item modifies an auth, billing, schema, or external API surface
 - Blast radius spans 3+ files or 2+ packages
 - The plan marks the item as `HIGH_RISK`
 - Caller explicitly requests deep mode
 
 **Deep mode subagent steps:**
+
 1. Reads the actual source files being modified (from plan Touchpoints)
 2. Locates and reads existing test files for those files (via grep for import paths or describe blocks)
 3. Reads any Public Contracts affected (from plan's Public Contracts section)
@@ -51,10 +54,10 @@ The orchestrator then generates scenarios using the research output.
 
 ### Output quality difference
 
-| Mode | Example scenario |
-|------|-----------------|
-| Simple | "What if the input is null?" |
-| Deep | "What if `creditBalance.available` is 0 but `creditBalance.pending` is positive — does `deductCredits(amount)` check `available`-only or `available + pending`?" |
+| Mode   | Example scenario                                                                                                                                                 |
+| ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Simple | "What if the input is null?"                                                                                                                                     |
+| Deep   | "What if `creditBalance.available` is 0 but `creditBalance.pending` is positive — does `deductCredits(amount)` check `available`-only or `available + pending`?" |
 
 Simple mode surfaces generic edge cases quickly. Deep mode surfaces scenarios that are only discoverable by reading the actual implementation.
 
@@ -68,6 +71,7 @@ Simple mode surfaces generic edge cases quickly. Deep mode surfaces scenarios th
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 - Risk assessment during planning or code review
 - API design review — surface contract edge cases early
 
@@ -83,20 +87,20 @@ Refer to the workflow instructions and command references detailed below.
 
 Not all 12 apply to every feature. Identify relevant dimensions first, then generate scenarios only for those.
 
-| # | Dimension | What to Look For |
-|---|-----------|------------------|
-| 1 | **User Types** | admin, guest, banned, new user, power user, bot/scraper |
-| 2 | **Input Extremes** | empty, null, max length, unicode, special chars, SQL/script injection |
-| 3 | **Timing** | concurrent access, race conditions, timeout, slow network, retry storms |
-| 4 | **Scale** | 0 items, 1 item, 1M items, pagination boundary, cursor wrap |
-| 5 | **State Transitions** | first use, mid-flow abort, resume after crash, partial completion |
-| 6 | **Environment** | mobile/low-end CPU, no JS, screen reader, proxy/VPN, different timezone/locale |
-| 7 | **Error Cascades** | DB down, API timeout, disk full, OOM, network partition, partial write |
-| 8 | **Authorization** | expired token, wrong role, shared/public link, CORS, CSRF, privilege escalation |
-| 9 | **Data Integrity** | duplicate entries, orphan references, encoding mismatch, concurrent schema migration |
-| 10 | **Integration** | webhook replay, API version mismatch, third-party outage, contract drift |
-| 11 | **Compliance** | GDPR deletion request, audit logging gap, data retention, accidental PII exposure |
-| 12 | **Business Logic** | edge pricing (zero/negative), coupon stacking, refund after partial delivery, free tier limits |
+| #   | Dimension             | What to Look For                                                                               |
+| --- | --------------------- | ---------------------------------------------------------------------------------------------- |
+| 1   | **User Types**        | admin, guest, banned, new user, power user, bot/scraper                                        |
+| 2   | **Input Extremes**    | empty, null, max length, unicode, special chars, SQL/script injection                          |
+| 3   | **Timing**            | concurrent access, race conditions, timeout, slow network, retry storms                        |
+| 4   | **Scale**             | 0 items, 1 item, 1M items, pagination boundary, cursor wrap                                    |
+| 5   | **State Transitions** | first use, mid-flow abort, resume after crash, partial completion                              |
+| 6   | **Environment**       | mobile/low-end CPU, no JS, screen reader, proxy/VPN, different timezone/locale                 |
+| 7   | **Error Cascades**    | DB down, API timeout, disk full, OOM, network partition, partial write                         |
+| 8   | **Authorization**     | expired token, wrong role, shared/public link, CORS, CSRF, privilege escalation                |
+| 9   | **Data Integrity**    | duplicate entries, orphan references, encoding mismatch, concurrent schema migration           |
+| 10  | **Integration**       | webhook replay, API version mismatch, third-party outage, contract drift                       |
+| 11  | **Compliance**        | GDPR deletion request, audit logging gap, data retention, accidental PII exposure              |
+| 12  | **Business Logic**    | edge pricing (zero/negative), coupon stacking, refund after partial delivery, free tier limits |
 
 ---
 
@@ -125,12 +129,12 @@ Not all 12 apply to every feature. Identify relevant dimensions first, then gene
 
 ### Severity Criteria
 
-| Level | Meaning |
-|-------|---------|
+| Level        | Meaning                                                    |
+| ------------ | ---------------------------------------------------------- |
 | **Critical** | Data loss, security breach, auth bypass, silent corruption |
-| **High** | Feature broken for a subset of users, data inconsistency |
-| **Medium** | Degraded UX, recoverable error not surfaced to user |
-| **Low** | Minor visual glitch, non-blocking warning |
+| **High**     | Feature broken for a subset of users, data inconsistency   |
+| **Medium**   | Degraded UX, recoverable error not surfaced to user        |
+| **Low**      | Minor visual glitch, non-blocking warning                  |
 
 ---
 
@@ -160,11 +164,11 @@ Dimensions skipped: [list + reason]
 
 ## Integration with Other Skills
 
-| Next Step | Skill | How |
-|-----------|-------|-----|
-| Generate test cases from scenarios | `ag-test` | Pass scenario table as input context |
-| Inform implementation plan risks | `generate-plan` / `plan-agent` | Paste Critical/High rows into risk assessment |
-| Deep persona debate on top risks | `ag-predict` | Feed Critical scenarios as the change proposal |
+| Next Step                          | Skill                          | How                                            |
+| ---------------------------------- | ------------------------------ | ---------------------------------------------- |
+| Generate test cases from scenarios | `ag-test`                      | Pass scenario table as input context           |
+| Inform implementation plan risks   | `generate-plan` / `plan-agent` | Paste Critical/High rows into risk assessment  |
+| Deep persona debate on top risks   | `ag-predict`                   | Feed Critical scenarios as the change proposal |
 
 ---
 
@@ -182,7 +186,6 @@ Dimensions skipped: [list + reason]
 # Deep mode (explicit request)
 /ag-scenario --deep "Add multi-tenancy to the database layer"
 ```
-
 
 ## References
 

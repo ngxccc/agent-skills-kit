@@ -9,15 +9,15 @@
 
 ## 7-Signal Table
 
-| Signal | Score |
-| --- | --- |
-| File independence | 3 |
-| Investigation directions | 2 |
-| Integration boundary clarity | 3 |
-| Blast radius spread | 2 |
-| Time sensitivity | 1 |
-| Cost tolerance | 2 |
-| Coordination overhead | 1 |
+| Signal                       | Score |
+| ---------------------------- | ----- |
+| File independence            | 3     |
+| Investigation directions     | 2     |
+| Integration boundary clarity | 3     |
+| Blast radius spread          | 2     |
+| Time sensitivity             | 1     |
+| Cost tolerance               | 2     |
+| Coordination overhead        | 1     |
 
 ## Cost Guards
 

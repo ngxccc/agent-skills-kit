@@ -9,7 +9,11 @@ import { execSync } from "node:child_process";
 
 let root;
 try {
-  root = execSync("git rev-parse --show-toplevel", { stdio: ["pipe", "pipe", "pipe"] }).toString().trim();
+  root = execSync("git rev-parse --show-toplevel", {
+    stdio: ["pipe", "pipe", "pipe"],
+  })
+    .toString()
+    .trim();
 } catch {
   // Not a git repository — fall back to process.cwd() so the script still works.
   root = process.cwd();
@@ -25,9 +29,14 @@ for (const a of args) {
   }
 }
 
-const catalogPath = path.join(root, "process/context/generated-skills-catalog.json");
+const catalogPath = path.join(
+  root,
+  "process/context/generated-skills-catalog.json",
+);
 if (!fs.existsSync(catalogPath)) {
-  console.error("generated-skills-catalog.json missing; run generate-skills-catalog.mjs --write");
+  console.error(
+    "generated-skills-catalog.json missing; run generate-skills-catalog.mjs --write",
+  );
   process.exit(1);
 }
 const catalog = JSON.parse(fs.readFileSync(catalogPath, "utf8"));
@@ -64,7 +73,12 @@ if (asJson) {
 }
 
 function toEntry(s) {
-  return { name: s.name, purpose: firstSentence(s.description), triggerKeywords: s.triggerKeywords, layer: s.layer };
+  return {
+    name: s.name,
+    purpose: firstSentence(s.description),
+    triggerKeywords: s.triggerKeywords,
+    layer: s.layer,
+  };
 }
 
 function printGroup(title, list) {
@@ -74,19 +88,34 @@ function printGroup(title, list) {
   } else {
     for (const s of list) {
       const kws = (s.triggerKeywords || []).join(", ");
-      console.log(`  ${s.name} — ${firstSentence(s.description)} — keywords: ${kws}`);
+      console.log(
+        `  ${s.name} — ${firstSentence(s.description)} — keywords: ${kws}`,
+      );
     }
   }
   console.log("");
 }
 
-console.log(`VC Skill Registry — ${catalog.skillCount} skills (grouped by layer)`);
+console.log(
+  `VC Skill Registry — ${catalog.skillCount} skills (grouped by layer)`,
+);
 console.log("");
 console.log("Actor agents (agents, not skills — see .claude/agents/):");
-console.log("  (the RIPER-5 phase + specialist agents live in .claude/agents/, not .claude/skills/)");
+console.log(
+  "  (the RIPER-5 phase + specialist agents live in .claude/agents/, not .claude/skills/)",
+);
 console.log("");
-printGroup("Contract skills (own a workflow artifact/contract):", byLayer.contract);
-printGroup("Helper skills (improve how agents work, own no artifact):", byLayer.helper);
+printGroup(
+  "Contract skills (own a workflow artifact/contract):",
+  byLayer.contract,
+);
+printGroup(
+  "Helper skills (improve how agents work, own no artifact):",
+  byLayer.helper,
+);
 if (byLayer.other.length) {
-  printGroup("Unclassified (missing/invalid layer — fix frontmatter):", byLayer.other);
+  printGroup(
+    "Unclassified (missing/invalid layer — fix frontmatter):",
+    byLayer.other,
+  );
 }

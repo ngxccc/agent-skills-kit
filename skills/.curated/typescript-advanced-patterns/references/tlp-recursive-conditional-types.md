@@ -20,9 +20,7 @@ type Order = {
   items: { sku: string }[];
 };
 
-const o: Readonly1<Order> = {
-  /* ... */
-} as any;
+const o: Readonly1<Order> = {/* ... */} as any;
 o.id = "2"; // Error: readonly
 o.customer.name = "mutated"; // OK — bug: inner objects not readonly
 o.items[0].sku = "changed"; // OK — bug
@@ -39,9 +37,7 @@ type DeepReadonly<T> = T extends (infer U)[] // arrays and tuples
       ? { readonly [K in keyof T]: DeepReadonly<T[K]> }
       : T; // primitives, terminate
 
-const o: DeepReadonly<Order> = {
-  /* ... */
-} as any;
+const o: DeepReadonly<Order> = {/* ... */} as any;
 o.id = "2"; // Error
 o.customer.name = "mutated"; // Error
 o.items[0].sku = "changed"; // Error

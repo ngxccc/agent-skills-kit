@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-setup workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **CRITICAL — Dual-File Synchronization:** This document and `references/ag-setup.md` must be edited together. Any change to Merge Mode logic, safe-inference rules, or migration flow MUST appear in both files in the same commit. Dual-file drift creates inconsistent user behavior.
 
 > **Output style:** Use BLUF (answer first), plain language, no unexplained jargon, TL;DR on long responses. Full rules in `process/development-protocols/communication-standards.md` once installed — on first run that file may not exist yet, so follow this inline rule instead.
@@ -26,6 +26,7 @@ Refer to the workflow instructions and command references detailed below.
 Interactive setup for the agent development harness. Works on fresh projects and existing projects with pre-existing `.claude/` or `process/` configs.
 
 The skill adapts its flow based on what it finds:
+
 - **New projects** (no existing process/ or context): detect, ask the user about their project, scaffold, study, validate.
 - **Existing projects** (has process/, context files, or CLAUDE.md): detect, study what exists first, present findings and ask what to keep vs change, scaffold with approval, re-study to fill gaps, validate.
 
@@ -59,6 +60,7 @@ The `install.sh` script handles fetching and installing harness files before ag-
 **If harness files are already present** (`.claude/agents/` and `.claude/skills/` exist with 12+ agents and 20+ skills), skip Phase 0 and proceed directly to Phase 1 DETECT.
 
 **If harness files are NOT present**, tell the user to run the installer first:
+
 ```
 curl -fsSL https://raw.githubusercontent.com/withkynam/agent-skills-kit-pro-max-kit/main/install.sh | bash
 ```
@@ -80,7 +82,8 @@ Gather information about the target project before making any changes.
    **Classification corner cases (full 7-row table in `references/ag-setup.md` §Project Classification):**
    - `process/` contains ONLY kit-installed files (`_seeds/`, `development-protocols/`, `context/generated-skills-catalog.json`) and no user content → **New / Flow A** (install.sh ran but the user hasn't set up yet).
    - `all-context.md` exists but its non-comment body is all placeholder/stub (`<!-- STUDY: -->`) → **Flow A**, continue to STUDY (do NOT treat as existing project).
-5. Present a detection summary to the user and wait for confirmation before proceeding.
+
+6. Present a detection summary to the user and wait for confirmation before proceeding.
 
 **After detection, the workflow branches based on project type.** See the two flows below.
 
@@ -95,21 +98,25 @@ For projects where the harness is being set up for the first time.
 Start with the basics, then follow up based on their answers:
 
 **Round 1 — Project identity:**
+
 - "What is this project? Give me a brief description in your own words."
 - "Who uses it? Who is the target audience?"
 
 **Round 2 — Architecture and scope** (adapt based on Round 1 answers):
+
 - "What are the main product areas or features?"
 - "How is the codebase organized? Any key services, packages, or modules I should know about?"
 - "What are the most important or complex parts of the codebase?"
 
 **Round 3 — Workflow and conventions** (adapt based on what you've learned):
+
 - "Do you work solo or with a team?"
 - "Any coding conventions, naming patterns, or architectural decisions that are important?"
 - "How do you handle testing? CI/CD? Deployments?"
 - "Any external services, APIs, or integrations that are central to the project?"
 
 **Round 4 — Follow-ups** (ask as many as needed until everything is clear):
+
 - Follow up on anything vague or interesting from previous answers.
 - "You mentioned [X] — can you tell me more about how that works?"
 - "Are there any pain points, tech debt, or things you want agents to be careful about?"
@@ -188,16 +195,16 @@ Create the `process/` directory with seed files and instructional content.
 
 **Merge mode includes automatic layout migration.** Before creating new directories, detect and migrate old layouts:
 
-| Old Layout | Migration Action |
-|------------|-----------------|
-| `process/plans/` exists, `process/general-plans/` does not | Move `process/plans/*` to `process/general-plans/active/`, then remove empty `process/plans/` |
-| `process/reports/` exists at top level | Move `process/reports/*` to `process/general-plans/reports/`, then remove empty `process/reports/` |
-| `process/skills/` exists at top level | Move `process/skills/*` to `process/general-plans/backlog/`, then remove empty `process/skills/` |
-| Example PRDs at old locations (e.g. `process/context/example-*.md` or under `process/context/planning/` or under `process/development-protocols/references/`) | Move to `.claude/skills/ag-generate-plan/references/` |
-| process/context/backlog.md at top of context/ | Move to `process/general-plans/backlog/backlog.md` |
-| Flat `*_PLAN_*.md` files directly in `process/general-plans/active/` or `process/features/*/active/` (old pre-v3 layout) | Create a `{slug}_{date}/` task subfolder and move the plan file inside it. Completed plans go to `completed/{slug}_{date}/` instead. |
-| `process/general-plans/reports/`, `process/general-plans/references/`, or `process/features/*/reports/`, `process/features/*/references/` sibling dirs | Auto-migrate every **safe** legacy artifact into the relevant task folder, then remove the legacy dir if it becomes empty. Leave only unresolved artifacts behind and print them for manual follow-up. |
-| Feature folder missing `active/` subdirectory (e.g. `process/features/{name}/` exists but has no `active/`, `completed/`, or `backlog/` under it) | Create `active/`, `completed/`, `backlog/` under that feature folder, seed each from the `_feature-template/` `_GUIDE.md`, and print every creation. |
+| Old Layout                                                                                                                                                    | Migration Action                                                                                                                                                                                       |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `process/plans/` exists, `process/general-plans/` does not                                                                                                    | Move `process/plans/*` to `process/general-plans/active/`, then remove empty `process/plans/`                                                                                                          |
+| `process/reports/` exists at top level                                                                                                                        | Move `process/reports/*` to `process/general-plans/reports/`, then remove empty `process/reports/`                                                                                                     |
+| `process/skills/` exists at top level                                                                                                                         | Move `process/skills/*` to `process/general-plans/backlog/`, then remove empty `process/skills/`                                                                                                       |
+| Example PRDs at old locations (e.g. `process/context/example-*.md` or under `process/context/planning/` or under `process/development-protocols/references/`) | Move to `.claude/skills/ag-generate-plan/references/`                                                                                                                                                  |
+| process/context/backlog.md at top of context/                                                                                                                 | Move to `process/general-plans/backlog/backlog.md`                                                                                                                                                     |
+| Flat `*_PLAN_*.md` files directly in `process/general-plans/active/` or `process/features/*/active/` (old pre-v3 layout)                                      | Create a `{slug}_{date}/` task subfolder and move the plan file inside it. Completed plans go to `completed/{slug}_{date}/` instead.                                                                   |
+| `process/general-plans/reports/`, `process/general-plans/references/`, or `process/features/*/reports/`, `process/features/*/references/` sibling dirs        | Auto-migrate every **safe** legacy artifact into the relevant task folder, then remove the legacy dir if it becomes empty. Leave only unresolved artifacts behind and print them for manual follow-up. |
+| Feature folder missing `active/` subdirectory (e.g. `process/features/{name}/` exists but has no `active/`, `completed/`, or `backlog/` under it)             | Create `active/`, `completed/`, `backlog/` under that feature folder, seed each from the `_feature-template/` `_GUIDE.md`, and print every creation.                                                   |
 
 #### Merge Mode auto-migrate flow (orphaned-dir detection → display → confirm → execute)
 
@@ -222,6 +229,7 @@ When orphaned dirs are detected but no plan slug can be inferred from project fi
 ag-setup will NOT auto-create ghost folders (false folders) when inference fails. The user must review and manually place the files. Conservative behavior: when in doubt, leave the artifact in place and surface it — never guess a destination.
 
 **Migration rules:**
+
 - Never overwrite existing files at the destination. If a file with the same name exists, keep both (rename the migrated copy with a `-migrated` suffix).
 - Print every move action to the user so they can verify.
 - After all moves, remove empty source directories.
@@ -236,6 +244,7 @@ ag-setup will NOT auto-create ghost folders (false folders) when inference fails
 - After migrating all safe artifacts from a legacy sibling `reports/` or `references/` dir, delete that dir if and only if it is empty. The target end-state is that each feature folder and `process/general-plans/` keep only `active/`, `completed/`, and `backlog/` unless unresolved legacy artifacts still block cleanup.
 
 Seed and template handling:
+
 1. Seeds live in `process/_seeds/` (read-only during setup -- never modified by the scaffold process):
    - Files with `.seed` extension: copy with `.seed` removed, replace `{{project_name}}` with the detected project name.
    - Files without `.seed` extension: copy verbatim.
@@ -283,7 +292,7 @@ Verify the setup is complete, correct, and populated with real content.
    - `all-tests.md` has actual test commands (not placeholder text)
    - Context groups created have corresponding entries in the routing tables
    - Feature folders created have `_GUIDE.md` files with real scope descriptions
-4. **Placeholder scan (required):** grep the populated `all-*.md` context files for remaining `<!-- STUDY:` or `(pending` markers. If any remain, STUDY is incomplete — return to STUDY and populate them before declaring VALIDATE done.
+5. **Placeholder scan (required):** grep the populated `all-*.md` context files for remaining `<!-- STUDY:` or `(pending` markers. If any remain, STUDY is incomplete — return to STUDY and populate them before declaring VALIDATE done.
    ```bash
    grep -rn -e '<!-- STUDY:' -e '(pending' process/context/ && echo 'INCOMPLETE — populate before VALIDATE'
    ```
@@ -329,7 +338,6 @@ These principles apply throughout the entire setup flow:
 - Project-specific information (tech stack, features, conventions) belongs in `process/context/all-context.md`, not in CLAUDE.md.
 - In STUDY phase, write real researched content, not placeholder text. Every section should contain actual project-specific information discovered by scanning the codebase AND informed by the user's answers.
 - For large repos (monorepos, 5+ source directories), spawn parallel subagents to maximize throughput and avoid context window exhaustion -- see reference doc for delegation strategy.
-
 
 ## References
 

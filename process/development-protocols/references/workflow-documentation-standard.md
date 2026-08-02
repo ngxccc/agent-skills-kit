@@ -19,10 +19,10 @@ This document defines the **Single Source of Truth (SSOT)** standard for authori
 
 The workflow documentation system categorizes all Workflow Docs into **two core archetypes** defined by the frontmatter property `docType`:
 
-| Frontmatter Property               | Document Archetype          | Applicable Scope                                                                     | Core Characteristics                                                                                                                                                                |
-| :--------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Frontmatter Property               | Document Archetype          | Applicable Scope                                                                     | Core Characteristics                                                                                                                                                                      |
+| :--------------------------------- | :-------------------------- | :----------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `docType: feature-workflow`        | **Feature Workflow**        | Business features (Auth, Booking, Payment, Ticket management)                        | Focuses on business domain logic, 4-level WBS breakdown table, autonumbered Sequence diagrams, DB/Outbox transaction decisions, Defense-in-Depth security, and Implementation Checklists. |
-| `docType: infrastructure-workflow` | **Infrastructure Workflow** | Cross-cutting technical infrastructure (Filters, Interceptors, Guards, Outbox Relay) | Focuses on system architecture, Exception/Middleware flow sequence diagrams, Codebase blueprints, Production data leak audits, and Verification checklists.                     |
+| `docType: infrastructure-workflow` | **Infrastructure Workflow** | Cross-cutting technical infrastructure (Filters, Interceptors, Guards, Outbox Relay) | Focuses on system architecture, Exception/Middleware flow sequence diagrams, Codebase blueprints, Production data leak audits, and Verification checklists.                               |
 
 ---
 
@@ -38,15 +38,15 @@ All `feature-workflow` (and complex `infrastructure-workflow`) documents **MUST*
 
 ### WBS Table Template
 
-| WBS Code  | Component / Feature Name    | Level             | Detailed Description / Task        | Output / Artifact          |
-| :-------- | :-------------------------- | :---------------- | :--------------------------------- | :------------------------- |
-| **1.0**   | **[Module Name]**           | **L1: Module**    | Overall module boundary            | `src/modules/[module]`     |
-| **1.1**   | **[Feature/Component Name]**| **L2: Component** | Detailed feature or component      | `[HTTP_METHOD] /api/...`   |
-| **1.1.1** | **[Logic Layer / Guard]**   | **L3: Logic**     | Middleware / Guard / DTO handling  | `[file.guard.ts / dto.ts]` |
-| 1.1.1.1   | Subtask 1                   | L4: Execution     | Specific logic (Validate/Transform)| `src/...`                  |
-| 1.1.1.2   | Subtask 2                   | L4: Execution     | Exception / Error handling         | `src/...`                  |
-| **1.1.2** | **[Service / Database]**    | **L3: Logic**     | Business logic & DB transactions   | `[service.ts]`             |
-| 1.1.2.1   | Query / Transaction         | L4: Execution     | DB Query / Outbox Event            | `src/database/schemas/...` |
+| WBS Code  | Component / Feature Name     | Level             | Detailed Description / Task         | Output / Artifact          |
+| :-------- | :--------------------------- | :---------------- | :---------------------------------- | :------------------------- |
+| **1.0**   | **[Module Name]**            | **L1: Module**    | Overall module boundary             | `src/modules/[module]`     |
+| **1.1**   | **[Feature/Component Name]** | **L2: Component** | Detailed feature or component       | `[HTTP_METHOD] /api/...`   |
+| **1.1.1** | **[Logic Layer / Guard]**    | **L3: Logic**     | Middleware / Guard / DTO handling   | `[file.guard.ts / dto.ts]` |
+| 1.1.1.1   | Subtask 1                    | L4: Execution     | Specific logic (Validate/Transform) | `src/...`                  |
+| 1.1.1.2   | Subtask 2                    | L4: Execution     | Exception / Error handling          | `src/...`                  |
+| **1.1.2** | **[Service / Database]**     | **L3: Logic**     | Business logic & DB transactions    | `[service.ts]`             |
+| 1.1.2.1   | Query / Transaction          | L4: Execution     | DB Query / Outbox Event             | `src/database/schemas/...` |
 
 ---
 
@@ -54,7 +54,7 @@ All `feature-workflow` (and complex `infrastructure-workflow`) documents **MUST*
 
 For business features such as `Register`, `Login`, `Change Password`, or `Book Ticket`.
 
-```markdown
+````markdown
 ---
 title: <Feature Name> Workflow & Architecture Spec
 tags:
@@ -102,6 +102,7 @@ sequenceDiagram
     Service-->>Controller: Response
     Controller-->>Client: HTTP Status + Body
 ```
+````
 
 ---
 
@@ -137,7 +138,8 @@ sequenceDiagram
 
 - [[Link_To_Atomic_Note_1]]
 - [[Link_To_Atomic_Note_2]]
-```
+
+````
 
 ---
 
@@ -158,8 +160,8 @@ date: YYYY-MM-DD
 
 # <Component Name> Implementation & Workflow Audit Guide
 
-**Status**: ✅ Approved / 🚀 Implemented  
-**Scope**: Cross-cutting / Global Infrastructure  
+**Status**: ✅ Approved / 🚀 Implemented
+**Scope**: Cross-cutting / Global Infrastructure
 **Source Path**: `src/common/<type>/<filename>.ts`
 
 ---
@@ -184,7 +186,7 @@ sequenceDiagram
     Client->>Pipe: Request
     Pipe->>Handler: Catch Exception
     Handler->>ClientResponse: Formatted JSON Response (application/problem+json)
-```
+````
 
 ---
 
@@ -221,6 +223,7 @@ sequenceDiagram
 ## 6. Related Documentation
 
 - [[Link_To_Atomic_Note_1]]
+
 ```
 
 ---
@@ -239,3 +242,4 @@ All Workflow Docs in `docs/design/` **MUST** follow strict **kebab-case**:
 ### Formatting Rules:
 1. Use **`kebab-case`** (lowercase letters, digits, and hyphens `-`).
 2. Canonical Destination: `docs/design/`.
+```

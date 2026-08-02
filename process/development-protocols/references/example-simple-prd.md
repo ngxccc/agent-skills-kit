@@ -6,7 +6,7 @@
 **Execution Model**: Continuous Implementation with Post-Testing  
 **Formal Spec Path**: `process/features/duma-redesign/active/Duma_Redesign_Formal_Spec.md`  
 **Risk Gate Artifact**: `process/features/duma-redesign/reports/harness/risk-gate.json`  
-**Invariant Bindings**: `INV-1 (Neobrutalist Aesthetic Integrity)`, `INV-2 (Complete Mock Data Parity)`, `INV-3 (Zero Runtime State Mutation Loss)`  
+**Invariant Bindings**: `INV-1 (Neobrutalist Aesthetic Integrity)`, `INV-2 (Complete Mock Data Parity)`, `INV-3 (Zero Runtime State Mutation Loss)`
 
 ## Touchpoints
 
@@ -17,6 +17,7 @@
 ## Public Contracts
 
 ### UI Component Interfaces
+
 1. `SwipeFeed`: Interactive activity card stack with swipe gestures (left/right/up)
 2. `ActivityDetailDrawer`: Bottom sheet displaying host profile and attendee breakdown
 3. `UserProfileDrawer`: Bio, activity stats, and mutual friend rankings
@@ -28,6 +29,7 @@ Single-session standalone UI frontend, zero database/API boundary impact. UI com
 ## Harness & Mechanical Validation
 
 Before phase transition or PR merge, run:
+
 ```bash
 node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs process/development-protocols/references/example-simple-prd.md
 ```
@@ -57,11 +59,13 @@ Rebuild the Duma social activity discovery app with identical features and mock 
 Rebuild the Duma social activity discovery app with identical features and mock data, but redesigned with a neobrutalist + Gumroad minimalist aesthetic.
 
 **In-scope**:
+
 - All original features: SwipeFeed, ActivityCard, ActivityDetailDrawer, UserProfileDrawer, MyActivities, HostedActivities, Profile, Chat, BottomNav
 - Complete mock data migration (users, activities, conversations, join requests)
 - Neobrutalist design system implementation
 
 **Out-of-scope**:
+
 - Backend integration or real API calls (use `mockData.ts`)
 - Real-time WebSocket chat
 
@@ -70,18 +74,23 @@ Rebuild the Duma social activity discovery app with identical features and mock 
 ## 1.5 Execution Brief
 
 ### Phase A: Project Setup & Dependencies
+
 - Initialize Next.js 15 with pnpm, upgrade to Tailwind CSS 4, install dependencies.
 
 ### Phase B: Design System & Tokens
+
 - Create neobrutalist color palette and CSS variables in `globals.css`.
 
 ### Phase C: Data Layer & Mock Models
+
 - Create `src/lib/types.ts` and `src/lib/mockData.ts` with complete interfaces and mock data.
 
 ### Phase D: Core UI Primitives & Navigation
+
 - Build Button, Card, Badge, Drawer components and fixed `BottomNav.tsx`.
 
 ### Phase E: Feature Components & Verification
+
 - Build SwipeFeed, ActivityCard, Drawers, MyActivities, Hosted, Profile, and Chat components.
 
 ---
@@ -119,23 +128,23 @@ Rebuild the Duma social activity discovery app with identical features and mock 
 
 ## 11. Database Schema
 
-*(Single-session client prototype — uses `src/lib/mockData.ts` and `src/lib/types.ts` data contracts)*
+_(Single-session client prototype — uses `src/lib/mockData.ts` and `src/lib/types.ts` data contracts)_
 
 ---
 
 ## 12. API Surface
 
-*(Client-side interactive prototype consuming `mockData.ts`)*
+_(Client-side interactive prototype consuming `mockData.ts`)_
 
 ---
 
 ## 14. Phased Delivery Plan
 
-| Phase | Description | Deliverable |
-| :--- | :--- | :--- |
-| **Phase A–B** | Setup & Design System | `package.json` + `globals.css` theme tokens |
-| **Phase C–D** | Data Layer & UI Primitives | `mockData.ts` + `Button`, `Card`, `Drawer` |
-| **Phase E** | Features & Verification | Complete Duma Neobrutalist app |
+| Phase         | Description                | Deliverable                                 |
+| :------------ | :------------------------- | :------------------------------------------ |
+| **Phase A–B** | Setup & Design System      | `package.json` + `globals.css` theme tokens |
+| **Phase C–D** | Data Layer & UI Primitives | `mockData.ts` + `Button`, `Card`, `Drawer`  |
+| **Phase E**   | Features & Verification    | Complete Duma Neobrutalist app              |
 
 ---
 
@@ -143,13 +152,13 @@ Rebuild the Duma social activity discovery app with identical features and mock 
 
 ### Primitive Atomic WBS Table
 
-| Target File / Artifact | Bound Invariant | Verification Command |
-| :--- | :--- | :--- |
-| `src/app/globals.css` | `INV-1` | `pnpm check-types` |
-| `src/lib/mockData.ts` | `INV-2` | `pnpm check-types` |
-| `src/components/SwipeFeed.tsx` | `INV-3` | `pnpm check-types` |
-| `src/components/ActivityCard.tsx` | `INV-1` | `pnpm check-types` |
-| `src/components/BottomNav.tsx` | `INV-1` | `pnpm check-types` |
+| Target File / Artifact            | Bound Invariant | Verification Command |
+| :-------------------------------- | :-------------- | :------------------- |
+| `src/app/globals.css`             | `INV-1`         | `pnpm check-types`   |
+| `src/lib/mockData.ts`             | `INV-2`         | `pnpm check-types`   |
+| `src/components/SwipeFeed.tsx`    | `INV-3`         | `pnpm check-types`   |
+| `src/components/ActivityCard.tsx` | `INV-1`         | `pnpm check-types`   |
+| `src/components/BottomNav.tsx`    | `INV-1`         | `pnpm check-types`   |
 
 ---
 

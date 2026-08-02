@@ -103,9 +103,9 @@ Before exporting PNG, verify:
 
 ## Common Anti-Patterns to Avoid
 
-| Anti-Pattern             | Fix                                                                      |
+| Anti-Pattern | Fix |
 | ------------------------ | ------------------------------------------------------------------------ | ------------------------------------- |
-| Arrow crosses component  | Use orthogonal routingase control point distancelabel overlaps component | Add background rect + increase offset |
-| Components too close     | Increase spacing to 80px minimum                                         |
-| Arrow connects to corner | Move connection point to edge midpoint offset                            |
-| No z-index planning      | Follow render order: arrows -> components -> text                        |
+| Arrow crosses component | Use orthogonal routingase control point distancelabel overlaps component | Add background rect + increase offset |
+| Components too close | Increase spacing to 80px minimum |
+| Arrow connects to corner | Move connection point to edge midpoint offset |
+| No z-index planning | Follow render order: arrows -> components -> text |

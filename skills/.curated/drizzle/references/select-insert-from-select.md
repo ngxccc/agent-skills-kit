@@ -18,15 +18,17 @@ When populating tables from subqueries:
 ```typescript
 // ❌ BAD: Redundantly selecting id/timestamps and enforcing strict column ordering
 await db.insert(users).select(
-  db.select({
-    id: tempUsers.id,
-    email: tempUsers.email,
-    name: tempUsers.name,
-    createdAt: tempUsers.createdAt,
-    updatedAt: tempUsers.updatedAt,
-    role: tempUsers.role,
-    status: tempUsers.status,
-  }).from(tempUsers)
+  db
+    .select({
+      id: tempUsers.id,
+      email: tempUsers.email,
+      name: tempUsers.name,
+      createdAt: tempUsers.createdAt,
+      updatedAt: tempUsers.updatedAt,
+      role: tempUsers.role,
+      status: tempUsers.status,
+    })
+    .from(tempUsers),
 );
 ```
 
@@ -35,10 +37,12 @@ await db.insert(users).select(
 ```typescript
 // ✅ GOOD: Selecting only required payload fields; Drizzle applies table defaults automatically
 await db.insert(users).select(
-  db.select({
-    name: tempUsers.name,
-    email: tempUsers.email,
-    role: tempUsers.role,
-  }).from(tempUsers)
+  db
+    .select({
+      name: tempUsers.name,
+      email: tempUsers.email,
+      role: tempUsers.role,
+    })
+    .from(tempUsers),
 );
 ```

@@ -329,12 +329,14 @@ In Drizzle ORM v1.0.0-rc.4+, bulk insert queries built via `db.insert(table).sel
 
   ```typescript
   await db.insert(users).select(
-    db.select({
-      id: tempUsers.id,
-      email: tempUsers.email,
-      name: tempUsers.name,
-      createdAt: tempUsers.createdAt,
-    }).from(tempUsers)
+    db
+      .select({
+        id: tempUsers.id,
+        email: tempUsers.email,
+        name: tempUsers.name,
+        createdAt: tempUsers.createdAt,
+      })
+      .from(tempUsers),
   );
   ```
 
@@ -342,10 +344,12 @@ In Drizzle ORM v1.0.0-rc.4+, bulk insert queries built via `db.insert(table).sel
 
   ```typescript
   await db.insert(users).select(
-    db.select({
-      name: tempUsers.name,
-      email: tempUsers.email,
-    }).from(tempUsers)
+    db
+      .select({
+        name: tempUsers.name,
+        email: tempUsers.email,
+      })
+      .from(tempUsers),
   );
   ```
 

@@ -14,10 +14,10 @@ metadata:
 
 Use this skill when working with ag-generate-plan workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > Output style: write the plan answer-first with tables/bullets and a one-line TL;DR per the canonical rule — `process/development-protocols/communication-standards.md`.
 
 Use this skill to produce the authoritative implementation plan artifact set for the project's work.
@@ -43,13 +43,16 @@ Optional input: a feature idea plus `simple` or `complex` when the user already 
 8. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, `Test Infra Improvement Notes`, and `Resume and Execution Handoff`.
 9. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
 10. If the work is a large multi-phase program, create or update a feature folder plan set:
-   - one umbrella/orchestration plan
-   - one direct plan file per phase
-   - one durable report destination per phase
+
+- one umbrella/orchestration plan
+- one direct plan file per phase
+- one durable report destination per phase
+
 11. Validate the generated artifact:
-   ```bash
-   node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
-   ```
+
+```bash
+node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
+```
 
 ## Important Rules
 
@@ -85,7 +88,6 @@ For new or newly touched direct `*_PLAN_*.md` files, include all of the followin
 
 Use Markdown-structured sections, not a second machine-only schema. Markdown sections are
 stable across all agents (Claude, Codex, future systems) without requiring a parser.
-
 
 ## References
 

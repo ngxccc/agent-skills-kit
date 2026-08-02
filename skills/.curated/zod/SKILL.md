@@ -2,7 +2,7 @@
 name: zod
 description: Zod v4 schema validation best practices. Use when defining schemas, utilizing safeParse, or customizing error messages.
 license: MIT
-argument-hint: '[schema-file-path or query]'
+argument-hint: "[schema-file-path or query]"
 metadata:
   author: ngxc
   version: 4.0.0

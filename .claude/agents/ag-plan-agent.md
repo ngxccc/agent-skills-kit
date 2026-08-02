@@ -51,6 +51,7 @@ Before any other work, perform these actions in order:
 
 **Step 0 — Input check (SPEC + optional Decision Summary) (REQUIRED BEFORE ALL ELSE):**
 Non-trivial work — confirm the **locked SPEC file** path is passed (SPEC is the mandatory upstream requirements doc). If INNOVATE ran, ALSO confirm the Decision Summary contains all 4 required sections:
+
 1. Chosen Approach
 2. Why This Over Alternatives
 3. Risk Predictions
@@ -67,6 +68,7 @@ If continuing from orchestrator session start that already ran intent-clarify: e
 Under /goal autonomous execution: emit a 1-sentence restatement as an audit log entry and auto-proceed. Never skip the emit under /goal — it proves Tier-0 ran.
 
 **Action 1 — ag-context-discovery**: Invoke `ag-context-discovery` to load relevant context.
+
 - Read `process/context/all-context.md` and follow its routing table to load the smallest relevant context group files for the task domain.
 - When planning touches verification strategy, test routing, or runtime evidence expectations, also read `process/context/tests/all-tests.md` before selecting deeper test docs.
 - Load feature folder file listing when `Feature:` is present: `find process/features/{feature}/ -type f | sort`
@@ -81,6 +83,7 @@ for this agent; the `test-runner` multi-runner value uses the pipe-delimited DIS
 (`bun test | vitest`) that the phase-loop workflow template expands into SEQUENTIAL steps.
 
 **Action 2 — ag-review-situation**: Invoke `ag-review-situation` for branch/worktree/active-plan status handoff summary.
+
 - Confirm the current branch, any in-progress plans, and worktree state before beginning plan work.
 
 **Step 3 — invoke `ag-agent-strategy-compare` (Tier 0):**
@@ -117,6 +120,7 @@ If `Feature:` is NOT set but the task description references a named topic, scan
 ## Plan Artifact Exception
 
 After user confirms plan content, you MAY create or update:
+
 - `process/general-plans/active/{slug}_{dd-mm-yy}/{slug}_PLAN_{dd-mm-yy}.md` (default — task-folder convention; create the `{slug}_{dd-mm-yy}/` subfolder first)
 - `process/features/{feature}/active/{slug}_{dd-mm-yy}/{slug}_PLAN_{dd-mm-yy}.md` (when Feature is specified in context)
 
@@ -178,11 +182,13 @@ If overlapping active plans exist, update or resume them instead of duplicating 
 ### Step 3: Create New Plan (if not found)
 
 **Get current date first**:
+
 ```bash
 date +%d-%m-%y
 ```
 
 **Classify complexity** (3-way):
+
 - Ask user: "Is this SIMPLE, COMPLEX, or a PHASE PROGRAM?"
 - **SIMPLE**: One-session feature, 8-15 steps, single plan artifact.
 - **COMPLEX**: Multi-phase project within one plan, requires RFC-style depth but not split phase plans.
@@ -208,6 +214,7 @@ When 3+ phase plans need to be created (phase program detected), invoke `ag-agen
 - Record the strategy recommendation before beginning plan file creation
 
 **When agent-team strategy is confirmed:** Before writing any phase plan, invoke the coordination token protocol:
+
 1. Read `process/features/{feature}/active/{program-slug}_{date}/phase-blast-radius-registry.md` (or `process/general-plans/active/{program-slug}_{date}/phase-blast-radius-registry.md` for general-plans) if it exists — one registry lives FLAT inside the program task folder; note prior agents' claimed blast-radius areas.
 2. Append your phase's blast-radius claim as a new `## Phase N` section to the registry (append-only — never overwrite). **If the file does not exist: create it with just your `## Phase N` section as the first content — this is the registry initialization write.** Subsequent agents in the team append additional sections.
 3. If overlap detected with a prior agent's claim: include a `## Potential Blast Radius Conflicts` section in your phase plan listing the overlap and proposed resolution.
@@ -228,6 +235,7 @@ Phase-program output should include:
 - a boundary between foundation proof and future expansion when relevant
 
 **Umbrella plan required sections** — every umbrella plan must include all of these `##` sections:
+
 - `## Stable Program Goal`
 - `## Phase Ordering`
 - `## Current Execution State`
@@ -250,6 +258,7 @@ If any check fails: fix the goal block before writing the umbrella plan.
 **For COMPLEX**: Reference `.claude/skills/ag-generate-plan/references/example-complex-prd.md` for expected depth
 
 **Include sections**:
+
 - Overview, Goals, Scope
 - Implementation Checklist (atomic, numbered steps)
 - Acceptance Criteria (testable)
@@ -263,6 +272,7 @@ the whole effort in one giant general plan.
 ### Step 4: Inline Plan (quick fixes)
 
 For trivial changes:
+
 - Create ad-hoc checklist in response (no file created)
 - Use for: single-file changes, config updates, minor refactors
 
@@ -286,6 +296,7 @@ Tier assignments may use all 4 skill tiers (Fully-automated / Hybrid / Agent pro
 #### REQ-TEST-LINK (Step B1; cites REQ-TEST-LINK row 49 + 07-plan Part D "Proves SPEC criterion" column, DECISION 3)
 
 Every SPEC acceptance criterion the plan carries MUST name its proving scenario with:
+
 - `proven by:` <named scenario/test>, and
 - a `strategy:` tag — exactly one of `Fully-Automated` | `Hybrid` | `Agent-Probe` (Known-Gap is never a `strategy:` value — it is the residual, recorded per the vacuous-green ban above).
 
@@ -300,11 +311,13 @@ Before assigning ANY tier, the agent (via `ag-test-coverage-plan`) MUST load the
 For any plan classified COMPLEX (multi-phase or high-risk):
 
 **Invoke `ag-predict` before writing the Implementation Checklist**:
+
 - Pass the leading approach candidate and planned architecture to `ag-predict`
 - Run the 5-persona pre-implementation debate
 - Document the prediction output in the plan's Risk section under "Risk Predictions"
 
 **Invoke `ag-scenario` for the 2-3 highest-risk checklist items**:
+
 - Identify the highest-risk items in the checklist
 - Invoke `ag-scenario` to generate edge cases for each
 - Incorporate the edge cases into the checklist item descriptions and test gates before finalizing those sections
@@ -314,6 +327,7 @@ For any plan classified COMPLEX (multi-phase or high-risk):
 For any plan that touches authentication, billing flows, or secrets/keys:
 
 **Invoke `ag-security` before writing Public Contracts and Blast Radius sections**:
+
 - Perform a quick STRIDE scan of the proposed data flow
 - Document any threats or mitigations found in the plan's Security section
 - Ensure the Public Contracts and Blast Radius sections reflect the security scan findings
@@ -323,6 +337,7 @@ For any plan that touches authentication, billing flows, or secrets/keys:
 For any plan with 3+ phases with interdependencies:
 
 **Invoke `ag-sequential-thinking` to verify ordering**:
+
 - Pass the full phase list and their dependencies
 - Verify the ordering is correct and no phase depends on a later phase's output
 - Document the verified ordering rationale in the plan
@@ -332,6 +347,7 @@ For any plan with 3+ phases with interdependencies:
 Before writing any checklist step that calls a specific library API method:
 
 **Invoke `ag-docs-seeker` (mandatory, not conditional)**:
+
 - Resolve the exact method signature, parameters, and version-specific behavior
 - Do not write checklist steps referencing library APIs without first confirming accuracy via `ag-docs-seeker`
 - This applies to any library, framework, SDK, API, or CLI tool
@@ -341,6 +357,7 @@ Before writing any checklist step that calls a specific library API method:
 For any plan that introduces new data flows or multi-service/multi-package architecture:
 
 **Use ag-sequential-thinking then ag-scenario**:
+
 1. Use ag-sequential-thinking to map the data flow or service topology as a numbered step sequence, then use ag-scenario to identify cross-service failure modes.
 2. Document findings as a prose architecture note in the plan, not a diagram.
 3. Reference the architecture note in the plan's Touchpoints or Public Contracts section.
@@ -364,6 +381,7 @@ n. [Final action]
 ```
 
 Each item must be:
+
 - Atomic (single, verifiable action)
 - Specific (includes file paths, function names)
 - Ordered logically for execution
@@ -401,11 +419,11 @@ program loop only; the umbrella SPEC governs every phase. ag-plan-agent owns ste
 - 1. **RESEARCH** — ag-research-agent: prior phase reports read; context loaded; Tier-0 fired.
 - 2. **INNOVATE** — ag-innovate-agent: approach decided; Decision Summary written.
 - 3. **PLAN-SUPPLEMENT** — this agent: update the EXISTING phase plan with research/innovate findings
-  via Supplement Modes (or mark "n/a — research clean"); write an Inner Loop Refresh Note if sections
-  changed. Fire Tier-0 intent restatement at entry. Do NOT author a brand-new plan when a phase plan
-  already exists — supplement it.
+     via Supplement Modes (or mark "n/a — research clean"); write an Inner Loop Refresh Note if sections
+     changed. Fire Tier-0 intent restatement at entry. Do NOT author a brand-new plan when a phase plan
+     already exists — supplement it.
 - 4. **PVL** — ag-validate-agent: validate-contract written (V1–V7). No new /goal block — the umbrella
-  Stable Program Goal stays authoritative.
+     Stable Program Goal stays authoritative.
 - 5. **EXECUTE** — ag-execute-agent: per-section Level-1 test gates green.
 - 6. **EVL** — all EVL gates green; follow-up stubs registered; EVL handoff summary written.
 - 7. **UPDATE PROCESS** — ag-update-process-agent: archived; context updated; committed.
@@ -469,7 +487,9 @@ If any FAIL line appears, fix the flagged section now before emitting. Warnings 
 Under /goal autonomous execution: emit `PHASE_COMPLETE: PLAN — [plan file path] written. Proceed to VALIDATE.`
 
 ### Phase Insertion Renumbering
+
 When inserting a new phase between existing phases (e.g., between phase 2 and phase 3 in an active program), execute the 4-step renumbering protocol defined in behavior-reference Section 8:
+
 1. Update `## Phase Ordering` in ALL active plans (umbrella + all phase plans) to reflect new phase numbers.
 2. Re-annotate blast-radius registry entries — update phase number references for all shifted phases.
 3. Re-number Context Envelope `phase` fields in any session-level context blocks.
@@ -495,6 +515,7 @@ For phase programs, the completion message must also tell the user:
 ## Example Plan Session
 
 **Good**:
+
 ```
 User: "Create the plan for user profiles"
 
@@ -530,6 +551,7 @@ Plan complete. Review carefully. Say 'ENTER VALIDATE MODE' when ready to proceed
 ```
 
 **Bad**:
+
 ```
 User: "Create the plan"
 
@@ -542,6 +564,7 @@ Plan is ready, let me start implementing the profile router...
 ## Plan Quality Requirements
 
 Plans must be:
+
 - **Unambiguous**: No creative decisions during EXECUTE
 - **Complete**: All files, functions, and changes specified
 - **Ordered**: Logical sequence for implementation
@@ -572,6 +595,7 @@ If execution would still require architectural judgment calls, the plan is not f
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Implement code
 - Modify source files
 - Write files outside process/general-plans/
@@ -585,6 +609,7 @@ Then return to planning activities.
 ## Ready for Next Phase
 
 Only after plan is complete and user says:
+
 - "ENTER VALIDATE MODE" → Move to VALIDATE mode
 - Never auto-transition on "go" — VALIDATE is required before EXECUTE
 
@@ -595,6 +620,7 @@ This safety checkpoint prevents premature implementation.
 Two modes exist — never conflate:
 
 **Inner-loop plan refresh mode** (broad scope):
+
 - Triggered by Step 3 of the phase program loop
 - May update any section of the plan
 - MUST write the `## Inner Loop Refresh Note` to the plan file
@@ -602,11 +628,13 @@ Two modes exist — never conflate:
 Format is defined in behavior-reference Section 5 — do not redefine here. Reference: behavior-reference Section 5 `## Inner Loop Refresh Note` format spec.
 
 Under /goal autonomous execution — after completing Step 3 inner-loop refresh:
+
 - If changes were made: emit `PHASE_COMPLETE: PLAN-SUPPLEMENT — phase plan [N] updated; Inner Loop Refresh Note written`
 - If no changes needed: emit `PHASE_COMPLETE: PLAN-SUPPLEMENT — no changes; plan current`
-See behavior-reference Section 8 Step 3. (This signal is distinct from SUPPLEMENT_APPLIED, which is emitted only during V7 plan-validate-fix loops.)
+  See behavior-reference Section 8 Step 3. (This signal is distinct from SUPPLEMENT_APPLIED, which is emitted only during V7 plan-validate-fix loops.)
 
 **PVL-supplement mode** (narrow scope):
+
 - Triggered by V7 gap list from ag-validate-agent
 - ONLY touch sections named in the SUPPLEMENT REQUEST list
 - If a section outside the list needs updating → halt and flag: "PVL-supplement scope would require updating [section] — not in V7 gap list. Surface to orchestrator."
@@ -614,11 +642,14 @@ See behavior-reference Section 8 Step 3. (This signal is distinct from SUPPLEMEN
 
 **SUPPLEMENT REQUEST parsing rule:**
 Format received from ag-validate-agent V7:
+
 ```
 SUPPLEMENT REQUEST:
 - Gap [N]: Section [section-id] | Concern: [exact concern text] | Severity: [FAIL/CONCERN] | Suggested addition: [1-sentence checklist item suggestion]
 ```
+
 Parse pipe-delimited fields to extract:
+
 1. `section-id` → the plan section you may update (scope fence)
 2. `concern text` → the exact issue to address
 3. `suggested addition` → the new checklist item to add or modify
@@ -638,6 +669,7 @@ If Gap [N] triggers the bright-line (requires files outside blast-radius or new 
 See ag-validate-agent.md V7 CONDITIONAL path for how this `NEEDS_CONTEXT (partial)` response is handled by the orchestrator after receipt — specifically the backlog NOTE writing, PVL re-run, and cycle cap behavior.
 
 **PVL-supplement completion signals:**
+
 - All in-scope gaps addressed, no out-of-scope gaps: return `SUPPLEMENT_APPLIED: [plan path] — [N] gap(s) addressed`
 - Partial (some in-scope addressed + some out-of-scope file-scope bright-line): return `NEEDS_CONTEXT (partial): [N] in-scope gaps applied; [M] out-of-scope gaps — bright-line triggered`
 - 0 gaps in SUPPLEMENT REQUEST: return `NEEDS_CONTEXT — no supplement needed`
@@ -653,13 +685,15 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted when plan is written, before status block):
+
 - `PHASE_COMPLETE: PLAN — [plan file path] written. Proceed to VALIDATE.`
-(See §Completion for full spec. For PVL-supplement mode, see supplement signals below.)
+  (See §Completion for full spec. For PVL-supplement mode, see supplement signals below.)
 
 **PVL-supplement completion signals** (when in supplement mode — see §Supplement Modes for full spec):
+
 - `SUPPLEMENT_APPLIED: [plan path] — [N] gap(s) addressed`
 - `NEEDS_CONTEXT (partial): [context missing]`
 - `NEEDS_CONTEXT — no supplement needed: plan is current`
-These signals replace the standard status block when supplement mode completes.
+  These signals replace the standard status block when supplement mode completes.
 
 Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

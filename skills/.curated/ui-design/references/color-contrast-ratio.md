@@ -56,11 +56,12 @@ Low contrast text is unreadable for users with visual impairments and difficult 
 ```
 
 **WCAG contrast requirements:**
-| Element | AA Level | AAA Level |
-|---------|----------|-----------|
-| Normal text (<18px) | 4.5:1 | 7:1 |
-| Large text (≥18px bold, ≥24px) | 3:1 | 4.5:1 |
-| UI components & graphics | 3:1 | Not defined |
+
+| Element                        | AA Level | AAA Level   |
+| ------------------------------ | -------- | ----------- |
+| Normal text (<18px)            | 4.5:1    | 7:1         |
+| Large text (≥18px bold, ≥24px) | 3:1      | 4.5:1       |
+| UI components & graphics       | 3:1      | Not defined |
 
 **Testing tools:** WebAIM Contrast Checker, Chrome DevTools, Stark
 

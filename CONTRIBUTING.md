@@ -32,24 +32,31 @@ The harness is designed to be zero-dependency for core execution, with lightweig
 ## 🧩 Types of Contributions
 
 ### 1. Skills (`.claude/skills/`)
+
 Skills are reusable capability modules that live under `.claude/skills/`. Each skill MUST:
+
 - Have its own directory (e.g., `.claude/skills/my-skill/`)
 - Contain a `SKILL.md` file with valid YAML frontmatter (`name`, `description`)
 - **Not** use the `ag-` prefix unless submitting an official core harness skill
 - Include helper scripts under a `scripts/` subdirectory if required
 
 ### 2. Agents (`.claude/agents/` and `.codex/agents/`)
+
 Agent definitions provide specialized personas for workflow phases. Each agent MUST:
+
 - Maintain strict 1:1 parity between `.claude/agents/<agent-name>.md` (Claude Code) and `.codex/agents/<agent-name>.toml` (Codex)
 - Follow existing naming conventions and prompt structure
 
 ### 3. Hooks (`.claude/hooks/`)
+
 Pre- and post-execution lifecycle hooks that run automatically during agent sessions.
 
 ### 4. Protocols & Playbooks (`process/development-protocols/`)
+
 Development standards, phase rules, and master workflow guides.
 
 ### 5. Documentation & Second Brain (`README.md`, `second-brain/Docs/`)
+
 Improvements to system guides, ADRs, workflow standards, and translation files.
 
 ---
@@ -113,6 +120,7 @@ All PR titles and commit messages MUST follow Conventional Commits:
 - `chore:` — Maintenance, manifest updates, or tooling changes
 
 Examples:
+
 ```text
 feat(skills): add code-interrogation skill with 5-layer cognitive stack
 fix(install): correct symlink detection in install.sh on WSL2
@@ -135,6 +143,7 @@ chore(manifest): register new skills in ag-manifest.json
 ## 📋 Manifest Sync (`ag-manifest.json`)
 
 The `ag-manifest.json` file tracks all managed files in the harness. When you add new files (skills, agents, hooks, protocols):
+
 1. Add the file path to `ag-manifest.json` under the appropriate section.
 2. Keep entries sorted alphabetically within each section.
 3. Run `./scripts/run-audit-parallel.mjs` to confirm kit portability and manifest integrity.
@@ -144,6 +153,7 @@ The `ag-manifest.json` file tracks all managed files in the harness. When you ad
 ## ✅ Contribution Checklists
 
 ### Skill Checklist
+
 - [ ] Skill lives under `.claude/skills/<skill-name>/`
 - [ ] `SKILL.md` exists with valid YAML frontmatter (`name`, `description`)
 - [ ] Any helper scripts are placed under `scripts/`
@@ -151,6 +161,7 @@ The `ag-manifest.json` file tracks all managed files in the harness. When you ad
 - [ ] Validation passes: `node .claude/skills/ag-audit-ag/scripts/validate-skills.mjs`
 
 ### Agent Checklist
+
 - [ ] Claude agent definition exists in `.claude/agents/<agent-name>.md`
 - [ ] Codex agent mirror exists in `.codex/agents/<agent-name>.toml`
 - [ ] Parity validation passes: `node .claude/skills/ag-audit-ag/scripts/validate-agent-parity.mjs`

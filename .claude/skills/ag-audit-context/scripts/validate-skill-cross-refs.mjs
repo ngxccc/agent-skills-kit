@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 import path from "node:path";
-import { loadSkillInventory, extractRelativeReferences, abs, exists } from "./shared-skill-utils.mjs";
+import {
+  loadSkillInventory,
+  extractRelativeReferences,
+  abs,
+  exists,
+} from "./shared-skill-utils.mjs";
 
 const warnings = [];
 const failures = [];
@@ -22,11 +27,17 @@ for (const skill of inventory) {
   }
 }
 
-console.log(JSON.stringify({
-  checkedSkills: inventory.length,
-  warnings,
-  failures,
-}, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      checkedSkills: inventory.length,
+      warnings,
+      failures,
+    },
+    null,
+    2,
+  ),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

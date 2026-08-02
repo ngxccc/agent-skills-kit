@@ -80,12 +80,17 @@ if (!target) {
 
     // 3. Cross-check: every table-complete phase must be listed completed in state body.
     for (const p of completePhases) {
-      const listedComplete = new RegExp(`phase\\s*${p}\\b`, "i").test(stateBody) &&
+      const listedComplete =
+        new RegExp(`phase\\s*${p}\\b`, "i").test(stateBody) &&
         /complet|✅|verified|done/i.test(stateBody);
       // Stronger: require the specific phase number to co-occur in a completed context.
       const phaseLineComplete = stateBody
         .split("\n")
-        .some((l) => new RegExp(`phase\\s*${p}\\b`, "i").test(l) && /complet|✅|verified|done/i.test(l));
+        .some(
+          (l) =>
+            new RegExp(`phase\\s*${p}\\b`, "i").test(l) &&
+            /complet|✅|verified|done/i.test(l),
+        );
       if (!listedComplete || !phaseLineComplete) {
         fail(
           `${target} status table marks Phase ${p} complete/VERIFIED but '## Current Execution State' does not list it as completed`,
@@ -95,7 +100,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

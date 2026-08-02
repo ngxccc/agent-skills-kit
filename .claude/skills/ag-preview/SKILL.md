@@ -15,7 +15,6 @@ layer: helper
 
 Use this skill when working with ag-preview workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
@@ -171,7 +170,6 @@ Output: project identity, architecture snapshot (Mermaid), recent activity, deci
 - Default: static anti-slop rules from `html-design-guidelines.md` (6 curated presets)
 - For `--slides`: consider invoking the `frontend-design` skill for richer style selection
 - Agent must vary aesthetics between consecutive HTML outputs (different font pair, palette)
-
 
 ## References
 

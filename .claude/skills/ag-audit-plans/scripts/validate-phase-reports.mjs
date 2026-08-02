@@ -15,7 +15,9 @@ function fail(message) {
 }
 
 function exists(absOrRel) {
-  return fs.existsSync(path.isAbsolute(absOrRel) ? absOrRel : path.resolve(root, absOrRel));
+  return fs.existsSync(
+    path.isAbsolute(absOrRel) ? absOrRel : path.resolve(root, absOrRel),
+  );
 }
 
 function read(relPath) {
@@ -55,7 +57,9 @@ if (!target) {
     sectionBody(text, /^##\s+Program Status Table/i) ||
     sectionBody(text, /^##\s+Phase Ordering/i);
   if (statusBody === null) {
-    fail(`${target} missing '## Program Status Table' / '## Phase Ordering' section`);
+    fail(
+      `${target} missing '## Program Status Table' / '## Phase Ordering' section`,
+    );
   }
 
   // 2. Parse the Durable Report Destinations table: phase -> report path.
@@ -71,7 +75,8 @@ if (!target) {
       if (/phase/i.test(row) && /status/i.test(row)) continue; // header
       const m = row.match(/phase\s*(\d+)/i);
       if (!m) continue;
-      if (/✅|verified|\bcomplete\b|\bdone\b/i.test(row)) completePhases.push(m[1]);
+      if (/✅|verified|\bcomplete\b|\bdone\b/i.test(row))
+        completePhases.push(m[1]);
     }
 
     // Build phase -> report path map from destinations table.
@@ -87,7 +92,9 @@ if (!target) {
     for (const p of completePhases) {
       const reportPath = destMap.get(p);
       if (!reportPath) {
-        fail(`${target} Phase ${p} marked complete but has no Durable Report Destination entry`);
+        fail(
+          `${target} Phase ${p} marked complete but has no Durable Report Destination entry`,
+        );
         continue;
       }
       // Report path may be repo-relative or relative to the umbrella folder.
@@ -100,7 +107,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

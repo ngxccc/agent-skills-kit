@@ -1,5 +1,8 @@
 #!/usr/bin/env node
-import { loadSkillInventory, extractSkillMentions } from "./shared-skill-utils.mjs";
+import {
+  loadSkillInventory,
+  extractSkillMentions,
+} from "./shared-skill-utils.mjs";
 
 const warnings = [];
 const failures = [];
@@ -9,11 +12,15 @@ function warn(message) {
 }
 
 const inventory = loadSkillInventory();
-const aliasesBySkill = new Map(inventory.map((skill) => [skill.folder, new Set(skill.aliases)]));
+const aliasesBySkill = new Map(
+  inventory.map((skill) => [skill.folder, new Set(skill.aliases)]),
+);
 const graph = new Map();
 
 for (const skill of inventory) {
-  const mentions = extractSkillMentions(skill.text, aliasesBySkill).filter((name) => name !== skill.folder);
+  const mentions = extractSkillMentions(skill.text, aliasesBySkill).filter(
+    (name) => name !== skill.folder,
+  );
   graph.set(skill.folder, mentions);
 }
 
@@ -41,8 +48,14 @@ for (const skill of graph.keys()) {
   walk(skill, []);
 }
 
-console.log(JSON.stringify({
-  checkedSkills: inventory.length,
-  warnings,
-  failures,
-}, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      checkedSkills: inventory.length,
+      warnings,
+      failures,
+    },
+    null,
+    2,
+  ),
+);

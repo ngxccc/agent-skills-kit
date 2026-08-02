@@ -11,6 +11,7 @@ Use it after `process/context/all-context.md` when the task needs {{group_scope_
 This is the standard template for creating `all-{group}.md` entrypoints when a new context group is created.
 
 To use: copy this file to `process/context/{group}/all-{group}.md`, then replace:
+
 - `{{group_name}}` with the display name (e.g., "Database", "Auth", "Infrastructure")
 - `{{group_scope_short}}` with a brief scope phrase (e.g., "schema changes, migrations, or query patterns")
 - `{{project_name}}` with the project name

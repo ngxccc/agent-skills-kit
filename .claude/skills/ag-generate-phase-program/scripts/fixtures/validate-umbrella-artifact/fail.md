@@ -23,9 +23,9 @@ Phase 1 pending.
 
 ## Phase Ordering
 
-| Phase | Plan | Depends on |
-|---|---|---|
-| 1 — Foundation | phase-01-foundation | — |
+| Phase          | Plan                | Depends on |
+| -------------- | ------------------- | ---------- |
+| 1 — Foundation | phase-01-foundation | —          |
 
 ### Join Conditions
 

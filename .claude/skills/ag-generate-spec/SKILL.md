@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-generate-spec workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Use this skill to produce the authoritative **product-discovery SPEC** artifact for a task — a plain-language requirements document written for **user review**, not for an engineer.
@@ -77,7 +77,6 @@ Every SPEC file must include all of the following, in this order:
 - `## Background / Research Findings` — key facts from RESEARCH that shaped the requirements
 
 Use Markdown-structured sections, not a second machine-only schema. Markdown sections are stable across all agents (Claude, Codex, future systems) without requiring a parser.
-
 
 ## References
 

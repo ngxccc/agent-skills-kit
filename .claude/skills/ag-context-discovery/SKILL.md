@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-context-discovery workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Discover and load all relevant context for the current task. This skill lists feature group nested files with full paths and loads `process/context/` files by domain routing table. It is the canonical context-loading entrypoint for every agent session.
@@ -32,17 +32,18 @@ At the start of every agent session (research, innovate, plan, validate, execute
 Document the canonical schemas for three file types used across the repo. These schemas enable frontmatter-aware routing and filtering.
 
 **Context file frontmatter schema:**
+
 ```yaml
 name: context:{slug}
 description: "one-line scope — used by ag-context-discovery for routing"
-keywords: comma, separated, task, vocabulary, terms   # drives grep-first keyword routing
-related: [context:{other-slug}, context:{another-slug}]  # sibling/cross-group links (optional)
+keywords: comma, separated, task, vocabulary, terms # drives grep-first keyword routing
+related: [context: { other-slug }, context: { another-slug }] # sibling/cross-group links (optional)
 date: dd-mm-yy
 ```
 
 - `keywords` — strongly recommended, non-empty. Comma-separated task-vocabulary terms an
   agent would use to describe a task this doc serves (e.g. `session, token, refresh, jwt,
-  login`). This is the match surface for `discover-context.mjs --match`; weak/absent
+login`). This is the match surface for `discover-context.mjs --match`; weak/absent
   keywords are why a relevant doc never gets routed to. Lint WARNS when empty (so existing
   projects don't break on sync) — backfill at UPDATE-PROCESS.
 - `related` — OPTIONAL list of `context:{slug}` values for sibling docs that are usually
@@ -51,15 +52,17 @@ date: dd-mm-yy
   the primary match so a task touching two domains loads both.
 
 **Plan file frontmatter schema:**
+
 ```yaml
 name: plan:{slug}
 description: "one-line scope and feature"
 date: dd-mm-yy
-feature: {feature-folder-name}
-phase: "{phase-id}"  # optional, for phase program plans only
+feature: { feature-folder-name }
+phase: "{phase-id}" # optional, for phase program plans only
 ```
 
 **Report file frontmatter schema:**
+
 ```yaml
 name: report:{slug}
 description: "one-line scope"
@@ -67,8 +70,8 @@ date: dd-mm-yy
 metadata:
   node_type: memory
   type: report
-  feature: {feature-folder-name}
-  phase: {phase-id}
+  feature: { feature-folder-name }
+  phase: { phase-id }
 ```
 
 ## Invocation
@@ -159,18 +162,18 @@ fields are required (use best-effort values; `TBD — [reason]` when not yet det
 MUST appear in the EXACT canonical C-2 order below — identical order in this SKILL and in all four
 inner-loop agents:
 
-| # | Field | Value |
-|---|---|---|
-| 1 | `feature` | feature folder name (or `TBD`) |
-| 2 | `phase` | current RIPER phase (`RESEARCH` / `INNOVATE` / `PLAN` / `PVL` / `EXECUTE` / `EVL` / `UPDATE-PROCESS`) |
-| 3 | `session-goal` | one-line goal from the `/goal` block |
-| 4 | `branch` | current git branch |
-| 5 | `worktree` | worktree path (or `main`) |
-| 6 | `context-group` | relevant `process/context/` group (or `none`) |
-| 7 | `blast-radius-packages` | packages/paths in scope (comma-separated or `TBD`) |
-| 8 | `active-plan` | selected plan file path (or `none`) |
-| 9 | `test-runner` | test runner(s); multi-runner uses pipe-delimited DISPLAY format `bun test \| vitest` |
-| 10 | `validate-contract` | validate-contract path (or `none`) |
+| #   | Field                   | Value                                                                                                 |
+| --- | ----------------------- | ----------------------------------------------------------------------------------------------------- |
+| 1   | `feature`               | feature folder name (or `TBD`)                                                                        |
+| 2   | `phase`                 | current RIPER phase (`RESEARCH` / `INNOVATE` / `PLAN` / `PVL` / `EXECUTE` / `EVL` / `UPDATE-PROCESS`) |
+| 3   | `session-goal`          | one-line goal from the `/goal` block                                                                  |
+| 4   | `branch`                | current git branch                                                                                    |
+| 5   | `worktree`              | worktree path (or `main`)                                                                             |
+| 6   | `context-group`         | relevant `process/context/` group (or `none`)                                                         |
+| 7   | `blast-radius-packages` | packages/paths in scope (comma-separated or `TBD`)                                                    |
+| 8   | `active-plan`           | selected plan file path (or `none`)                                                                   |
+| 9   | `test-runner`           | test runner(s); multi-runner uses pipe-delimited DISPLAY format `bun test \| vitest`                  |
+| 10  | `validate-contract`     | validate-contract path (or `none`)                                                                    |
 
 **Canonical order (memorize):** `feature → phase → session-goal → branch → worktree → context-group
 → blast-radius-packages → active-plan → test-runner → validate-contract`.
@@ -203,7 +206,6 @@ Files without frontmatter: surface path only (no error), do not skip them.
 - Read `all-context.md` as a router, then load the deeper file(s). Do not treat `all-context.md` as sufficient on its own.
 - Always produce the full `find` output, not a summary. The exact file paths are the output.
 - Never hardcode context file paths — always discover via the `find` command and the routing table in `all-context.md`.
-
 
 ## References
 

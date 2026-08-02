@@ -65,7 +65,9 @@ function expandPhaseLoop(envelope = {}) {
     action:
       "Read prior phase reports (immediately prior in full; earlier phases' Forward Preview only); " +
       "load context via ag-context-discovery + ag-plan-discovery" +
-      (infraContextGroup ? ` (infra context group: ${infraContextGroup})` : "") +
+      (infraContextGroup
+        ? ` (infra context group: ${infraContextGroup})`
+        : "") +
       "; fire Tier-0 intent restatement.",
   });
 
@@ -73,7 +75,8 @@ function expandPhaseLoop(envelope = {}) {
     step: 2,
     name: "INNOVATE",
     agent: "ag-innovate-agent",
-    action: "Decide approach; write Decision Summary (chosen approach + rejected alternatives).",
+    action:
+      "Decide approach; write Decision Summary (chosen approach + rejected alternatives).",
   });
 
   steps.push({
@@ -156,7 +159,8 @@ function selfTest() {
   const fixture = {
     testRunner: "bun test | vitest",
     blastRadiusPaths: "packages/api, apps/web",
-    validateContractPath: "process/features/x/active/x_PLAN_09-06-26.md#validate-contract",
+    validateContractPath:
+      "process/features/x/active/x_PLAN_09-06-26.md#validate-contract",
     infraContextGroup: "container",
   };
 
@@ -182,8 +186,12 @@ function selfTest() {
   console.log("--- phase-loop-workflow-template --self-test ---");
   console.log(rendered);
   console.log("-----------------------------------------------");
-  console.log(`(a) no literal "bun test | vitest" pipe: ${noLiteralPipe ? "PASS" : "FAIL"}`);
-  console.log(`(b) sequential "bun test" then "vitest" steps: ${sequential ? "PASS" : "FAIL"}`);
+  console.log(
+    `(a) no literal "bun test | vitest" pipe: ${noLiteralPipe ? "PASS" : "FAIL"}`,
+  );
+  console.log(
+    `(b) sequential "bun test" then "vitest" steps: ${sequential ? "PASS" : "FAIL"}`,
+  );
   console.log(pass ? "SELF-TEST: PASS" : "SELF-TEST: FAIL");
 
   process.exit(pass ? 0 : 1);

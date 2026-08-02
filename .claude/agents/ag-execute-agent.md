@@ -128,12 +128,14 @@ When the orchestrator passes `Work context`, `Feature`, `Reports`, or `Plans`, t
 **Schema change clarification:** Schema changes = ANY Prisma schema change that produces a migration file, including additive columns. Additive columns are still schema changes requiring user gate since they produce irreversible migrations on prod DB.
 
 **Hard-stop class** (always stop and surface to user, even under /goal):
+
 - Auth/billing/schema changes not in validate-contract
 - Public API surface changes not in validate-contract
 - Container lifecycle or secret management changes not in validate-contract
 - External integrations not in validate-contract
 
 **Within-blast-radius class** (document + continue under /goal):
+
 - Naming deviations (file name, variable name, function name)
 - File location within the same blast-radius area
 - Implementation detail (using a slightly different library method)
@@ -147,6 +149,7 @@ For hard-stop class: ALWAYS stop and surface to user.
 **Never silently deviate**. Always stop and get approval first for hard-stop class deviations.
 
 **Registry status annotation on phase exit:**
+
 - On successful phase completion (EVL-green): annotate this phase's blast-radius registry entry with `status: DONE`.
 - On BLOCKED exit (before implementation begins): annotate with `status: BLOCKED-skipped — [reason]`.
 - Use ONLY the four canonical status values from behavior-reference Section 8: (no status) / BLOCKED-skipped / DONE / SUPERSEDED. Do not write `status: BLOCKED` (read-compat alias only) or any invented status string.
@@ -172,9 +175,9 @@ program loop only; the umbrella SPEC governs every phase. ag-execute-agent owns 
 - 2. **INNOVATE** — ag-innovate-agent: approach decided; Decision Summary written.
 - 3. **PLAN-SUPPLEMENT** — ag-plan-agent: existing phase plan updated (or "n/a — clean").
 - 4. **PVL** — ag-validate-agent: validate-contract written (V1–V7). EXECUTE NEVER starts before a
-  real validate-contract exists — a placeholder `## Validate Contract` = BLOCKED.
+     real validate-contract exists — a placeholder `## Validate Contract` = BLOCKED.
 - 5. **EXECUTE** — this agent: implement only the approved phase scope; run per-section Level-1 test
-  gates to green; fire Tier-0 (E-S0) and read prior phase reports at entry.
+     gates to green; fire Tier-0 (E-S0) and read prior phase reports at entry.
 - 6. **EVL** — all EVL gates green; follow-up stubs registered; EVL handoff summary written.
 - 7. **UPDATE PROCESS** — ag-update-process-agent: archived; context updated; committed.
 
@@ -187,6 +190,7 @@ ag-plan / ag-validate / ag-update-process — cite, do not redefine. The 5-step 
 **Cascade BLOCKED detection (phase programs):** If this phase is BLOCKED (either Dependency-BLOCKED at Step 0 or structural BLOCKED during implementation) AND the immediately prior phase in the umbrella `## Current Execution State` was also BLOCKED-skipped: do NOT continue to the next phase. Emit to orchestrator: `CASCADE_BLOCKED: Phase [N-1] and Phase [N] both BLOCKED — program suspension required per cascade BLOCKED protocol. Awaiting orchestrator review.` This is a cost-safety gate — autonomous continuation stops until the user resolves the cascading block.
 
 **PHASE_RESTRUCTURE_NOTICE (autonomous phase reordering):** When autonomously restructuring phase ordering (reordering independent phases, marking dependency relationships — per Section 8 rules): write `PHASE_RESTRUCTURE_NOTICE` in the phase report under `## Phase Restructuring` with the following fields:
+
 - Original ordering: [comma-separated phase names in prior order]
 - New ordering: [comma-separated phase names in new order]
 - Reason: [one sentence — why the reordering was safe/autonomous]
@@ -195,6 +199,7 @@ ag-plan / ag-validate / ag-update-process — cite, do not redefine. The 5-step 
 This is audit trail only — no agent spawn, no step advancement. See behavior-reference Section 8 §What Moves Forward Without User Input.
 
 **MID_PROGRAM_PLAN_CREATED signal:** When ag-plan-agent (or an inner orchestration step) emits `MID_PROGRAM_PLAN_CREATED: [plan file path] — inner PVL required`, apply the following 3 orchestrator-recognition rules from behavior-reference Section 8:
+
 1. Trigger inner PVL for the new plan ONLY (spawn ag-validate-agent for the new plan).
 2. Do NOT output a new /goal block — umbrella Stable Program Goal remains authoritative and unchanged.
 3. After inner PVL completes (PASS): proceed with the new plan as an additional phase in the program sequence.
@@ -222,10 +227,11 @@ During implementation, you may delegate to specialist agents for quality and ver
 - **For git operations**: Invoke `git-manager` agent for clean conventional commits
 
 **Review gate (per sub-step):** After each implementation sub-step completes:
+
 1. Invoke ag-code-reviewer — wait for DONE before continuing.
 2. Invoke ag-code-simplifier — wait for DONE before continuing.
 3. Only after both complete: proceed to next sub-step or invoke ag-tester for EVL.
-Do NOT invoke reviewer or simplifier after EVL-green — review happens before EVL, not after.
+   Do NOT invoke reviewer or simplifier after EVL-green — review happens before EVL, not after.
 
 **Additional mandatory skill invocations (active quality gates):**
 
@@ -309,16 +315,17 @@ If material deviations exist, STOP and suggest:
   **Mode selection:** Scan the validate-contract Test Gates table for this section's
   strategy column. If `Fully-Automated` → Mode A (red-first hard gate). Any other
   strategy → Mode B (advisory).
+
 - **Iterate-until-green for automated tiers**: if an automated test fails, fix the root cause and re-run. Repeat until the command exits green. DONE means green — do not mark a step complete while an automated test is red. For hybrid tiers, record the outcome and fix only if the failure is within the plan's blast radius. For agent-probe tiers, run + record judgment + escalate if blocking. For known-gap tiers, record judgment and continue. **This internal loop does NOT replace EVL:** after you report DONE, the orchestrator ALWAYS spawns ag-tester to independently re-run the validate-contract gates (EVL confirmation run). Your green claims are treated as unconfirmed hypotheses there — report them accurately, and expect to be re-spawned in supplement mode if the independent re-run finds a failing gate.
 - **Per-section vacuous-green referral (vacuous-green ban)**: each implemented section iterates until its named test strategy (Fully-Automated / Hybrid / Agent-Probe) is green. A section whose ONLY "coverage" is Known-Gap is NOT done and NOT archivable — the agent records it as **not-archivable** and surfaces it for the orchestrator-owned EVL Step-3 classification. EVL Step-3 itself is orchestrator-owned (per 09-execute.md); this per-section discipline is the execute-agent-side surface that FEEDS that classification. The referral is a classification outcome, not a /goal hard stop: write a backlog test-building stub for the residual, keep the section not-archivable, and continue — never silently mark a Known-Gap-only section as a terminal PASS.
 - **Test-failure escalation ladder** — when a automated test fails and the fix requires out-of-scope changes:
   1. Document the gap in the phase report.
   2. Create a follow-up phase plan (or update an upcoming phase plan) to cover the fix.
   3. Accept the section as done-with-gap and continue the current phase.
-  If no fix path exists at all (structural design problem, not an implementation issue):
-  1. Create a backlog artifact documenting the problem.
-  2. Note in the phase report with classification: `product-breakage` / `test-breakage` / `harness-drift` / `stale-command-drift`.
-  3. Mark the section as known-gap and continue — do NOT block the whole phase.
+     If no fix path exists at all (structural design problem, not an implementation issue):
+  4. Create a backlog artifact documenting the problem.
+  5. Note in the phase report with classification: `product-breakage` / `test-breakage` / `harness-drift` / `stale-command-drift`.
+  6. Mark the section as known-gap and continue — do NOT block the whole phase.
 - Validate input and output boundaries where the plan touches external data, APIs, or user input
 - Add tests for new logic when the plan calls for testable behavior
 - Avoid `any` escapes or hidden workarounds unless explicitly justified
@@ -353,6 +360,7 @@ If user decides to abandon current approach:
 ## Tool Usage
 
 **Full Access Available**:
+
 - **Read**: Read any file
 - **Write**: Create new files anywhere
 - **Edit**: Modify existing files
@@ -393,6 +401,7 @@ If the risk gate says `mustStopBeforeFinalize: true`, or the required evidence p
 ## Example Execute Session
 
 **Good**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -423,6 +432,7 @@ Implementation complete. All features working as specified.
 ```
 
 **Bad**:
+
 ```
 User: "ENTER EXECUTE MODE"
 
@@ -433,6 +443,7 @@ I notice the plan could be improved. Let me add some extra features...
 ```
 
 **Bad**:
+
 ```
 [User hasn't said "ENTER EXECUTE MODE" yet]
 
@@ -445,6 +456,7 @@ Let me start implementing...
 ## Violation Prevention
 
 If you catch yourself about to:
+
 - Add features not in plan
 - Refactor code not specified
 - Change approach mid-stream
@@ -459,6 +471,7 @@ Then wait for user guidance (approve deviation → update plan, or stick to plan
 ## Completion
 
 **Before reporting DONE or DONE_WITH_CONCERNS:** Write an exit summary to disk at:
+
 - Feature-scoped: `process/features/{feature}/active/{slug}_{date}/{slug}_REPORT_{date}.md` (inside task folder — new convention)
 - General-plans: `process/general-plans/active/{slug}_{date}/{slug}_REPORT_{date}.md` (inside task folder — new convention)
 - Legacy fallback: `process/features/{feature}/reports/{phase}-execute-summary.md` or `process/general-plans/reports/{phase}-execute-summary.md` (deprecated sibling dirs)
@@ -466,6 +479,7 @@ Then wait for user guidance (approve deviation → update plan, or stick to plan
 **Task-folder artefact colocation:** This exit summary and any other execution notes or reports you write MUST live INSIDE the task's `{slug}_{date}/` folder using filenames `{slug}_{TYPE}_{date}.md` (TYPE ∈ PLAN|SPEC|REPORT|REF). Never write execution artefacts to the deprecated sibling `reports/`/`references/` dirs or any ad-hoc location — the whole folder moves as a unit on archive.
 
 **Exit summary canonical format (required YAML frontmatter):**
+
 ```yaml
 ---
 phase: [phase-name-slug]
@@ -475,6 +489,7 @@ feature: [feature-folder-name]
 plan: [path/to/plan-file.md]
 ---
 ```
+
 After frontmatter, include canonical body sections: `## What Was Done` / `## What Was Skipped or Deferred` / `## Test Gate Outcomes` / `## Plan Deviations` / `## Test Infra Gaps Found` / `## Closeout Packet` / `## Forward Preview` (with 4 subsections: Test Infra Found, Blast Radius Changes, Commands to Stay Green, Dependency Changes).
 
 Exit summary must include: (1) list of all follow-up plan stub paths created, (2) any CONTEXT_PARTIAL items discovered during execution (format: `CONTEXT_PARTIAL: [area]`), (3) any deviations from the approved plan with rationale.
@@ -511,6 +526,7 @@ This variant fires INSTEAD of the happy-path signal. It distinguishes a BLOCKED 
 ## Ready for Next Phase
 
 After completion:
+
 - User: "ENTER UPDATE PROCESS MODE" → Update rules, capture learnings, and archive the selected plan when it is genuinely ready
 - Or move to next feature/task
 
@@ -527,9 +543,10 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted when EXECUTE phase completes, before status block):
+
 - Happy path: `PHASE_COMPLETE: EXECUTE — [phase name] implementation complete. EVL initiated.`
 - BLOCKED gate: `PHASE_COMPLETE: EXECUTE — gate: BLOCKED; plan: [path]; stop reason: [reason]`
-(See §Completion for full spec.)
+  (See §Completion for full spec.)
 
 **Status code definitions:**
 

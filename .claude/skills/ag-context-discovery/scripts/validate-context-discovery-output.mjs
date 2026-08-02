@@ -34,16 +34,22 @@ if (!target) {
   // 1. At least 8 numbered workflow steps.
   const numberedSteps = (text.match(/^\s*\d+\./gm) || []).length;
   if (numberedSteps < 8) {
-    fail(`${target} has ${numberedSteps} numbered workflow steps; require >= 8`);
+    fail(
+      `${target} has ${numberedSteps} numbered workflow steps; require >= 8`,
+    );
   }
 
   // 2. Routing-table reference must precede the first deeper-file reference.
   const routingIdx = text.search(/all-context\.md|routing table/i);
   // A deeper file is any process/context/<group>/ file other than all-context.md.
-  const deeperMatch = text.match(/process\/context\/[a-z-]+\/(?!all-context\.md)[a-z0-9-]+\.md/i);
+  const deeperMatch = text.match(
+    /process\/context\/[a-z-]+\/(?!all-context\.md)[a-z0-9-]+\.md/i,
+  );
   const deeperIdx = deeperMatch ? text.indexOf(deeperMatch[0]) : -1;
   if (routingIdx === -1) {
-    fail(`${target} missing routing-table reference (all-context.md / routing table)`);
+    fail(
+      `${target} missing routing-table reference (all-context.md / routing table)`,
+    );
   } else if (deeperIdx !== -1 && routingIdx > deeperIdx) {
     fail(
       `${target} routing-table reference (idx ${routingIdx}) does not precede first deeper-file reference (idx ${deeperIdx})`,
@@ -82,7 +88,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

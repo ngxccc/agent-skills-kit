@@ -14,10 +14,10 @@ metadata:
 
 Use this skill when working with ag-publish workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Push harness improvements from the current development repo to the remote kit repository (`agent-skills-kit-pro-max-kit`). This is the **maintainer** counterpart to `ag-update`.
@@ -36,7 +36,7 @@ Push harness improvements from the current development repo to the remote kit re
 Create `.ag-publish-config` in the repo root:
 
 ```json
-{"kitRepoPath": "/path/to/agent-skills-kit-pro-max-kit"}
+{ "kitRepoPath": "/path/to/agent-skills-kit-pro-max-kit" }
 ```
 
 If this file is missing, ask the user for the kit repo checkout path and offer to create it.
@@ -57,17 +57,21 @@ If this file is missing, ask the user for the kit repo checkout path and offer t
 7. Before computing a version bump, check if the current kit version already matches the intended target version (e.g. `3.0.0`). If the kit `version` already equals the target: **skip the bump step entirely** and proceed directly to Step 3 with a `tag-as-is` note — do not increment the version. Record in the publish summary that the version was unchanged.
 
 **Catalog-regen (pre-publish):** Before resolving files in Steps 3–4, regenerate the skills catalog in the dev repo:
+
 ```bash
 node .claude/skills/ag-audit-context/scripts/generate-skills-catalog.mjs --write
 ```
+
 This ensures `process/context/generated-skills-catalog.json` is current before it is copied into the kit repo.
 
 ### Step 3: Resolve Kit File Set
 
 7. Run the resolver against the **kit repo** to get the kit file list:
+
    ```bash
    node <kitRepoPath>/resolve-manifest.mjs --root <kitRepoPath> --json
    ```
+
    Extract `files` (kit managed files) and `kitOnly` (kit-exclusive files).
 
    **Note:** `resolve-manifest.mjs` reads `ag-manifest.json` from its `--root` directory and also scans files from that same root. `ag-manifest.json` is NOT installed into dev/user projects by `install.sh`, so the resolver must always be pointed at the kit repo checkout (which does have it). There is no separate dev-repo resolver call — the dev-side file comparison happens inside `compute-sync-plan.mjs` in Step 4.
@@ -129,6 +133,7 @@ Total changes: 4 files modified, 1 new, 0 removed
     - Or abort.
 
 Version bump semantics:
+
 - **Patch** (2.1.0 -> 2.1.1): hook fixes, skill doc updates, minor agent prompt tweaks
 - **Minor** (2.1.0 -> 2.2.0): new skills, new agents, new development protocols
 - **Major** (2.1.0 -> 3.0.0): CLAUDE.md structure changes, manifest schema changes, breaking workflow changes
@@ -171,6 +176,7 @@ Version bump semantics:
          the **field-level drift report** below and reconcile any unexpected drift by hand.
 
       Drift-report command (run during Step 4 summary AND here before writing):
+
       ```bash
       node -e '
       const d=require("<devRepoPath>/ag-manifest.json");
@@ -188,9 +194,11 @@ Version bump semantics:
       console.log(drift?("\n"+drift+" manifest field(s) drift — legacyDeletions auto-syncs dev→kit; reconcile the rest consciously."):"manifest in sync (besides version)");
       '
       ```
+
       `legacyDeletions` appearing in the drift report is EXPECTED and is auto-resolved (dev→kit).
       Any OTHER field in the report is a conscious decision: confirm the kit value is the intended
       packaging rule, or update dev/kit so they converge. Never let a drift go unexamined.
+
     - Create symlinks if missing (`.agents/skills -> ../.claude/skills`).
 
 ### Step 8: Leak Detection
@@ -250,6 +258,7 @@ Version bump semantics:
     ```
 
     **Check (c) -- README badge counts:** Verify the kit README.md badge counts match actual agent and skill counts:
+
     ```bash
     actual_agents=$(ls <kitRepoPath>/.claude/agents/*.md | wc -l | tr -d ' ')
     actual_skills=$(ls -d <kitRepoPath>/.claude/skills/ag-*/ | wc -l | tr -d ' ')
@@ -259,6 +268,7 @@ Version bump semantics:
     echo "Skills: actual=$actual_skills badge=$readme_skills"
     [ "$actual_agents" = "$readme_agents" ] && [ "$actual_skills" = "$readme_skills" ] && echo "PASS" || echo "FAIL: badge counts mismatch"
     ```
+
     If FAIL: update README.md badges to match actual counts before committing.
 
     NOTE: the brand grep matches product names ONLY. It does NOT match
@@ -295,6 +305,7 @@ Leak detection passed. The commit and tag are ready locally. Before running `git
 Do NOT run `git push` or `git push --tags` until the user types 'push' (or a clear affirmative). This is a **separate gate** from the publish-confirm at Step 6 — even if the user approved publishing in Step 6, they must re-confirm before the actual remote push.
 
 If the user says 'abort':
+
 - The local commit and tag are preserved.
 - Print: "Commit and tag preserved locally. Run `git push origin main && git push --tags` when ready."
 - Stop.
@@ -330,12 +341,14 @@ git push origin main && git push --tags
 ### Step 12: Post-Publish Remote Verify
 
 After a successful push, clone the kit from remote to a temp dir and verify the catalog works on a fresh install:
+
 ```bash
 TS=$(date +%s)
 git clone <remote-kit-url> /tmp/ag-kit-verify-$TS
 node /tmp/ag-kit-verify-$TS/.claude/skills/ag-context-discovery/scripts/discover-skills.mjs 2>&1
 rm -rf /tmp/ag-kit-verify-$TS
 ```
+
 Expected: exit 0 and expected skill count in output. If FAIL: note the error in the publish summary — the push succeeded but the remote install may have a catalog issue.
 
 ### Step 13: Print Summary
@@ -379,7 +392,6 @@ Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 ## Reference
 
 See `references/ag-publish.md` for the detailed algorithm, CLAUDE.md/AGENTS.md stripping rules, error handling, and example outputs.
-
 
 ## References
 

@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-test-coverage-plan workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate a TDD-first full test plan per blast radius area. Assigns all 4 test tiers with exact commands, what each proves, what it does NOT prove, and explicit resolution options for every gap.
@@ -27,7 +27,7 @@ Generate a TDD-first full test plan per blast radius area. Assigns all 4 test ti
 
 This skill is **POST-decision**: the design is already chosen and you are assigning
 coverage tiers across a known blast radius. If instead an approach cannot be decided
-*because* a runtime/library/external mechanism is unverified — that is a PRE-decision
+_because_ a runtime/library/external mechanism is unverified — that is a PRE-decision
 question and belongs to `ag-feasibility-test` (a one-shot empirical probe producing a
 VIABLE/NOT-VIABLE/INCONCLUSIVE VERDICT), run before SPEC/INNOVATE locks. Do not use
 test tiers to answer "does this mechanism work at all?".
@@ -91,10 +91,10 @@ explicit documented rationale):
 
 Required table format for high-risk class areas:
 
-| Area | High-risk class | Minimum tier | Gap rationale if known-gap accepted |
-|---|---|---|---|
-| [e.g. Auth/identity flow] | auth/identity | Hybrid | [If known-gap: must state why hybrid is impossible and what alternative coverage exists] |
-| [e.g. Billing credit deduction] | billing/credits | Hybrid | — |
+| Area                            | High-risk class | Minimum tier | Gap rationale if known-gap accepted                                                      |
+| ------------------------------- | --------------- | ------------ | ---------------------------------------------------------------------------------------- |
+| [e.g. Auth/identity flow]       | auth/identity   | Hybrid       | [If known-gap: must state why hybrid is impossible and what alternative coverage exists] |
+| [e.g. Billing credit deduction] | billing/credits | Hybrid       | —                                                                                        |
 
 ## Hybrid Failure Resolution Priority
 
@@ -115,15 +115,16 @@ Produce one block per area in the blast radius. Area = package, service, or logi
 
 **Area: [package/service name]**
 
-| Tier | Scenario | Command / Steps | What it proves | What it does NOT prove |
-|---|---|---|---|---|
-| Fully-automated | [e.g. Route returns 200 with correct shape] | `[exact command]` exits 0 | [Specific outcome proved] | [Explicit gap] |
-| Fully-automated | [e.g. Route returns 401 on missing token] | Same suite, auth-rejection case | [Specific outcome proved] | [Explicit gap] |
-| Hybrid | [e.g. Integration with real DB] | `[exact command]` — precondition: [what must be running/set] | [Specific outcome proved] | [Explicit gap] |
-| Agent probe | [e.g. Visual or behavioral judgment] | [Step-by-step scenario for the agent] | [What the agent judges] | [What cannot be automated] |
-| Known-gap | [e.g. Load behavior under concurrent requests] | — | — | Cannot be tested within this plan's scope |
+| Tier            | Scenario                                       | Command / Steps                                              | What it proves            | What it does NOT prove                    |
+| --------------- | ---------------------------------------------- | ------------------------------------------------------------ | ------------------------- | ----------------------------------------- |
+| Fully-automated | [e.g. Route returns 200 with correct shape]    | `[exact command]` exits 0                                    | [Specific outcome proved] | [Explicit gap]                            |
+| Fully-automated | [e.g. Route returns 401 on missing token]      | Same suite, auth-rejection case                              | [Specific outcome proved] | [Explicit gap]                            |
+| Hybrid          | [e.g. Integration with real DB]                | `[exact command]` — precondition: [what must be running/set] | [Specific outcome proved] | [Explicit gap]                            |
+| Agent probe     | [e.g. Visual or behavioral judgment]           | [Step-by-step scenario for the agent]                        | [What the agent judges]   | [What cannot be automated]                |
+| Known-gap       | [e.g. Load behavior under concurrent requests] | —                                                            | —                         | Cannot be tested within this plan's scope |
 
 Rules:
+
 - Include a row for every tier that applies. Omit a tier row only if the tier genuinely does not apply — do not omit to avoid work.
 - Known-gap rows must have `—` in the Command/Steps column and a brief reason in the "What it does NOT prove" column.
 - Fully-automated commands must be exact and runnable — do not use placeholder `[command]` in a real output.
@@ -132,12 +133,13 @@ Rules:
 
 After the per-area table, list every gap with four resolution choices:
 
-| Gap | Resolution options |
-|---|---|
+| Gap                 | Resolution options                                                                                                                                      |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Gap 1 description] | A) [Write new test — estimated effort]. B) [Set up infra — what and how]. C) [Accept as known-gap — rationale]. D) [Backlog artifact — what to create]. |
-| [Gap 2 description] | A) [Option]. B) [Option]. C) [Option]. D) [Option]. |
+| [Gap 2 description] | A) [Option]. B) [Option]. C) [Option]. D) [Option].                                                                                                     |
 
 Resolution option rules:
+
 - **A — Write new test**: state file location and estimated effort (e.g. "30 min, new file `packages/api/src/__tests__/route-shape.test.ts`").
 - **B — Set up infra**: name what infra is needed and how (e.g. "seed DB fixture via `pnpm db:seed:test`").
 - **C — Accept as known-gap**: rationale is required — never blank. High-risk class gaps need especially strong rationale.
@@ -147,11 +149,11 @@ Resolution option rules:
 
 Areas with no coverage possible at any tier within this plan's scope:
 
-| Area | Why untestable in this plan | Resolution chosen |
-|---|---|---|
-| [e.g. Production migration path] | Requires prod-like Postgres; outside phase scope | Backlog: [artifact name] |
-| [e.g. Token expiry mid-session] | Requires Clerk test tenant with configurable JWT TTL | Backlog: [artifact name] |
-| [e.g. Cross-instance isolation] | Requires 2+ live running instances | Deferred to [program/phase name] |
+| Area                             | Why untestable in this plan                          | Resolution chosen                |
+| -------------------------------- | ---------------------------------------------------- | -------------------------------- |
+| [e.g. Production migration path] | Requires prod-like Postgres; outside phase scope     | Backlog: [artifact name]         |
+| [e.g. Token expiry mid-session]  | Requires Clerk test tenant with configurable JWT TTL | Backlog: [artifact name]         |
+| [e.g. Cross-instance isolation]  | Requires 2+ live running instances                   | Deferred to [program/phase name] |
 
 ## Execution Protocol
 
@@ -195,7 +197,6 @@ to the per-area output format.
 ## Absorption Note
 
 This skill absorbs `ag-test-tier-selector` if that skill existed. If `ag-test-tier-selector` still exists on disk as a separate folder under `.claude/skills/`, treat this skill as its canonical replacement and note the duplication in the phase report. Do not route new work to `ag-test-tier-selector`.
-
 
 ## References
 

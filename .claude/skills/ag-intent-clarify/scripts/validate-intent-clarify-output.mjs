@@ -47,15 +47,21 @@ if (!target) {
   if (!hasSimple && !hasDeep) {
     fail(`${target} no mode chosen (expected one of simple/deep)`);
   } else if (hasSimple && hasDeep) {
-    fail(`${target} ambiguous mode: both simple and deep present (choose exactly one)`);
+    fail(
+      `${target} ambiguous mode: both simple and deep present (choose exactly one)`,
+    );
   } else {
     if (!/\b(reason|because)\b/i.test(text)) {
-      fail(`${target} mode chosen but no reason/because justification follows it`);
+      fail(
+        `${target} mode chosen but no reason/because justification follows it`,
+      );
     }
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

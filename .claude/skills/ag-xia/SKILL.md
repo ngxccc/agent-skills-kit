@@ -16,7 +16,6 @@ layer: helper
 
 Use this skill when working with ag-xia workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
@@ -160,7 +159,6 @@ When the requested adaptation would introduce new auth, schema, runtime, or work
 - `port this UX pattern into our stack`
 
 Load `references/xia-workflow.md` for the project's decision tree.
-
 
 ## References
 

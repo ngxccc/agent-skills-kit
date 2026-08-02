@@ -31,7 +31,7 @@ SPEC is a **product-discovery document**. It captures, in plain language, **what
 
 It is written for a **human reviewer**, not for an engineer. A non-technical stakeholder should be able to read a SPEC and understand: what changes for the user, how we will know it worked, and what we are deliberately not doing. No library names, no file paths, no schema decisions — those belong to later phases.
 
-SPEC is the bridge between **RESEARCH** (the facts we gathered) and **INNOVATE** (how we will build it). It turns research findings plus the user's stated intent into a written, reviewable statement of requirements. PLAN cannot start until a SPEC exists (for non-trivial work), and INNOVATE explores *how* to satisfy a SPEC that is already locked.
+SPEC is the bridge between **RESEARCH** (the facts we gathered) and **INNOVATE** (how we will build it). It turns research findings plus the user's stated intent into a written, reviewable statement of requirements. PLAN cannot start until a SPEC exists (for non-trivial work), and INNOVATE explores _how_ to satisfy a SPEC that is already locked.
 
 **SPEC consumes:** RESEARCH findings + the user's intent. **SPEC does NOT consume** a chosen approach or a Decision Summary — no approach has been chosen yet when SPEC runs. There is no Decision Summary at SPEC time and SPEC never expects one.
 
@@ -45,8 +45,8 @@ RESEARCH → SPEC → [INNOVATE] → PLAN → VALIDATE → EXECUTE → UPDATE PR
 ```
 
 - **RESEARCH** gathers the facts.
-- **SPEC** locks *what* the user wants and *why* (this phase — for user review).
-- **INNOVATE** (bracketed = skippable) explores *how* to satisfy the SPEC.
+- **SPEC** locks _what_ the user wants and _why_ (this phase — for user review).
+- **INNOVATE** (bracketed = skippable) explores _how_ to satisfy the SPEC.
 - **PLAN** turns the chosen "how" into concrete steps.
 
 For non-trivial work, SPEC always runs and INNOVATE is the optional phase. INNOVATE is skipped when the "how" is mechanical (one obvious path, no design choice); PLAN then proceeds straight from the SPEC. SPEC never depends on INNOVATE output — INNOVATE is downstream of SPEC.
@@ -55,11 +55,11 @@ For non-trivial work, SPEC always runs and INNOVATE is the optional phase. INNOV
 
 ## When SPEC Is Skipped
 
-| Context | Skip? |
-|---|---|
+| Context                                    | Skip?                                                                                                                                     |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
 | General / top-level flow, non-trivial work | **Never skipped.** SPEC always runs for non-trivial work — it is the user-review checkpoint. (INNOVATE is the skippable phase, not SPEC.) |
-| Phase program inner loop | Always skipped. The umbrella SPEC governs. |
-| Trivial fix (orchestrator-classified) | May be skipped when: single file, under 15 lines, no auth or billing surface, no new behavioral contract. |
+| Phase program inner loop                   | Always skipped. The umbrella SPEC governs.                                                                                                |
+| Trivial fix (orchestrator-classified)      | May be skipped when: single file, under 15 lines, no auth or billing surface, no new behavioral contract.                                 |
 
 ## Session Start (Tier 0 — required before anything else)
 
@@ -179,10 +179,12 @@ for the reviewer — kept at the bottom because the user-facing sections lead.
 **Acceptance Criteria (Testable Outcomes):** Each criterion is an observable outcome — phrased so the reviewer recognizes it as "what I want." Independently verifiable. No criterion references a file path or implementation detail. Minimum one criterion per user-story area. Maximum 20 criteria per SPEC.
 
 Every acceptance criterion MUST carry two secondary annotations (under the outcome, not in the headline):
+
 - `proven by:` — the named test scenario/gate that verifies it (requirement→test link).
 - `strategy:` — one of Fully-Automated / Hybrid / Agent-Probe.
 
 Rules:
+
 - Every acceptance criterion MUST name the test scenario that proves it and its strategy. A criterion with no `proven by:` scenario is incomplete.
 - **Every criterion MUST be provable by comprehensive tests, with a fully-automated E2E/integration gate wherever the behavior is automatable** — agent-probe or Known-Gap stand only as the explicitly-justified residual where automation is genuinely impossible. Vacuous-green (zero automated gates on developed behavior) is BANNED as a terminal state.
 - Scenario enumeration MUST be **grounded in the test-context-discovery performed in RESEARCH** (the full `process/context/tests/all-tests.md` router + its downstream chain, with scenarios grouped by the 3 strategies). Scenarios must come from that enumeration, **not invented** here.
@@ -270,6 +272,7 @@ Do NOT skip these bash commands. Cognitive memory is unreliable — the SPEC fil
 `PHASE_COMPLETE: SPEC` means the SPEC file is fully written, all sections are present, and Open Questions is resolved (or backlogged under /goal).
 
 **What it means:**
+
 - SPEC is locked. INNOVATE may begin.
 - The orchestrator routes to **ag-innovate-agent** by default, passing the SPEC file path explicitly. INNOVATE explores how to satisfy the SPEC.
 - **Skip case:** when the "how" is mechanical (one obvious implementation path, no design choice), INNOVATE is skipped and the orchestrator routes straight to ag-plan-agent, passing the SPEC.
@@ -281,10 +284,12 @@ Do NOT skip these bash commands. Cognitive memory is unreliable — the SPEC fil
 `SPEC_INTENT_BLOCKED` means something is missing that prevents the SPEC from being written or completed.
 
 **When to emit it:**
+
 - At session start: no RESEARCH findings and no user intent were provided.
 - At step 9: `## Open Questions` is non-empty when trying to finalize (interactive session only).
 
 **What the orchestrator does (interactive, no /goal):**
+
 - Does NOT route onward (neither INNOVATE nor PLAN).
 - Surfaces the blocked questions to the user.
 - Waits for the user to provide answers.
@@ -309,7 +314,7 @@ The one routine exit pause for SPEC. Present in a single block for **confirm / p
    - **Advance** to INNOVATE — default, when `## Open Questions` is empty/"None" and all sections are present. (Or advance to PLAN when the "how" is mechanical and INNOVATE is skipped.)
    - **Re-run SPEC (loop back)** — when intent is still ambiguous but not formally blocked. Name the specific gaps + questions feeding the next entry gate. Bounded by the ag-autoresearch 10-cycle cap.
 3. **Recommended strategy** for the next phase (INNOVATE, or PLAN if skipping INNOVATE) — 4-option suite with 7-signal score + cost, one marked recommended, as selectable choices.
-4. **Optional deep work** (ag-sequential-thinking, ag-scenario) offered as *choices*, not a pause.
+4. **Optional deep work** (ag-sequential-thinking, ag-scenario) offered as _choices_, not a pause.
 
 Under `/goal` this gate auto-proceeds on the recommended option (re-SPEC bounded by the active-loop cap).
 
@@ -332,6 +337,7 @@ All of these must be true before the phase is complete:
 When running under /goal in a phase program inner loop, SPEC is never written. The umbrella SPEC from the outer loop is the requirements doc for all phases.
 
 If the inner loop discovers a scope gap vs. the umbrella SPEC:
+
 - Note it in the phase report under `## SPEC Gaps`.
 - Add a backlog note.
 - Continue. The inner loop does not block.
@@ -348,11 +354,12 @@ You CANNOT choose an approach, write implementation steps, or modify any file ex
 
 **Read**: Load RESEARCH findings, context docs, and any existing SPEC file.
 **Bash**: ONLY for read-only/safe operations:
+
 - ✅ `ls`, `cat`, `head`, `tail`, `find`, `grep`, `date`, `pwd`, `which`
 - ✅ `git status`, `git log`, `git diff`
 - ❌ `rm`, `mv`, `cp`, `git commit`, `git push`, `git checkout`
 - ❌ Any command that modifies state outside the SPEC file
-**Write**: Restricted to `process/` paths only — the single SPEC file being created. No other file may be modified.
+  **Write**: Restricted to `process/` paths only — the single SPEC file being created. No other file may be modified.
 
 ## Status Reporting
 
@@ -365,6 +372,7 @@ End every response with the subagent status block:
 ```
 
 **Completion signal** (emitted when the SPEC is finalized, before status block):
+
 - Happy path: `PHASE_COMPLETE: SPEC — [spec file path] written. Proceed to INNOVATE.` (or `Proceed to PLAN.` when INNOVATE is skipped).
 - Blocked (interactive only): `SPEC_INTENT_BLOCKED: [missing input or unresolved open questions]`.
 

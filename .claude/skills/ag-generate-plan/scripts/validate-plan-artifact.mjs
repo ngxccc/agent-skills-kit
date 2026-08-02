@@ -42,7 +42,9 @@ function isDirectPlanArtifact(name) {
 }
 
 function isLegacyPlanShape(name) {
-  return name === "PLAN.md" || name === "plan.md" || /^phase-.*\.md$/.test(name);
+  return (
+    name === "PLAN.md" || name === "plan.md" || /^phase-.*\.md$/.test(name)
+  );
 }
 
 function hasSection(text, name) {
@@ -56,7 +58,9 @@ function validatePlan(relPath) {
   }
   if (!relPath.endsWith(".md")) fail(`${relPath} is not a markdown plan`);
   if (!isActivePlanPath(relPath)) {
-    fail(`${relPath} is not under process/general-plans/active/ or process/features/*/active/`);
+    fail(
+      `${relPath} is not under process/general-plans/active/ or process/features/*/active/`,
+    );
   }
 
   const name = path.basename(relPath);
@@ -71,7 +75,8 @@ function validatePlan(relPath) {
   // `## Current Execution State` + `## Program Status Table` co-presence signal.
   const isUmbrellaShape =
     /phase:\s*umbrella/m.test(text) ||
-    (/## Current Execution State/.test(text) && /## Program Status Table/.test(text));
+    (/## Current Execution State/.test(text) &&
+      /## Program Status Table/.test(text));
 
   // Frontmatter-declared umbrellas MUST carry the literal `umbrella` token in their filename
   // ({program-slug}-umbrella_PLAN_{date}.md). Scoped to the explicit frontmatter declaration
@@ -81,36 +86,60 @@ function validatePlan(relPath) {
   if (!hasDateStamp(name)) fail(`${relPath} filename is missing a date stamp`);
   if (!/_PLAN_/.test(name)) fail(`${relPath} filename is missing _PLAN_`);
   if (declaresUmbrellaFrontmatter && !/umbrella/i.test(name)) {
-    fail(`${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`);
+    fail(
+      `${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`,
+    );
   }
   if (!/^#\s+/m.test(text)) fail(`${relPath} missing top-level title`);
-  if (!/\*\*Date\*\*|^Date:/m.test(text)) fail(`${relPath} missing Date metadata`);
-  if (!/\*\*Status\*\*|^Status:/m.test(text)) fail(`${relPath} missing Status metadata`);
+  if (!/\*\*Date\*\*|^Date:/m.test(text))
+    fail(`${relPath} missing Date metadata`);
+  if (!/\*\*Status\*\*|^Status:/m.test(text))
+    fail(`${relPath} missing Status metadata`);
   if (!/##\s+Overview|##\s+1\.\s+Context and Goals|##\s+Context/i.test(text)) {
     fail(`${relPath} missing overview/context section`);
   }
   if (!isUmbrellaShape) {
-    if (!/\*\*Complexity\*\*|^Complexity:/m.test(text)) fail(`${relPath} missing Complexity metadata`);
-    if (!/Phase Completion Rules/i.test(text)) fail(`${relPath} missing Phase Completion Rules`);
-    if (!/Acceptance Criteria/i.test(text)) fail(`${relPath} missing Acceptance Criteria`);
+    if (!/\*\*Complexity\*\*|^Complexity:/m.test(text))
+      fail(`${relPath} missing Complexity metadata`);
+    if (!/Phase Completion Rules/i.test(text))
+      fail(`${relPath} missing Phase Completion Rules`);
+    if (!/Acceptance Criteria/i.test(text))
+      fail(`${relPath} missing Acceptance Criteria`);
   }
   if (!isUmbrellaShape && !hasSection(text, "Validate Contract")) {
     fail(`${relPath} missing Validate Contract section`);
   }
   if (!/Implementation Checklist|RFC-|Phased Delivery Plan/i.test(text)) {
-    fail(`${relPath} missing implementation checklist, RFCs, or phased delivery plan`);
+    fail(
+      `${relPath} missing implementation checklist, RFCs, or phased delivery plan`,
+    );
   }
-  if (!/Test Procedure|Post-Phase Testing|Verification|Manual Test|Data Verification|Discovery Test/i.test(text)) {
+  if (
+    !/Test Procedure|Post-Phase Testing|Verification|Manual Test|Data Verification|Discovery Test/i.test(
+      text,
+    )
+  ) {
     fail(`${relPath} missing explicit test or verification language`);
   }
   if (!/process\/context\/all-context\.md/.test(text)) {
     warn(`${relPath} does not mention process/context/all-context.md`);
   }
-  if (!/process\/context\/tests\/all-tests\.md|all-tests\.md|Post-Phase Testing|Test Procedure/i.test(text)) {
+  if (
+    !/process\/context\/tests\/all-tests\.md|all-tests\.md|Post-Phase Testing|Test Procedure/i.test(
+      text,
+    )
+  ) {
     warn(`${relPath} does not mention testing context or post-phase testing`);
   }
-  if (/✅ VERIFIED/.test(text) && !/User Confirmation|user confirmed|user-confirmed|confirmed working|user says/i.test(text)) {
-    warn(`${relPath} uses VERIFIED without explicit user-confirmation language`);
+  if (
+    /✅ VERIFIED/.test(text) &&
+    !/User Confirmation|user confirmed|user-confirmed|confirmed working|user says/i.test(
+      text,
+    )
+  ) {
+    warn(
+      `${relPath} uses VERIFIED without explicit user-confirmation language`,
+    );
   }
   if (!/ENTER EXECUTE MODE|RIPER-5|Cursor Plan|Next Step/i.test(text)) {
     warn(`${relPath} does not end with a clear next instruction for execution`);
@@ -119,18 +148,27 @@ function validatePlan(relPath) {
   const directPlan = isDirectPlanArtifact(name);
   const legacyPlan = isLegacyPlanShape(name);
   if (directPlan) {
-    if (!hasSection(text, "Touchpoints")) warn(`${relPath} is missing Touchpoints section`);
-    if (!hasSection(text, "Public Contracts")) warn(`${relPath} is missing Public Contracts section`);
-    if (!hasSection(text, "Blast Radius")) warn(`${relPath} is missing Blast Radius section`);
-    if (!hasSection(text, "Verification Evidence")) warn(`${relPath} is missing Verification Evidence section`);
-    if (!/Resume and Execution Handoff/i.test(text)) warn(`${relPath} is missing Resume and Execution Handoff section`);
+    if (!hasSection(text, "Touchpoints"))
+      warn(`${relPath} is missing Touchpoints section`);
+    if (!hasSection(text, "Public Contracts"))
+      warn(`${relPath} is missing Public Contracts section`);
+    if (!hasSection(text, "Blast Radius"))
+      warn(`${relPath} is missing Blast Radius section`);
+    if (!hasSection(text, "Verification Evidence"))
+      warn(`${relPath} is missing Verification Evidence section`);
+    if (!/Resume and Execution Handoff/i.test(text))
+      warn(`${relPath} is missing Resume and Execution Handoff section`);
   }
   if (legacyPlan) {
     if (!/primary execute anchor|execute anchor/i.test(text)) {
-      warn(`${relPath} is a legacy plan shape without an explicit execute-anchor note`);
+      warn(
+        `${relPath} is a legacy plan shape without an explicit execute-anchor note`,
+      );
     }
     if (!/supporting phase files|supporting files|phase files/i.test(text)) {
-      warn(`${relPath} is a legacy plan shape without supporting-phase-file notes`);
+      warn(
+        `${relPath} is a legacy plan shape without supporting-phase-file notes`,
+      );
     }
   }
 
@@ -143,7 +181,9 @@ function validatePlan(relPath) {
 }
 
 if (planPaths.length === 0) {
-  fail("Usage: node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>");
+  fail(
+    "Usage: node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs [--strict] <plan.md>",
+  );
 }
 
 const checkedPlans = [];

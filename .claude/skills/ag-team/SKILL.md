@@ -17,6 +17,12 @@ Coordinate multiple independent Claude Code sessions. Each teammate has own cont
 **Requires:** CLI terminal — `TaskCreate`/`TaskUpdate`/`TaskGet`/`TaskList` and `TeamCreate`/`TeamDelete` are **disabled in VSCode extension** (`isTTY` check). Agent Teams CANNOT run in VSCode.
 **Model requirement:** All teammates must run Opus 4.6 (Agent Teams constraint).
 
+## When to Apply
+
+Use when orchestrating agent teams for parallel multi-session collaboration.
+
+## How to Use
+
 ## Usage
 
 ```
@@ -311,19 +317,19 @@ IMMEDIATELY execute in order:
 
 ## When to Apply Agent Teams vs Subagents
 
-| Scenario                                   | Subagents (Agent tool) | Agent Teams    |
-| ------------------------------------------ | ---------------------- | -------------- |
+| Scenario | Subagents (Agent tool) | Agent Teams |
+| -------- | ---------------------- | ----------- |
 
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
-| Focused task (test, lint, single review)   | **Yes**                | Overkill       |
-| Sequential chain (plan -> code -> test)    | **Yes**                | No             |
-| 3+ independent parallel workstreams        | Maybe                  | **Yes**        |
-| Competing debug hypotheses                 | No                     | **Yes**        |
-| Cross-layer work (FE + BE + tests)         | Maybe                  | **Yes**        |
-| Workers need to discuss/challenge findings | No                     | **Yes**        |
-| Token budget is tight                      | **Yes**                | No (high cost) |
+| Focused task (test, lint, single review) | **Yes** | Overkill |
+| Sequential chain (plan -> code -> test) | **Yes** | No |
+| 3+ independent parallel workstreams | Maybe | **Yes** |
+| Competing debug hypotheses | No | **Yes** |
+| Cross-layer work (FE + BE + tests) | Maybe | **Yes** |
+| Workers need to discuss/challenge findings | No | **Yes** |
+| Token budget is tight | **Yes** | No (high cost) |
 
 ## Token Budget
 
@@ -382,7 +388,6 @@ If unresponsive: close terminal or kill session. Clean orphaned configs at `~/.c
 See `process/development-protocols/orchestration.md` for teammate coordination, status handling, and context-isolation rules.
 
 > v3.0.0: Agent tool migration, worktree isolation for execute devs, run_in_background spawning, updated model requirements.
-
 
 ## References
 

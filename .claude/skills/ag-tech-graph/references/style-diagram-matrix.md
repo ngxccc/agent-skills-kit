@@ -100,15 +100,15 @@ Not all styles work equally well for every diagram type. Use this guide to pick 
 
 ## Network Topology
 
-| Style             | Suitabili |
+| Style | Suitabili |
 | ----------------- | --------- | ----------------------------- |
-| 1 Flat Icon       | Excellent | Colorful device icons         |
-| 2 Dark Terminal   | Excellent | Cyberpunk-style network maps  |
-| 3 Blueprint       | Excellent | Ideal for infrastructure docs |
-| 4 Notion Clean    | Good      | Clean for IT documentation    |
-| 5 Glassmorphism   | Good      | Striking for presentations    |
-| 6 Claude Official | Good      | Professional network diagrams |
-| 7 OpenAI Official | Good      | Clean infrastructure diagrams |
+| 1 Flat Icon | Excellent | Colorful device icons |
+| 2 Dark Terminal | Excellent | Cyberpunk-style network maps |
+| 3 Blueprint | Excellent | Ideal for infrastructure docs |
+| 4 Notion Clean | Good | Clean for IT documentation |
+| 5 Glassmorphism | Good | Striking for presentations |
+| 6 Claude Official | Good | Professional network diagrams |
+| 7 OpenAI Official | Good | Clean infrastructure diagrams |
 
 ## Comparison / Feature Matrix
 

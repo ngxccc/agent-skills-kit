@@ -15,10 +15,10 @@ metadata:
 
 Use this skill when working with ag-feasibility-test workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 One-shot empirical probe skill. Used when SPEC or INNOVATE encounters an approach
@@ -31,14 +31,14 @@ hinging on an unverified external/runtime/library mechanism — the question is
 These two skills are complementary and must not be confused:
 
 - **`ag-feasibility-test` (this skill) = PRE-decision.** "Does the mechanism work at
-  all?" Run *before* SPEC/INNOVATE locks an approach, when the answer is unknown.
+  all?" Run _before_ SPEC/INNOVATE locks an approach, when the answer is unknown.
   Output: a one-shot VERDICT artifact.
 - **`ag-test-coverage-plan` = POST-plan.** "How do I cover this blast radius across
-  the 4 test tiers?" Run *after* a plan exists, when the design is already chosen.
+  the 4 test tiers?" Run _after_ a plan exists, when the design is already chosen.
   Output: a per-area tier table.
 
 If the approach is already decided and you are assigning test tiers → use
-`ag-test-coverage-plan`. If you cannot decide *because* a mechanism is unverified →
+`ag-test-coverage-plan`. If you cannot decide _because_ a mechanism is unverified →
 use this skill first.
 
 ## When To Invoke
@@ -57,19 +57,19 @@ in orchestration.md). SPEC, INNOVATE, and VALIDATE Layer 2 agents do not run pro
 Every probe belongs to one of these 8 families. Name the chosen family in the VERDICT.
 Each family has a default cost/safety class (see next section) — the probe inherits it.
 
-| # | Family | What it probes | Typical method | Default cost class |
-|---|---|---|---|---|
-| 1 | **Local process / Node script** | pure library/runtime behavior in isolation | run a `.mjs`/Bun script, regex/parse check, call the lib fn directly | cheap-local |
-| 2 | **Unit/integration test harness** | behavior under the project's own test runner | `pnpm --filter … test` (Vitest) or `bun test` on a scratch case | cheap-local |
-| 3 | **tRPC / Prisma / DB query** | route shape, query behavior, index/constraint semantics | hit a tRPC route or run a Prisma/raw-SQL query against a test DB | needs-container *(only if it needs the live app DB)* / else cheap-local |
-| 4 | **External API shape capture** | real response shape/behavior of a 3rd-party API | one live request to OpenRouter / Stripe / Composio / Clerk / Bright Data | **needs-live-provider** |
-| 5 | **Container exec / internal-port curl** | in-container service behavior, proxy injection, file-server, supervisord | `docker exec … curl http://localhost:{port}` on a **disposable** container | **needs-container** |
-| 6 | **Browser / CDP capture** | anti-detect quirks, CDP events, SPA nav, popup behavior | Playwright/CDP client, `page.on(...)`, snapshot | needs-browser |
-| 7 | **WS / SSE handshake & timing** | gateway WS framing, SSE delivery/reconnect, JSONL shape | raw `ws`/`EventSource` client + frame/timing capture | needs-container *(if against in-container service)* / else cheap-local |
-| 8 | **Cloudflare worker runtime** | KV staleness, step-replay/idempotency, edge JWT verify | `wrangler dev` + curl, deploy a throwaway worker | needs-cf |
+| #   | Family                                  | What it probes                                                           | Typical method                                                             | Default cost class                                                      |
+| --- | --------------------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| 1   | **Local process / Node script**         | pure library/runtime behavior in isolation                               | run a `.mjs`/Bun script, regex/parse check, call the lib fn directly       | cheap-local                                                             |
+| 2   | **Unit/integration test harness**       | behavior under the project's own test runner                             | `pnpm --filter … test` (Vitest) or `bun test` on a scratch case            | cheap-local                                                             |
+| 3   | **tRPC / Prisma / DB query**            | route shape, query behavior, index/constraint semantics                  | hit a tRPC route or run a Prisma/raw-SQL query against a test DB           | needs-container _(only if it needs the live app DB)_ / else cheap-local |
+| 4   | **External API shape capture**          | real response shape/behavior of a 3rd-party API                          | one live request to OpenRouter / Stripe / Composio / Clerk / Bright Data   | **needs-live-provider**                                                 |
+| 5   | **Container exec / internal-port curl** | in-container service behavior, proxy injection, file-server, supervisord | `docker exec … curl http://localhost:{port}` on a **disposable** container | **needs-container**                                                     |
+| 6   | **Browser / CDP capture**               | anti-detect quirks, CDP events, SPA nav, popup behavior                  | Playwright/CDP client, `page.on(...)`, snapshot                            | needs-browser                                                           |
+| 7   | **WS / SSE handshake & timing**         | gateway WS framing, SSE delivery/reconnect, JSONL shape                  | raw `ws`/`EventSource` client + frame/timing capture                       | needs-container _(if against in-container service)_ / else cheap-local  |
+| 8   | **Cloudflare worker runtime**           | KV staleness, step-replay/idempotency, edge JWT verify                   | `wrangler dev` + curl, deploy a throwaway worker                           | needs-cf                                                                |
 
 If none of the 8 fit, the question is probably not a feasibility probe — reconsider
-whether `ag-research-agent` (unknown *context*) or `ag-test-coverage-plan` (known
+whether `ag-research-agent` (unknown _context_) or `ag-test-coverage-plan` (known
 design) is the right tool instead.
 
 ## Probe Cost / Safety Class (MANDATORY GATE)
@@ -78,13 +78,13 @@ Every VERDICT declares one cost class. The class governs whether the probe may r
 unattended or needs explicit opt-in. **A probe that cannot be run within its safety
 gate produces an `INCONCLUSIVE` verdict — it is never silently skipped or faked.**
 
-| Cost class | Safety gate | If gate not met |
-|---|---|---|
-| **cheap-local** | none — run freely (local script, test harness, parse check) | n/a |
-| **needs-container** | use a **disposable** container only. NEVER `docker exec` the shared dev container (`app-*`) or shared Postgres. Disposable live-E2E containers need the disposable-cleanup env gate enabled. | verdict `INCONCLUSIVE`, note "no disposable container available" |
-| **needs-live-provider** | requires explicit **double opt-in** from the user before any billed/live 3rd-party call (OpenRouter, Stripe, Composio, Bright Data, Clerk). Default local mode is BYOK Mistral. | verdict `INCONCLUSIVE`, note "live-provider opt-in not granted" |
-| **needs-browser** | a browser/CDP session must be available; never drive a shared user session | verdict `INCONCLUSIVE`, note "no browser session available" |
-| **needs-cf** | a `wrangler dev`/throwaway-worker sandbox; never touch a deployed production worker | verdict `INCONCLUSIVE`, note "no CF sandbox available" |
+| Cost class              | Safety gate                                                                                                                                                                                  | If gate not met                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| **cheap-local**         | none — run freely (local script, test harness, parse check)                                                                                                                                  | n/a                                                              |
+| **needs-container**     | use a **disposable** container only. NEVER `docker exec` the shared dev container (`app-*`) or shared Postgres. Disposable live-E2E containers need the disposable-cleanup env gate enabled. | verdict `INCONCLUSIVE`, note "no disposable container available" |
+| **needs-live-provider** | requires explicit **double opt-in** from the user before any billed/live 3rd-party call (OpenRouter, Stripe, Composio, Bright Data, Clerk). Default local mode is BYOK Mistral.              | verdict `INCONCLUSIVE`, note "live-provider opt-in not granted"  |
+| **needs-browser**       | a browser/CDP session must be available; never drive a shared user session                                                                                                                   | verdict `INCONCLUSIVE`, note "no browser session available"      |
+| **needs-cf**            | a `wrangler dev`/throwaway-worker sandbox; never touch a deployed production worker                                                                                                          | verdict `INCONCLUSIVE`, note "no CF sandbox available"           |
 
 The emitted `VC-FEASIBILITY-PROBE-NEEDED` signal SHOULD carry the anticipated cost
 class so the orchestrator can resolve the opt-in gate before dispatching ag-debugger
@@ -120,6 +120,7 @@ originating-phase: spec | innovate | pvl
 ```
 
 The `originating-phase:` field is REQUIRED. Valid values:
+
 - `spec` — probe triggered by ag-spec-agent ([SP3])
 - `innovate` — probe triggered by ag-innovate-agent ([I2.5])
 - `pvl` — probe triggered by ag-validate-agent Layer 2 ([V2-PROBE])
@@ -127,29 +128,37 @@ The `originating-phase:` field is REQUIRED. Valid values:
 Required sections (MUST be present — validated by `validate-feasibility-verdict.mjs`):
 
 ### Hypothesis
+
 One-sentence statement of what is being tested.
 
 ### Mechanism Under Test
+
 The specific external, runtime, or library behavior being probed.
 
 ### Probe Family
+
 One of the 8 families above (e.g. `5 — Container exec / internal-port curl`).
 
 ### Probe Cost Class
+
 One of: `cheap-local` | `needs-container` | `needs-live-provider` | `needs-browser` | `needs-cf`.
 State whether the safety gate was met.
 
 ### Probe Method
+
 The exact command(s) or steps run to test the hypothesis.
 
 ### Evidence Captured
+
 The raw output from the probe (trimmed to relevant lines). For an `INCONCLUSIVE`
 gate-not-met verdict, state explicitly that the probe was not run and why.
 
 ### Verdict
+
 One of: `VIABLE` | `NOT-VIABLE` | `INCONCLUSIVE`
 
 ### Resulting Design Constraint
+
 The "action consequence" of the probe, split into three explicit parts:
 
 - **What this licenses:** what the approach is now allowed to depend on.
@@ -160,11 +169,13 @@ The "action consequence" of the probe, split into three explicit parts:
 ## Completion Signal
 
 After writing the VERDICT artifact, emit:
+
 ```
 VC-FEASIBILITY-VERDICT-READY: [verdict keyword] — [full path to VERDICT file]
 ```
 
 Example:
+
 ```
 VC-FEASIBILITY-VERDICT-READY: NOT-VIABLE — process/features/model-selector/active/model-selector_10-06-26/model-selector_FEASIBILITY_10-06-26.md
 ```
@@ -179,12 +190,12 @@ Prior Feasibility: [hypothesis] — verdict: [VIABLE|NOT-VIABLE|INCONCLUSIVE] �
 ```
 
 Example:
+
 ```
 Prior Feasibility: Does the gateway forward params.provider.sort? — verdict: NOT-VIABLE — licenses: nothing new — forbids: any approach depending on params.provider.sort being forwarded (the layer strips it) — uncertain: whether a different forwarding field survives
 ```
 
 The re-spawned SPEC, INNOVATE, or VALIDATE agent reads this block and uses the verdict to lock or reject the approach. When `originating-phase: pvl`, the re-spawned ag-validate-agent resumes from V1 and records resolved probes in a `## Feasibility Probes Resolved` subsection of the validate-contract (omitted when no probe ran).
-
 
 ## References
 

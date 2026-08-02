@@ -6,10 +6,10 @@
 
 ## 🛡️ Supported Versions
 
-| Version | Supported | Notes |
-| :--- | :--- | :--- |
-| **Latest (`main` branch)** | ✅ Yes | Active security patches and updates |
-| Older releases / commits | ❌ No | Please upgrade to latest `main` |
+| Version                    | Supported | Notes                               |
+| :------------------------- | :-------- | :---------------------------------- |
+| **Latest (`main` branch)** | ✅ Yes    | Active security patches and updates |
+| Older releases / commits   | ❌ No     | Please upgrade to latest `main`     |
 
 ---
 
@@ -22,6 +22,7 @@ To report a vulnerability privately, please use GitHub Private Vulnerability Rep
 👉 **[Report a Security Vulnerability](https://github.com/ngxccc/agent-skills-kit/security/advisories/new)**
 
 ### Response Timeline
+
 - **Acknowledgment:** Within 48 hours.
 - **Severity Assessment:** Within 7 days.
 - **Patch & Fix:** Target resolution within 30 days.
@@ -31,6 +32,7 @@ To report a vulnerability privately, please use GitHub Private Vulnerability Rep
 ## 🎯 Scope
 
 ### In Scope
+
 - **Hook Scripts (`.claude/hooks/`, `.codex/hooks/`)**: Bypass flaws in `privacy-block.cjs` or `scout-block.cjs` that allow unauthorized access to sensitive files or secrets.
 - **Installer Script (`install.sh`)**: Command injection, supply chain issues, or unsafe file operations.
 - **Agent Governance & Prompts (`.claude/agents/`, `.codex/agents/`)**: Prompt injection vulnerabilities that bypass RIPER-5 phase-locking, tool permissions, or formal spec risk gates.
@@ -38,6 +40,7 @@ To report a vulnerability privately, please use GitHub Private Vulnerability Rep
 - **ADR & Spec Verification Scripts**: Vulnerabilities in automated validators (`validate-docs.mjs`, `validate-agent-parity.mjs`).
 
 ### Out of Scope
+
 - Vulnerabilities in upstream AI CLI tools (Claude Code, OpenAI Codex, Antigravity).
 - Vulnerabilities in application code outside the harness directory.
 - Denial of Service (DoS) against local developer workstations.

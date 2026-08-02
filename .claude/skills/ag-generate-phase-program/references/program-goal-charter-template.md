@@ -9,6 +9,7 @@ metadata:
   required: false
   read_when: "building a phase-program umbrella plan or needing the compressed session-goal block format"
 ---
+
 # Program Goal Charter Template
 
 This is the canonical template for the **Program Goal Charter** required by every phase program.

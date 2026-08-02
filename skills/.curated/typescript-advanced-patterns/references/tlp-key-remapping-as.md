@@ -49,9 +49,11 @@ type G = Getters<{ id: string; name: string }>;
 
 // Filter and rename simultaneously:
 type Setters<T> = {
-  [K in keyof T & string as T[K] extends Function
-    ? never
-    : `set${Capitalize<K>}`]: (value: T[K]) => void;
+  [
+    K in keyof T & string as T[K] extends Function
+      ? never
+      : `set${Capitalize<K>}`
+  ]: (value: T[K]) => void;
 };
 
 type S = Setters<User>;

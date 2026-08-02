@@ -6,6 +6,7 @@ metadata:
   node_type: memory
   type: report
 ---
+
 # Risk Evidence Harness
 
 Manual-first durable proof pack for risky product changes.

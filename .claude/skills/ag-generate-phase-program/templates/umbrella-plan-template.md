@@ -1,11 +1,11 @@
 ---
 name: plan:{program-slug}-umbrella
 description: "{Program name} — umbrella/orchestration plan for the {N}-phase program"
-date: {dd-mm-yy}
+date: { dd-mm-yy }
 metadata:
   node_type: memory
   type: plan
-  feature: {feature-name}
+  feature: { feature-name }
   phase: umbrella
 ---
 
@@ -109,12 +109,12 @@ START: Phase {N}, loop step RESEARCH (pending). Spawn ag-research-agent for Phas
 
 ## Phase Sequence
 
-| Phase | Plan file | Scope summary | Depends on |
-|---|---|---|---|
-| 0 (pre-program) | this file | Confirm folder structure, baseline audit, create sub-phase plans | — |
-| 1 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-01-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary} | Phase 0 |
-| 2 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-02-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary} | Phase 1 |
-| 3 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-03-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary} | Phase 1 + Phase 2 |
+| Phase           | Plan file                                                                                        | Scope summary                                                    | Depends on        |
+| --------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------- | ----------------- |
+| 0 (pre-program) | this file                                                                                        | Confirm folder structure, baseline audit, create sub-phase plans | —                 |
+| 1 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-01-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary}                                                  | Phase 0           |
+| 2 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-02-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary}                                                  | Phase 1           |
+| 3 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-03-{slug}_PLAN_{dd-mm-yy}.md` | {scope summary}                                                  | Phase 1 + Phase 2 |
 
 ### Join Conditions
 
@@ -126,12 +126,12 @@ START: Phase {N}, loop step RESEARCH (pending). Spawn ag-research-agent for Phas
 
 ## Per-Phase Entry / Exit Gates
 
-| Phase | Entry | Exit gate |
-|---|---|---|
-| 0 | Program start | Phase plan files created; baseline validators recorded |
-| 1 | Phase 0 complete | {exit condition for phase 1} |
-| 2 | Phase 1 exit met | {exit condition for phase 2} |
-| 3 | Phases 1+2 exits met | {exit condition for phase 3} |
+| Phase | Entry                | Exit gate                                              |
+| ----- | -------------------- | ------------------------------------------------------ |
+| 0     | Program start        | Phase plan files created; baseline validators recorded |
+| 1     | Phase 0 complete     | {exit condition for phase 1}                           |
+| 2     | Phase 1 exit met     | {exit condition for phase 2}                           |
+| 3     | Phases 1+2 exits met | {exit condition for phase 3}                           |
 
 ---
 
@@ -155,6 +155,7 @@ loop SKIPS SPEC — SPEC runs once in the outer program loop, not per phase. The
 ## Autonomous Execution Rules (During /goal)
 
 During /goal execution of a phase program:
+
 - Agent self-decides at all V5 gates — no user approval needed between phases
 - CONDITIONAL net gate: proceed autonomously, fixes applied in-flight, gaps on record
 - BLOCKED net gate: document items in backlog, continue with remaining phase plans; backlog is always a valid resolution — always find a path forward
@@ -178,23 +179,23 @@ During /goal execution of a phase program:
 
 ## Durable Report Destinations
 
-| Phase | Report path (inside task folder) |
-|---|---|
+| Phase           | Report path (inside task folder)                                                                            |
+| --------------- | ----------------------------------------------------------------------------------------------------------- |
 | 0 (pre-program) | `process/features/{feature}/active/{program-slug}-umbrella_{dd-mm-yy}/phase-00-{slug}_REPORT_{dd-mm-yy}.md` |
-| 1 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-01-{slug}_REPORT_{dd-mm-yy}.md` |
-| 2 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-02-{slug}_REPORT_{dd-mm-yy}.md` |
-| 3 — {Name} | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-03-{slug}_REPORT_{dd-mm-yy}.md` |
+| 1 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-01-{slug}_REPORT_{dd-mm-yy}.md`          |
+| 2 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-02-{slug}_REPORT_{dd-mm-yy}.md`          |
+| 3 — {Name}      | `process/features/{feature}/active/{program-slug}_{dd-mm-yy}/phase-03-{slug}_REPORT_{dd-mm-yy}.md`          |
 
 ---
 
 ## Program Status Table
 
-| Phase | Status |
-|---|---|
+| Phase                           | Status     |
+| ------------------------------- | ---------- |
 | 0 — Pre-program (plan creation) | ⏳ PLANNED |
-| 01 — {Name} | ⏳ PLANNED |
-| 02 — {Name} | ⏳ PLANNED |
-| 03 — {Name} | ⏳ PLANNED |
+| 01 — {Name}                     | ⏳ PLANNED |
+| 02 — {Name}                     | ⏳ PLANNED |
+| 03 — {Name}                     | ⏳ PLANNED |
 
 Status values: ⏳ PLANNED | 🔨 CODE DONE | 🧪 TESTING | ✅ VERIFIED | 🚧 BLOCKED | ✅ COMPLETE
 

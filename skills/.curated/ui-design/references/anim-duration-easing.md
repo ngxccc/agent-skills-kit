@@ -62,13 +62,14 @@ Too-slow animations feel laggy; too-fast ones feel jarring. Proper duration and 
 ```
 
 **Duration guidelines by action type:**
-| Action | Duration |
-|--------|----------|
-| Hover/focus states | 100-150ms |
-| Button feedback | 100-200ms |
+
+| Action               | Duration  |
+| -------------------- | --------- |
+| Hover/focus states   | 100-150ms |
+| Button feedback      | 100-200ms |
 | Dropdowns/accordions | 200-300ms |
-| Modals/dialogs | 200-400ms |
-| Page transitions | 300-500ms |
+| Modals/dialogs       | 200-400ms |
+| Page transitions     | 300-500ms |
 
 **Common easing curves:**
 

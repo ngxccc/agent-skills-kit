@@ -1,48 +1,32 @@
 ---
-name: <your-skill-name>
-description: "Trigger keywords: <keywords>. Brief explanation of what this skill does and when the agent should activate it."
-license: MIT
-argument-hint: "[no-args]"
-metadata:
-  author: ngxc
-  version: "1.0.0"
+name: <skill-slug>
+description: "Use when <trigger-condition-1> or <trigger-condition-2>. Brief imperative summary of capability."
+trigger_keywords: <keyword-1>, <keyword-2>, <keyword-3>
+layer: helper
 ---
 
 # <Skill Title>
 
 ## When to Apply
 
-This skill is designed for the agent to reference when:
-- The user is working on <technology/topic>.
-- The agent needs to perform <action/workflow>.
-- <Specific trigger keyword or condition>.
-
----
+Use when:
+- Working on <technology / feature topic>.
+- Performing <workflow or task type>.
+- Triggered by: `<keyword-1>`, `<keyword-2>`.
 
 ## How to Use
 
-### 1. Step-by-Step Instructions
+### Core Protocol
 
-1. **Step 1:** Detailed action.
-2. **Step 2:** Detailed action.
+1. **<Step 1 Name>:** <Imperative instruction; use MUST / NEVER for critical boundaries>.
+2. **<Step 2 Name>:** <Imperative instruction>.
 
-### 2. Examples
+### Execution Example
 
-#### Example 1: <Scenario Title>
-- **Context:** <Context description>
-- **User prompt:** <Prompt text>
-- **Action/Result:** <Expected behavior>
-
----
-
-## Quick Reference
-
-- `<rule-slug-one>` - Description of the first rule.
-- `<rule-slug-two>` - Description of the second rule.
-
----
+- **Context:** <Brief scenario description>
+- **Prompt:** "<Sample user request>"
+- **Action:** <Expected step-by-step agent tool calls and behavior>
 
 ## References
 
-- [rule-slug-one](references/rule-slug-one.md) - Detail page for the first rule.
-- [rule-slug-two](references/rule-slug-two.md) - Detail page for the second rule.
+- [references/<rule-slug>.md](references/<rule-slug>.md) — <Detailed rules; read only when specific sub-topic details are needed>

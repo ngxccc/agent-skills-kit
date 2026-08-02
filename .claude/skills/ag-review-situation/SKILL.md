@@ -16,10 +16,10 @@ metadata:
 
 Use this skill when working with ag-review-situation workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > Output style: lead with the bottom line, bullets over prose, one-line TL;DR — `process/development-protocols/communication-standards.md`.
 
 Summarize the current repo state for handoff and resume work.
@@ -40,6 +40,7 @@ This is a helper skill only.
 Run `review-situation-scan.cjs`, return the scan summary.
 
 **Use when:**
+
 - User asks "what's in flight", "what's next", "give me a handoff summary"
 - Quick orientation needed at the start of a session
 - Orchestrator needs a branch/plan status check before routing
@@ -51,6 +52,7 @@ Run `review-situation-scan.cjs`, return the scan summary.
 Run the scan **plus** read umbrella plan, latest phase report, and all active-plan handoff sections. Synthesize into a full handoff briefing sufficient for an agent to resume without follow-up questions.
 
 **Trigger conditions (any one):**
+
 - User asks for a full program review: "what are we building", "summarize all active plans", "where are we in the program"
 - Session is resuming after a long break or context compaction occurred
 - Orchestrator needs a thorough handoff before routing to a phase agent
@@ -58,6 +60,7 @@ Run the scan **plus** read umbrella plan, latest phase report, and all active-pl
 - **Program Review Mode is active** — Program Review Mode is Deep Mode
 
 **Deep mode steps:**
+
 1. Run `review-situation-scan.cjs` as normal (get branch state + active plan list)
 2. If a phase program is active: read the umbrella plan in full — especially `## Current Execution State` and `## Phase Ordering`
 3. Read the most recent phase report in full (if it exists)
@@ -194,7 +197,6 @@ Read and compare process artifacts (plan file + validate-contract, or plan vs gi
 - **File viewer:** Read any process artifact (plan, report, validate-contract) and emit a clean inline summary with key decisions, open items, and exit gates — useful before passing context to an execute subagent.
 - **Output format:** ASCII tables and prose only — no Mermaid, no HTML, no server. Output is terminal-friendly and safe to paste into a subagent prompt.
 - **Trigger phrases:** `review the plan`, `show plan vs contract`, `what did we plan vs what changed`, `summarize this plan file`, `diff plan against code`
-
 
 ## References
 

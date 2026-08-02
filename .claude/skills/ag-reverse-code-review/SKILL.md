@@ -15,6 +15,7 @@ layer: helper
 ## When to Apply
 
 This skill is designed for the agent to reference when:
+
 - The user is a student or developer choosing between multiple architectural patterns or implementation approaches.
 - The agent needs to present multi-option Trade-off Matrices to evaluate student critical thinking and mental models.
 - Triggered by explicit keywords: `reverse review`, `compare options`, `trade-off analysis`, `eval approaches`, `which pattern is better`.
@@ -36,11 +37,13 @@ This skill is designed for the agent to reference when:
 ### 2. Examples
 
 #### Example 1: Evaluating Concurrency Locking Options
+
 - **Context:** Student needs to select a locking mechanism for a high-concurrency ticket system.
 - **User prompt:** "Should I use Optimistic Locking or Redis Redlock for ticket reservation?"
 - **Action/Result:** The agent presents Option A (TypeORM Optimistic Lock `@Version`), Option B (`SELECT FOR UPDATE`), and Option C (Redis Redlock). It asks the student to construct a Trade-off Matrix evaluating Latency vs Consistency under 10,000 req/sec.
 
 #### Example 2: Comparing State Management Strategies
+
 - **Context:** Student is deciding between local Zustand store vs server-side Redis session for cart state.
 - **User prompt:** "Compare Zustand vs Redis for managing user cart state."
 - **Action/Result:** The agent presents Option A (Client-side Zustand), Option B (Server Redis Session), and Option C (Hybrid optimistic UI). It requires the student to evaluate offline support vs cross-device sync trade-offs.

@@ -36,10 +36,22 @@ if (!target) {
     { label: "1 Selected plan path", re: /selected plan path/i },
     { label: "2 Closeout classification", re: /closeout classification/i },
     { label: "3 What was finished", re: /what was finished/i },
-    { label: "4 What was verified vs still unverified", re: /verified.{0,12}unverified/i },
-    { label: "5 Cleanup done vs still needed", re: /cleanup done.{0,12}still needed/i },
-    { label: "6 Single best next valid state", re: /single best next valid state/i },
-    { label: "7 Commit-checkpoint recommendation", re: /commit[- ]checkpoint recommendation/i },
+    {
+      label: "4 What was verified vs still unverified",
+      re: /verified.{0,12}unverified/i,
+    },
+    {
+      label: "5 Cleanup done vs still needed",
+      re: /cleanup done.{0,12}still needed/i,
+    },
+    {
+      label: "6 Single best next valid state",
+      re: /single best next valid state/i,
+    },
+    {
+      label: "7 Commit-checkpoint recommendation",
+      re: /commit[- ]checkpoint recommendation/i,
+    },
     { label: "8 Regression status", re: /regression status/i },
   ];
   for (const it of items) {
@@ -55,7 +67,9 @@ if (!target) {
     "Strongly recommend UPDATE PROCESS -- harness/protocol files touched.",
   ];
   if (!driftPhrases.some((p) => text.includes(p))) {
-    fail(`${target} missing verbatim drift-threshold phrase (LOW/MEDIUM/HIGH literal)`);
+    fail(
+      `${target} missing verbatim drift-threshold phrase (LOW/MEDIUM/HIGH literal)`,
+    );
   }
 
   // 3. Exactly one of the 3 archive-readiness classification states.
@@ -72,7 +86,9 @@ if (!target) {
   }
 }
 
-console.log(JSON.stringify({ target: target ?? null, warnings, failures }, null, 2));
+console.log(
+  JSON.stringify({ target: target ?? null, warnings, failures }, null, 2),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;

@@ -5,7 +5,9 @@ import path from "node:path";
 const artifactDir = process.argv[2];
 
 if (!artifactDir) {
-  console.error("Usage: node .claude/skills/ag-risk-evidence-pack/scripts/validate-risk-artifacts.mjs <artifact-dir>");
+  console.error(
+    "Usage: node .claude/skills/ag-risk-evidence-pack/scripts/validate-risk-artifacts.mjs <artifact-dir>",
+  );
   process.exit(1);
 }
 
@@ -47,8 +49,19 @@ requireFields("risk-gate.json", riskGate, [
   "why",
 ]);
 requireFields("context-snippets.json", contextSnippets, ["task"]);
-requireFields("verification.json", verification, ["task", "commands", "manualChecks", "result"]);
-requireFields("review-decision.json", reviewDecision, ["task", "decision", "blockingFindings", "nonBlockingFindings", "notes"]);
+requireFields("verification.json", verification, [
+  "task",
+  "commands",
+  "manualChecks",
+  "result",
+]);
+requireFields("review-decision.json", reviewDecision, [
+  "task",
+  "decision",
+  "blockingFindings",
+  "nonBlockingFindings",
+  "notes",
+]);
 
 if (riskGate && !["low", "medium", "high"].includes(riskGate.riskLevel)) {
   failures.push("risk-gate.json riskLevel must be low, medium, or high");
@@ -66,19 +79,32 @@ if (verification && !Array.isArray(verification.manualChecks)) {
   failures.push("verification.json manualChecks must be an array");
 }
 
-if (reviewDecision && !["approved", "approved-with-concerns", "rejected"].includes(reviewDecision.decision)) {
-  failures.push("review-decision.json decision must be approved, approved-with-concerns, or rejected");
+if (
+  reviewDecision &&
+  !["approved", "approved-with-concerns", "rejected"].includes(
+    reviewDecision.decision,
+  )
+) {
+  failures.push(
+    "review-decision.json decision must be approved, approved-with-concerns, or rejected",
+  );
 }
 
 if (riskGate?.riskLevel === "high" && !adversarialValidation) {
   warnings.push("high-risk pack is missing adversarial-validation.json");
 }
 
-console.log(JSON.stringify({
-  artifactDir: root,
-  warnings,
-  failures,
-}, null, 2));
+console.log(
+  JSON.stringify(
+    {
+      artifactDir: root,
+      warnings,
+      failures,
+    },
+    null,
+    2,
+  ),
+);
 
 if (failures.length > 0) {
   process.exitCode = 1;
