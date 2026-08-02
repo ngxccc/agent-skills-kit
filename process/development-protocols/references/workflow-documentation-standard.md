@@ -1,12 +1,13 @@
 ---
-title: Workflow Documentation Standard & Templates (SSOT)
-tags:
-  - type/standard
-  - topic/documentation
-  - ssot
-docType: standard
-date: 2026-07-26
-version: 1.0.0
+name: protocol:references-workflow-documentation-standard
+description: "SSOT Workflow Documentation Standard & Templates for feature and infrastructure workflows."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: true
+  read_when: "creating or updating workflow documentation artifacts"
 ---
 
 # Workflow Documentation Standard & Templates (Single Source of Truth - SSOT)

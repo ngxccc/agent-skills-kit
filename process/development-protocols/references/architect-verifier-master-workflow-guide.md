@@ -1,3 +1,15 @@
+---
+name: protocol:references-architect-verifier-master-workflow-guide
+description: "Master Autonomous Architect & Verifier Operational Playbook for High-Risk features."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: true
+  read_when: "executing High-Risk tasks requiring formal spec, frozen TDD suite, and Socratic interrogation"
+---
+
 # Architect & Verifier Autonomous Operational Playbook (Master Workflow Guide)
 
 > **Agent Execution Mandate:** This document defines the mandatory, autonomous state machine for executing technical changes across the `agent-skills-kit` harness: Idea $\rightarrow$ Formal Spec $\rightarrow$ Frozen TDD Suite $\rightarrow$ Counter-Example Loop $\rightarrow$ Socratic Interrogation $\rightarrow$ Proof Review $\rightarrow$ Operational SSOT Documentation.

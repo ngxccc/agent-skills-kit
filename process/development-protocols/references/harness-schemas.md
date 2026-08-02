@@ -1,12 +1,13 @@
 ---
-title: Harness JSON Artifacts Schema & Specification (SSOT v2.0.0)
-tags:
-  - type/specification
-  - topic/harness
-  - ssot
-docType: specification
-date: 2026-08-01
-version: 2.0.0
+name: protocol:references-harness-schemas
+description: "Harness JSON Artifacts Schema & Specification."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: true
+  read_when: "validating harness JSON artifact structures and schemas"
 ---
 
 # Harness JSON Artifacts Schema & Specification (SSOT v2.0.0)

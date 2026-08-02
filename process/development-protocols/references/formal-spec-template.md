@@ -1,11 +1,13 @@
 ---
-title: <Feature> <Topic> Formal Specification Template
-tags:
-  - type/template
-  - topic/formal-spec
-docType: formal-spec-template
-version: 1.0.0
-date: YYYY-MM-DD
+name: protocol:references-formal-spec-template
+description: "Template for creating formal specifications for High-Risk features."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: false
+  read_when: "writing a formal spec for a High-Risk feature"
 ---
 
 # Formal Specification: <Feature> <Topic>

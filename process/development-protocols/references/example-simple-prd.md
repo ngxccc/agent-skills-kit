@@ -1,3 +1,15 @@
+---
+name: protocol:references-example-simple-prd
+description: "Reference example of a SIMPLE single-session PRD plan."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: false
+  read_when: "calibrating simple single-session implementation plans"
+---
+
 # Duma Neobrutalist Redesign Plan
 
 **Date**: August 1, 2026  

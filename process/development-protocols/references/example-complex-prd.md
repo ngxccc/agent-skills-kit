@@ -1,3 +1,15 @@
+---
+name: protocol:references-example-complex-prd
+description: "Reference example of a COMPLEX multi-phase PRD plan."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: false
+  read_when: "calibrating complex multi-phase implementation plans"
+---
+
 # LinkedIn Achievements Dashboard: Shareable Analytics PRD
 
 **Date**: January 25, 2026

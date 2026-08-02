@@ -1,3 +1,15 @@
+---
+name: protocol:references-agent-prompt-template
+description: "Canonical 5-section agent prompt architecture template for specialist agents."
+date: 2026-08-02
+metadata:
+  node_type: memory
+  type: protocol
+  read_order: 1
+  required: true
+  read_when: "writing or refactoring agent prompt definitions"
+---
+
 # Canonical Agent Prompt Architecture Template (SSOT v1.1.0)
 
 This reference document defines the standard 5-Section Architecture for writing and refactoring all Specialist Agent Prompts (`.claude/agents/*.md` and mirrored `.codex/agents/*.toml`) within the `agent-skills-kit` harness.
