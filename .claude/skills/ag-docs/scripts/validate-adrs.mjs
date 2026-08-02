@@ -96,7 +96,7 @@ for (const file of files) {
   }
 }
 
-console.log("\n" + "─".repeat(50));
+console.log(`\n${"─".repeat(50)}`);
 if (failures > 0) {
   console.error(`\n${colors.red}${colors.bold}Audit failed with ${failures} error(s).${colors.reset}`);
   process.exit(1);

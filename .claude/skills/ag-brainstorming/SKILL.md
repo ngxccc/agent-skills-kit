@@ -1,155 +1,65 @@
 ---
 name: ag-brainstorming
-description: "You MUST use this before any creative work - creating features, building components, adding functionality, or modifying behavior. Explores user intent, requirements and design before implementation."
+description: "Use when starting creative work, building components, or modifying behavior. Trigger keywords: brainstorm, spec, design, approach, requirements, clarify. Explores user intent, requirements, architecture trade-offs, and design specs before implementation."
+license: MIT
+argument-hint: "[no-args]"
+metadata:
+  author: ngxc
+  version: "1.3.0"
 ---
 
-# Brainstorming Ideas Into Designs
+# Brainstorming Ideas Into Designs (`ag-brainstorming`)
 
 ## When to Apply
 
-Use this skill before starting any creative work — including creating features, building components, adding functionality, modifying behavior, or proposing any non-trivial code or config changes. It enforces a collaborative design phase before planning and implementation begins.
+This skill is designed for the agent to reference when:
+
+- Starting any creative work, building new components, adding features, or modifying system behavior.
+- Exploring user intent, requirements, architecture trade-offs (Trade-off Matrix), and design specifications before implementation.
+- Evaluating designs against the 7 Baseline Engineering Evaluation Domains (Domain A–G: Security, UI/UX, Performance, Reliability, Maintainability, Observability, Compliance).
+- Triggered by explicit keywords: `brainstorm`, `spec`, `design`, `approach`, `requirements`, `clarify`.
+
+---
 
 ## How to Use
 
-Help turn ideas into fully formed designs and specs through natural collaborative dialogue.
+### 1. Step-by-Step Instructions
 
-Start by understanding the current project context, then ask questions one at a time to refine the idea. Once you understand what you're building, present the design and get user approval.
+1. **Explore Project Context:** Check codebase, existing architecture, and recent commits before proposing changes.
+2. **Interactive Socratic Questioning:** Ask clarifying questions one at a time to uncover purpose, constraints, and success criteria.
+3. **Structured Trade-Off Matrix:** Propose 2–3 approaches formatted as a Trade-off Matrix (Pros/Cons/Risk Class) with a recommended default choice.
+4. **Domain A–G Evaluation:** Systematically evaluate design against Security, UI/UX, Performance, Reliability, Maintainability, Observability, and Compliance.
+5. **High-Risk Class Grilling:** For Auth, Billing, Schema, API Gateway, or Secrets, execute One-Question Grilling and invoke `ag-docs adr` for hard architectural decisions.
+6. **Write Design Doc / Formal Spec:** Save design to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/`).
+7. **Transition:** After user approves written spec, invoke the `ag-generate-plan` skill to create the implementation plan.
 
-<HARD-GATE>
-Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
-</HARD-GATE>
+### 2. Examples
 
-### Anti-Pattern: "This Is Too Simple To Need A Design"
+#### Example 1: New Feature Brainstorming & Trade-Off Matrix
 
-Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+- **Context:** User wants to add OAuth2 social login to an existing app.
+- **User prompt:** "Help me brainstorm the design for adding Google and GitHub OAuth login."
+- **Action/Result:** Agent checks current auth state, presents a Trade-off Matrix comparing Session cookies vs JWT tokens, evaluates Domain A (Security) and Domain D (Reliability), writes spec doc, and transitions to plan mode.
 
-### Checklist
+#### Example 2: High-Risk System Redesign
 
-You MUST create a task for each of these items and complete them in order:
+- **Context:** Redesigning payment credit calculation and schema migration.
+- **User prompt:** "Brainstorm redesigning our billing credit engine."
+- **Action/Result:** Agent identifies High-Risk billing class, executes One-Question Grilling with default choices, records ADR via `ag-docs adr`, writes Formal Spec to `process/features/billing/active/Billing_Credit_Formal_Spec.md`, and requests user review.
 
-1. **Explore project context** — check files, docs, recent commits
-2. **Ask clarifying questions** — one at a time, understand purpose/constraints/success criteria
-3. **Propose 2-3 approaches** — with trade-offs and your recommendation
-4. **Present design** — in sections scaled to their complexity, get user approval after each section
-5. **Write design doc** — save to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/YYYY-MM-DD-<topic>-design.md` if general) and commit
-6. **Spec self-review** — quick inline check for placeholders, contradictions, ambiguity, scope (see below)
-7. **User reviews written spec** — ask user to review the spec file before proceeding
-8. **Transition to implementation** — invoke writing-plans skill to create implementation plan
+---
 
-### Process Flow
+## Quick Reference
 
-```dot
-digraph brainstorming {
-    "Explore project context" [shape=box];
-    "Ask clarifying questions" [shape=box];
-    "Propose 2-3 approaches" [shape=box];
-    "Present design sections" [shape=box];
-    "User approves design?" [shape=diamond];
-    "Write design doc" [shape=box];
-    "Spec self-review\n(fix inline)" [shape=box];
-    "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans skill" [shape=doublecircle];
+- `collaborative-design` - Never write code before design approval.
+- `trade-off-matrix` - Present choices using a structured Pros/Cons/Risk matrix.
+- `domain-a-g-framework` - Evaluate across Security, UI/UX, Performance, Reliability, Maintainability, Observability, and Compliance.
+- `high-risk-grilling` - Enforce system invariants (`INV-1`) and ADR creation (`ag-docs adr`) for critical domains.
+- `terminal-state` - The only skill invoked after design approval is `ag-generate-plan`.
 
-    "Explore project context" -> "Ask clarifying questions";
-    "Ask clarifying questions" -> "Propose 2-3 approaches";
-    "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
-    "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
-    "Write design doc" -> "Spec self-review\n(fix inline)";
-    "Spec self-review\n(fix inline)" -> "User reviews spec?";
-    "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
-}
-```
-
-**The terminal state is invoking writing-plans.** Do NOT invoke frontend-design, mcp-builder, or any other implementation skill. The ONLY skill you invoke after brainstorming is writing-plans.
-### The Process
-
-**Understanding the idea:**
-
-- Check out the current project state first (files, docs, recent commits)
-- Before asking detailed questions, assess scope: if the request describes multiple independent subsystems (e.g., "build a platform with chat, file storage, billing, and analytics"), flag this immediately. Don't spend questions refining details of a project that needs to be decomposed first.
-- If the project is too large for a single spec, help the user decompose into sub-projects: what are the independent pieces, how do they relate, what order should they be built? Then brainstorm the first sub-project through the normal design flow. Each sub-project gets its own spec → plan → implementation cycle.
- - For appropriately-scoped projects, ask questions one at a time to refine the idea
- - **High-Risk Class Detection & One-Question Grilling Protocol**:
-   - Check if the task touches a High-Risk Class (*Auth/Identity, Billing/Credits, Schema/Data Migration, Public API Contracts, Deploy/Runtime Gateway, Permission/Secrets*).
-   - If **High-Risk**, execute **One-Question Grilling**: ask exactly one question per message, ALWAYS offer a recommended default answer based on current codebase context, and systematically cover: (1) System Invariants (`INV-1`), (2) Fail-Safe behavior, (3) Level 2 Property-Based & Adversarial scenarios.
-   - Output a Formal Specification document following the strict audit-friendly naming rule: `process/features/{feature}/active/<Feature>_<Topic>_Formal_Spec.md` (where `<Feature>` matches the feature folder name or plan stem).
-   - **Architectural Decision Record (ADR) Integration**: When a hard-to-reverse architectural decision is agreed upon during Grilling (e.g., choosing Outbox Pattern, adopting pessimistic locking, selecting token algorithm), invoke `ag-adr` to create a centralized record at `second-brain/Docs/ADRs/000X-<kebab-case-name>.md` and link it inside the Formal Spec under System Invariants.
- - Prefer multiple choice questions when possible, but open-ended is fine too
- - Only one question per message - if a topic needs more exploration, break it into multiple questions
- - Focus on understanding: purpose, constraints, success criteria
-**Exploring approaches:**
-
-- Propose 2-3 different approaches with trade-offs
-- Apply clear reasoning/thinking frameworks to analyze the options (e.g., first-principles, structured thinking, business alignment)
-- Present options conversationally, providing the business rationale and tradeoffs for each option, demonstrating how they align with the business context
-- Lead with your recommended option and explain why
-
-**Presenting the design:**
-
-- Once you believe you understand what you're building, present the design
-- Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- Ask after each section whether it looks right so far
-- Cover: architecture, components, data flow, error handling, testing
-- Be ready to go back and clarify if something doesn't make sense
-
-**Design for isolation and clarity:**
-
-- Break the system into smaller units that each have one clear purpose, communicate through well-defined interfaces, and can be understood and tested independently
-- For each unit, you should be able to answer: what does it do, how do you use it, and what does it depend on?
-- Can someone understand what a unit does without reading its internals? Can you change the internals without breaking consumers? If not, the boundaries need work.
-- Smaller, well-bounded units are also easier for you to work with - you reason better about code you can hold in context at once, and your edits are more reliable when files are focused. When a file grows large, that's often a signal that it's doing too much.
-
-**Working in existing codebases:**
-
-- Explore the current structure before proposing changes. Follow existing patterns.
-- Where existing code has problems that affect the work (e.g., a file that's grown too large, unclear boundaries, tangled responsibilities), include targeted improvements as part of the design - the way a good developer improves code they're working in.
-- Don't propose unrelated refactoring. Stay focused on what serves the current goal.
-
-### After the Design
-
-**Documentation:**
-
- - For standard designs, write the validated design to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/YYYY-MM-DD-<topic>-design.md` for general topics).
- - For **High-Risk Features**, write the formal specification based on the canonical template `process/development-protocols/references/formal-spec-template.md` to `process/features/{feature}/active/<Feature>_<Topic>_Formal_Spec.md` (or `process/general-plans/active/<Feature>_<Topic>_Formal_Spec.md`) containing:
-   1. **Mục tiêu (Objectives & Isolation Boundaries)**
-   2. **Dữ liệu đầu vào (Input Data & Zod/Strict Types)**
-   3. **Các ràng buộc (Constraints & System Invariants `INV-1`, Pre/Post-conditions)**
-   4. **Các trường hợp ngoại lệ (Edge Cases & Level 2 Adversarial Matrix)**
- - Commit the design/spec document to git
-**Spec Self-Review:**
-After writing the spec document, look at it with fresh eyes:
-
-1. **Placeholder scan:** Any "TBD", "TODO", incomplete sections, or vague requirements? Fix them.
-2. **Internal consistency:** Do any sections contradict each other? Does the architecture match the feature descriptions?
-3. **Scope check:** Is this focused enough for a single implementation plan, or does it need decomposition?
-4. **Ambiguity check:** Could any requirement be interpreted two different ways? If so, pick one and make it explicit.
-
-Fix any issues inline. No need to re-review — just fix and move on.
-
-**User Review Gate:**
-After the spec review loop passes, ask the user to review the written spec before proceeding:
-
-> "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
-
-Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
-
-**Implementation:**
-
-- Invoke the writing-plans skill to create a detailed implementation plan
-- Do NOT invoke any other skill. writing-plans is the next step.
-
-### Key Principles
-
-- **One question at a time** - Don't overwhelm with multiple questions
-- **Multiple choice preferred** - Easier to answer than open-ended when possible
-- **YAGNI ruthlessly** - Remove unnecessary features from all designs
-- **Explore alternatives** - Always propose 2-3 approaches before settling
-- **Incremental validation** - Present design, get approval before moving on
-- **Be flexible** - Go back and clarify when something doesn't make sense
+---
 
 ## References
 
-* [Hyundai E-Commerce Repository Context](../../process/context/all-context.md)
+- [references/brainstorming-guide.md](references/brainstorming-guide.md) - Complete workflow diagram, Trade-off Matrix template, 7 Engineering Evaluation Domains (A–G), and 8-step checklist.
+- [process/context/all-context.md](process/context/all-context.md) - Agent Skills Kit Repository Context and codebase guidelines.

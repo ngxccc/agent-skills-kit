@@ -1,40 +1,88 @@
 # Request for Comments (RFC) Layout Specification
 
-This document defines the standard layout for Request for Comments (RFC) proposals within the repository.
+All RFC files in the repository MUST follow the standard structure defined in this specification to ensure consistent review, indexing, and architectural proposal tracking.
+
+## Naming Convention
+
+- **Filename Pattern**: `\d{4}-<kebab-case-description>.md`
+- **Example**: `0001-payment-gateway-refactor.md`
+- **Rules**:
+  - Exactly 4 digits for the prefix number.
+  - Suffix and filename must be in lowercase `kebab-case`.
+  - Hyphens used as word separators.
+
+## Required Headers and Sections
+
+### 1. Document Title (Level 1 Heading)
+
+The document MUST start with a Level 1 heading containing the RFC number and title:
+
+```markdown
+# <Number>. <Title>
+```
+
+_Example_: `# 1. Payment Gateway Refactor`  
+_Rule_: The numerical value must match the 4-digit prefix of the filename (e.g. `0001` matches `1`).
+
+### 2. Metadata (Date, Author, Status)
+
+Immediately following the title, include Date, Author, and Status metadata:
+
+```markdown
+Date: YYYY-MM-DD
+Author: <Author / Agent / Team>
+Status: Draft | Under Review | Approved | Rejected | Superseded by [ADR-XXXX](link)
+```
+
+### 3. Summary Section (`## Summary`)
+
+A 2–3 sentence high-level summary of the proposed architectural or system change.
+
+### 4. Context & Motivation (`## Context & Motivation`)
+
+Explains why this change is required, the underlying problem, business drivers, and current system limitations.
+
+### 5. Detailed Proposal (`## Detailed Proposal`)
+
+Specifies the proposed architectural design, API contracts, data flows, and code structure.
+
+### 6. Drawbacks & Alternatives (`## Drawbacks & Alternatives`)
+
+Lists potential drawbacks, trade-offs, and alternative approaches considered.
+
+### 7. Unresolved Questions (`## Unresolved Questions`)
+
+Highlights open questions, risks, or security considerations requiring discussion before decision locking.
 
 ---
 
-## 1. Proposal Summary
+## Canonical RFC Template
 
-- **RFC Title**: `<Kebab-case Title>`
-- **Author**: `<Author Name / GitHub Handle>`
-- **Date**: `YYYY-MM-DD`
-- **Status**: `Draft | Under Review | Accepted | Rejected`
+```markdown
+# 0. Proposal Title
 
----
+Date: YYYY-MM-DD
+Author: Team / Agent
+Status: Draft
 
-## 2. Motivation & Problem Statement
+## Summary
 
-- Why are we proposing this change?
-- What pain points or system bottlenecks does it resolve?
+[Summary description]
 
----
+## Context & Motivation
 
-## 3. Proposed Solution & Specification
+[Problem statement and motivation]
 
-- Detailed explanation of the proposed changes.
-- Interface changes, API modifications, or dependency additions.
+## Detailed Proposal
 
----
+[Proposed technical solution]
 
-## 4. Alternatives Considered & Rejected
+## Drawbacks & Alternatives
 
-- Alternative 1: Summary, Pros, Cons, and why it was rejected.
-- Alternative 2: Summary, Pros, Cons, and why it was rejected.
+- **Drawback**: [Description]
+- **Alternative 1**: [Description]
 
----
+## Unresolved Questions
 
-## 5. Unresolved Questions & Risks
-
-- Open questions requiring discussion during the RFC phase.
-- Potential risks and mitigation strategies.
+- [ ] Question 1
+```

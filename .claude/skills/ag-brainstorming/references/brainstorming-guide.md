@@ -1,16 +1,56 @@
-# Brainstorming Framework & Protocol Reference Guide
+# Comprehensive Brainstorming & Technical Design Guide
 
-> **Operational Purpose:** Detailed reference documentation for the `ag-brainstorming` skill, covering the 7 Foundational Engineering Domains (A–G), Dynamic Domain Inference, System Invariant Discovery, and Deliverable Artifact standards.
+This guide provides the complete, uncompressed workflow, Trade-off Matrix structures, 7 Engineering Evaluation Domains (Domain A–G), and system invariant rules for turning ideas into formal, validated designs.
 
 ---
 
-## 1. Foundational Baseline Domains (A – G) & Dynamic Inference
+## 1. End-to-End Workflow Diagram
 
-During brainstorming, evaluate the proposed design using the **7 Baseline Domains**:
+```dot
+digraph brainstorming {
+    "Explore project context" [shape=box];
+    "Ask clarifying questions" [shape=box];
+    "Propose 2-3 approaches" [shape=box];
+    "Present design sections" [shape=box];
+    "User approves design?" [shape=diamond];
+    "Write design doc" [shape=box];
+    "Spec self-review\n(fix inline)" [shape=box];
+    "User reviews spec?" [shape=diamond];
+    "Invoke writing-plans skill" [shape=doublecircle];
+
+    "Explore project context" -> "Ask clarifying questions";
+    "Ask clarifying questions" -> "Propose 2-3 approaches";
+    "Propose 2-3 approaches" -> "Present design sections";
+    "Present design sections" -> "User approves design?";
+    "User approves design?" -> "Present design sections" [label="no, revise"];
+    "User approves design?" -> "Write design doc" [label="yes"];
+    "Write design doc" -> "Spec self-review\n(fix inline)";
+    "Spec self-review\n(fix inline)" -> "User reviews spec?";
+    "User reviews spec?" -> "Write design doc" [label="changes requested"];
+    "User reviews spec?" -> "Invoke writing-plans skill" [label="approved"];
+}
+```
+
+---
+
+## 2. Structured Trade-Off Matrix
+
+When presenting technical design choices, provide 2–4 distinct options formatted as a Trade-off Matrix:
+
+| Option | Approach Description | Pros | Cons | Risk Class | Recommendation |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Option A** | *Summary of Approach A* | *Key benefits* | *Drawbacks & operational cost* | Low | **Recommended** |
+| **Option B** | *Summary of Approach B* | *Key benefits* | *Drawbacks & operational cost* | Medium | Alternative |
+
+---
+
+## 3. Engineering & Architecture Evaluation Framework (Baseline Domains A–G)
+
+Systematically evaluate technical designs across 7 baseline engineering domains:
 
 1. **Domain A: Security & Data Privacy**
    - AuthN/AuthZ boundaries, Principle of Least Privilege, Zero Trust access controls.
-   - Input validation (Zod schemas), protection against OWASP Top 10 (SQLi, XSS, CSRF).
+   - Input validation (Zod schemas), OWASP Top 10 protection (SQLi, XSS, CSRF).
    - Sensitive data encryption (at rest & in transit), PII handling, audit logging.
 
 2. **Domain B: UI/UX & Usability**
@@ -43,28 +83,21 @@ During brainstorming, evaluate the proposed design using the **7 Baseline Domain
 
 ---
 
-### Open-Ended Dynamic Domain Inference Rule
+## 4. Core Discovery Protocol (System Invariants & Fail-Safes)
 
-> **Agent Dynamic Reasoning Directive:** The 7 baseline domains above are a foundational guide, NOT a closed ceiling. Depending on the feature context, dynamically evaluate specialized domains as needed (e.g., _Domain H: Pedagogy & Cognitive Load Theory_, _Domain I: Offline-First Sync_, _Domain J: Real-time WebSockets / Streaming_).
-
----
-
-## 2. Core Discovery Elements
-
-1. **System Invariants (`INV-*`):** Non-negotiable logic rules that MUST NEVER be violated under any execution state.
-2. **Fail-Safe Boundary:** Safe fallback state when unexpected system failures or network exceptions occur.
-3. **Edge Cases & Adversarial Matrix:** Race conditions, boundary limits, corrupted inputs, and concurrent state mutations.
+- **System Invariants (`INV-1`, `INV-2`)**: Non-negotiable logic rules that MUST NEVER be violated under any execution state or error condition.
+- **Fail-Safe Boundary**: Safe fallback state when unexpected system failures, timeouts, DB partitions, or network exceptions occur.
+- **Level 2 Edge Cases & Adversarial Matrix**: Race conditions, boundary limits, corrupted inputs, and concurrent state mutations.
 
 ---
 
-## 3. Deliverable Artifact Standards
+## 5. 8-Step Brainstorming Checklist
 
-Upon completing brainstorming:
-
-1. **Formal Specification File:**
-   - Path: `process/features/[feature-slug]/active/[feature-slug]-[topic-slug]-formal-spec.md`
-   - Formatted per `process/development-protocols/references/formal-spec-template.md`.
-2. **Architectural Decision Record (ADR):**
-   - Path: `docs/adr/000X-[kebab-case-name].md`
-3. **Harness Manifest (`risk-gate.json`):**
-   - Path: `process/features/[feature-slug]/reports/harness/[planSlug]/risk-gate.json`
+1. **Explore project context**: Check codebase, existing architecture, and recent commits.
+2. **Ask clarifying questions**: Ask questions one at a time to clarify purpose, constraints, and success criteria.
+3. **Propose 2–3 approaches**: Evaluate options with explicit Trade-off Matrix (Pros/Cons/Risk).
+4. **Present design in sections**: Present design incrementally scaled to complexity; obtain user approval per section.
+5. **Write design doc / Formal Spec**: Save to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` or formal spec path for high-risk features.
+6. **Spec self-review**: Conduct an internal check for placeholders, contradictions, and scope creep.
+7. **User spec review**: Present written spec for final user confirmation.
+8. **Transition to implementation planning**: Invoke the `ag-generate-plan` skill.

@@ -314,7 +314,6 @@ The active system is intentionally split into four layers:
   - `ag-audit-plans`
   - `ag-audit-ag`
   - `ag-harness-sync`
-  - `ag-adr`
 - **Helper skills** improve how agents work but do not own the workflow:
   - `ag-scout`
   - `ag-preview`
@@ -504,11 +503,9 @@ Skill Registry:
 | `ag-tailwind-responsive-ui`             | Responsive UI design patterns with Tailwind CSS                                                                                                                          | responsive tailwind, mobile first tailwind, media queries tailwind, breakpoint styling                               |
 | `ag-tailwind-ui-refactor`               | UI refactoring guidelines using Tailwind CSS                                                                                                                             | tailwind ui refactor, redesign tailwind, polish tailwind                                                             |
 | `ag-typescript`                         | TypeScript fundamentals, skipLibCheck, incrementally build, compile performance                                                                                          | typescript compile, skipLibCheck, incremental build, tsconfig config                                                 |
-| `ag-adr`                                | Use when creating, updating, or validating Architectural Decision Records (ADRs) to ensure structural and formatting consistency                                         | ADR, architectural decision, decision record, design doc, architecture record                                        |
 | `ag-merge-worktree`                     | Merge a git worktree branch back into the main checkout and clean up the worktree                                                                                        | merge worktree, cleanup worktree, git worktree, finish worktree                                                      |
 | `ag-second-brain`                       | Use when querying, searching, updating, or adding notes in the Obsidian second brain without fabricating details.                                                        | second brain, obsidian, search notes, add note, update note, memory note                                             |
 | `ag-strict-config-derivation`           | Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries.          | column list, permission, role matrix, form field, status transition, nav item, single source of truth, strict config |
-| `ag-git-pr`                             | Use when creating Git Pull Requests. Enforces Conventional Commits PR title format, structured PR body template, automated assignees, labels, project, milestone         | git pr, pull request, create pr, standard pr, github pr                                                              |
 
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.
