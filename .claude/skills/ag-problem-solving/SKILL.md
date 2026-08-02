@@ -15,10 +15,14 @@ metadata:
 
 Systematic approaches for different types of stuck-ness. Each technique targets specific problem patterns.
 
-## When to Use
+## When to Apply
 
 Apply when encountering:
 - **Complexity spiraling** - Multiple implementations, growing special cases, excessive branching
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - **Innovation blocks** - Conventional solutions inadequate, need breakthrough thinking
 - **Recurring patterns** - Same issue across domains, reinventing solutions
 - **Assumption constraints** - Forced into "only way", can't question premise

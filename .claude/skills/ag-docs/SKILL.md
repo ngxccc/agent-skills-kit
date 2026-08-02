@@ -6,10 +6,20 @@ argument-hint: "init|update|summarize|adr|rfc|design"
 metadata:
   author: claudekit
   version: "1.3.0"
+trigger_keywords: docs
+layer: helper
 ---
 
 # Documentation, ADR, RFC & Design Management (`ag-docs`)
 
+## When to Apply
+
+Use this skill when working with ag-docs workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Analyze codebase and manage project documentation, Architectural Decision Records (ADRs), Request for Comments (RFCs), and System Design Specifications through scouting, structured doc generation, and automated validation.
 
 ## Default (No Arguments)

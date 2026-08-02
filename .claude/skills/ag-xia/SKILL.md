@@ -6,10 +6,20 @@ argument-hint: "<github-url|owner/repo|local-path> [feature-description] [--comp
 metadata:
   author: flowser
   version: "1.1.0"
+trigger_keywords: xia
+layer: helper
 ---
 
 # Xia
 
+## When to Apply
+
+Use this skill when working with ag-xia workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Study, compare, and prepare adaptation work from another repository without becoming a second workflow stack.
 
 This is a helper skill only.
@@ -150,3 +160,8 @@ When the requested adaptation would introduce new auth, schema, runtime, or work
 - `port this UX pattern into our stack`
 
 Load `references/xia-workflow.md` for the project's decision tree.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

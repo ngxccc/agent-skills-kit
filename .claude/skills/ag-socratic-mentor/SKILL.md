@@ -6,6 +6,8 @@ argument-hint: "[topic or query]"
 metadata:
   author: ngxc
   version: "1.0.0"
+trigger_keywords: socratic, mentor
+layer: helper
 ---
 
 # Socratic Mentor Protocol (`ag-socratic-mentor`)

@@ -11,6 +11,14 @@ metadata:
 
 # ag-context-discovery
 
+## When to Apply
+
+Use this skill when working with ag-context-discovery workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Discover and load all relevant context for the current task. This skill lists feature group nested files with full paths and loads `process/context/` files by domain routing table. It is the canonical context-loading entrypoint for every agent session.
@@ -195,3 +203,8 @@ Files without frontmatter: surface path only (no error), do not skip them.
 - Read `all-context.md` as a router, then load the deeper file(s). Do not treat `all-context.md` as sufficient on its own.
 - Always produce the full `find` output, not a summary. The exact file paths are the output.
 - Never hardcode context file paths — always discover via the `find` command and the routing table in `all-context.md`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

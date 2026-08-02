@@ -10,6 +10,14 @@ metadata:
 
 # Generate Context
 
+## When to Apply
+
+Use this skill when working with ag-generate-context workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Use this skill to maintain `process/context/all-context.md`, the broad portable project knowledge layer shared by Codex and Claude. Use `process/context/all-context.md` as the context router before reading grouped docs.
@@ -54,3 +62,8 @@ Optional input: a package, app, feature, context group, or architectural area to
 | `delta` | Invoked when context already exists; update context | Self-detect; create MISSING groups only; warn on unrecognized; never delete | `all-context.md` updated + any new `all-{group}.md` files created |
 
 See `references/generate-context.md` for per-mode instructions, the Context Group Detection Table, and delta-mode group-creation rules.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

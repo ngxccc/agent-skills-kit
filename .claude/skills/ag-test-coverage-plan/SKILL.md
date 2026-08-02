@@ -11,6 +11,14 @@ metadata:
 
 # ag-test-coverage-plan
 
+## When to Apply
+
+Use this skill when working with ag-test-coverage-plan workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate a TDD-first full test plan per blast radius area. Assigns all 4 test tiers with exact commands, what each proves, what it does NOT prove, and explicit resolution options for every gap.
@@ -187,3 +195,8 @@ to the per-area output format.
 ## Absorption Note
 
 This skill absorbs `ag-test-tier-selector` if that skill existed. If `ag-test-tier-selector` still exists on disk as a separate folder under `.claude/skills/`, treat this skill as its canonical replacement and note the duplication in the phase report. Do not route new work to `ag-test-tier-selector`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

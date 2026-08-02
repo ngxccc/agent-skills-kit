@@ -11,6 +11,14 @@ metadata:
 
 # ag-feasibility-test
 
+## When to Apply
+
+Use this skill when working with ag-feasibility-test workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 One-shot empirical probe skill. Used when SPEC or INNOVATE encounters an approach
@@ -176,3 +184,8 @@ Prior Feasibility: Does the gateway forward params.provider.sort? — verdict: N
 ```
 
 The re-spawned SPEC, INNOVATE, or VALIDATE agent reads this block and uses the verdict to lock or reject the approach. When `originating-phase: pvl`, the re-spawned ag-validate-agent resumes from V1 and records resolved probes in a `## Feasibility Probes Resolved` subsection of the validate-contract (omitted when no probe ran).
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

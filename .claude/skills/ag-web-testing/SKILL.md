@@ -12,11 +12,17 @@ metadata:
 
 # Web Testing Skill
 
+## When to Apply
+
+Use this skill when working with ag-web-testing workflows, tasks, or system specifications.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Comprehensive web testing: unit, integration, E2E, load, security, visual regression, accessibility.
 
-## Quick Start
+## How to Use
+
+### Quick Start
 
 ```bash
 npx vitest run                    # Unit tests
@@ -101,3 +107,8 @@ jobs:
       - run: pnpm run test:a11y      # Accessibility
       - run: npx lhci autorun       # Performance
 ```
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

@@ -6,6 +6,8 @@ argument-hint: "[no-args]"
 metadata:
   author: ngxc
   version: "1.3.0"
+trigger_keywords: brainstorming
+layer: helper
 ---
 
 # Brainstorming Ideas Into Designs (`ag-brainstorming`)

@@ -11,6 +11,14 @@ metadata:
 
 # VibeCo Agent Harness Setup
 
+## When to Apply
+
+Use this skill when working with ag-setup workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **CRITICAL — Dual-File Synchronization:** This document and `references/ag-setup.md` must be edited together. Any change to Merge Mode logic, safe-inference rules, or migration flow MUST appear in both files in the same commit. Dual-file drift creates inconsistent user behavior.
 
 > **Output style:** Use BLUF (answer first), plain language, no unexplained jargon, TL;DR on long responses. Full rules in `process/development-protocols/communication-standards.md` once installed — on first run that file may not exist yet, so follow this inline rule instead.
@@ -321,3 +329,8 @@ These principles apply throughout the entire setup flow:
 - Project-specific information (tech stack, features, conventions) belongs in `process/context/all-context.md`, not in CLAUDE.md.
 - In STUDY phase, write real researched content, not placeholder text. Every section should contain actual project-specific information discovered by scanning the codebase AND informed by the user's answers.
 - For large repos (monorepos, 5+ source directories), spawn parallel subagents to maximize throughput and avoid context window exhaustion -- see reference doc for delegation strategy.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

@@ -1,10 +1,20 @@
 ---
 name: ag-architect-verifier
 description: Master Architect & Verifier protocol skill. Coordinates the 7-phase state machine (Formal Spec, Level 2 TDD Freeze, Counter-Example Loop, 5-Layer Interrogation, Proof Review, SSOT Export) for High-Risk tasks.
+trigger_keywords: architect, verifier
+layer: helper
 ---
 
 # Master Architect & Verifier Protocol Skill (`ag-architect-verifier`)
 
+## When to Apply
+
+Use this skill when working with ag-architect-verifier workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Operational Purpose:** Coordinates the end-to-end state machine for high-risk technical changes across the `agent-skills-kit` harness: Idea $\rightarrow$ Formal Spec $\rightarrow$ Frozen TDD Suite $\rightarrow$ Counter-Example Loop $\rightarrow$ 5-Layer Socratic Interrogation $\rightarrow$ Proof Review Gate $\rightarrow$ Operational SSOT Documentation.
 >
 > Reference SSOT Document: `process/development-protocols/references/architect-verifier-master-workflow-guide.md`.
@@ -62,3 +72,8 @@ Keywords: `high risk`, `architect verifier`, `formal spec`, `verification loop`,
 
 - Run `validate-docs.mjs`, archive spec to `completed/`, export operational workflow SSOT.
 - Output: `docs/design/<feature-slug>-<topic-slug>-workflow.md`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

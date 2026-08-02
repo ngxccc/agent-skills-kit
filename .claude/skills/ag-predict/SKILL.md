@@ -17,10 +17,14 @@ metadata:
 
 Five expert personas independently analyze a proposed change, then debate conflicts to produce a consensus verdict before a single line of code is written.
 
-## When to Use
+## When to Apply
 
 - Before implementing a major or high-risk feature
 - Before a significant refactor or architecture change
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - Evaluating competing technical approaches
 - Stress-testing assumptions in a proposed design
 
@@ -182,3 +186,8 @@ The 5 personas then receive this Historical Context block before their independe
 ```
 
 Deep mode is also auto-triggered (no flag needed) when the plan is COMPLEX shape or the approach touches auth, billing, container lifecycle, or streaming surfaces.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

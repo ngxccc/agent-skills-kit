@@ -5,6 +5,8 @@ argument-hint: "<template> <context> [--devs|--researchers|--reviewers N] [--del
 metadata:
   author: claudekit
   version: "3.0.0"
+trigger_keywords: team
+layer: helper
 ---
 
 # Agent Teams - Parallel Orchestration Utility
@@ -307,10 +309,14 @@ IMMEDIATELY execute in order:
 
 ---
 
-## When to Use Agent Teams vs Subagents
+## When to Apply Agent Teams vs Subagents
 
 | Scenario                                   | Subagents (Agent tool) | Agent Teams    |
 | ------------------------------------------ | ---------------------- | -------------- |
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 | Focused task (test, lint, single review)   | **Yes**                | Overkill       |
 | Sequential chain (plan -> code -> test)    | **Yes**                | No             |
 | 3+ independent parallel workstreams        | Maybe                  | **Yes**        |
@@ -376,3 +382,8 @@ If unresponsive: close terminal or kill session. Clean orphaned configs at `~/.c
 See `process/development-protocols/orchestration.md` for teammate coordination, status handling, and context-isolation rules.
 
 > v3.0.0: Agent tool migration, worktree isolation for execute devs, run_in_background spawning, updated model requirements.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

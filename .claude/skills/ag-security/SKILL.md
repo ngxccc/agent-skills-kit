@@ -17,10 +17,14 @@ metadata:
 
 Runs a structured STRIDE + OWASP security audit on a given scope. Produces a severity-ranked findings report. With `--fix`, applies fixes iteratively using the ag-autoresearch guard pattern.
 
-## When to Use
+## When to Apply
 
 - Before a release or major deployment
 - After adding auth, payment, or data-handling features
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - Periodic security review (monthly/quarterly)
 - Compliance check (SOC 2, GDPR, PCI-DSS prep)
 
@@ -146,3 +150,8 @@ When `--fix` is provided, apply fixes iteratively after the audit:
 ---
 
 See `references/stride-owasp-checklist.md` for the detailed per-category checklist and secret detection regex patterns.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

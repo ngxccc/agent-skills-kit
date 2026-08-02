@@ -6,10 +6,20 @@ argument-hint: "[path-or-owner/repo] [--feature <name>] [--include <glob>] [--ig
 metadata:
   author: flowser
   version: "1.1.0"
+trigger_keywords: repomix
+layer: helper
 ---
 
 # Repomix
 
+## When to Apply
+
+Use this skill when working with ag-repomix workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Repomix packs repositories into AI-friendly artifacts for read-only reference work.
 
 This is a helper skill only.
@@ -224,3 +234,8 @@ For detailed information, see:
 - GitHub: https://github.com/yamadashy/repomix
 - Documentation: https://repomix.com/guide/
 - MCP Server: available upstream for assistant integrations when relevant
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

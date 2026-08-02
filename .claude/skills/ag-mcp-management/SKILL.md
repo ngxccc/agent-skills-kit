@@ -5,6 +5,8 @@ argument-hint: "[task or server-name]"
 metadata:
   author: claudekit
   version: "1.0.0"
+trigger_keywords: mcp, management
+layer: helper
 ---
 
 # MCP Management
@@ -23,7 +25,7 @@ MCP is an open protocol enabling AI agents to connect to external tools and data
 - Context-efficient: subagents handle MCP discovery and execution
 - Persistent tool catalog: automatically saves discovered tools to JSON for fast reference
 
-## When to Use This Skill
+## When to Apply This Skill
 
 Use this skill when:
 
@@ -168,7 +170,9 @@ Command-line interface for MCP operations. Commands:
 
 **Note**: `list-tools` persists complete tool catalog to `assets/tools.json` with full schemas for fast reference, offline browsing, and version control.
 
-## Quick Start
+## How to Use
+
+### Quick Start
 
 **Method 1: Gemini CLI** (recommended)
 
@@ -233,3 +237,8 @@ The `mcp-manager` agent uses this skill to:
 - Report results back to main agent
 
 This keeps main agent context clean and enables efficient MCP integration.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

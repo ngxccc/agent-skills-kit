@@ -60,10 +60,14 @@ Simple mode surfaces generic edge cases quickly. Deep mode surfaces scenarios th
 
 ---
 
-## When to Use
+## When to Apply
 
 - Before implementing complex or stateful features
 - Before writing tests (generates test targets)
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - Risk assessment during planning or code review
 - API design review — surface contract edge cases early
 
@@ -178,3 +182,8 @@ Dimensions skipped: [list + reason]
 # Deep mode (explicit request)
 /ag-scenario --deep "Add multi-tenancy to the database layer"
 ```
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

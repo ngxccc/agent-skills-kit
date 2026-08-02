@@ -6,6 +6,8 @@ argument-hint: "[architecture-or-code-problem]"
 metadata:
   author: ngxc
   version: "1.0.0"
+trigger_keywords: reverse, code, review
+layer: helper
 ---
 
 # Reverse Code Review Protocol (`ag-reverse-code-review`)

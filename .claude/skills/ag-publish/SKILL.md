@@ -10,6 +10,14 @@ metadata:
 
 # ag-publish
 
+## When to Apply
+
+Use this skill when working with ag-publish workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Push harness improvements from the current development repo to the remote kit repository (`agent-skills-kit-pro-max-kit`). This is the **maintainer** counterpart to `ag-update`.
@@ -371,3 +379,8 @@ Release:       https://github.com/<owner>/<repo>/releases/tag/v2.2.0
 ## Reference
 
 See `references/ag-publish.md` for the detailed algorithm, CLAUDE.md/AGENTS.md stripping rules, error handling, and example outputs.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

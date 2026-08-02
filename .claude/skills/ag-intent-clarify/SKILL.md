@@ -11,6 +11,14 @@ metadata:
 
 # ag-intent-clarify
 
+## When to Apply
+
+Use this skill when working with ag-intent-clarify workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > Output style: lead each question with the recommended option; plain language, no filler — `process/development-protocols/communication-standards.md`.
 
 Two-mode intent clarification: SIMPLE (direct, 3-5 reads) and DEEP (research subagent first, then questions).
@@ -607,3 +615,8 @@ Generate questions across Scope, Success Criteria, Failure Modes, Priority, Tech
 - First interaction: Yes (+1)
 
 Score: 3 → Tier 2, but only 3–4 questions covering Scope, Success Criteria, Risk Surface (billing-specific failure modes). Skip Autonomy Boundaries and Phase Program since it's a single-phase feature.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

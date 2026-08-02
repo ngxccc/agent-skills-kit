@@ -6,6 +6,8 @@ argument-hint: "[plan-file-or-design-query]"
 metadata:
   author: ngxc
   version: "1.0.0"
+trigger_keywords: red, team, plan
+layer: helper
 ---
 
 # Red Team Architectural Audit Protocol (`ag-red-team-plan`)

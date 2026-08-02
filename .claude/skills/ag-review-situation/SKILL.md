@@ -12,6 +12,14 @@ metadata:
 
 # Review Situation
 
+## When to Apply
+
+Use this skill when working with ag-review-situation workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > Output style: lead with the bottom line, bullets over prose, one-line TL;DR — `process/development-protocols/communication-standards.md`.
 
 Summarize the current repo state for handoff and resume work.
@@ -186,3 +194,8 @@ Read and compare process artifacts (plan file + validate-contract, or plan vs gi
 - **File viewer:** Read any process artifact (plan, report, validate-contract) and emit a clean inline summary with key decisions, open items, and exit gates — useful before passing context to an execute subagent.
 - **Output format:** ASCII tables and prose only — no Mermaid, no HTML, no server. Output is terminal-friendly and safe to paste into a subagent prompt.
 - **Trigger phrases:** `review the plan`, `show plan vs contract`, `what did we plan vs what changed`, `summarize this plan file`, `diff plan against code`
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

@@ -20,6 +20,10 @@ Structured problem-solving via manageable, reflective thought sequences with dyn
 
 - Complex problem decomposition
 - Adaptive planning with revision capability
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - Analysis needing course correction
 - Problems with unclear/emerging scope
 - Multi-step solutions requiring context maintenance

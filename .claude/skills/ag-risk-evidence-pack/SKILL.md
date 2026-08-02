@@ -11,6 +11,14 @@ metadata:
 
 # ag-risk-evidence-pack
 
+## When to Apply
+
+Use this skill when working with ag-risk-evidence-pack workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate and validate the manual-first evidence pack required before finalizing, pushing, or handing off high-risk implementation work.
@@ -166,3 +174,8 @@ Verbatim from `process/development-protocols/implementation-standards.md` ("Risk
 > - if the evidence pack is missing, say so explicitly instead of implying the work is proven
 >
 > This contract is manual-first and opt-in by risk class. It is not a default blocking hook.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

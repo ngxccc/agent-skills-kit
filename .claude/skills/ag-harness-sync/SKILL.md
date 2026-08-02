@@ -4,6 +4,8 @@ description: Use this skill to sync and manage agent harness versions. Supports 
 metadata:
   author: agent-skills
   version: "2.0.0"
+trigger_keywords: harness, sync
+layer: helper
 ---
 
 # Harness Sync & Version Management (ag-harness-sync)

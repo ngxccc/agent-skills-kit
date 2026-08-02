@@ -14,10 +14,14 @@ metadata:
 
 Pull the latest agent harness improvements from the remote agent-skills-kit-pro-max-kit repository into the current project.
 
-## When to Use
+## When to Apply
 
 - After being told a new harness version is available
 - Periodically to check for updates
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 - After bootstrapping a project with `ag-setup` and wanting the latest improvements
 
 ## Workflow
@@ -440,3 +444,8 @@ The one-shot migration on next `ag-update` from kit v3.0.0:
 ## Reference
 
 For detailed algorithm, error handling matrix, and edge cases, see `references/ag-update.md`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

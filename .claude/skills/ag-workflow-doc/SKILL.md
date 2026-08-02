@@ -1,10 +1,20 @@
 ---
 name: ag-workflow-doc
 description: "Use when generating grounded feature and infrastructure workflow specs, WBS tables, and sequence diagrams using Codebase Memory MCP graph search and the SSOT Workflow Documentation Standard."
+trigger_keywords: workflow, doc
+layer: helper
 ---
 
 # Feature & Infrastructure Workflow Documentation Skill
 
+## When to Apply
+
+Use this skill when working with ag-workflow-doc workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Use this skill whenever generating architectural workflow documentation, feature workflow specs, or infrastructure audit guides for a codebase.
 
 ## Mandatory Execution Protocol
@@ -39,3 +49,8 @@ Follow the strict **PascalCase with Underscores** naming convention:
 **Destination Priority**:
 1. Pre-Implementation Formal Spec: `process/features/<topic>/active/<Feature>_<Topic>_Formal_Spec.md` (or `process/general-plans/active/`).
 2. Post-Implementation SSOT Operational Doc: `second-brain/Docs/<Topic>/<Feature>_<Topic>_Workflow.md` (or `process/features/<topic>/references/`).
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

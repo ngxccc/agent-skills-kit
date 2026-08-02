@@ -10,6 +10,14 @@ metadata:
 
 # Audit Context
 
+## When to Apply
+
+Use this skill when working with ag-audit-context workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Use this skill to verify that the project's durable context layer is discoverable and organized.
@@ -82,3 +90,8 @@ Use when initializing a new project's context layer from scratch:
 - Treat validator warnings as audit findings unless the user asks for a strict cleanup.
 - Prefer validator-backed routing truth over adding more soft prose.
 - Treat process/context/generated-skills-catalog.json as the machine-readable catalog owned by `audit-context`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

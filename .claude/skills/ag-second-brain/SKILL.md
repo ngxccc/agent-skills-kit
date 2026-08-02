@@ -6,6 +6,8 @@ argument-hint: "[query]"
 metadata:
   author: Team
   version: "1.0.0"
+trigger_keywords: second, brain
+layer: helper
 ---
 
 # Second Brain QA & Explainer Skill

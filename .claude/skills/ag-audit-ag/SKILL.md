@@ -10,6 +10,14 @@ layer: contract
 
 # Audit VC (Version Control Harness Health)
 
+## When to Apply
+
+Use this skill when working with ag-audit-ag workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Use this skill to verify that the agent harness layer is internally consistent
@@ -63,3 +71,8 @@ For context routing, grouping, and discoverability audits, use the `audit-contex
 - Treat `process/_seeds/` as an optional legacy scaffold surface in the live repo. Its absence is a warning-only audit result unless the user is explicitly auditing export-kit scaffolding.
 - Treat validator warnings as audit findings unless the user asks for a strict cleanup.
 - For context routing and discoverability audits, delegate to `audit-context`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

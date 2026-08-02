@@ -19,7 +19,7 @@ Fast, token-efficient codebase scouting using parallel agents to find files need
 - Default: Scout using local shell search plus optional parallel `research-agent` delegation (`./references/internal-scouting.md`)
 - `ext`: Scout using external Gemini/OpenCode CLI tools in parallel (`./references/external-scouting.md`)
 
-## When to Use
+## When to Apply
 
 - Beginning work on feature spanning multiple directories
 - User mentions needing to "find", "locate", or "search for" files
@@ -27,7 +27,9 @@ Fast, token-efficient codebase scouting using parallel agents to find files need
 - User asks about project structure or where functionality lives
 - Before changes that might affect multiple codebase parts
 
-## Quick Start
+## How to Use
+
+### Quick Start
 
 1. Analyze user prompt to identify search targets
 2. Use a wide range of Grep and Glob patterns to find relevant files and estimate scale of the codebase

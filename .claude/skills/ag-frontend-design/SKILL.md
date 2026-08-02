@@ -134,3 +134,8 @@ Strongly prefer alternatives to these LLM defaults. Full rules: `./references/an
 **Performance:** Animation and blur rules in `./references/performance-guardrails.md`
 
 Remember: Claude is capable of extraordinary creative work. Commit fully to distinctive visions.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

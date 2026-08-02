@@ -6,10 +6,20 @@ argument-hint: "[--json] [--fetch] [--selected-plan <path>] [--cwd <path>]"
 metadata:
   author: flowser
   version: "1.0.0"
+trigger_keywords: watzup
+layer: helper
 ---
 
 # Watzup
 
+## When to Apply
+
+Use this skill when working with ag-watzup workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Summarize the current repo state for handoff and resume work.
 
 This is a helper skill only.
@@ -98,3 +108,8 @@ Good trigger phrases:
 - `what should I look at next`
 
 Load `references/watzup-workflow.md` when you need the project's decision tree or hint-priority rules.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

@@ -1,10 +1,20 @@
 ---
 name: ag-code-interrogation
 description: Socratic Code Interrogation skill for conducting deep 5-Layer Cognitive Stack Q&A on AI-generated code, verifying developer mental models, and enforcing system invariants before proof review.
+trigger_keywords: code, interrogation
+layer: helper
 ---
 
 # Socratic Code Interrogation Protocol (`ag-code-interrogation`)
 
+## When to Apply
+
+Use this skill when working with ag-code-interrogation workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Operational Purpose:** Verifies that developers and AI agents truly understand recent codebase changes, AI-generated logic, and underlying system invariants before code finalization. Prevents "auto-pilot acceptance" of subtle bugs, hidden race conditions, or unhandled edge cases.
 
 ---
@@ -80,3 +90,8 @@ Upon completing the interrogation loop, emit a summary report to `process/featur
   "summaryNotes": "Developer demonstrated complete understanding of pessimistic DB locking in concurrency path."
 }
 ```
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

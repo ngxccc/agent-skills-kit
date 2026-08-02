@@ -14,7 +14,9 @@ metadata:
 
 Browser automation CLI designed for AI agents. Uses "snapshot + refs" paradigm for 93% less context than Playwright MCP.
 
-## Quick Start
+## How to Use
+
+### Quick Start
 
 ```bash
 # Install globally
@@ -56,7 +58,7 @@ For project-specific connection patterns, logged-in session reuse through `chrom
 
 ---
 
-## When to Use (vs chrome-devtools)
+## When to Apply
 
 | Use agent-browser | Use chrome-devtools |
 |-------------------|---------------------|
@@ -303,3 +305,8 @@ See `references/browserbase-cloud-setup.md` for detailed setup.
 - [GitHub Repository](https://github.com/vercel-labs/agent-browser)
 - [Official Documentation](https://github.com/vercel-labs/agent-browser#readme)
 - [Browserbase Docs](https://docs.browserbase.com/)
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

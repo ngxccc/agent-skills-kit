@@ -6,6 +6,8 @@ argument-hint: "[branch-or-flow-command]"
 metadata:
   author: ngxc
   version: "1.2.0"
+trigger_keywords: git, flow
+layer: helper
 ---
 
 # Git Flow & Pull Request Protocol (`ag-git-flow`)

@@ -7,10 +7,20 @@ metadata:
   author: flowser
   version: "1.1.0"
   attribution: "Adapted from upstream fireworks-tech-graph concepts and assets, narrowed for this kit"
+trigger_keywords: tech, graph
+layer: helper
 ---
 
 # Tech Graph
 
+## When to Apply
+
+Use this skill when working with ag-tech-graph workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 Generate publish-grade technical diagrams as SVG first, then PNG when raster export is needed.
 
 This is a helper skill only.
@@ -150,3 +160,8 @@ This kit allows degraded SVG-only mode when `rsvg-convert` is unavailable. The s
 - `build a comparison matrix for these systems`
 
 Load `references/tech-graph-workflow.md` for the project-specific routing, proof, and preview-boundary rules.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

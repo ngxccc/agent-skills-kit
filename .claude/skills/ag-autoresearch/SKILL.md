@@ -11,6 +11,14 @@ metadata:
 
 # ag-autoresearch
 
+## When to Apply
+
+Use this skill when working with ag-autoresearch workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Reusable loop primitive. Runs: find gaps → write report → fix → check → repeat.
@@ -275,3 +283,8 @@ Run `ag-autoresearch:evals {task_folder}/results.tsv` to analyze trends and get 
 - `session-init.cjs` — active plan summary at SessionStart; adapted to scan `process/general-plans/active/` and `process/features/*/active/`
 - `stop-notify.cjs` — terminal notification at SessionEnd; no changes needed
 - Do NOT register `scout-block.cjs` or `privacy-block.cjs` from the autoresearch reference repo — ag-system settings.json has superior versions; registering them would cause conflicts
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

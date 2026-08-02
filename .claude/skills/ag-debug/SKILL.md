@@ -22,10 +22,14 @@ Comprehensive framework combining systematic debugging, root cause tracing, defe
 
 Random fixes waste time and create new bugs. Find root cause, fix at source, validate at every layer, verify before claiming success.
 
-## When to Use
+## When to Apply
 
 **Code-level:** Test failures, bugs, unexpected behavior, build failures, integration problems
 **System-level:** Server errors, CI/CD pipeline failures, performance degradation, database issues, log analysis
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 **Always:** Before claiming work complete
 
 ## Techniques
@@ -125,3 +129,8 @@ Stop and follow process if thinking:
 - "Tests pass, we're done"
 
 **All mean:** Return to systematic process.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

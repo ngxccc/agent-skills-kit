@@ -10,6 +10,14 @@ metadata:
 
 # Audit Plans
 
+## When to Apply
+
+Use this skill when working with ag-audit-plans workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Use this skill to review active plan artifacts and reconcile them with the current codebase.
@@ -45,3 +53,8 @@ Prefer it when:
 ## Output
 
 Return a concise summary table with classification, action taken, and any user decisions needed. Include stale artifact findings (reports/references tied to completed or obsolete plans) with recommended actions.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

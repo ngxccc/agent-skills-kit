@@ -11,6 +11,14 @@ metadata:
 
 # ag-agent-strategy-compare
 
+## When to Apply
+
+Use this skill when working with ag-agent-strategy-compare workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Evaluate 4 execution strategies for any RIPER-5 phase or fan-out task. Computes the 7-signal score, shows explicit agent count math, applies cost guards, and outputs a ranked strategy recommendation.
@@ -282,3 +290,8 @@ SendMessage: A → B (security findings mid-implementation, not after)
 
 - `process/development-protocols/orchestration.md` — Two-Tier Fan-Out Escalation, Parallel Fan-Out Checkpoints
 - `process/development-protocols/orchestration.md` §VALIDATE Gate — skip conditions, gate verdicts, BLOCKED escalation path
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

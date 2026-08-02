@@ -11,6 +11,10 @@ metadata:
 
 # Documentation Discovery
 
+## When to Apply
+
+Use this skill when working with ag-docs-seeker workflows, tasks, or system specifications.
+
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 ## Overview
@@ -84,7 +88,9 @@ Scripts handle URL construction, fallback chains, and error handling automatical
 4. **Progressive disclosure** - Load workflows/references only when needed
 5. **Scripts are fallback helpers** - Use them only when Context7 coverage is missing or the user wants llms.txt-style discovery
 
-## Quick Start
+## How to Use
+
+### Quick Start
 
 **Topic query:** "How do I use date picker in shadcn?"
 ```bash

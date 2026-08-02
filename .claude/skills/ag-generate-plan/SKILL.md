@@ -10,6 +10,14 @@ metadata:
 
 # Generate Plan
 
+## When to Apply
+
+Use this skill when working with ag-generate-plan workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > Output style: write the plan answer-first with tables/bullets and a one-line TL;DR per the canonical rule — `process/development-protocols/communication-standards.md`.
 
 Use this skill to produce the authoritative implementation plan artifact set for the project's work.
@@ -77,3 +85,8 @@ For new or newly touched direct `*_PLAN_*.md` files, include all of the followin
 
 Use Markdown-structured sections, not a second machine-only schema. Markdown sections are
 stable across all agents (Claude, Codex, future systems) without requiring a parser.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

@@ -33,17 +33,16 @@ prevents premature implementation and ensures quality through strict mode-based 
 ### Shared Development Protocols
 
 Canonical shared workflow rules now live in
-[process/development-protocols/all-development-protocols.md](process/development-protocols/all-development-protocols.md).
+[process/development-protocols/ag-system-behavior/01-overview.md](process/development-protocols/ag-system-behavior/01-overview.md).
 
 Read these files as needed:
 
-- [orchestration.md](process/development-protocols/orchestration.md)
-- [implementation-standards.md](process/development-protocols/implementation-standards.md)
-- [plan-lifecycle.md](process/development-protocols/plan-lifecycle.md)
-- [phase-programs.md](process/development-protocols/phase-programs.md)
-- [context-maintenance.md](process/development-protocols/context-maintenance.md)
-- [parallel-fan-out.md](process/development-protocols/parallel-fan-out.md)
-- [intent-clarification.md](process/development-protocols/intent-clarification.md)
+- [01-overview.md](process/development-protocols/ag-system-behavior/01-overview.md)
+- [03-session-start.md](process/development-protocols/ag-system-behavior/03-session-start.md)
+- [07-plan.md](process/development-protocols/ag-system-behavior/07-plan.md)
+- [10-update-process.md](process/development-protocols/ag-system-behavior/10-update-process.md)
+- [11-phase-programs.md](process/development-protocols/ag-system-behavior/11-phase-programs.md)
+- [12-reference.md](process/development-protocols/ag-system-behavior/12-reference.md)
 
 Reference docs (harness methodology, not project-specific):
 
@@ -55,7 +54,7 @@ Reference docs (harness methodology, not project-specific):
 
 Delegation rules, subagent status codes (`DONE`, `DONE_WITH_CONCERNS`, `BLOCKED`,
 `NEEDS_CONTEXT`), and context isolation protocol live in
-[process/development-protocols/orchestration.md](process/development-protocols/orchestration.md).
+[process/development-protocols/ag-system-behavior/01-overview.md](process/development-protocols/ag-system-behavior/01-overview.md).
 
 You are the orchestrator, not the worker.
 
@@ -96,7 +95,7 @@ Contains:
 Before substantial planning or implementation work, consult:
 
 - [process/context/all-context.md](process/context/all-context.md)
-- [process/development-protocols/all-development-protocols.md](process/development-protocols/all-development-protocols.md)
+- [process/development-protocols/ag-system-behavior/01-overview.md](process/development-protocols/ag-system-behavior/01-overview.md)
 - [.claude/memory/MEMORY.md](.claude/memory/MEMORY.md) for Claude-specific compatibility notes only; Codex does not have an equivalent repo-local project-memory mirror
 
 **Context routing discipline:** `all-*.md` entrypoints are routers, not the full knowledge. Agents MUST follow the routing tables in `all-*.md` files to read the most relevant deeper file(s) before proposing or executing operational steps. Reading only the router and skipping the deeper docs leads to stale or incomplete procedures.
@@ -143,16 +142,16 @@ Auto-Detection Patterns:
 Large program rule:
 
 - If the request is a substantial multi-phase effort, do not treat it as one normal PLAN -> EXECUTE pass.
-- Use `process/development-protocols/phase-programs.md`.
+- Use `process/development-protocols/ag-system-behavior/11-phase-programs.md`.
 - First recommend the plan shape, sequencing, and next actions.
 - Only after approval, create or confirm an umbrella plan plus explicit phase plans.
 - Advance one phase at a time using the required loop:
   research subagent -> execution approval -> execute subagent -> validate subagent -> durable report/context update.
 - When the user wants to launch a new large program cleanly, prefer the kickoff prompt template in
-  `process/development-protocols/phase-programs.md` rather than freehanding the structure.
+  `process/development-protocols/ag-system-behavior/11-phase-programs.md` rather than freehanding the structure.
 
 Intent clarification: Before auto-routing, the orchestrator scores request ambiguity per
-`process/development-protocols/intent-clarification.md`. Clear requests (score 0-1) auto-route
+`process/development-protocols/ag-system-behavior/03-session-start.md`. Clear requests (score 0-1) auto-route
 silently. Ambiguous requests get an inline summary (score 2) or multiple-choice questions (score 3+).
 
 When the user explicitly invokes one of the mode names or command names from the previous
@@ -452,61 +451,107 @@ When a user makes a request:
 Before routing, scan `.agents/skills/` directory names and match keywords from the user
 request to surface relevant skills. Attach candidate skill names to the subagent prompt.
 
-Skill Registry:
+#### 1. Mode & Specialist Agents (`.claude/agents/*.md` & `.codex/agents/*.toml`)
 
-| Skill                                   | Purpose                                                                                                                                                                  | Trigger Keywords                                                                                                     |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
-| `ag-frontend-design`                    | Polished UI from designs/screenshots/videos                                                                                                                              | UI, design, layout, component, page, interface, visual, CSS, Tailwind, login page, dashboard                         |
-| `ag-debug`                              | Root cause-analysis helper used alongside `debugger`                                                                                                                     | debug, root cause, investigate, why is this                                                                          |
-| `ag-scenario`                           | Edge case generation across 12 dimensions                                                                                                                                | edge cases, test scenarios, what could go wrong                                                                      |
-| `ag-security`                           | STRIDE + OWASP security audit                                                                                                                                            | security, vulnerability, auth, XSS, SQL injection                                                                    |
-| `ag-autoresearch`                       | Autonomous metric optimization loop                                                                                                                                      | improve coverage, reduce bundle, optimize metric                                                                     |
-| `ag-brainstorming`                      | Interactive brainstorming & 7 Perspectives of Digital Quality evaluation (Functional, Usability/UI-UX, Performance, Security, Maintainability, Reliability, Scalability) | brainstorm, spec, design, approach, requirements, clarify                                                            |
-| `ag-predict`                            | 5-persona pre-implementation debate                                                                                                                                      | risks, predict issues, architectural review                                                                          |
-| `ag-scout`                              | Fast parallel codebase scouting                                                                                                                                          | find files, where is, search codebase                                                                                |
-| `ag-tech-graph`                         | Publish-grade technical diagrams as SVG or PNG for durable process artifacts                                                                                             | generate diagram, architecture diagram, flowchart, sequence diagram, system visual                                   |
-| `ag-watzup`                             | Read-only branch, local/remote ref, worktree, and active-plan handoff summary with advisory selected-plan hints                                                          | what's in flight, handoff, worktree status, active plans, next steps                                                 |
-| `ag-xia`                                | Repo comparison and adaptation-prep research                                                                                                                             | copy from repo, compare repo, adapt from repo, study how they built it, analyze feature parity                       |
-| `ag-repomix`                            | Pack local or remote repos into references-only artifacts                                                                                                                | pack repo, snapshot codebase, repo context, compare repo, feature port, security audit                               |
-| `ag-docs`                               | Project documentation management                                                                                                                                         | docs, README, document codebase                                                                                      |
-| `ag-workflow-doc`                       | Grounded feature & infrastructure workflow documentation using Codebase Memory MCP and SSOT standard                                                                     | workflow doc, feature workflow, infrastructure workflow, sequence diagram, WBS table, second brain workflow          |
-| `ag-docs-seeker`                        | Library docs via context7                                                                                                                                                | how does X work, API docs, version, syntax                                                                           |
-| `ag-generate-plan`                      | Durable implementation planning                                                                                                                                          | plan, PRD, spec, implementation plan                                                                                 |
-| `ag-generate-context`                   | Refresh repository context router                                                                                                                                        | refresh context, regenerate context, repo context                                                                    |
-| `ag-audit-context`                      | Context routing and discoverability audit                                                                                                                                | context audit, reorganize context, stale context                                                                     |
-| `ag-audit-plans`                        | Active-plan maintenance and cleanup                                                                                                                                      | stale plans, cleanup plans, archive plans, plan audit                                                                |
-| `ag-web-testing`                        | Playwright/Vitest/k6 test automation                                                                                                                                     | tests, e2e, integration test, performance test                                                                       |
-| `ag-preview`                            | Visual diagrams, slides, file viewer                                                                                                                                     | diagram, visualize, slides, preview                                                                                  |
-| `ag-mcp-management`                     | MCP server tools                                                                                                                                                         | MCP, model context protocol                                                                                          |
-| `ag-agent-browser`                      | AI browser automation CLI with Puppeteer/DevTools script support                                                                                                         | browser, screenshot, scrape, automate browser, visual testing, browserbase                                           |
-| `ag-team`                               | Multi-agent parallel collaboration                                                                                                                                       | parallel agents, multi-agent, team                                                                                   |
-| `ag-setup`                              | Use when setting up or bootstrapping the agent harness. Detects tech stack, scaffolds process directories, deep-scans codebase, and populates context.                   | seed, harness, bootstrap, new project, scaffold, setup                                                               |
-| `ag-harness-sync`                       | Sync and manage agent harness versions (pull updates & publish changes)                                                                                                  | update harness, pull kit, sync harness, upgrade agents, publish kit, push harness, release kit, update remote        |
-| `ag-audit-ag`                           | Audit agent harness health: Claude/Codex agent parity, skill registry consistency, README sync, and protocol wiring. Use when agents or skills drift.                    | harness, agent parity, skill audit, guide sync, skill standard, validate skill                                       |
-| `ag-zod`                                | Rules and references for Zod schema validation, parsing and database mapping                                                                                             | validate payload, zod schema, zod custom validation errors, zod validation                                           |
-| `ag-zustand`                            | Rules and standards for state management using Zustand in React and Next.js                                                                                              | zustand, state management, store, persist, localStorage, ssr hydration                                               |
-| `ag-demo-irc`                           | Demo of parallel subagents and inter-agent IRC communication                                                                                                             | parallel subagents, subagent messaging, irc messaging, multi-agent communication, irc demo                           |
-| `ag-upstash-ratelimit`                  | Rules, standards, and references for rate limiting in serverless environments using Upstash Ratelimit                                                                    | validate payload, zod schema, upstash ratelimit, redis rate limit, rate limiter                                      |
-| `ag-ui-design`                          | UI/UX and frontend design best practices guidelines                                                                                                                      | HTML structure, CSS styling, responsive layouts, forms, accessibility                                                |
-| `ag-typescript-refactor`                | Rules and standards for TypeScript refactoring                                                                                                                           | clean up TS, ts refactor, fix type errors, typescript compilation, interfaces                                        |
-| `ag-typescript-advanced-patterns`       | Advanced TypeScript design patterns, type-level programming, and type safety guidelines                                                                                  | advanced typescript, generics, mapped types, conditional types, recursive types, type tests                          |
-| `ag-nextjs`                             | Next.js App Router guidelines, routing boundaries, caching, and Server Actions                                                                                           | Next.js page, nextjs app router, server actions, route handlers, nextjs caching                                      |
-| `ag-tailwind`                           | Tailwind CSS guidelines and utility class organization                                                                                                                   | tailwind css, style components, tailwind utility classes, flexbox, grid                                              |
-| `ag-react-hook-form`                    | React Hook Form best practices, validation schemas, and input handling                                                                                                   | react hook form, form validation, form hooks, react forms                                                            |
-| `ag-react-hook-form-audit`              | Code audit and verification rules for React Hook Form                                                                                                                    | react hook form audit, form validation audit, audit forms                                                            |
-| `ag-code-simplifier`                    | Post-implementation code simplification guidelines                                                                                                                       | code simplify, refactor readability, clean up code, simplify structure                                               |
-| `ag-implementation-design-patterns`     | Common software design patterns and architectural standards                                                                                                              | design patterns, implementation patterns, singleton, factory, observer, builder                                      |
-| `ag-implementation-functional-patterns` | Functional programming patterns and paradigms                                                                                                                            | functional programming, pure functions, pipelines, currying, monads, immutability                                    |
-| `ag-nextjs-bundle-optimizer`            | Next.js bundle size optimization rules and guidelines                                                                                                                    | bundle optimization, reduce bundle, nextjs bundle size, code splitting, dynamic imports                              |
-| `ag-nextjs-ppr-patterns`                | Next.js Partial Prerendering (PPR) patterns and guidelines                                                                                                               | nextjs ppr, partial prerendering, static shells, dynamic holes, streaming                                            |
-| `ag-tailwind-refactor`                  | Tailwind CSS refactoring and cleanup guidelines                                                                                                                          | tailwind refactor, clean up tailwind, css to tailwind                                                                |
-| `ag-tailwind-responsive-ui`             | Responsive UI design patterns with Tailwind CSS                                                                                                                          | responsive tailwind, mobile first tailwind, media queries tailwind, breakpoint styling                               |
-| `ag-tailwind-ui-refactor`               | UI refactoring guidelines using Tailwind CSS                                                                                                                             | tailwind ui refactor, redesign tailwind, polish tailwind                                                             |
-| `ag-typescript`                         | TypeScript fundamentals, skipLibCheck, incrementally build, compile performance                                                                                          | typescript compile, skipLibCheck, incremental build, tsconfig config                                                 |
-| `ag-merge-worktree`                     | Merge a git worktree branch back into the main checkout and clean up the worktree                                                                                        | merge worktree, cleanup worktree, git worktree, finish worktree                                                      |
-| `ag-second-brain`                       | Use when querying, searching, updating, or adding notes in the Obsidian second brain without fabricating details.                                                        | second brain, obsidian, search notes, add note, update note, memory note                                             |
-| `ag-strict-config-derivation`           | Enforces Single Source of Truth + Type Derivation pattern for all config lists (columns, permissions, forms, status). Compile-time safety for DTOs and queries.          | column list, permission, role matrix, form field, status transition, nav item, single source of truth, strict config |
+| Agent | Purpose | Primary Use Case / Trigger |
+| :--- | :--- | :--- |
+| `ag-research-agent` | Read-only information gathering | Codebase research, context gathering |
+| `ag-innovate-agent` | Exploration & brainstorming | Comparing technical approaches |
+| `ag-plan-agent` | Detailed spec & plan creation | Writing PRD & implementation plans |
+| `ag-execute-agent` | Plan execution & coding | Implementing approved plan steps |
+| `ag-fast-mode-agent` | Compressed workflow (Research -> Plan -> Pause -> Execute) | Rapid end-to-end implementation |
+| `ag-update-process-agent` | Learning capture & rule updates | Archiving plans & updating process/context |
+| `ag-spec-agent` | Product discovery specification | Writing plain-language user intent specs |
+| `ag-validate-agent` | Feasibility & validation fan-out | Plan validation & feasibility checks |
+| `ag-quick-fix-agent` | Lightweight single-file edit lane | Low-risk targeted edits under 15 lines |
+| `ag-debugger` | Root cause analysis specialist | Debugging bugs and test failures |
+| `ag-tester` | Diff-aware test verification | Running affected test suites |
+| `ag-code-reviewer` | Pre-PR quality & security audit | Code review and quality gate |
+| `ag-code-simplifier` | Post-implementation clarity refactor | Readability improvements without behavior change |
+| `ag-ui-ux-designer` | Design-aware frontend implementation | UI/UX component styling & layout |
+| `ag-git-manager` | Conventional git commit management | Staging & logical commit splitting |
+| `ag-security-agent` | SAST & threat modeling auditor | Security audit & vulnerability scanning |
+| `ag-agent-browser` | Browser automation agent | End-to-end browser execution |
 
+#### 2. Local Repository Skills (`.claude/skills/*` & `.agents/skills/*`)
+
+| Skill | Purpose | Trigger Keywords |
+| :--- | :--- | :--- |
+| `ag-agent-browser` | AI browser automation CLI | browser, screenshot, scrape, automate browser |
+| `ag-agent-strategy-compare` | Strategy comparison for agent orchestration | agent strategy, orchestration compare |
+| `ag-architect-verifier` | Master Architect & Verifier protocol | architect verifier, formal spec, 5-layer interrogation |
+| `ag-audit-ag` | Agent harness health & parity audit | harness, agent parity, skill audit, validate skill |
+| `ag-audit-context` | Context routing & discoverability audit | context audit, reorganize context, stale context |
+| `ag-audit-plans` | Active plan inventory & staleness audit | stale plans, cleanup plans, plan audit |
+| `ag-autoresearch` | Autonomous metric optimization loop | improve coverage, reduce bundle, optimize metric |
+| `ag-brainstorming` | Interactive brainstorming & 7-domain evaluation | brainstorm, spec, design, approach, requirements |
+| `ag-code-interrogation` | Socratic code interrogation | socratic questioning, code interrogation, 5-layer stack |
+| `ag-context-discovery` | Automated context discovery | discover context, context discovery |
+| `ag-debug` | Root cause analysis helper | debug, root cause, investigate |
+| `ag-docs` | Project documentation management | docs, README, document codebase |
+| `ag-docs-seeker` | External library documentation seeker | how does X work, API docs, syntax |
+| `ag-feasibility-test` | Implementation feasibility testing | feasibility, feasibility test |
+| `ag-frontend-design` | Polished UI/UX frontend design | UI, design, layout, component, visual, CSS, Tailwind |
+| `ag-generate-closeout` | Closeout report generation | closeout, closeout report |
+| `ag-generate-context` | Repository context refresh | refresh context, regenerate context, repo context |
+| `ag-generate-phase-program` | Phase program umbrella generation | phase program, umbrella plan |
+| `ag-generate-plan` | Durable implementation plan creation | plan, PRD, spec, implementation plan |
+| `ag-generate-spec` | Formal spec generation | generate spec, formal spec |
+| `ag-git-flow` | Git flow workflow helper | git flow, feature branch, PR flow |
+| `ag-harness-sync` | Sync and manage agent harness versions | update harness, pull kit, sync harness, release kit |
+| `ag-intent-clarify` | Intent clarification helper | clarify intent, intent clarify |
+| `ag-mcp-management` | MCP server management | MCP, model context protocol |
+| `ag-plan-discovery` | Active plan discovery helper | discover plans, active plan inventory |
+| `ag-predict` | Pre-implementation 5-persona debate | risks, predict issues, architectural review |
+| `ag-preview` | Visual diagram & slide preview helper | diagram, visualize, slides, preview |
+| `ag-problem-solving` | Systematic problem solving helper | problem solving, stuck, inversion exercise |
+| `ag-publish` | Package publishing helper | publish package, release publish |
+| `ag-red-team-plan` | Red team security audit planning | red team, security attack plan |
+| `ag-repomix` | Repository packing for reference artifacts | pack repo, snapshot codebase, repo context |
+| `ag-reverse-code-review` | Reverse code review helper | reverse code review, sanity check code |
+| `ag-review-situation` | Situation review helper | review situation, situation scan |
+| `ag-risk-evidence-pack` | Risk evidence packaging helper | risk evidence, verification evidence pack |
+| `ag-scenario` | Edge case generation across 12 dimensions | edge cases, test scenarios, edge case matrix |
+| `ag-scout` | Fast codebase scouting helper | find files, where is, search codebase |
+| `ag-second-brain` | Obsidian second brain note management | second brain, obsidian, search notes, memory note |
+| `ag-security` | STRIDE + OWASP security audit | security, vulnerability, auth, XSS, SQL injection |
+| `ag-sequential-thinking` | Step-by-step sequential thinking | sequential thinking, step by step reasoning |
+| `ag-setup` | Bootstrap & setup agent harness | seed, harness, bootstrap, setup |
+| `ag-socratic-mentor` | Socratic mentoring & guidance | socratic mentor, learning guidance |
+| `ag-strict-config-derivation` | Strict config & DTO type derivation | strict config, column list, permission matrix |
+| `ag-team` | Multi-agent parallel collaboration | parallel agents, multi-agent, team |
+| `ag-tech-graph` | Publish-grade technical diagram generator | generate diagram, architecture diagram, sequence diagram |
+| `ag-test-coverage-plan` | Test coverage planning | test coverage, coverage plan |
+| `ag-update` | Harness & process update helper | update harness, process update |
+| `ag-validate-findings` | Validation findings audit | validate findings, audit findings |
+| `ag-watzup` | Active branch & plan handoff summary | what's in flight, handoff, worktree status |
+| `ag-web-testing` | Playwright/Vitest/k6 testing | tests, e2e, integration test, web testing |
+| `ag-workflow-doc` | SSOT workflow documentation generator | workflow doc, feature workflow, sequence diagram |
+| `ag-xia` | Repo comparison & adaptation research | copy from repo, compare repo, adapt from repo |
+
+#### 3. Harness & System Skills (Built-in OMP / System Runtime)
+
+| Skill | Purpose |
+| :--- | :--- |
+| `zod` | Zod schema validation rules and standards |
+| `zustand` | Zustand state management best practices |
+| `upstash-ratelimit` | Upstash rate limiting standards |
+| `ui-design` | UI/UX & frontend design standards |
+| `typescript` | TypeScript compilation & performance rules |
+| `typescript-refactor` | TypeScript refactoring standards |
+| `typescript-advanced-patterns` | Advanced TypeScript design patterns |
+| `nextjs` | Next.js App Router guidelines & caching |
+| `nextjs-bundle-optimizer` | Next.js bundle size optimization |
+| `nextjs-ppr-patterns` | Next.js Partial Prerendering patterns |
+| `tailwind` | Tailwind CSS guidelines & utility organization |
+| `tailwind-refactor` | Tailwind CSS refactoring patterns |
+| `tailwind-responsive-ui` | Responsive Tailwind UI patterns |
+| `tailwind-ui-refactor` | Tailwind UI redesign patterns |
+| `react-hook-form` | React Hook Form best practices |
+| `react-hook-form-audit` | React Hook Form code audit rules |
+| `implementation-design-patterns` | Gang of Four design patterns in TypeScript |
+| `implementation-functional-patterns` | Functional programming patterns |
+| `merge-worktree` | Git worktree cleanup and merge helper |
 Rule: When one or more skills match the request, mention them to the user or include them in
 the subagent prompt context. Never silently skip relevant skills.
 
@@ -648,7 +693,7 @@ EXECUTE -> UPDATE PROCESS:
 
 **Parallel Fan-Out**
 
-At each phase transition above, consult `process/development-protocols/parallel-fan-out.md` for signal-based parallel subagent recommendations. See orchestration.md for the checkpoint summary.
+At each phase transition above, consult `process/development-protocols/ag-system-behavior/12-reference.md` for signal-based parallel subagent recommendations. See `01-overview.md` for the checkpoint summary.
 
 ## Key Principles
 

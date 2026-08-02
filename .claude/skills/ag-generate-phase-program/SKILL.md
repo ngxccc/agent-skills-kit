@@ -11,6 +11,14 @@ metadata:
 
 # ag-generate-phase-program
 
+## When to Apply
+
+Use this skill when working with ag-generate-phase-program workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Generate kickoff artifacts for a multi-phase RIPER-5 program: umbrella plan, Program Goal Charter,
@@ -474,3 +482,8 @@ only, not workflow rules.
 
 A blank template plus a filled-in reference example live at
 `.claude/skills/ag-generate-phase-program/references/program-goal-charter-template.md`.
+
+
+## References
+
+- [process/context/all-context.md](process/context/all-context.md)

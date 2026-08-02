@@ -11,6 +11,14 @@ metadata:
 
 # ag-validate-findings
 
+## When to Apply
+
+Use this skill when working with ag-validate-findings workflows, tasks, or system specifications.
+
+
+## How to Use
+
+Refer to the workflow instructions and command references detailed below.
 > **Output style:** Follow `process/development-protocols/communication-standards.md` — answer-first, plain language, no unexplained jargon, TL;DR on long responses.
 
 Defines the role specs, prompts, and output schemas for the two-layer VALIDATE fan-out (a parallel check across 4 dimensions + per-section feasibility probes). Produces a net gate verdict (PASS / CONDITIONAL / BLOCKED) and all the inputs needed to write the validate-contract — the written checklist that gates EXECUTE.
