@@ -27,7 +27,9 @@ This skill is designed for the agent to reference when:
 3. **Structured Trade-Off Matrix:** Propose 2–3 approaches formatted as a Trade-off Matrix (Pros/Cons/Risk Class) with a recommended default choice.
 4. **Domain A–G Evaluation:** Systematically evaluate design against Security, UI/UX, Performance, Reliability, Maintainability, Observability, and Compliance.
 5. **High-Risk Class Grilling:** For Auth, Billing, Schema, API Gateway, or Secrets, execute One-Question Grilling and invoke `ag-docs adr` for hard architectural decisions.
-6. **Write Design Doc / Formal Spec:** Save design to `process/features/{feature}/references/YYYY-MM-DD-<topic>-design.md` (or `process/general-plans/references/`).
+6. **Write Design Doc / Formal Spec:**
+   - For standard features, save design spec to `docs/design/<feature-topic>-design.md` or `process/features/{feature}/active/`.
+   - For **High-Risk features** (Auth, Billing, DB Schema, API Gateway, Secrets), author the **Formal Specification** at `process/features/{feature}/active/{feature-slug}-{topic-slug}-formal-spec.md` using template `process/development-protocols/references/formal-spec-template.md` (defining Zod validation contracts, System Invariants `INV-1..N`, and Adversarial Payloads `ADV-1..N`).
 7. **Transition:** After user approves written spec, invoke the `ag-generate-plan` skill to create the implementation plan.
 
 ### 2. Examples
@@ -59,4 +61,5 @@ This skill is designed for the agent to reference when:
 ## References
 
 - [references/brainstorming-guide.md](references/brainstorming-guide.md) - Complete workflow diagram, Trade-off Matrix template, 7 Engineering Evaluation Domains (A–G), and 8-step checklist.
-- [process/context/all-context.md](process/context/all-context.md) - Agent Skills Kit Repository Context and codebase guidelines.
+- [process/development-protocols/references/formal-spec-template.md](../../../process/development-protocols/references/formal-spec-template.md) - Formal Specification template for High-Risk features.
+- [process/context/all-context.md](../../../process/context/all-context.md) - Agent Skills Kit Repository Context and codebase guidelines.
