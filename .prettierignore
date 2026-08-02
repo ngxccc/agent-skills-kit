@@ -1,2 +1,4 @@
 node_modules
 .git
+
+process/context/generated-skills-catalog.json
