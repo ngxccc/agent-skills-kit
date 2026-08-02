@@ -47,9 +47,9 @@ Parse `$ARGUMENTS` first word:
 - `init` → Load `references/init-workflow.md`
 - `update` → Load `references/update-workflow.md`
 - `summarize` → Load `references/summarize-workflow.md`
-- `adr` → Load `references/adr-layout.md` and manage ADRs under `second-brain/Docs/ADRs/` or `docs/adr/`
-- `rfc` → Load `references/rfc-layout.md` and manage RFCs under `second-brain/Docs/RFCs/` or `docs/rfc/`
-- `design` → Load `references/design-doc-layout.md` and manage Design Docs under `docs/design/` or `second-brain/Docs/Design/`
+- `adr` → Load `references/adr-layout.md` and manage ADRs under `docs/adr/`
+- `rfc` → Load `references/rfc-layout.md` and manage RFCs under `docs/rfc/`
+- `design` → Load `references/design-doc-layout.md` and manage Design Docs under `docs/design/`
 - empty/unclear → Present available options
 
 ## Automated Validation Scripts

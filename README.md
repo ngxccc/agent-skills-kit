@@ -85,10 +85,10 @@ your-project/
 │   ├── context/             # 🧠 Authoritative Repository Context Entrypoints (all-context.md)
 │   ├── general-plans/       # 📋 Active, Completed, & Backlog Plan Files
 │   └── features/            # 📁 Feature-Scoped Plans, Reports, & References
-├── second-brain/
-│   └── Docs/
-│       ├── ADRs/            # 🏛️ Centralized Architectural Decision Records (000X-<name>.md)
-│       └── <Topic>/         # 📜 Post-Implementation Operational SSOT Workflows
+├── docs/
+│   ├── adr/                 # 🏛️ Centralized Architectural Decision Records (000X-<name>.md)
+│   ├── design/              # 📜 Post-Implementation Operational SSOT Workflows
+│   └── rfc/                 # 📐 Request for Comments & System Proposals
 ├── AGENTS.md                # 📖 Codex Compatibility Layer & Agent Registry
 └── CLAUDE.md                # 📋 Orchestration Protocol & Mode Auto-Routing
 ```

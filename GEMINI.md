@@ -199,7 +199,7 @@ Global best practices and coding conventions apply:
      - `#region [Name]` / `#endregion` - Logically groups large sections of related code or variables to keep the file scannable.
   5. **Execution**: When generating code, scan for areas that are highly complex, prone to misinterpretation, or contain "magic numbers"/quirks. Inject the appropriate tags naturally. Do not over-comment. Maintain a clean, professional, and pragmatic codebase.
 - Second-Brain Policy: Business specifications, architecture designs, critical trade-offs (e.g. concurrency, outbox pattern), and interview preparation notes must be written to `second-brain/` to facilitate future learning and study.
-- Visual Workflow Documentation Policy: Each feature must document its operational and database flow visually (using Mermaid or sequence diagrams) inside its own dedicated note within the `second-brain/Docs/` directory structured by topic (e.g. `second-brain/Docs/Auth/Register_User_Existence_Creation_Workflow.md`). Do NOT consolidate multiple workflows into a single monolithic document to keep documentation distributed, modular, and context-localized.
+- Visual Workflow Documentation Policy: Each feature must document its operational and database flow visually (using Mermaid or sequence diagrams) inside `docs/design/<feature-topic>-workflow.md`. Do NOT consolidate multiple workflows into a single monolithic document to keep documentation distributed, modular, and context-localized.
 
 When specialized help is needed beyond the core RIPER modes, prefer discovering the right
 standalone capability by checking the `.agents/skills/` directory rather than expanding the

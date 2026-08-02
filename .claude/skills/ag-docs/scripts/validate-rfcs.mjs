@@ -11,8 +11,8 @@ const colors = {
   cyan: "\x1b[36m",
 };
 
-const primaryRfcDir = path.resolve("second-brain/Docs/RFCs");
-const fallbackRfcDir = path.resolve("docs/rfc");
+const primaryRfcDir = path.resolve("docs/rfc");
+const fallbackRfcDir = path.resolve("second-brain/Docs/RFCs");
 const rfcDir = fs.existsSync(primaryRfcDir)
   ? primaryRfcDir
   : fs.existsSync(fallbackRfcDir)

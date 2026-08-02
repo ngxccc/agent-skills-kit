@@ -11,8 +11,8 @@ const colors = {
   cyan: "\x1b[36m",
 };
 
-const primaryAdrDir = path.resolve("second-brain/Docs/ADRs");
-const fallbackAdrDir = path.resolve("docs/adr");
+const primaryAdrDir = path.resolve("docs/adr");
+const fallbackAdrDir = path.resolve("second-brain/Docs/ADRs");
 const adrDir = fs.existsSync(primaryAdrDir)
   ? primaryAdrDir
   : fs.existsSync(fallbackAdrDir)

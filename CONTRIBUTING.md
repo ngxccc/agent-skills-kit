@@ -55,7 +55,7 @@ Pre- and post-execution lifecycle hooks that run automatically during agent sess
 
 Development standards, phase rules, and master workflow guides.
 
-### 5. Documentation & Second Brain (`README.md`, `second-brain/Docs/`)
+### 5. Documentation & System Guides (`README.md`, `docs/`)
 
 Improvements to system guides, ADRs, workflow standards, and translation files.
 
@@ -95,10 +95,10 @@ The harness uses a dual-surface architecture for Claude Code and Codex compatibi
 process/
   development-protocols/ # Shared workflow rules, master guides & PRD references
   context/               # Authoritative project context entrypoints (all-context.md)
-second-brain/
-  Docs/
-    ADRs/          # Architectural Decision Records (000X-<name>.md)
-    <Topic>/       # Operational SSOT Workflow Documentation
+docs/
+  adr/            # Architectural Decision Records (000X-<name>.md)
+  design/         # Operational SSOT Workflow Documentation
+  rfc/            # Request for Comments Proposals
 ```
 
 Skills are shared between surfaces via the `.agents/skills` symlink that Codex uses to discover `.claude/skills/`.
