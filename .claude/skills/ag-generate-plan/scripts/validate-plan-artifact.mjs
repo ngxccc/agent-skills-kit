@@ -79,17 +79,20 @@ function validatePlan(relPath) {
       /## Program Status Table/.test(text));
 
   // Frontmatter-declared umbrellas MUST carry the literal `umbrella` token in their filename
-  // ({program-slug}-umbrella_PLAN_{date}.md). Scoped to the explicit frontmatter declaration
+  // ({program-slug}-umbrella-plan-{date}.md). Scoped to the explicit frontmatter declaration
   // (not the section-heuristic) to avoid false positives on ordinary single plans.
   const declaresUmbrellaFrontmatter = /phase:\s*umbrella/m.test(text);
 
-  if (!hasDateStamp(name)) fail(`${relPath} filename is missing a date stamp`);
-  if (!/_PLAN_|-plan-|\bplan\b|\bPLAN\b/i.test(name)) {
-    fail(`${relPath} filename should contain 'plan' or 'PLAN'`);
+  if (!hasDateStamp(name))
+    fail(`${relPath} filename is missing a date stamp (e.g. -dd-mm-yy.md)`);
+  if (!/-plan-|\bplan\b/i.test(name)) {
+    fail(
+      `${relPath} filename must use kebab-case containing '-plan-' (e.g. [feature-slug]-plan-[dd-mm-yy].md)`,
+    );
   }
   if (declaresUmbrellaFrontmatter && !/umbrella/i.test(name)) {
     fail(
-      `${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella_PLAN_{date}.md`,
+      `${relPath} declares 'phase: umbrella' but filename is missing the 'umbrella' token — name it {program-slug}-umbrella-plan-{date}.md`,
     );
   }
   if (!/^#\s+/m.test(text)) fail(`${relPath} missing top-level title`);

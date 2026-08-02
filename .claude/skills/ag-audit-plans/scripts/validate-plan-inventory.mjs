@@ -87,7 +87,7 @@ for (const file of activePlans) {
   const text = read(file);
 
   if (!hasDateStamp(name)) samples.nameNotDateStamped.push(file);
-  if (!/_PLAN_|PLAN\.md$|PLAN_/.test(name)) samples.noPlanInName.push(file);
+  if (!/plan|PLAN/i.test(name)) samples.noPlanInName.push(file);
   if (
     !/Phase Completion Rules|phase is NOT complete|Phase is NOT complete/i.test(
       text,
@@ -104,7 +104,7 @@ for (const file of activePlans) {
   }
   if (
     /handoff|README|execution-sequence/i.test(name) &&
-    !/_PLAN_|PLAN/i.test(name)
+    !/plan|PLAN/i.test(name)
   ) {
     samples.likelyReferenceInActive.push(file);
   }
