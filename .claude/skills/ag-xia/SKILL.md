@@ -1,11 +1,6 @@
 ---
 name: ag-xia
 description: "Use when you need to compare a local or remote repository, extract a feature idea, or prepare an adaptation study without planning or implementing it yet."
-license: MIT
-argument-hint: "<github-url|owner/repo|local-path> [feature-description] [--compare|--adapt] [--feature <name>] [--report]"
-metadata:
-  author: flowser
-  version: "1.1.0"
 trigger_keywords: xia
 layer: helper
 ---

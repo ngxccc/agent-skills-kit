@@ -184,3 +184,25 @@ Refer to [`harness-schemas.md`](process/development-protocols/references/harness
 3. **`verification.json`**: Execution test results, layer-by-layer coverage maps, and Counter-Example payload contracts.
 4. **`review-decision.json`**: Gatekeeper verification report, verdict, and manifest references before finalize.
 ```
+
+---
+
+## 5. Skill & Agent Orchestration Inventory
+
+Despite the harness having 50+ skills in total, the core Architect & Verifier state machine operates on a lean, deterministic backbone of **6 Core Skills** and **5 Specialist Agents**.
+
+### Core Workflow Engine
+
+| Phase       | State / Step            | Primary Agent             | Core Skills Invoked              | Harness Deliverable                                   |
+| :---------- | :---------------------- | :------------------------ | :------------------------------- | :---------------------------------------------------- |
+| **Phase 0** | ARCHITECT               | Orchestrator              | `ag-brainstorming`               | `[feature-slug]-[topic-slug]-formal-spec.md`, ADR     |
+| **Phase 1** | PLAN                    | `ag-plan-agent`           | `ag-generate-plan`               | Active Plan file, `risk-gate.json`                    |
+| **Phase 2** | VERIFIER PREP (TDD RED) | `ag-tester`               | `ag-scenario`, `ag-security`     | `adversarial-validation.json` (status: RED)           |
+| **Phase 3** | EXECUTE (TDD GREEN)     | `ag-execute-agent`        | Domain Stack Skills (contextual) | Source Code, `verification.json` (status: PASS)       |
+| **Phase 4** | CODE INTERROGATION      | Orchestrator / Verifier   | `ag-code-interrogation`          | `interrogation-report.json`                           |
+| **Phase 5** | PROOF REVIEW            | `ag-code-reviewer`        | `ag-security`                    | `review-decision.json` (verdict: APPROVED)            |
+| **Phase 6** | UPDATE PROCESS & SSOT   | `ag-update-process-agent` | `ag-workflow-doc`, `ag-docs`     | `docs/design/<feature-slug>-<topic-slug>-workflow.md` |
+
+### Dynamic Domain Capability Plugins
+
+All other 45+ repository skills (such as `ag-nextjs`, `ag-tailwind`, `ag-zod`, `ag-zustand`, `ag-drizzle`, `ag-web-testing`, etc.) do NOT alter the core state machine. They function as **dynamic capability plugins** that `ag-execute-agent` and `ag-tester` load contextually in Phase 2 or Phase 3 based on the project's technology stack.
