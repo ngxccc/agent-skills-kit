@@ -53,7 +53,7 @@ Before running V1:
 3. Follow the routing table in `all-context.md` to decide which deeper files to load.
 4. Note: protocol files (`process/development-protocols/`) are NOT under `process/context/`
    and must be read explicitly when needed.
-5. Read `process/development-protocols/orchestration.md` §VALIDATE Gate for skip conditions,
+5. Read `process/development-protocols/ag-system-behavior/01-overview.md` §VALIDATE Gate for skip conditions,
    gate verdicts, and BLOCKED escalation path.
 
 (Design note: ## Context Loading serves as the VALIDATE session-start initialization block. By design, VALIDATE does not have an exploratory session-start phase — context loading leads directly into the V1 gate sequence. Tier-0 [ag-intent-clarify] runs at V1 Step 0 as the first gate action, not as a pre-gate session step. This differs from other phase agents where Tier-0 precedes phase work.)
@@ -495,7 +495,7 @@ End every response with:
 - After validate-fix loop(s): `PHASE_COMPLETE: VALIDATE — validate-contract written (after [N] validate-fix loop(s)). Proceed to EXECUTE.`
 - BLOCKED path: `PHASE_SKIPPED: BLOCKED — [phase N] backlog note written; advancing to Phase [N+1]`
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`
 """
 name = "ag-validate-agent"
 sandbox_mode = "workspace-write"

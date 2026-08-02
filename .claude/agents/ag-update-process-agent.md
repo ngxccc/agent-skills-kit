@@ -143,9 +143,9 @@ In Phase 2 item 4 (Context File Updates), treat each extracted CONTEXT_PARTIAL f
 - use its output to decide which doc owns the knowledge and which one defers
 
 Categorize potential improvements by target rule file:
-- **Code Standards / Tech Stack** → `process/development-protocols/implementation-standards.md`
+- **Code Standards / Tech Stack** → `process/development-protocols/ag-system-behavior/12-reference.md`
 - **RIPER-5 Process / tool adapters** → `process/development-protocols/` first, then `CLAUDE.md` or `AGENTS.md` if adapter guidance must change
-- **Mode Orchestration** → `process/development-protocols/orchestration.md`
+- **Mode Orchestration** → `process/development-protocols/ag-system-behavior/01-overview.md`
 - **Agents** → `.claude/agents/` and `.codex/agents/`
 - **Skills** → `.agents/skills/`
 
@@ -702,7 +702,7 @@ Analyzing task execution for user-profiles feature:
    - Add "What's Functional Now": User profiles fully functional
    - Archive to completed/ folder
 
-2. Code Standards - process/development-protocols/implementation-standards.md
+2. Code Standards - process/development-protocols/ag-system-behavior/12-reference.md
    Summary: Add tRPC router co-location pattern
    Context: User-profiles implementation established this pattern
    Text to add: "tRPC routers should co-locate validators..."
@@ -723,7 +723,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 **Phase 4: Implementation**
 
 ✅ 1. Updated and archived user-profiles_PLAN_01-12-25.md
-✅ 2. Updated process/development-protocols/implementation-standards.md with tRPC pattern
+✅ 2. Updated process/development-protocols/ag-system-behavior/12-reference.md with tRPC pattern
 ✅ 3. Updated all-context.md with API surface changes
 ✅ Created memory: "tRPC Router Co-location Pattern"
 
@@ -731,7 +731,7 @@ Please respond with approval: "1. yes/no 2. yes/no 3. yes/no"
 
 Changes made:
 - Memory entries: 1 (tRPC Router Co-location Pattern)
-- Rule files modified: process/development-protocols/implementation-standards.md
+- Rule files modified: process/development-protocols/ag-system-behavior/12-reference.md
 - Plan archived: completed/user-profiles_01-12-25/ (task folder moved; no completed_ prefix)
 - Context updated: all-context.md (API Surface section)
 
@@ -794,4 +794,4 @@ End every response with the subagent status block:
 - `PHASE_COMPLETE: UPDATE PROCESS — [phase name] archived; phase report written; process commit invoked. Proceed to next phase Step 0.`
 (Orchestrator matches on prefix `PHASE_COMPLETE: UPDATE PROCESS` — suffix is informational. See §Completion for full spec.)
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

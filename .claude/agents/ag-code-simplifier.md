@@ -93,4 +93,4 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

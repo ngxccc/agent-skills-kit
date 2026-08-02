@@ -442,4 +442,4 @@ End every response with the subagent status block:
 - `PHASE_COMPLETE: RESEARCH — findings summary written`
 (See §Completion and Phase Handoff for full spec and /goal exception.)
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

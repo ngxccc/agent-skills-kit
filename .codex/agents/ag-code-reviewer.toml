@@ -166,7 +166,7 @@ This format mirrors the SUPPLEMENT REQUEST format used by ag-validate-agent V7. 
 
 - Constructive, pragmatic feedback
 - Acknowledge good practices
-- Respect `process/development-protocols/implementation-standards.md`
+- Respect `process/development-protocols/ag-system-behavior/12-reference.md`
 - No AI attribution in code/commits
 - Security best practices priority
 - **Verify plan TODO list completion, report to orchestrator for plan file updates**
@@ -203,6 +203,6 @@ End every response with the subagent status block:
 **Concerns/Blockers:** [if applicable]
 ```
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`
 """
 name = "ag-code-reviewer"

@@ -130,7 +130,7 @@ After producing the approach decision, invoke `ag-agent-strategy-compare` to eva
    **Task-folder artefact colocation:** Across every compressed phase (PLAN/VALIDATE/EXECUTE), all artefacts — plan, spec, reports, references, closeout notes — go INSIDE this task's `{slug}_{date}/` folder using `{slug}_{TYPE}_{date}.md` (TYPE ∈ PLAN|SPEC|REPORT|REF). Never write to the deprecated sibling `reports/`/`references/` dirs or any ad-hoc location — the whole folder moves as a unit on archive.
 5. Create or update the implementation plan using the `ag-generate-plan` skill contract only after plan-location choice is explicit.
 6. For large multi-phase efforts, be recommendation-first: recommend whether this should stay a normal complex plan or become a phase program, name the proposed feature folder and phase sequence, and stop for approval before pretending FAST mode can execute the whole program.
-7. Reference `process/development-protocols/phase-programs.md` for true phase programs and do not collapse them into one giant FAST execution pass.
+7. Reference `process/development-protocols/ag-system-behavior/11-phase-programs.md` for true phase programs and do not collapse them into one giant FAST execution pass.
 
 **3+ phase program — agent-team required:** When research/innovate indicates 3+ phase plans are needed, `ag-agent-strategy-compare` MUST recommend **agent-team** (not parallel-subagents or sequential) per the Phase Program Exception — agent team members must communicate to coordinate blast-radius non-overlap and dependency declarations across phases. Fast-mode CANNOT compress a 3+ phase program into one pass — it must stop after making the phase-program recommendation and route to normal PLAN mode.
 
@@ -181,7 +181,7 @@ Path routing: feature-scoped → `process/features/{feature}/backlog/`; general-
    4. If CONDITIONAL after supplement: accept and proceed to MANDATORY PAUSE.
    Under /goal autonomous execution: auto-supplement + re-run once; if still CONDITIONAL: accept autonomously and proceed.
 
-See `process/development-protocols/orchestration.md` §VALIDATE Gate for skip conditions,
+See `process/development-protocols/ag-system-behavior/01-overview.md` §VALIDATE Gate for skip conditions,
 gate verdicts, and BLOCKED escalation path. Full V1–V7 sequence: invoke `ag-validate-findings`.
 
 **Phase-end — strategy compare:**
@@ -200,7 +200,7 @@ After VALIDATE phase:
 
 **This is a critical safety checkpoint. Never skip this pause.**
 
-**Autopilot lane exception:** When operating under an active autopilot goal block whose `EXECUTE CONSENT:` field contains `standing-granted`, the mandatory post-VALIDATE pause is automatically satisfied. The fast-mode agent proceeds directly to `[EXECUTE]` without waiting for "ENTER EXECUTE MODE". See `process/development-protocols/autopilot.md §Lanes`. The pause still fires (as a hard stop) for irreversible/outward-facing actions not in the validate-contract.
+**Autopilot lane exception:** When operating under an active autopilot goal block whose `EXECUTE CONSENT:` field contains `standing-granted`, the mandatory post-VALIDATE pause is automatically satisfied. The fast-mode agent proceeds directly to `[EXECUTE]` without waiting for "ENTER EXECUTE MODE". See `process/development-protocols/ag-system-behavior/12-reference.md §Lanes`. The pause still fires (as a hard stop) for irreversible/outward-facing actions not in the validate-contract.
 
 ### [EXECUTE]
 
@@ -235,7 +235,7 @@ The standard PHASE_COMPLETE: FAST signal fires ONLY after full EXECUTE completio
 - `PHASE_SKIPPED: BLOCKED` from ag-validate-agent: inner validate phase was BLOCKED-skipped. Advance to next phase (Phase N+1 Step 0) — do NOT initiate EXECUTE for this phase. Steps 5–7 are not run.
 - `PHASE_COMPLETE: GIT-COMMIT` from ag-git-manager: confirms source commit (after EVL) or process commit (after UPDATE PROCESS) is complete. Continue to next step in the sequence.
 - `VC-PREDICT-DEEP-NEEDED` from inline INNOVATE step: emit the signal, hold — do NOT continue to PLAN. Orchestrator spawns ag-research-agent scoped to named surface and re-spawns ag-innovate-agent (not a full fast-mode restart) with `Prior Research: [findings]` context; full RESEARCH + early INNOVATE steps are not re-run.
-- See `process/development-protocols/orchestration.md` for full signal routing.
+- See `process/development-protocols/ag-system-behavior/01-overview.md` for full signal routing.
 
 ## Important Notes
 
@@ -476,4 +476,4 @@ End every response with the subagent status block:
 - BLOCKED: `PHASE_COMPLETE: FAST — gate: BLOCKED; plan: [path]; stop reason: [reason]`
 (See §Completion and §Autonomous /goal Execution Rules for full spec.)
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

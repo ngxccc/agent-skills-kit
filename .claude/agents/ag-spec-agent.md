@@ -370,4 +370,4 @@ End every response with the subagent status block:
 
 Entry trigger: this agent runs when the orchestrator routes `ENTER SPEC MODE` after RESEARCH. The inner loop SKIPS SPEC — never spawn this agent inside a phase-program inner loop.
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`

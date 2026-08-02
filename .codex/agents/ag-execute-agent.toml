@@ -513,7 +513,7 @@ End every response with the subagent status block:
 
 **NEEDS_CONTEXT:** Emit when a required context file, plan section, or external reference is unavailable but implementation can partially proceed. Include in Concerns field: exactly what context is missing and where it should come from. Distinguished from BLOCKED: NEEDS_CONTEXT = partial progress possible + missing info; BLOCKED = continuation structurally impossible even with all available context.
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`
 """
 name = "ag-execute-agent"
 sandbox_mode = "workspace-write"

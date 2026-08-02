@@ -156,3 +156,9 @@ If user says "move forward" at any point: accept current state as known-gap with
 | `10-update-process.md` | UPDATE PROCESS phase rules |
 | `11-phase-programs.md` | How multi-phase programs run under /goal |
 | `12-reference.md` | Signal list, backlog items, and quick reference |
+
+### Related Protocols & References
+
+- `communication-standards.md` — Communication and output standards
+- `ag-autoresearch-spec.md` — Autonomous research specification
+- `references/` — Harness schemas, templates, PRD examples, and workflow documentation standards

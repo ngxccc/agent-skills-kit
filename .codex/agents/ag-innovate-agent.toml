@@ -447,6 +447,6 @@ End every response with the subagent status block:
 **Hold state — VC-PREDICT-DEEP-NEEDED:**
 When emitting `VC-PREDICT-DEEP-NEEDED: [surface/pattern] — pausing for research subagent.`, do NOT emit a status block. This is a 5th terminal state: the agent holds and waits for the orchestrator to spawn a scoped ag-research-agent and then re-spawn ag-innovate-agent with Prior Research context. See §Completion Step 1 and orchestration.md §VC-PREDICT-DEEP-NEEDED Signal Routing.
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`
 """
 name = "ag-innovate-agent"

@@ -60,7 +60,11 @@ if (fs.existsSync(agentsDir)) {
 
     // Find all process/development-protocols/ references in agent body
     // Updated regex supports subdir paths like ag-system-behavior/06-innovate.md
-    const refs = [...text.matchAll(/process\/development-protocols\/((?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.md)/g)];
+    const refs = [
+      ...text.matchAll(
+        /process\/development-protocols\/((?:[a-z0-9_-]+\/)*[a-z0-9_-]+\.md)/g,
+      ),
+    ];
     for (const ref of refs) {
       const referencedFile = ref[1];
       const fullRef = `${protocolDir}/${referencedFile}`;
@@ -73,30 +77,31 @@ if (fs.existsSync(agentsDir)) {
 
 // --- 3. Check that all-development-protocols.md lists all sibling protocol files ---
 
-const allProtocolsFile = `${protocolDir}/all-development-protocols.md`;
+const allProtocolsFile = `${protocolDir}/ag-system-behavior/01-overview.md`;
 if (exists(allProtocolsFile)) {
   const allProtocolsText = read(allProtocolsFile);
   for (const file of protocolFiles) {
     const basename = path.basename(file);
-    if (basename === "all-development-protocols.md") continue;
+    if (basename === "01-overview.md") continue;
 
-    // Files in subdirectories are listed as a group via the subdir folder reference.
-    // Check: if any parent path segment of this file is referenced in all-development-protocols.md
-    // (e.g. ag-system-behavior/01-overview.md is covered by the `ag-system-behavior/` folder entry).
-    const relToProtocolDir = path.relative(protocolDir, path.join(protocolDir, path.relative(protocolDir, path.join(root, protocolDir, path.relative(`${protocolDir}/`, file)))));
     const segments = file.replace(`${protocolDir}/`, "").split(path.sep);
     if (segments.length > 1) {
-      // Subdir file: covered if the subdir name appears in the router doc
       const subdirRef = segments[0] + "/";
-      if (!allProtocolsText.includes(subdirRef)) {
-        fail(`${allProtocolsFile} does not reference subdir: ${subdirRef} (contains ${file})`);
+      const fileBasename = path.basename(file);
+      if (
+        !allProtocolsText.includes(subdirRef) &&
+        !allProtocolsText.includes(fileBasename)
+      ) {
+        fail(`${allProtocolsFile} does not reference file/subdir: ${file}`);
       }
       continue;
     }
 
     // Root-level file: must appear by basename
     if (!allProtocolsText.includes(basename)) {
-      fail(`${allProtocolsFile} does not list protocol file: ${basename} (path: ${file})`);
+      fail(
+        `${allProtocolsFile} does not list protocol file: ${basename} (path: ${file})`,
+      );
     }
   }
 } else {
@@ -111,12 +116,16 @@ if (exists(updateProcessAgent)) {
 
   // Check that README.md is in the scan list
   if (!text.includes("README.md")) {
-    warn(`${updateProcessAgent} Category 5b scan list does not include README.md`);
+    warn(
+      `${updateProcessAgent} Category 5b scan list does not include README.md`,
+    );
   }
 
   // Check that process/development-protocols/ is in the scan list
   if (!text.includes("process/development-protocols/")) {
-    warn(`${updateProcessAgent} Category 5b scan list does not include process/development-protocols/`);
+    warn(
+      `${updateProcessAgent} Category 5b scan list does not include process/development-protocols/`,
+    );
   }
 } else {
   fail(`${updateProcessAgent} does not exist`);

@@ -112,7 +112,7 @@ plan structure, complexity classification, phase completion rules, and example f
 The `ag-generate-plan` skill defines what the plan artifact must contain.
 Planning rigor formerly taught by `ag-plan` now belongs in this pairing: use `ag-generate-plan` for the artifact contract and keep adversarial validation, dependency mapping, and verification-gate thinking inside the plan itself instead of a parallel plan-owner workflow.
 
-For large programs, also apply `process/development-protocols/phase-programs.md`.
+For large programs, also apply `process/development-protocols/ag-system-behavior/11-phase-programs.md`.
 
 ### Step 0: Codebase Scan (Before Reading Plans or Context)
 
@@ -638,6 +638,6 @@ End every response with the subagent status block:
 - `NEEDS_CONTEXT — no supplement needed: plan is current`
 These signals replace the standard status block when supplement mode completes.
 
-Full protocol: `process/development-protocols/orchestration.md`
+Full protocol: `process/development-protocols/ag-system-behavior/01-overview.md`
 """
 name = "ag-plan-agent"
