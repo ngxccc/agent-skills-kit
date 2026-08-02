@@ -28,7 +28,7 @@ This skill is designed for the agent to reference when:
 4. **Domain A–G Evaluation:** Systematically evaluate design against Security, UI/UX, Performance, Reliability, Maintainability, Observability, and Compliance.
 5. **High-Risk Class Grilling:** For Auth, Billing, Schema, API Gateway, or Secrets, execute One-Question Grilling and invoke `ag-docs adr` for hard architectural decisions.
 6. **Write Design Doc / Formal Spec:**
-   - For standard features, save design spec to `docs/design/<feature-topic>-design.md` or `process/features/{feature}/active/`.
+   - For standard features, save design spec to `docs/design/<feature-topic>-design.md` using template `references/design-spec-template.md`.
    - For **High-Risk features** (Auth, Billing, DB Schema, API Gateway, Secrets), author the **Formal Specification** at `process/features/{feature}/active/{feature-slug}-{topic-slug}-formal-spec.md` using template `process/development-protocols/references/formal-spec-template.md` (defining Zod validation contracts, System Invariants `INV-1..N`, and Adversarial Payloads `ADV-1..N`).
 7. **Transition:** After user approves written spec, invoke the `ag-generate-plan` skill to create the implementation plan.
 
@@ -73,5 +73,6 @@ When brainstorming work falls under **High-Risk Class** (Auth, Billing & Payment
 ## References
 
 - [references/brainstorming-guide.md](references/brainstorming-guide.md) - Complete workflow diagram, Trade-off Matrix template, 7 Engineering Evaluation Domains (A–G), and 8-step checklist.
+- [references/design-spec-template.md](references/design-spec-template.md) - Standard Design Specification template for non-high-risk features.
 - [process/development-protocols/references/formal-spec-template.md](../../../process/development-protocols/references/formal-spec-template.md) - Formal Specification template for High-Risk features.
 - [process/context/all-context.md](../../../process/context/all-context.md) - Agent Skills Kit Repository Context and codebase guidelines.
