@@ -66,6 +66,10 @@ const validators = [
     name: "Plan Artifact",
     cmd: "node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs",
   },
+  {
+    name: "Protocol Discovery",
+    cmd: "node .claude/skills/ag-audit-context/scripts/validate-protocol-discovery.mjs",
+  },
 ];
 
 async function main() {

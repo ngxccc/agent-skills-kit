@@ -81,9 +81,7 @@ function walk(dir, predicate, out = []) {
 const textFiles = [
   "CLAUDE.md",
   "AGENTS.md",
-  "benchmark-profile.md",
   "harbor-runbook.md",
-  "benchmark-kit-manifest.json",
   ...walk("harbor_agents", (rel) => rel.endsWith(".py")),
   ...walk(".claude/skills", (rel) => /\.(md|cjs|mjs|py|js|json)$/.test(rel)),
   ...walk(".claude/agents", (rel) => rel.endsWith(".md")),

@@ -326,7 +326,8 @@ const staleWorkflowPatterns = [
   },
   {
     pattern: "docs/design-guidelines",
-    reason: "use process/context/ui/ or relevant feature context references",
+    reason:
+      "use process/context/all-context.md or relevant feature context references",
   },
   { pattern: "validate-docs", reason: "use audit-context validator" },
   {
