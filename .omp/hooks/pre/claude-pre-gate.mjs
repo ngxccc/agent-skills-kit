@@ -1,11 +1,8 @@
-// @ts-check
-// @ts-expect-error
-
 import { execSync } from "node:child_process";
 import * as path from "node:path";
-import type { HookAPI } from "@oh-my-pi/pi-coding-agent/extensibility/hooks";
+import * as fs from "node:fs";
 
-const mapToolName = (ompName: string): string => {
+const mapToolName = (ompName) => {
   switch (ompName) {
     case "write":
       return "Write";
@@ -26,12 +23,16 @@ const mapToolName = (ompName: string): string => {
   }
 };
 
-const runClaudeHook = (
-  hookScript: string,
-  payload: any,
-): { block: boolean; reason?: string } => {
+const runClaudeHook = (hookScript, payload) => {
   try {
-    const scriptPath = path.resolve(`.claude/hooks/${hookScript}`);
+    const scriptPath = path.resolve(
+      process.cwd(),
+      `.claude/hooks/${hookScript}`,
+    );
+    if (!fs.existsSync(scriptPath)) {
+      return { block: false };
+    }
+
     const output = execSync(`node "${scriptPath}"`, {
       input: JSON.stringify(payload),
       encoding: "utf-8",
@@ -49,7 +50,7 @@ const runClaudeHook = (
       }
     }
     return { block: false };
-  } catch (error: any) {
+  } catch (error) {
     const stderr = error.stderr ? String(error.stderr).trim() : "";
     const stdout = error.stdout ? String(error.stdout).trim() : "";
     return {
@@ -59,9 +60,8 @@ const runClaudeHook = (
   }
 };
 
-export default function (pi: HookAPI) {
+export default function (pi) {
   pi.on("tool_call", (event) => {
-    console.error(`[HOOK DEBUG] Tool call: ${event.toolName}`);
     const toolName = event.toolName;
     const input = event.input || {};
 
