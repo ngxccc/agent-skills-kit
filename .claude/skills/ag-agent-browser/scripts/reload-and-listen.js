@@ -65,15 +65,23 @@ async function main() {
               if (v === undefined) return "undefined";
               if (v === null) return "null";
               if (typeof v === "object") {
-                try { return JSON.stringify(v); } catch { return String(v); }
+                try {
+                  return JSON.stringify(v);
+                } catch {
+                  return String(v);
+                }
               }
               return String(v);
             });
-          } catch { return "<unresolvable>"; }
+          } catch {
+            return "<unresolvable>";
+          }
         }),
       );
       resolvedText = parts.join(" ");
-    } catch { /* fall back to msg.text() */ }
+    } catch {
+      /* fall back to msg.text() */
+    }
     messages.push({
       ts: Date.now(),
       type: msg.type(),
@@ -98,7 +106,9 @@ async function main() {
 
   const planB = messages.filter((m) => m.text.includes("[plan-b]"));
   const ws = messages.filter((m) => m.text.includes("[WS"));
-  const errors = messages.filter((m) => m.type === "error" || m.type === "pageerror");
+  const errors = messages.filter(
+    (m) => m.type === "error" || m.type === "pageerror",
+  );
 
   const result = {
     ok: true,
@@ -113,13 +123,15 @@ async function main() {
 
   if (out) {
     fs.writeFileSync(out, JSON.stringify(result, null, 2));
-    console.log(JSON.stringify({
-      ok: true,
-      file: out,
-      planBCount: planB.length,
-      wsCount: ws.length,
-      totalMessages: messages.length,
-    }));
+    console.log(
+      JSON.stringify({
+        ok: true,
+        file: out,
+        planBCount: planB.length,
+        wsCount: ws.length,
+        totalMessages: messages.length,
+      }),
+    );
   } else {
     console.log(JSON.stringify(result, null, 2));
   }

@@ -45,17 +45,15 @@ async function main() {
 
   const pages = await browser.pages();
   const page = targetUrl
-    ? pages.find((p) => p.url().includes(targetUrl)) ?? pages[0]
-    : pages.find((p) => p.url().startsWith("http")) ?? pages[0];
+    ? (pages.find((p) => p.url().includes(targetUrl)) ?? pages[0])
+    : (pages.find((p) => p.url().startsWith("http")) ?? pages[0]);
 
   if (!page) {
     console.error(JSON.stringify({ ok: false, error: "no page found" }));
     process.exit(1);
   }
 
-  process.stderr.write(
-    `[attach] target page: ${page.url().slice(0, 120)}\n`,
-  );
+  process.stderr.write(`[attach] target page: ${page.url().slice(0, 120)}\n`);
   process.stderr.write(`[attach] listening for ${duration}ms\n`);
 
   const messages = [];
@@ -83,7 +81,11 @@ async function main() {
   // Network: only capture tRPC + WS for signal
   page.on("request", (req) => {
     const u = req.url();
-    if (u.includes("/api/trpc") || u.includes("/ws") || u.includes("getActiveRun")) {
+    if (
+      u.includes("/api/trpc") ||
+      u.includes("/ws") ||
+      u.includes("getActiveRun")
+    ) {
       network.push({
         ts: Date.now(),
         kind: "request",
@@ -109,7 +111,12 @@ async function main() {
   await cdp.send("Network.enable");
   cdp.on("Network.webSocketFrameReceived", (e) => {
     const payload = String(e.response?.payloadData || "").slice(0, 400);
-    if (payload.includes("getActiveRun") || payload.includes("chat") || payload.includes("agent") || payload.includes("runId")) {
+    if (
+      payload.includes("getActiveRun") ||
+      payload.includes("chat") ||
+      payload.includes("agent") ||
+      payload.includes("runId")
+    ) {
       network.push({
         ts: Date.now(),
         kind: "ws-recv",
@@ -142,7 +149,14 @@ async function main() {
   if (out) {
     fs.writeFileSync(out, JSON.stringify(result, null, 2));
     process.stderr.write(`[attach] wrote ${out}\n`);
-    console.log(JSON.stringify({ ok: true, file: out, messageCount: messages.length, networkCount: network.length }));
+    console.log(
+      JSON.stringify({
+        ok: true,
+        file: out,
+        messageCount: messages.length,
+        networkCount: network.length,
+      }),
+    );
   } else {
     console.log(JSON.stringify(result));
   }
