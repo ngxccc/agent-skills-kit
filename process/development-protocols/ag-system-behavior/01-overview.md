@@ -29,6 +29,22 @@ These docs exist so agents know the rules and can follow them without guessing.
 
 ---
 
+## Task Risk Classification & Protocol Routing
+
+Before executing any request, agents MUST evaluate the task scope against the **6 High-Risk Trigger Classes**:
+
+1. **Auth & Identity**: Auth, JWT, OAuth, Session, Hashing (`src/auth/*`, `middleware.ts`).
+2. **Billing & Financial**: Stripe, Checkout, Payment, Credits (`src/billing/*`).
+3. **DB Schema Mutation**: Prisma schema migrations, DB alter/drop (`prisma/schema.prisma`).
+4. **Public API Contract**: Public API endpoints, DTO breaking changes (`src/app/api/v1/*`).
+5. **Gateway & Container**: Docker, ports, Nginx, Proxy, Middleware (`Dockerfile`, `proxy.ts`).
+6. **Security & Permissions**: RBAC, ACL, Secrets, API Keys (`src/permissions/*`).
+
+- **High-Risk Class**: Route to **Architect & Verifier Master Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`). Requires `formal-spec.md`, `risk-gate.json`, `adversarial-validation.json`, and 5-layer Socratic Interrogation.
+- **Low-Risk Class**: Route to standard **RIPER-5 Flow / FAST Mode / Quick Fix Lane**.
+
+---
+
 ## The Full Pipeline
 
 ```
@@ -36,7 +52,7 @@ USER REQUEST
      │
      ▼
 SESSION START (orchestrator main thread)
-  intent-clarify → context-discovery → plan-discovery → strategy-compare → review-situation
+  Step 0 Risk Gate → intent-clarify → context-discovery → plan-discovery → strategy-compare → review-situation
      │
      ▼
 RESEARCH ──► SPEC ──► INNOVATE ──► PLAN ──► PLAN-VALIDATE-LOOP (PVL) ──► EXECUTE ──► EXECUTE-VALIDATE-LOOP (EVL) ──► UPDATE PROCESS
@@ -48,8 +64,6 @@ RESEARCH ──► SPEC ──► INNOVATE ──► PLAN ──► PLAN-VALIDAT
 ```
 
 For a multi-phase program, after the last phase's EVL the program runs one **FINAL CROSS-PHASE E2E** verification gate (whole-system, EVL-style, 10-cycle-capped) before closeout — see `11-phase-programs.md`.
-
----
 
 ## The Two Loop Types
 

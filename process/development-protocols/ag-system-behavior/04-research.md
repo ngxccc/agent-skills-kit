@@ -36,9 +36,11 @@ These run in order. Do not skip any of them.
 
 > **Single-trip rule (PHASE-GATES).** All Tier-0 skills below (intent-clarify, context/plan discovery, review-situation, strategy-compare) run as _preparation_ but produce exactly **one** user pause: the **Combined Clarification Gate** from `03-session-start.md` Step 6.5. Intent restatement + clarifying questions + the 4 strategy options are presented together in a single `AskUserQuestion`. Do NOT pause separately at R-S0 and again at R-S4. Under `/goal` the gate auto-proceeds. See `12-reference.md` (`PHASE-GATES`).
 
-### [R-S0] ag-intent-clarify (Tier 0) — REQUIRED
+### [R-S0] ag-intent-clarify & Step 0 Risk Gate (Tier 0) — REQUIRED
 
-Run this first. Restate what the user asked. Produce any clarifying questions — but do **NOT** pause here. They feed the single Combined Clarification Gate (see the single-trip rule above).
+Run this first. Evaluate scope against the 6 High-Risk Classes (Auth, Billing, DB Schema, Public API, Proxy/Gateway, Permissions). If High-Risk, flag the task and route downstream planning to the **Architect & Verifier Master Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`).
+
+Restate what the user asked. Produce any clarifying questions — but do **NOT** pause here. They feed the single Combined Clarification Gate (see the single-trip rule above).
 
 If coming from an orchestrator session that already ran intent-clarify: give a one-sentence restatement only. ("Proceeding with [scope]. My understanding: [one sentence]. Correct me if off.")
 

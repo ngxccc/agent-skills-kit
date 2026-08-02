@@ -53,12 +53,13 @@ This is automatic and does not require the user to re-paste `/goal`. It is the a
 
 ---
 
-### Step 2 — ag-intent-clarify (Tier 0, runs BEFORE context loading)
+### Step 2 — ag-intent-clarify & Step 0 Risk Gate (Tier 0, runs BEFORE context loading)
 
 This runs before any routing or subagent spawn.
 
-Produce two things — both are required:
+**Step 0 Risk Gate Classification**: Evaluate task scope against the 6 High-Risk Classes (Auth, Billing, DB Schema, Public API, Proxy/Gateway, Permissions). If High-Risk, flag the task and route downstream planning/spec to the **Architect & Verifier Master Protocol** (`process/development-protocols/references/architect-verifier-master-workflow-guide.md`).
 
+Produce two things — both are required:
 **(a) Deep restatement** — Articulate what you understand the user wants:
 
 - Scope: what will change, what will not
