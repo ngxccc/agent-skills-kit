@@ -32,3 +32,30 @@ This document defines the strict, non-negotiable policy for selecting specialize
   `write("xd://mcp__codebase_memory_index_repository", {"repo_path": "/full/path/to/repo", "mode": "fast"})`
 - **Search Knowledge Graph** (requires `project` and `query` or `name_pattern`):
   `write("xd://mcp__codebase_memory_search_graph", {"project": "home-user-repo", "query": "validate"})`
+
+### 2. Language Server Protocol (`xd://lsp`)
+
+- **Find Symbol References / Callers**:
+  `write("xd://lsp", {"action": "references", "file": "src/services/user.service.ts", "line": 45, "symbol": "findUserById"})`
+- **Go to Definition**:
+  `write("xd://lsp", {"action": "definition", "file": "src/controllers/user.controller.ts", "line": 18, "symbol": "UserService"})`
+- **Cross-File Rename Symbol**:
+  `write("xd://lsp", {"action": "rename", "file": "src/services/user.service.ts", "line": 45, "symbol": "findUserById", "new_name": "getUserById"})`
+- **Get Hover Info & Type Signature**:
+  `write("xd://lsp", {"action": "hover", "file": "src/types/user.ts", "line": 12, "symbol": "UserProfile"})`
+
+### 3. AST Structural Rewrites (`xd://ast_edit`)
+
+- **Remove Console Logs**:
+  `write("xd://ast_edit", {"paths": ["src/**/*.ts"], "ops": [{"pat": "console.log($$$ARGS)", "out": ""}]})`
+- **Rewrite Function Calls**:
+  `write("xd://ast_edit", {"paths": ["src/**/*.ts"], "ops": [{"pat": "oldLogger.info($MSG)", "out": "logger.info($MSG)"}]})`
+
+### 4. DAP Debugger (`xd://debug`)
+
+- **Set Breakpoint**:
+  `write("xd://debug", {"action": "set_breakpoint", "file": "src/server.ts", "line": 85})`
+- **Launch Debug Session**:
+  `write("xd://debug", {"action": "launch", "adapter": "node", "program": "src/server.ts", "args": ["--port", "3000"]})`
+- **Evaluate Expression**:
+  `write("xd://debug", {"action": "evaluate", "expression": "req.headers.authorization", "context": "hover"})`
