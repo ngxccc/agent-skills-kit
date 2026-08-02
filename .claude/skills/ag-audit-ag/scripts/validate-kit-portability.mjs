@@ -30,7 +30,11 @@ if (rootFlagIndex !== -1) {
   root = path.resolve(process.argv[rootFlagIndex + 1] ?? "");
 } else {
   try {
-    root = execSync("git rev-parse --show-toplevel", { stdio: ['pipe', 'pipe', 'pipe'] }).toString().trim();
+    root = execSync("git rev-parse --show-toplevel", {
+      stdio: ["pipe", "pipe", "pipe"],
+    })
+      .toString()
+      .trim();
   } catch {
     // Not a git repository — fall back to process.cwd() so the script still works on new projects.
     root = process.cwd();
@@ -127,7 +131,9 @@ for (const file of textFiles) {
   lines.forEach((line, index) => {
     if (!BRAND_RE.test(line)) return;
     if (isBrandAllowlisted(line)) return;
-    fail(`${file}:${index + 1} product-name leak: ${line.trim().slice(0, 160)}`);
+    fail(
+      `${file}:${index + 1} product-name leak: ${line.trim().slice(0, 160)}`,
+    );
   });
 }
 

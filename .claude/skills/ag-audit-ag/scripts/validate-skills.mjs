@@ -13,13 +13,15 @@ const warnings = [];
 const blockingKeys = new Set([
   "name",
   "description",
-  "license",
-  "allowed-tools",
-  "metadata",
-  "argument-hint",
-  "languages",
+  "trigger_keywords",
+  "layer",
 ]);
 const advisoryKeys = new Set([
+  "license",
+  "allowed-tools",
+  "argument-hint",
+  "languages",
+  "metadata",
   "user-invocable",
   "when_to_use",
   "category",

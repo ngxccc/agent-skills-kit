@@ -20,7 +20,9 @@ const seedsDir = path.join(root, "process/_seeds");
 
 // 1. Check seeds directory exists
 if (!fs.existsSync(seedsDir)) {
-  warn("process/_seeds/ directory does not exist (optional in live repo; required only for scaffold/export audits)");
+  warn(
+    "process/_seeds/ directory does not exist (optional in live repo; required only for scaffold/export audits)",
+  );
 } else {
   // 2. Check expected subdirectory structure
   const expectedDirs = [
@@ -54,13 +56,19 @@ if (!fs.existsSync(seedsDir)) {
 
   const allFiles = walkFiles(seedsDir);
   const textFiles = allFiles.filter((f) =>
-    /\.(md|seed|json|yml|yaml|toml|cjs|mjs)$/.test(f)
+    /\.(md|seed|json|yml|yaml|toml|cjs|mjs)$/.test(f),
   );
 
   // 4. Check for stale path references
   const stalePatterns = [
-    { pattern: /\.claude\/CLAUDE\.md/g, label: ".claude/CLAUDE.md (moved to root)" },
-    { pattern: /\.claude\/skills\/(?!ag-)/g, label: "old skill path without ag- prefix" },
+    {
+      pattern: /\.claude\/CLAUDE\.md/g,
+      label: ".claude/CLAUDE.md (moved to root)",
+    },
+    {
+      pattern: /\.claude\/skills\/(?!ag-)/g,
+      label: "old skill path without ag- prefix",
+    },
   ];
 
   for (const file of textFiles) {
@@ -86,13 +94,20 @@ if (!fs.existsSync(seedsDir)) {
   }
 
   // 6. Check seed _GUIDE.md files exist for key directories
-  const guideDirs = ["", "general-plans/active", "general-plans/completed", "features"];
+  const guideDirs = [
+    "",
+    "general-plans/active",
+    "general-plans/completed",
+    "features",
+  ];
   for (const dir of guideDirs) {
     const guidePath = path.join(seedsDir, dir, "_GUIDE.md");
     if (!fs.existsSync(guidePath)) {
       const seedGuidePath = path.join(seedsDir, dir, "_GUIDE.md.seed");
       if (!fs.existsSync(seedGuidePath)) {
-        warn(`Missing _GUIDE.md or _GUIDE.md.seed in process/_seeds/${dir || "(root)"}`);
+        warn(
+          `Missing _GUIDE.md or _GUIDE.md.seed in process/_seeds/${dir || "(root)"}`,
+        );
       }
     }
   }

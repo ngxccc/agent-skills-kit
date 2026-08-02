@@ -103,7 +103,11 @@ function checkAgent(agentPath) {
   } catch (e) {
     globalFailures.push(`${rel}: cannot read file — ${e.message}`);
     agentFailures++;
-    checkedAgents.push({ path: rel, failures: agentFailures, warnings: agentWarnings });
+    checkedAgents.push({
+      path: rel,
+      failures: agentFailures,
+      warnings: agentWarnings,
+    });
     return;
   }
 
@@ -111,7 +115,11 @@ function checkAgent(agentPath) {
   if (!fm) {
     globalFailures.push(`${rel}: no YAML frontmatter block found`);
     agentFailures++;
-    checkedAgents.push({ path: rel, failures: agentFailures, warnings: agentWarnings });
+    checkedAgents.push({
+      path: rel,
+      failures: agentFailures,
+      warnings: agentWarnings,
+    });
     return;
   }
 
@@ -184,7 +192,11 @@ function checkAgent(agentPath) {
   }
   // hooks absent: no action at P2 time (P5 will add the FAIL gate)
 
-  checkedAgents.push({ path: rel, failures: agentFailures, warnings: agentWarnings });
+  checkedAgents.push({
+    path: rel,
+    failures: agentFailures,
+    warnings: agentWarnings,
+  });
 }
 
 // Determine agent file(s) to check
@@ -201,7 +213,9 @@ if (singleAgentArg) {
   } else {
     // Try resolving as a basename under .claude/agents/
     const inAgentsDir = path.join(root, ".claude/agents", singleAgentArg);
-    const withExt = inAgentsDir.endsWith(".md") ? inAgentsDir : inAgentsDir + ".md";
+    const withExt = inAgentsDir.endsWith(".md")
+      ? inAgentsDir
+      : inAgentsDir + ".md";
     if (fs.existsSync(withExt)) {
       agentFiles = [withExt];
     } else {

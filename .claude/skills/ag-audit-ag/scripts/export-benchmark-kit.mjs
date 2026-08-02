@@ -8,7 +8,9 @@ const outFlagIndex = process.argv.indexOf("--out");
 const dryRun = args.has("--dry-run");
 
 if (outFlagIndex === -1 || !process.argv[outFlagIndex + 1]) {
-  console.error("Usage: export-benchmark-kit.mjs --out <directory> [--dry-run]");
+  console.error(
+    "Usage: export-benchmark-kit.mjs --out <directory> [--dry-run]",
+  );
   process.exitCode = 1;
   process.exit();
 }
@@ -128,7 +130,10 @@ function isIncluded(rel) {
 }
 
 function isExcluded(rel) {
-  return excludeRegexes.some((regex) => regex.test(rel)) || extraExclude.some((regex) => regex.test(rel));
+  return (
+    excludeRegexes.some((regex) => regex.test(rel)) ||
+    extraExclude.some((regex) => regex.test(rel))
+  );
 }
 
 const copiedFiles = [];
@@ -174,7 +179,10 @@ function token(...parts) {
 
 function scrubText(input) {
   return input
-    .replaceAll(token("apps/", "flo", "wser-container"), "apps/source-container")
+    .replaceAll(
+      token("apps/", "flo", "wser-container"),
+      "apps/source-container",
+    )
     .replaceAll(token("apps/", "flo", "wser"), "apps/source-app")
     .replaceAll(token("@", "flo", "wser", "/webapp"), "@benchmark/webapp")
     .replaceAll(token("FLO", "WSER"), "BENCHMARK")
@@ -444,8 +452,16 @@ if (!dryRun) {
   for (const rel of copiedFiles) copyFile(rel);
   writeFile("CLAUDE.md", genericClaude, generatedFiles);
   writeFile("AGENTS.md", genericAgents, generatedFiles);
-  writeFile("process/context/all-context.md", genericAllContext, generatedFiles);
-  writeFile("process/context/tests/all-tests.md", genericAllTests, generatedFiles);
+  writeFile(
+    "process/context/all-context.md",
+    genericAllContext,
+    generatedFiles,
+  );
+  writeFile(
+    "process/context/tests/all-tests.md",
+    genericAllTests,
+    generatedFiles,
+  );
   for (const rel of [
     "process/context/tests.md",
     "process/context/tests/container-e2e.md",
@@ -464,10 +480,18 @@ if (!dryRun) {
   ]) {
     writeFile(rel, genericContextStub(rel), generatedFiles);
   }
-  writeFile("process/context/generated-skills-catalog.json", "{}\n", generatedFiles);
+  writeFile(
+    "process/context/generated-skills-catalog.json",
+    "{}\n",
+    generatedFiles,
+  );
   writeFile("benchmark-profile.md", benchmarkProfile, generatedFiles);
   writeFile("harbor_agents/__init__.py", harborAgentInit, generatedFiles);
-  writeFile("harbor_agents/benchmark_harness_agent.py", harborAgent, generatedFiles);
+  writeFile(
+    "harbor_agents/benchmark_harness_agent.py",
+    harborAgent,
+    generatedFiles,
+  );
   writeFile("harbor-runbook.md", harborRunbook, generatedFiles);
 
   for (const rel of [
@@ -485,7 +509,10 @@ if (!dryRun) {
   fs.symlinkSync(symlinkTarget, symlinkPath);
   generatedFiles.push(".agents/skills");
 
-  const generatedFilesWithManifest = [...generatedFiles, "benchmark-kit-manifest.json"];
+  const generatedFilesWithManifest = [
+    ...generatedFiles,
+    "benchmark-kit-manifest.json",
+  ];
   const snapshot = {
     generatedAt: new Date().toISOString(),
     sourceRepo: "source-repo",
@@ -504,7 +531,11 @@ if (!dryRun) {
       "Live Harbor or Terminal-Bench execution is intentionally outside this exporter.",
     ],
   };
-  writeFile("benchmark-kit-manifest.json", `${JSON.stringify(snapshot, null, 2)}\n`, generatedFiles);
+  writeFile(
+    "benchmark-kit-manifest.json",
+    `${JSON.stringify(snapshot, null, 2)}\n`,
+    generatedFiles,
+  );
 }
 
 const result = {

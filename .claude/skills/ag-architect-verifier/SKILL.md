@@ -11,10 +11,10 @@ layer: helper
 
 Use this skill when working with ag-architect-verifier workflows, tasks, or system specifications.
 
-
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
+
 > **Operational Purpose:** Coordinates the end-to-end state machine for high-risk technical changes across the `agent-skills-kit` harness: Idea $\rightarrow$ Formal Spec $\rightarrow$ Frozen TDD Suite $\rightarrow$ Counter-Example Loop $\rightarrow$ 5-Layer Socratic Interrogation $\rightarrow$ Proof Review Gate $\rightarrow$ Operational SSOT Documentation.
 >
 > Reference SSOT Document: `process/development-protocols/references/architect-verifier-master-workflow-guide.md`.
@@ -70,9 +70,8 @@ Keywords: `high risk`, `architect verifier`, `formal spec`, `verification loop`,
 
 ### Phase 6: UPDATE PROCESS & SSOT (`ag-update-process-agent`)
 
-- Run `validate-docs.mjs`, archive spec to `completed/`, export operational workflow SSOT.
+- Run `validate-all-context.mjs`, archive spec to `completed/`, export operational workflow SSOT.
 - Output: `docs/design/<feature-slug>-<topic-slug>-workflow.md`.
-
 
 ## References
 

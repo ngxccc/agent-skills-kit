@@ -16,8 +16,20 @@ const conductorSkillPath = path.join(
   ".omp/skills/ag-omp-conductor/SKILL.md",
 );
 if (!fs.existsSync(conductorSkillPath)) {
-  fail(`.omp/skills/ag-omp-conductor/SKILL.md missing`);
-  printResultAndExit();
+  console.log(
+    JSON.stringify(
+      {
+        checkedConductorCatalog: false,
+        warnings: [
+          ".omp/skills/ag-omp-conductor/SKILL.md missing (optional in standalone repo)",
+        ],
+        failures: [],
+      },
+      null,
+      2,
+    ),
+  );
+  process.exit(0);
 }
 const conductorSkillText = fs.readFileSync(conductorSkillPath, "utf8");
 

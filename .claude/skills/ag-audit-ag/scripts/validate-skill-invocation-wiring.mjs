@@ -68,7 +68,10 @@ for (const candidate of CATALOG_CANDIDATES) {
 }
 
 if (!catalogPath) {
-  console.error("ERROR: generated-skills-catalog.json not found at expected paths:", CATALOG_CANDIDATES);
+  console.error(
+    "ERROR: generated-skills-catalog.json not found at expected paths:",
+    CATALOG_CANDIDATES,
+  );
   process.exitCode = 1;
   process.exit();
 }
