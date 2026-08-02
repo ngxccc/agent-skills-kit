@@ -113,7 +113,6 @@ your-project/
 - **`ag-tester` / `ag-security` / `ag-scenario`**: Level 2 Property-Based Testing (`fast-check`), STRIDE security audits, and Adversarial Matrix freeze (`adversarial-validation.json`).
 - **`ag-code-reviewer`**: Proof Review gatekeeper emitting `review-decision.json`.
 - **`ag-docs`**: Unified documentation management & validation targeting `docs/adr/` and workflow specs.
-- **`ag-workflow-doc`**: Dual-stage documentation (Pre-implementation Formal Spec & Post-implementation SSOT Operational Workflow).
 - **`ag-second-brain`**: Obsidian Second Brain integration for durable knowledge management.
 
 ---

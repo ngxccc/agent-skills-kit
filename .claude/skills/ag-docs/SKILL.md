@@ -80,7 +80,7 @@ Use `audit-context` after adding, moving, splitting, or grouping context files.
 
 ### Feature & Infrastructure Workflow Documentation
 
-For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `process/development-protocols/references/workflow-documentation-standard.md` or invoke the `ag-workflow-doc` skill.
+For generating feature workflow specifications or infrastructure audit guides (with WBS tables, sequence diagrams, and defense-in-depth security), load `process/development-protocols/references/workflow-documentation-standard.md` or use `ag-docs` design mode.
 
 ---
 

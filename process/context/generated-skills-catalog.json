@@ -9,7 +9,7 @@
       "process/context/generated-skills-catalog.json"
     ]
   },
-  "skillCount": 47,
+  "skillCount": 46,
   "skills": [
     {
       "folder": "ag-agent-browser",
@@ -254,7 +254,10 @@
       ],
       "allowlisted": false,
       "allowlistReason": null,
-      "relativeReferences": [],
+      "relativeReferences": [
+        "references/code-interrogation-guide.md",
+        "scripts/validate-interrogation-report.mjs"
+      ],
       "mentionedSkills": []
     },
     {
@@ -350,9 +353,7 @@
         "references/summarize-workflow.md",
         "references/update-workflow.md"
       ],
-      "mentionedSkills": [
-        "ag-workflow-doc"
-      ]
+      "mentionedSkills": []
     },
     {
       "folder": "ag-docs-seeker",
@@ -944,7 +945,7 @@
       "allowlistReason": null,
       "relativeReferences": [],
       "mentionedSkills": [
-        "ag-workflow-doc"
+        "ag-docs"
       ]
     },
     {
@@ -1245,29 +1246,6 @@
         "e2e",
         "integration test",
         "performance test"
-      ],
-      "layer": "helper",
-      "routedFrom": [
-        "AGENTS.md",
-        "CLAUDE.md",
-        "process/context/generated-skills-catalog.json"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [],
-      "mentionedSkills": []
-    },
-    {
-      "folder": "ag-workflow-doc",
-      "name": "ag-workflow-doc",
-      "description": "Use when generating grounded feature and infrastructure workflow specs, WBS tables, and sequence diagrams using Codebase Memory MCP graph search and the SSOT Workflow Documentation Standard.",
-      "aliases": [
-        "ag-workflow-doc"
-      ],
-      "normalizedName": "agworkflowdoc",
-      "triggerKeywords": [
-        "workflow",
-        "doc"
       ],
       "layer": "helper",
       "routedFrom": [
