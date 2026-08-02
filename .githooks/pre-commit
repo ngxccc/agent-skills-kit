@@ -1,0 +1,20 @@
+#!/bin/sh
+# Pre-commit hook to auto-format staged files before committing
+
+# Get staged files matching formattable extensions
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(md|json|js|mjs|cjs|ts|tsx|jsx|yaml|yml)$')
+
+if [ -n "$STAGED_FILES" ]; then
+  echo "🎨 Auto-formatting staged files with Biome..."
+
+  if command -v bun >/dev/null 2>&1; then
+    bunx @biomejs/biome format --write $STAGED_FILES 2>/dev/null
+  elif command -v npx >/dev/null 2>&1; then
+    npx @biomejs/biome format --write $STAGED_FILES 2>/dev/null
+  fi
+
+  # Re-add formatted files back to git index
+  git add $STAGED_FILES
+fi
+
+exit 0
