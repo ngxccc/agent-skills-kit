@@ -73,6 +73,9 @@ func LoadConfig() *Config {
 }
 
 func SaveConfig(cfg *Config) error {
+	if cfg.Schema == "" || cfg.Schema == "https://json.schemastore.org/ag-custom-config.json" {
+		cfg.Schema = "./schemas/ag-custom-config.json"
+	}
 	dir := filepath.Dir(ConfigPath)
 	if err := os.MkdirAll(dir, 0755); err != nil {
 		return err
