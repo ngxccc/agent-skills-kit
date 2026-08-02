@@ -1,37 +1,47 @@
 #!/usr/bin/env node
-import fs from "node:fs";
+import { spawn } from "node:child_process";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const docsDir = path.resolve("docs");
-let failures = 0;
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-if (!fs.existsSync(docsDir)) {
-  console.log("No docs directory found at docs/. Skipping validation.");
-  process.exit(0);
+const scripts = [
+  { name: "ADRs", file: "validate-adrs.mjs" },
+  { name: "RFCs", file: "validate-rfcs.mjs" },
+  { name: "Design Docs", file: "validate-design-docs.mjs" },
+];
+
+function runScript(script) {
+  const scriptPath = path.join(__dirname, script.file);
+  return new Promise((resolve) => {
+    const child = spawn(process.execPath, [scriptPath], {
+      stdio: "inherit",
+      env: process.env,
+    });
+
+    child.on("close", (code) => {
+      resolve({ name: script.name, code: code ?? 1 });
+    });
+
+    child.on("error", (err) => {
+      console.error(`Failed to start ${script.name} validator:`, err);
+      resolve({ name: script.name, code: 1 });
+    });
+  });
 }
 
-const adrDir = path.join(docsDir, "adr");
-if (fs.existsSync(adrDir)) {
-  const adrFiles = fs.readdirSync(adrDir).filter((f) => f.endsWith(".md"));
-  for (const file of adrFiles) {
-    const filePath = path.join(adrDir, file);
-    const content = fs.readFileSync(filePath, "utf8");
+console.log("Running documentation validators in parallel...\n");
 
-    if (
-      !content.includes("## Status") ||
-      !content.includes("## Context") ||
-      !content.includes("## Decision")
-    ) {
-      console.error(`FAIL: [docs/adr/${file}] Missing required ADR headings.`);
-      failures++;
-    }
-  }
-}
+const results = await Promise.all(scripts.map(runScript));
+const failed = results.filter((r) => r.code !== 0);
 
-if (failures > 0) {
-  console.error(`Docs validation failed with ${failures} error(s).`);
+console.log("\n" + "─".repeat(50));
+if (failed.length > 0) {
+  console.error(
+    `\nDocs validation failed (${failed.length} suite(s) failed: ${failed.map((f) => f.name).join(", ")}).`,
+  );
   process.exit(1);
 } else {
-  console.log("All documentation files passed validation.");
+  console.log("\nAll documentation validation suites passed successfully.");
   process.exit(0);
 }
