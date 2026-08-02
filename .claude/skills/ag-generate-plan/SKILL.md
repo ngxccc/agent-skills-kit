@@ -1,94 +1,76 @@
 ---
 name: ag-generate-plan
-description: Create or update implementation plans in the repo's SIMPLE or COMPLEX format. Use when turning an idea, PRD, or approved direction into a saved plan artifact.
-trigger_keywords: plan, create plan, write plan, generate spec, plan artifact
+description: Create or update implementation plans in the repo's SIMPLE, COMPLEX, or PHASE PROGRAM format. Use when turning an idea, PRD, or approved direction into saved plan artifacts.
+trigger_keywords: plan, create plan, write plan, generate spec, plan artifact, phase program, umbrella plan, session goal block
 layer: contract
 metadata:
   author: agent-skills-kit-pro-max-kit
-  version: "1.0.0"
+  version: "2.0.0"
 ---
 
-# Generate Plan
+# Generate Plan & Phase Program (`ag-generate-plan`)
 
 ## When to Apply
 
-Use this skill when working with ag-generate-plan workflows, tasks, or system specifications.
+Use this skill when turning ideas, PRDs, or approved directions into authoritative implementation plan artifacts for the project.
+
+This skill is the canonical plan artifact contract for the repository, supporting three complexity classifications:
+
+1. **SIMPLE**: Single-session feature (8-15 steps, 1 plan artifact).
+2. **COMPLEX**: Multi-phase project within 1 plan file.
 
 ## How to Use
 
 Refer to the workflow instructions and command references detailed below.
 
-> Output style: write the plan answer-first with tables/bullets and a one-line TL;DR per the canonical rule — `process/development-protocols/communication-standards.md`.
-
-Use this skill to produce the authoritative implementation plan artifact set for the project's work.
-
-This skill is the canonical planning contract for the repo. Planning discipline previously spread across `ag-plan` now belongs here plus the `plan-agent` prompt.
-
-Normal output is one plan file.
-
-For large multi-phase programs, this skill instead defines how to create an umbrella plan plus
-phase-plan set under one feature folder. See `process/development-protocols/phase-programs.md`.
-
-Optional input: a feature idea plus `simple` or `complex` when the user already knows the intended depth.
+---
 
 ## Workflow
 
-1. Read `references/generate-plan.md` for the full plan contract.
+1. Read `references/generate-plan.md` for the single-plan contract.
 2. Run `date +%d-%m-%y` before choosing the filename.
-3. If complexity is not obvious, ask whether the plan is `SIMPLE` or `COMPLEX`.
-4. Save the plan inside a task folder: `process/general-plans/active/{slug}_{date}/{slug}_PLAN_{date}.md` (or `process/features/{feature}/active/{slug}_{date}/{slug}_PLAN_{date}.md`). Create the `{slug}_{date}/` subfolder first. Per **task-folder artefact colocation**, every artefact this plan produces — the plan, any `{slug}_SPEC_{date}.md`, reports, and references — lives INSIDE this same task folder; never write to the deprecated sibling `reports/` or `references/` dirs.
-5. Read `process/context/all-context.md` when present to choose relevant context docs.
-6. For complex plans, read `.claude/skills/ag-generate-plan/references/example-complex-prd.md` before writing.
-7. Include automated and manual verification gates from `process/context/tests/all-tests.md`.
-8. For new or newly touched direct `*_PLAN_*.md` plans, include explicit sections for `Touchpoints`, `Public Contracts`, `Blast Radius`, `Verification Evidence`, `Test Infra Improvement Notes`, and `Resume and Execution Handoff`.
-9. Keep resume/dependency notes Markdown-structured for now; do not invent a second machine-only schema.
-10. If the work is a large multi-phase program, create or update a feature folder plan set:
+3. Classify complexity: `SIMPLE`, `COMPLEX`, or `PHASE PROGRAM`.
+4. Save plans inside task subfolders:
+   - Single plan: `process/general-plans/active/{slug}_{date}/{slug}_PLAN_{date}.md` (or `process/features/{feature}/active/{slug}_{date}/{slug}_PLAN_{date}.md`).
+   - Phase Program: `process/features/{feature}/active/{program-slug}_{date}/{program-slug}-umbrella_PLAN_{date}.md` for umbrella plan, and `phase-NN-{slug}_PLAN_{date}.md` for per-phase stubs.
+5. Per **task-folder artefact colocation**, every artifact (plan, spec, reports, references) lives FLAT inside the task folder.
+6. Validate generated artifacts:
+   - Single plan: `node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>`
+   - Umbrella plan: `node .claude/skills/ag-generate-plan/scripts/validate-umbrella-artifact.mjs <umbrella-path>`
+   - Phase stub: `node .claude/skills/ag-generate-plan/scripts/validate-phase-stub.mjs <stub-path>`
 
-- one umbrella/orchestration plan
-- one direct plan file per phase
-- one durable report destination per phase
+---
 
-11. Validate the generated artifact:
+## Phase Program Kickoff Procedure (3+ Phases)
 
-```bash
-node .claude/skills/ag-generate-plan/scripts/validate-plan-artifact.mjs <plan-path>
-```
+When `PHASE PROGRAM` is detected (3 or more dependent phases):
 
-## Important Rules
+1. **Invoke `ag-agent-strategy-compare`**: For each phase, run strategy evaluation before drafting.
+2. **Read Template Files**:
+   - `.claude/skills/ag-generate-plan/templates/umbrella-plan-template.md`
+   - `.claude/skills/ag-generate-plan/templates/phase-stub-template.md`
+3. **Emit Kickoff Recommendation**: Present feature folder, umbrella plan name, phase list, and immediate next action. Stop for user approval.
+4. **Create Artifacts**:
+   - Create task folder: `process/features/{feature}/active/{program-slug}_{date}/`
+   - Create umbrella plan: `{program-slug}-umbrella_PLAN_{date}.md`
+   - Create phase plan stubs: `phase-NN-{slug}_PLAN_{date}.md`
+5. **Emit Compressed Session-Goal Block**: Print copy-pasteable `/goal` block (≤4000 chars) in chat.
 
-- For standard work, create exactly one plan file.
-- For a phase program, create one umbrella plan plus one direct plan file per phase.
-- Prefer `process/features/{feature}/active/{slug}_{date}/` task folder when the topic maps to an existing feature folder.
-- Keep phase status honest: code-only completion is `CODE DONE`, not `VERIFIED`.
-- Make execution trust explicit inside the plan: what code or data can change, what contracts are exposed, what proof is required, and how EXECUTE should resume after compaction.
-- End with the next instruction for RIPER-5 or Cursor Plan mode.
-- Treat validation failures as blockers before presenting the plan as ready.
-- Fold red-team questions, dependency mapping, verification gates, and ambiguity checks into the generated plan itself instead of relying on a parallel plan-owner workflow.
-- Do not hide a large program inside one giant plan if execution will actually happen phase by phase.
-- Preserve the older complex-plan behavior by keeping pre-phase research and proof gates inside each
-  phase plan; the new protocol changes the artifact shape, not the rigor.
+---
 
 ## Required Plan Sections
 
-For new or newly touched direct `*_PLAN_*.md` files, include all of the following sections:
+For new or newly touched direct `*_PLAN_*.md` files, include all required sections:
 
-- `Touchpoints` — files, packages, or services that will be changed or read
-- `Public Contracts` — interfaces, APIs, schemas, or behaviors visible to other packages or callers
-- `Blast Radius` — the scope of change: how many files, which packages, and what risk class
-- `Verification Evidence` — table with columns `| Gate / Scenario | Strategy | Proves SPEC criterion |`; each row maps a test gate to the SPEC acceptance criterion it proves and the strategy (Fully-Automated / Hybrid / Agent-Probe)
-- `Test Infra Improvement Notes` — placeholder at plan-write time ("(none identified yet)"); updated with test infrastructure gaps found during ag-test-coverage-plan and EVL
-- `Resume and Execution Handoff` — required sub-fields:
-  1. selected plan file path
-  2. last completed phase or step
-  3. validate-contract status (written / skipped with reason / pending)
-  4. supporting context files loaded
-  5. next step for a fresh agent picking up mid-execution
-- `Validate Contract` — written by ag-validate-agent after VALIDATE runs; leave a placeholder
-  heading during PLAN (`## Validate Contract\n\n(placeholder — ag-validate-agent writes this section before EXECUTE)`)
-
-Use Markdown-structured sections, not a second machine-only schema. Markdown sections are
-stable across all agents (Claude, Codex, future systems) without requiring a parser.
+- `Touchpoints`
+- `Public Contracts`
+- `Blast Radius`
+- `Verification Evidence` (table: `| Gate / Scenario | Strategy | Proves SPEC criterion |`)
+- `Test Infra Improvement Notes`
+- `Resume and Execution Handoff`
+- `Validate Contract` (placeholder for `ag-validate-agent`)
 
 ## References
 
 - [process/context/all-context.md](process/context/all-context.md)
+- [process/development-protocols/phase-programs.md](process/development-protocols/phase-programs.md)

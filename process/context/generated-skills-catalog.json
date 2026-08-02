@@ -9,7 +9,7 @@
       "process/context/generated-skills-catalog.json"
     ]
   },
-  "skillCount": 49,
+  "skillCount": 47,
   "skills": [
     {
       "folder": "ag-agent-browser",
@@ -499,36 +499,9 @@
       "mentionedSkills": []
     },
     {
-      "folder": "ag-generate-phase-program",
-      "name": "ag-generate-phase-program",
-      "description": "Generate kickoff artifacts for a multi-phase program: umbrella plan, Program Goal Charter, session-goal block, per-phase plan stubs, and the 7-step per-phase inner loop reference.",
-      "aliases": [
-        "ag-generate-phase-program"
-      ],
-      "normalizedName": "aggeneratephaseprogram",
-      "triggerKeywords": [
-        "phase program",
-        "umbrella plan",
-        "session goal block",
-        "kickoff template",
-        "multi-phase"
-      ],
-      "layer": "contract",
-      "routedFrom": [
-        "AGENTS.md",
-        "process/context/generated-skills-catalog.json"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [],
-      "mentionedSkills": [
-        "ag-agent-strategy-compare"
-      ]
-    },
-    {
       "folder": "ag-generate-plan",
       "name": "ag-generate-plan",
-      "description": "Create or update implementation plans in the repo's SIMPLE or COMPLEX format. Use when turning an idea, PRD, or approved direction into a saved plan artifact.",
+      "description": "Create or update implementation plans in the repo's SIMPLE, COMPLEX, or PHASE PROGRAM format. Use when turning an idea, PRD, or approved direction into saved plan artifacts.",
       "aliases": [
         "ag-generate-plan"
       ],
@@ -538,7 +511,10 @@
         "create plan",
         "write plan",
         "generate spec",
-        "plan artifact"
+        "plan artifact",
+        "phase program",
+        "umbrella plan",
+        "session goal block"
       ],
       "layer": "contract",
       "routedFrom": [
@@ -551,7 +527,9 @@
       "relativeReferences": [
         "references/generate-plan.md"
       ],
-      "mentionedSkills": []
+      "mentionedSkills": [
+        "ag-agent-strategy-compare"
+      ]
     },
     {
       "folder": "ag-generate-spec",
@@ -1061,8 +1039,7 @@
         "references/ag-setup.md"
       ],
       "mentionedSkills": [
-        "ag-generate-context",
-        "ag-update"
+        "ag-generate-context"
       ]
     },
     {
@@ -1196,35 +1173,6 @@
       "mentionedSkills": [
         "ag-context-discovery",
         "ag-feasibility-test"
-      ]
-    },
-    {
-      "folder": "ag-update",
-      "name": "ag-update",
-      "description": "Pull latest agent harness improvements from the remote kit repository. Shows a dry-run diff summary, waits for confirmation, then applies updates.",
-      "aliases": [
-        "ag-update"
-      ],
-      "normalizedName": "agupdate",
-      "triggerKeywords": [
-        "update harness",
-        "pull kit",
-        "sync harness",
-        "upgrade agents"
-      ],
-      "layer": "contract",
-      "routedFrom": [
-        "AGENTS.md",
-        "CLAUDE.md",
-        "process/context/generated-skills-catalog.json"
-      ],
-      "allowlisted": false,
-      "allowlistReason": null,
-      "relativeReferences": [
-        "references/ag-update.md"
-      ],
-      "mentionedSkills": [
-        "ag-setup"
       ]
     },
     {
