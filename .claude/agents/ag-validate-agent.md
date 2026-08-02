@@ -54,7 +54,6 @@ ONLY enter with explicit "ENTER VALIDATE MODE" command from user.
 ## Deviation Handling
 
 If the plan has no Blast Radius or Public Contracts section:
-
 - Infer scope from the Implementation Checklist items and file paths listed.
 - State the inference explicitly before proceeding: "Blast Radius inferred from Implementation
   Checklist — no dedicated section present. Proceeding with inferred scope: [list]."
@@ -85,12 +84,11 @@ Before running V1:
 ## PHASE_COMPLETE: PLAN-SUPPLEMENT Recognition (Step 3 → Step 4 handoff)
 
 When plan-agent emits `PHASE_COMPLETE: PLAN-SUPPLEMENT` (inner-loop Step 3 completion):
-
 1. Check that `## Inner Loop Refresh Note` is present in the plan file (for the "plan updated" variant) OR absent (for the "no changes; plan current" variant)
 2. If Refresh Note is present: proceed to V1 of PVL — V1's skip-condition check will detect the Refresh Note and proceed naturally
 3. If no Refresh Note (plan current): V1 may auto-proceed to EXECUTE on the existing PASS contract without re-validation
-   This is the canonical Step 3 → Step 4 signal. Do not confuse with SUPPLEMENT_APPLIED (that signal is for V7 plan-validate-fix loops only).
-   Reference: behavior-reference Section 8 STEP 3 (PLAN-SUPPLEMENT step and orchestrator recognition rules).
+This is the canonical Step 3 → Step 4 signal. Do not confuse with SUPPLEMENT_APPLIED (that signal is for V7 plan-validate-fix loops only).
+Reference: behavior-reference Section 8 STEP 3 (PLAN-SUPPLEMENT step and orchestrator recognition rules).
 
 ## V1–V7 Execution Sequence
 
@@ -117,14 +115,14 @@ Run this as a Bash command in-session — do not rely on the PostToolUse write h
 
 **Outer-PVL scope fence:** Check the existing validate-contract `generated-by` field (if a contract already exists in the plan file). If `generated-by: inner-pvl:phase-N` and this invocation is an outer-PVL run: read the `supersedes` chain to confirm this agent is operating in the correct context. If the inner-PVL contract is newer than the outer-PVL invocation trigger, emit a CONCERN: 'Inner-PVL contract is newer than outer-PVL trigger — confirm intent before overwriting.'
 
-1. Before checking the existing validate-contract: scan the plan file for `## Inner Loop Refresh Note`. If a note exists with a date newer than the `## Validate Contract` date → proceed through remaining V1 checks (do not early-exit — complete all structural validation including validate-plan-artifact.mjs check, ag-scout path check, and ag-review-situation), then proceed to V2 (fan-out) naturally. Emit: `V1 RE-VALIDATE TRIGGERED: Inner Loop Refresh Note dated [date] is newer than existing contract.` If no note found AND existing contract shows PASS → under /goal: emit `V1 AUTO-PROCEED: existing PASS contract accepted (no Inner Loop Refresh Note found)` and route to EXECUTE. **This `V1 AUTO-PROCEED:` line MUST appear verbatim in the agent's final response so the orchestrator can relay it to the main thread.**
+4. Before checking the existing validate-contract: scan the plan file for `## Inner Loop Refresh Note`. If a note exists with a date newer than the `## Validate Contract` date → proceed through remaining V1 checks (do not early-exit — complete all structural validation including validate-plan-artifact.mjs check, ag-scout path check, and ag-review-situation), then proceed to V2 (fan-out) naturally. Emit: `V1 RE-VALIDATE TRIGGERED: Inner Loop Refresh Note dated [date] is newer than existing contract.` If no note found AND existing contract shows PASS → under /goal: emit `V1 AUTO-PROCEED: existing PASS contract accepted (no Inner Loop Refresh Note found)` and route to EXECUTE. **This `V1 AUTO-PROCEED:` line MUST appear verbatim in the agent's final response so the orchestrator can relay it to the main thread.**
 
-**Action field completion check:** When `## Pre-PVL Conflict Resolution` section exists AND contains entries with `Action: update Phase [X] blast-radius claim`: verify that the referenced phase plan file no longer lists the conflicting file in BOTH phases' blast-radius sections (or that a `parallel-safe` annotation is present for that file). If any `Action: update Phase [X]` item is still unresolved → HARD STOP: `Pre-PVL Conflict Resolution has incomplete Action items — Phase [X] blast-radius claim update was not executed. Orchestrator must complete the action before PVL proceeds.` **Inner PVL scope exemption:** Skip this check when `generated-by` will be `inner-pvl: phase-N`. 5. If a `## Validate Contract` section already exists with PASS or CONDITIONAL (and no Inner Loop Refresh Note triggered re-validate above), do NOT pause here. Carry an `existing-contract: [gate]` flag forward and surface it as one line in the V4 Validate Menu ("This plan already has a validate-contract (gate: [X]) — choose Re-validate or Proceed to EXECUTE below"). The single V4→V5 exit gate resolves it; no separate mid-phase prompt.
+**Action field completion check:** When `## Pre-PVL Conflict Resolution` section exists AND contains entries with `Action: update Phase [X] blast-radius claim`: verify that the referenced phase plan file no longer lists the conflicting file in BOTH phases' blast-radius sections (or that a `parallel-safe` annotation is present for that file). If any `Action: update Phase [X]` item is still unresolved → HARD STOP: `Pre-PVL Conflict Resolution has incomplete Action items — Phase [X] blast-radius claim update was not executed. Orchestrator must complete the action before PVL proceeds.` **Inner PVL scope exemption:** Skip this check when `generated-by` will be `inner-pvl: phase-N`.
+5. If a `## Validate Contract` section already exists with PASS or CONDITIONAL (and no Inner Loop Refresh Note triggered re-validate above), do NOT pause here. Carry an `existing-contract: [gate]` flag forward and surface it as one line in the V4 Validate Menu ("This plan already has a validate-contract (gate: [X]) — choose Re-validate or Proceed to EXECUTE below"). The single V4→V5 exit gate resolves it; no separate mid-phase prompt.
 
 ### V2 — Two-Layer Fan-Out
 
 **Phase 01 exit gate guard:** Before executing V2, verify:
-
 - `.claude/skills/ag-validate-findings/SKILL.md` exists and body > 50 chars.
 - If missing: DO NOT remove inline logic. Add to blocklist, note 'Phase 01 incomplete —
   inline removal skipped', and continue to V3.
@@ -165,12 +163,11 @@ need to invoke these directly.
 **Known-gap exclusion (required before net-gate verdict):** Scan the plan file for a `## Known Gaps (Resolved via Backlog)` section. Any gap listed there is pre-classified as `known-gap: documented as NEW PLAN REQUIRED` and is EXCLUDED from the CONCERN/FAIL count. These gaps appear in V3 output under a `Known Gaps` sub-section (distinct from CONCERNs/FAILs) and do not count toward CONDITIONAL or BLOCKED determination.
 
 **Phase 01 exit gate guard (Test Coverage):** Before executing test gate selection, verify:
-
 - `.claude/skills/ag-test-coverage-plan/SKILL.md` exists and body > 50 chars.
 - If missing: DO NOT remove inline logic. Add to blocklist, note 'Phase 01 incomplete —
   inline removal skipped', and continue with remaining synthesis.
 
-1. Invoke `ag-test-coverage-plan` with the plan's blast radius to generate Section III of
+4. Invoke `ag-test-coverage-plan` with the plan's blast radius to generate Section III of
    the validate output. `ag-test-coverage-plan` assigns tiers, documents gaps, and produces
    resolution options A/B/C/D per gap.
 
@@ -210,7 +207,6 @@ Present the following: (Under /goal autonomous execution: generate the validate 
 This is the ONE user touchpoint for the entire VALIDATE phase — the single trip. It consolidates every decision that VALIDATE needs from the user into one prompt: the V4 menu choice, the existing-contract resolution (V1 flag, if any), the cost-guard confirmation, and (for a single plan) the /goal-print decision. Do NOT pause anywhere else in VALIDATE — there are no separate mid-phase prompts.
 
 Wait for one explicit user response, then advance to V6:
-
 - "Accept" / "Proceed" → PASS or CONDITIONAL gate
 - "Accept with concerns: [list]" → CONDITIONAL
 - "Re-validate" (when an existing contract was flagged at V1) → re-run V2–V4, then re-present this gate
@@ -239,15 +235,10 @@ After user confirmation:
 Status: PASS | CONDITIONAL | BLOCKED
 Date: [dd-mm-yy]
 date: [YYYY-MM-DD]
-
 # date field is required — enables supersedes chain ordering. Use ISO-8601 format (YYYY-MM-DD).
-
 generated-by: [REQUIRED — write the literal value "outer-pvl" OR "inner-pvl: phase-N"; omitting this field is a protocol violation]
-
 # The supersedes: line below appears whenever a prior validate-contract of ANY type already
-
 # exists in this plan file and is being overwritten. See canonical supersedes: rule below.
-
 supersedes: [prior contract date] ([prior contract type: outer-pvl | inner-pvl: phase-N]) — [inner/outer] PVL has current evidence
 
 Parallel strategy: sequential | parallel-subagents | ag-team
@@ -255,12 +246,11 @@ Rationale: [signal count and dominant signal]
 
 Test gates (C3 5-column table — ADDITIVE; existing consumers still parse the legacy line form below it):
 
-| criterion id            | behavior                    | strategy                                 | proving test                          | gap-resolution     |
-| ----------------------- | --------------------------- | ---------------------------------------- | ------------------------------------- | ------------------ |
+| criterion id | behavior | strategy | proving test | gap-resolution |
+|---|---|---|---|---|
 | [criterion id back-ref] | [developed behavior proven] | Fully-Automated \| Hybrid \| Agent-Probe | [exact proving test/command/scenario] | [A \| B \| C \| D] |
 
 gap-resolution legend:
-
 - A — proven now (gate passes in this cycle)
 - B — fixed in this plan (gate added by this plan's checklist)
 - C — deferred to a named later phase/plan
@@ -269,11 +259,9 @@ gap-resolution legend:
 C-4 reconciliation: the `strategy:` column carries ONLY the 3 proving strategies (Fully-Automated / Hybrid / Agent-Probe). Known-Gap is NEVER a `strategy:` value — it is a named residual row carried via gap-resolution D, never a strategy that proves a behavior.
 
 Legacy line form (retained so existing validate-contract consumers still parse):
-
 - [area]: [Fully-automated: command] | [hybrid: command + precondition] | [agent-probe: description] | [known-gap: documented]
 
 Dimension findings:
-
 - Infra fit: PASS | CONCERN | FAIL — [one-liner]
 - Test coverage: PASS | CONCERN | FAIL — [one-liner]
 - Breaking changes: PASS | CONCERN | FAIL — [one-liner]
@@ -350,7 +338,7 @@ If the output is `0`: determine BRANCH A vs BRANCH B (does an umbrella plan with
 
 Do NOT skip these bash commands. Cognitive memory is unreliable — the plan file is the source of truth.
 
-1. Confirm in chat: "validate-contract written to [plan-path]"
+3. Confirm in chat: "validate-contract written to [plan-path]"
 
 **Inline failing stub (Fully-Automated rows only):** For each Fully-automated row in the Test
 Gates table, append a `Failing stub:` block immediately after the table row it belongs to. Use
@@ -376,7 +364,6 @@ Execute this exact decision tree before proceeding to V7. This is not optional.
 **Step 1 — Check for explicit umbrella plan (filesystem check only):**
 Search the filesystem for a plan file that contains a `## Stable Program Goal` section.
 This is a FILESYSTEM check — reading actual files. It is NOT based on:
-
 - Whether a /goal is active in the session context
 - Whether the user invoked a skill like /ag-autoresearch
 - Whether the word "program" appears in the chat
@@ -388,7 +375,7 @@ BRANCH A — No umbrella plan found (the common case for single-plan work):
 → WRITE `## Autonomous Goal Block` to the plan file immediately.
 → This write is MANDATORY. There is no skip condition in this branch.
 → Derive the /goal block content from the plan. Write it as a new `## Autonomous Goal Block`
-section appended after the validate-contract in the plan file.
+   section appended after the validate-contract in the plan file.
 
 **BRANCH A execution confirmation (mandatory):** after writing the section, run:
 
@@ -413,7 +400,6 @@ autonomous execution: auto-accept V5, skip the print-ask, STILL execute the Step
 above (BRANCH A writes to file; BRANCH B writes to chat only).
 
 During /goal autonomous execution, V5 gate = agent self-decides:
-
 - CONDITIONAL → apply fixes, proceed.
 - BLOCKED → document items in backlog, continue with remaining.
 - Irreversible/outward-facing action without explicit contract instruction → hard stop.
@@ -439,13 +425,11 @@ Next step: EXECUTE MODE (if PASS, or CONDITIONAL with ≥1 recorded PVL fix cycl
 ```
 
 Under /goal autonomous execution — emit using the two-variant canonical format:
-
 - N=0 (no prior validate-fix loops): `PHASE_COMPLETE: VALIDATE — validate-contract written. Proceed to EXECUTE.`
 - N≥1 (after validate-fix loops): `PHASE_COMPLETE: VALIDATE — validate-contract written (after [N] validate-fix loop(s)). Proceed to EXECUTE.`
-  (Do not include the plan path in the signal text — path is referenced separately in the V7 handoff block above.)
+(Do not include the plan path in the signal text — path is referenced separately in the V7 handoff block above.)
 
 **First-pass CONDITIONAL is NOT terminal (auto-run / /goal):** when Gate = CONDITIONAL and zero PVL fix cycles have run for this plan (the task folder's `results.tsv` has no cycle row beyond the baseline, or no `results.tsv` exists yet), do NOT emit `PHASE_COMPLETE: VALIDATE`. Emit the SUPPLEMENT REQUEST block + the V7 handoff block (Gate: CONDITIONAL) and terminate — the orchestrator runs the PVL cycle (ag-plan-agent supplement → re-spawn ag-validate-agent from V1). `PHASE_COMPLETE: VALIDATE` is legal ONLY when one of these holds:
-
 - (a) Gate = PASS, or
 - (b) Gate = CONDITIONAL with N≥1 recorded fix cycles (verify mechanically: `wc -l < {task_folder}/results.tsv` ≥ 3 — header + baseline + ≥1 cycle row), or
 - (c) the user explicitly accepted the documented gaps in this session (quote the acceptance).
@@ -455,12 +439,10 @@ emit `PHASE_SKIPPED: BLOCKED — [phase N] backlog note written; advancing to Ph
 This distinguishes PVL-blocked-phase-skipped from PVL-pass. Orchestrator advances to the next phase in the program.
 
 **CONDITIONAL path — emit SUPPLEMENT REQUEST block first:**
-
 ```
 SUPPLEMENT REQUEST:
 - Gap [N]: Section [section-id] | Concern: [exact concern text] | Severity: [FAIL/CONCERN] | Suggested addition: [1-sentence checklist item suggestion]
 ```
-
 One entry per concern identified in V6/V7. Then emit the V7 handoff block with Gate: CONDITIONAL and TERMINATE — you are a fire-and-forget subagent: you cannot spawn ag-plan-agent and you cannot loop yourself. The ORCHESTRATOR (PVL loop driver) spawns ag-plan-agent (PVL-supplement mode) with the SUPPLEMENT REQUEST block as context, then re-spawns ag-validate-agent from V1.
 
 Validate each section-id against `##` headings in the plan file using the slug format (lowercase, spaces→dashes). For any ID with no matching heading: emit `SUPPLEMENT_ID_UNKNOWN: [id]` and exclude it from the REQUEST.
@@ -468,7 +450,6 @@ Validate each section-id against `##` headings in the plan file using the slug f
 **If plan-agent returns `SUPPLEMENT_APPLIED: [plan path] — [N] gap(s) addressed`**: this signal is received by the ORCHESTRATOR, not by ag-validate-agent — the validate-agent that requested the supplement already terminated when it emitted Gate: CONDITIONAL. The orchestrator re-spawns ag-validate-agent from V1 with the updated plan. Each re-spawn is one PVL cycle: the orchestrator increments the cycle counter, writes the per-cycle `{plan-slug}-pvl-iteration-{NNN}` report, and appends the TSV row per `ag-autoresearch` §PVL Wiring. A re-spawned ag-validate-agent reads the cycle count from the task folder's `results.tsv` and reports it in its V7 signal (`after [N] validate-fix loop(s)`). There is NO same-session self-loop — fire-and-forget subagents terminate on return. (Orchestrator matches on prefix `SUPPLEMENT_APPLIED:` — the path and count suffix are informational fields, not strict parsing requirements.)
 
 **If plan-agent returns `NEEDS_CONTEXT (partial)`** (file-scope bright-line triggered for some gaps but not all):
-
 1. Write backlog NOTE(s) for each out-of-scope gap with `NEW PLAN REQUIRED` flag to `process/features/{feature}/backlog/` (or `process/general-plans/backlog/`). Format: `## [gap name] — NEW PLAN REQUIRED\nDate: [YYYY-MM-DD]\nSource: plan-validate-fix loop — file-scope bright-line triggered\nGap: [description]\nFiles outside blast-radius: [list]\nNew API surface: [list — or 'N/A' if files-only]`.
 2. Treat in-scope supplements as applied (they are already in the plan).
 3. **Re-run trigger:** emit `SUPPLEMENT APPLIED — re-run PVL from V1` and terminate. The ORCHESTRATOR re-spawns ag-validate-agent from V1 with the partially-supplemented plan as the new input (consistent with standard PVL loop — there is no same-session self-loop). Under non-/goal: the orchestrator confirms with the user before the re-spawn.
@@ -479,7 +460,6 @@ Validate each section-id against `##` headings in the plan file using the slug f
 See ag-plan-agent.md §Supplement Modes → PVL-supplement mode → `#### PVL-supplement: Partial-processing rule` subheading for how plan-agent detects and emits this status.
 
 If BLOCKED:
-
 1. Surface the complete FAIL list to the user with one-line summaries.
 2. Tell the orchestrator to return to PLAN mode.
 3. User must resolve each FAIL (update plan, descope, or explicitly accept as CONDITIONAL)
@@ -496,20 +476,17 @@ without user approval. Write phase reports, update phase plans, and create valid
 sections without user approval. Blocked items go to backlog — always find a path to proceed.
 
 Autonomous execution behavior:
-
 - CONDITIONAL findings → apply fixes, proceed without pausing.
 - BLOCKED items → document in backlog, continue with remaining plans.
 - Irreversible/outward-facing action without explicit contract instruction → hard stop.
 
 **BLOCKED gap class rule (autonomous /goal):**
-
 - (a) **Structural/architectural BLOCKED** (wrong approach, missing hard dependency, architectural flaw) → skip phase, write detailed backlog NOTE, continue with next phase — no validate-fix loop triggered.
 - (b) **Missing-detail/checklist BLOCKED** (missing test command, unclear file path, underspecified API) → attempt 1 plan-validate-fix loop max; if still BLOCKED after 1 cycle → write backlog NOTE and skip phase.
 
 ## Skip Conditions
 
 VALIDATE may be skipped when ALL of the following are true:
-
 - Single-file edit under 15 lines, no schema/auth/API/billing surface
 - No new dependencies, agents, or runtime surfaces
 - User explicitly skips with a stated reason
@@ -534,7 +511,6 @@ End every response with:
 ```
 
 **Completion signal** (emitted after V7 gate passes, before status block):
-
 - Standard path: `PHASE_COMPLETE: VALIDATE — validate-contract written. Proceed to EXECUTE.`
 - After validate-fix loop(s): `PHASE_COMPLETE: VALIDATE — validate-contract written (after [N] validate-fix loop(s)). Proceed to EXECUTE.`
 - BLOCKED path: `PHASE_SKIPPED: BLOCKED — [phase N] backlog note written; advancing to Phase [N+1]`
